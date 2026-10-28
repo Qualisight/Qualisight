@@ -1890,6 +1890,56 @@ input[type=number]{-moz-appearance:textfield}
 .gv-price{display:flex;justify-content:space-between;align-items:center;gap:0.5rem;font-size:0.74rem;color:var(--muted);margin:0}
 .gv-price input{width:110px;text-align:right}
 .gv-note{font-size:0.7rem;color:var(--muted);opacity:0.8;line-height:1.4}
+.grove-section-title{font-size:0.78rem;font-weight:600;color:var(--muted);margin:0.4rem 0 0.55rem}
+.grove-section-title:not(:first-of-type){margin-top:1.1rem}
+.grove-plots.n3{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.grove-plots.n1,.grove-plots.n2{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+@media(min-width:1000px){.grove-plots.n1{grid-template-columns:repeat(3,minmax(0,1fr))}.grove-plots.n2{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.grove-more{margin-top:1rem;display:flex;align-items:center;justify-content:space-between;gap:0.7rem;flex-wrap:wrap;border:1px dashed var(--border);border-radius:14px;padding:0.75rem 0.9rem;font-size:0.82rem;color:var(--muted)}
+.grove-more span{display:flex;gap:0.5rem;flex-wrap:wrap}
+.grove-mini{background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:9px;padding:0.4rem 0.75rem;font-weight:600;font-size:0.8rem;cursor:pointer;font-family:inherit}
+.grove-mini:hover{border-color:rgba(255,255,255,0.22)}
+.grove-pig-name{color:#fbbf24;font-weight:600}
+.badge-gold{background:rgba(251,191,36,0.14)!important;color:#fbbf24!important}
+#p-unit{margin-top:0.35rem}
+
+/* ── ADD AN INVESTMENT SHEET ── */
+.inv-overlay{position:fixed;inset:0;background:rgba(5,7,10,0.72);z-index:650;display:none;align-items:center;justify-content:center;padding:1rem}
+.inv-overlay.open{display:flex}
+.inv-sheet{background:var(--card);border:1px solid var(--border);border-radius:20px;width:100%;max-width:560px;max-height:calc(100vh - 2rem);overflow-y:auto;padding:1.2rem 1.25rem 1rem;box-shadow:0 30px 80px -20px rgba(0,0,0,0.8)}
+.inv-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:0.6rem}
+.inv-title{font-family:var(--font-display,var(--font-display));font-weight:800;font-size:1.25rem;letter-spacing:-0.03em;color:var(--text)}
+.inv-x{background:transparent;border:none;color:var(--muted);font-size:1.5rem;line-height:1;cursor:pointer;padding:0 0.2rem}
+.inv-x:hover{color:var(--text)}
+.inv-step{padding:0.75rem 0;border-top:1px solid var(--border)}
+.inv-label{font-size:0.82rem;font-weight:600;color:var(--text);margin-bottom:0.55rem;display:flex;align-items:center;gap:0.5rem}
+.inv-label b{width:20px;height:20px;border-radius:50%;background:rgba(74,222,128,0.14);color:#4ade80;font-size:0.72rem;display:inline-flex;align-items:center;justify-content:center}
+.inv-chips{display:flex;flex-wrap:wrap;gap:0.45rem}
+.inv-chip{background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:12px;padding:0.5rem 0.8rem;font-family:inherit;font-weight:600;font-size:0.86rem;cursor:pointer;text-align:left;line-height:1.2}
+.inv-chip span{display:block;font-weight:400;font-size:0.7rem;color:var(--muted);margin-top:0.1rem}
+.inv-chip:hover{border-color:rgba(255,255,255,0.25)}
+.inv-chip.on{background:rgba(74,222,128,0.12);border-color:#4ade80;color:#4ade80}
+.inv-chip.on span{color:#86efac}
+.inv-chips.small .inv-chip{padding:0.35rem 0.7rem;font-size:0.8rem;margin-bottom:0.55rem}
+.inv-note{font-size:0.74rem;color:var(--muted);margin-top:0.5rem}
+.inv-grid{display:grid;grid-template-columns:1fr 1fr;gap:0.6rem}
+@media(max-width:480px){.inv-grid{grid-template-columns:1fr}}
+.inv-field{display:flex;flex-direction:column;gap:0.3rem;font-size:0.76rem;color:var(--muted);margin:0}
+.inv-field em{font-style:normal;opacity:0.75}
+.inv-field.wide{grid-column:1/-1}
+.inv-input{background:var(--card2);border:1px solid var(--border);border-radius:10px;color:var(--text);font-family:inherit;font-size:0.92rem;padding:0.6rem 0.7rem;min-width:0;width:100%}
+.inv-input:focus{outline:none;border-color:#4ade80;box-shadow:0 0 0 3px rgba(74,222,128,0.14)}
+.inv-which{margin-top:0.55rem}
+.inv-pair{display:flex;gap:0.4rem}
+.inv-pair select{width:auto;flex:0 0 auto}
+.inv-err{font-size:0.8rem;color:#f87171;min-height:0}
+.inv-err:empty{display:none}
+.inv-foot{display:flex;justify-content:space-between;align-items:center;gap:0.8rem;flex-wrap:wrap;border-top:1px solid var(--border);padding-top:0.8rem;margin-top:0.2rem}
+.inv-sum{font-size:0.8rem;color:var(--muted);flex:1;min-width:180px}
+.inv-btns{display:flex;gap:0.5rem}
+.inv-save{background:#4ade80;color:#08140c;border:none;border-radius:11px;padding:0.65rem 1.2rem;font-family:inherit;font-weight:700;font-size:0.9rem;cursor:pointer}
+.inv-save:disabled{opacity:0.4;cursor:default}
+.inv-remove{background:transparent;border:1px solid rgba(248,113,113,0.4);color:#f87171;border-radius:11px;padding:0.65rem 1rem;font-family:inherit;font-weight:600;font-size:0.86rem;cursor:pointer}
 
 
 /* ── HIDE AMOUNTS ── */
@@ -2955,6 +3005,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
   </div>
 </div>
 
+<div class="inv-overlay" id="inv-overlay" onclick="if(event.target===this)closeInvest()"><div class="inv-sheet" id="inv-sheet" role="dialog" aria-modal="true" aria-label="Add an investment"></div></div>
 <!-- ═══════════ LANDING PAGE ═══════════ -->
 <div id="landing-page">
 
@@ -3844,6 +3895,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
           <option value="RRSP">RRSP</option>
           <option value="FHSA">FHSA</option>
           <option value="Cash">Taxable (non-registered)</option>
+          <option value="Gold">Precious metals (gold, silver, platinum)</option>
         </select>
       </div>
       <div class="form-group">
@@ -3865,13 +3917,13 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
         <label>Account</label>
         <select id="p-account" class="bm-select"></select>
       </div>
-      <div class="form-group"><label>Ticker</label><input id="p-ticker" class="bm-input" placeholder="e.g. XEQT"></div>
+      <div class="form-group"><label>Ticker</label><select id="p-metal" class="bm-select" style="display:none;margin-bottom:0.35rem" aria-label="Metal"><option value="gold">Gold</option><option value="silver">Silver</option><option value="platinum">Platinum</option><option value="palladium">Palladium</option></select><input id="p-ticker" class="bm-input" placeholder="e.g. XEQT"></div>
       <div class="form-group"><label>Security type</label>
         <select id="p-type" class="bm-select">
           <option>Stocks</option><option>ETF</option><option>Bond</option>
         </select>
       </div>
-      <div class="form-group"><label>Shares / units</label><input id="p-shares" class="bm-input" type="number" placeholder="0"></div>
+      <div class="form-group"><label>Shares / units</label><input id="p-shares" class="bm-input" type="number" placeholder="0"><select id="p-unit" class="bm-select" style="display:none" aria-label="Weight unit"><option value="oz">oz (troy)</option><option value="g">grams</option><option value="kg">kg</option></select></div>
       <div class="form-group"><label>Cost per share ($)</label><input id="p-cost" class="bm-input" type="number" placeholder="0.00"></div>
       <div class="form-group"><label>Market price ($)</label><input id="p-price" class="bm-input" type="number" placeholder="Auto-fetched on add"></div>
       <div class="form-group"><label>Target % in this account <span style="color:var(--muted);font-weight:400">, optional</span></label><input id="p-target-pct" class="bm-input" type="number" placeholder="e.g. 60" min="0" max="100"></div>
@@ -4237,6 +4289,10 @@ const DEMO_STATE = {
       id:'acc-4', type:'FHSA', name:'FHSA, WealthSimple',
       holdings:[]
     },
+    {
+      id:'acc-5', type:'Gold', name:'Precious metals',
+      holdings:[]
+    },
   ],
   portfolio: [
     {ticker:'XEQT', type:'ETF',    shares:197, cost:25.10, price:28.74, accountId:'acc-1', targetPct:60, live:false, lastRefreshed:null},
@@ -4246,8 +4302,10 @@ const DEMO_STATE = {
     {ticker:'BTC',  type:'Crypto', shares:0.08,cost:54000, price:87400, accountId:'acc-2', targetPct:0, live:false, lastRefreshed:null},
     {ticker:'VFV',  type:'ETF',    shares:30,  cost:121.40,price:134.50,accountId:'acc-3', targetPct:100, live:false, lastRefreshed:null},
     {ticker:'XEQT', type:'ETF',    shares:340, cost:26.20, price:28.74, accountId:'acc-4', targetPct:100, live:false, lastRefreshed:null},
+    {ticker:'1 oz Gold Maple Leaf', type:'Gold', metal:'gold', shares:1, cost:3200, price:3200, qty:1, unit:'oz', accountId:'acc-5', targetPct:0, live:false, lastRefreshed:null},
+    {ticker:'10 oz silver bar', type:'Gold', metal:'silver', shares:10, cost:45, price:45, qty:10, unit:'oz', accountId:'acc-5', targetPct:0, live:false, lastRefreshed:null},
+    {ticker:'ETH', type:'Crypto', shares:0.6, cost:2400, price:2650, accountId:'acc-2', targetPct:0, live:false, lastRefreshed:null},
   ],
-  physicalGold: [ {id:'pg-demo', label:'1 oz Gold Maple Leaf', qty:1, unit:'oz', paid:3200} ],
   trades: [
     {date:'2026-03-19', sym:'BTC', buy:67000, sell:87400, shares:0.03, profit:612, wl:'W'},
     {date:'2026-03-13', sym:'RCL', buy:272, sell:286, shares:9, profit:126, wl:'W'},
@@ -6569,6 +6627,8 @@ let _pendingHolding = null;
 
 async function savePortfolio(){
   const accountId = document.getElementById('p-account').value;
+  { const acc=(state.accounts||[]).find(a=>a.id===accountId);
+    if(acc && acc.type==='Gold'){ saveGoldHolding(acc); return; } }
   { const acc=(state.accounts||[]).find(a=>a.id===accountId), t=document.getElementById('p-type').value;
     if(acc && ['TFSA','RRSP','FHSA'].includes(acc.type) && !['Stocks','ETF','Bond'].includes(t)){ alert(acc.type+' accounts hold stocks, ETFs and bonds. Add Bitcoin to a taxable account instead.'); return; } }
   const ticker    = document.getElementById('p-ticker').value.trim().toUpperCase();
@@ -6662,6 +6722,7 @@ async function refreshAllPrices(){
   // Rate limit: AV free tier = 25 req/day, 5/min — fetch sequentially with small delay
   for(const h of state.portfolio){
     if(h.type==='Crypto') { failed++; continue; } // AV doesn't support crypto well on free tier
+    if(h.type==='Gold') continue; // physical gold is priced by the user
     const livePrice = await fetchLivePrice(h.ticker);
     if(livePrice !== null){
       h.price = livePrice;
@@ -6836,7 +6897,7 @@ function closeNewsPanel(){
 // ══════════════════════════════════════════
 const ACCOUNT_COLORS = {
   TFSA:'#4ade80', RRSP:'#60a5fa', FHSA:'#a78bfa',
-  Cash:'#fbbf24', RESP:'#34d399', Other:'#94a3b8'
+  Cash:'#fb923c', RESP:'#34d399', Other:'#94a3b8', Gold:'#fbbf24'
 };
 
 function acBadgeClass(type){
@@ -7025,6 +7086,27 @@ function addHoldingToAccount(accountId){
   document.getElementById('port-form').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
+function saveGoldHolding(acc){
+  const label=document.getElementById('p-ticker').value.trim();
+  const metal=(document.getElementById('p-metal')||{}).value||'gold';
+  const qty=parseFloat(document.getElementById('p-shares').value)||0;
+  const unit=document.getElementById('p-unit').value||'oz';
+  const paid=parseFloat(document.getElementById('p-cost').value)||0;
+  const pxIn=parseFloat(document.getElementById('p-price').value)||0;
+  const editTicker=document.getElementById('p-edit-ticker').value;
+  if(!qty||!paid){ alert('Enter the weight and the total you paid.'); return; }
+  const oz = unit==='g' ? qty/31.1035 : unit==='kg' ? qty*1000/31.1035 : qty;
+  const per = paid/oz;
+  const h = editTicker ? state.portfolio.find(x=>x.accountId===acc.id && x.ticker===editTicker) : null;
+  const rec = { ticker: label || `${qty} ${unit==='g'?'g':unit==='kg'?'kg':'oz'} ${metal}`, type:'Gold', metal, shares:oz, cost:per, qty, unit, accountId:acc.id, targetPct:0, live:false, lastRefreshed:null };
+  if(h){ Object.assign(h, rec); h.price = pxIn>0 ? pxIn : (h.price||per); }
+  else state.portfolio.push({ ...rec, price: pxIn>0 ? pxIn : per });
+  // the same metal is priced the same everywhere, so a new price updates every bar and coin of that metal
+  if(pxIn>0) state.portfolio.forEach(x=>{ if(x.type==='Gold' && (x.metal||'gold')===metal) x.price=pxIn; });
+  document.getElementById('port-form').style.display='none';
+  save(); renderPortfolio(); renderAllocator();
+}
+
 function editHolding(accountId, ticker){
   const acc     = (state.accounts||[]).find(a=>a.id===accountId);
   const holding = state.portfolio.find(h=>h.ticker===ticker && h.accountId===accountId);
@@ -7039,6 +7121,13 @@ function editHolding(accountId, ticker){
   document.getElementById('p-price').value        = holding.price;
   document.getElementById('p-target-pct').value   = holding.targetPct||'';
   if(typeof groveSyncTypeOptions==='function'){ groveSyncTypeOptions(); const ts=document.getElementById('p-type'); if([...ts.options].some(o=>o.value===holding.type)) ts.value=holding.type; }
+  if(acc && acc.type==='Gold'){
+    document.getElementById('p-shares').value = holding.qty || +holding.shares.toFixed(4);
+    document.getElementById('p-unit').value   = holding.unit || 'oz';
+    document.getElementById('p-metal').value  = holding.metal || 'gold';
+    document.getElementById('p-cost').value   = Math.round(holding.cost*holding.shares*100)/100;
+    document.getElementById('p-price').value  = Math.abs(holding.price-holding.cost)>0.005 ? holding.price : '';
+  }
   document.getElementById('port-form').style.display='block';
   document.getElementById('port-form').scrollIntoView({behavior:'smooth', block:'start'});
 }
@@ -7808,14 +7897,18 @@ function askRentVsBuy(){
 const GROVE_MILESTONES = [500,1000,2500,5000,10000,25000,50000,100000];
 const GROVE_FHSA_GOAL = 40000;
 const GROVE_PLOTS = [
-  { id:'tfsa',  types:['TFSA'], tag:'TFSA', name:'Tax-free savings', color:'#4ade80', kind:'tree',  max:1000, defPlan:300,
+  { id:'tfsa',  accTypes:['TFSA'], desc:'Stocks, ETFs and bonds in your TFSA', tag:'TFSA', name:'Tax-free savings', color:'#4ade80', kind:'tree',  max:1000, defPlan:300,
     levels:['Seed','Sprout','Sapling','Young tree','Tree','Grand tree','Old oak','Grove','Forest'] },
-  { id:'rrsp',  types:['RRSP'], tag:'RRSP', name:'Retirement', color:'#60a5fa', kind:'tower', max:1500, defPlan:150,
+  { id:'rrsp',  accTypes:['RRSP'], desc:'Stocks, ETFs and bonds in your RRSP', tag:'RRSP', name:'Retirement', color:'#60a5fa', kind:'tower', max:1500, defPlan:150,
     levels:['Empty lot','Foundation','Walk-up','Low-rise','Mid-rise','Tower','High-rise','Skyscraper','Skyline'] },
-  { id:'fhsa',  types:['FHSA'], tag:'FHSA', name:'First home', color:'#a78bfa', kind:'house', max:666, defPlan:400,
+  { id:'fhsa',  accTypes:['FHSA'], desc:'Stocks, ETFs and bonds in your FHSA', tag:'FHSA', name:'First home', color:'#a78bfa', kind:'house', max:666, defPlan:400,
     stages:[[0,'Empty lot'],[0.05,'Foundation poured'],[0.2,'Walls going up'],[0.35,'Front door in'],[0.5,'Windows in'],[0.65,'Roof on'],[0.8,'Chimney built'],[0.9,'Garden planted'],[1,'Down payment ready']] },
-  { id:'other', types:['Cash','RESP','Other'], tag:'Taxable', name:'Taxable, Bitcoin & gold', color:'#fb923c', kind:'field', max:1000, defPlan:100,
+  { id:'taxable', accTypes:['Cash','RESP','Other'], desc:'Stocks, ETFs and bonds in taxable accounts', tag:'Taxable', name:'Taxable account', color:'#fb923c', kind:'field', max:1000, defPlan:100, optional:true,
     levels:['Bare soil','Seeded','Sprouts','First rows','Field','Full field','Farm','Big farm','Homestead'] },
+  { id:'crypto', accTypes:[], desc:'Bitcoin, Ethereum, Solana and other crypto in taxable accounts', tag:'Crypto', name:'Crypto', color:'#f7931a', kind:'coin', max:1000, defPlan:50, optional:true,
+    levels:['Spark','Ember','Glow','Rising','Bright','Blazing','Radiant','Brilliant','Full moon'] },
+  { id:'metals', accTypes:['Gold'], desc:'Gold, silver and platinum bars and coins you hold', tag:'Metals', name:'Precious metals', color:'#fbbf24', kind:'vault', max:1000, defPlan:0, optional:true,
+    levels:['Empty vault','First coin','Small stack','Stack','Tall stack','Wall of gold','Vault room','Treasury','Fort Knox'] },
 ];
 const GROVE_BADGES = [
   {id:'first',  name:'First contribution', desc:'Put money into any account',          ic:'<path d="M12 5v14M5 12h14"/>'},
@@ -7858,28 +7951,30 @@ function grovePigLevel(g){ let i=-1; GROVE_PIG_LEVELS.forEach(([m],k)=>{ if(g>=m
 
 // Simple rule: stocks, ETFs and bonds in a TFSA, RRSP or FHSA grow that account's plot.
 // Everything taxable, plus any crypto or gold wherever it's held, goes to the farm.
+// Which plot a holding grows: its own registered account, or for taxable accounts the farm (stocks, ETFs, bonds) or crypto.
+const GROVE_METALS = { gold:'Gold', silver:'Silver', platinum:'Platinum', palladium:'Palladium' };
+function groveMetalOf(h){ return GROVE_METALS[h.metal] ? h.metal : 'gold'; }
+function groveAccountPlot(a){ return GROVE_PLOTS.find(q=>q.accTypes.includes(a.type)) || GROVE_PLOTS.find(q=>q.id==='taxable'); }
+function groveHoldingPlot(h, byId){
+  const a=(byId||{})[h.accountId] || (state.accounts||[]).find(x=>x.id===h.accountId); if(!a) return null;
+  const p=groveAccountPlot(a);
+  if(p.id==='taxable' && groveIsCrypto(h)) return 'crypto';
+  return p.id;
+}
 function groveTotals(){
-  // Each holding grows the plot for its own account. TFSA, RRSP and FHSA hold stocks, ETFs and bonds.
-  // The farm is taxable accounts (stocks, ETFs, bonds and Bitcoin) plus physical gold.
   const accounts = state.accounts||[];
   const byId = Object.fromEntries(accounts.map(a=>[a.id,a]));
   const out = {};
   GROVE_PLOTS.forEach(p=>{ out[p.id]={ has:false, firstId:null, contrib:0, value:0 }; });
-  out.other.mix = { taxable:0, crypto:0, gold:0 };
-  const plotFor = a => GROVE_PLOTS.find(q=>q.id!=='other' && q.types.includes(a.type)) || GROVE_PLOTS.find(q=>q.id==='other');
-  accounts.forEach(a=>{ const p=plotFor(a); out[p.id].has=true; if(!out[p.id].firstId) out[p.id].firstId=a.id; });
+  out.crypto.coins={}; out.metals.byMetal=Object.fromEntries(Object.keys(GROVE_METALS).map(m=>[m,{oz:0,value:0}]));
+  accounts.forEach(a=>{ const p=groveAccountPlot(a); out[p.id].has=true; if(!out[p.id].firstId) out[p.id].firstId=a.id; });
   (state.portfolio||[]).forEach(h=>{
-    const a=byId[h.accountId]; if(!a) return;
-    const p=plotFor(a), cost=(+h.cost||0)*(+h.shares||0), val=(+h.price||0)*(+h.shares||0);
-    out[p.id].contrib+=cost; out[p.id].value+=val;
-    if(p.id==='other') out.other.mix[groveIsCrypto(h)?'crypto':'taxable'] += val;
+    const id=groveHoldingPlot(h,byId); if(!id) return;
+    out[id].contrib+=(+h.cost||0)*(+h.shares||0); out[id].value+=(+h.price||0)*(+h.shares||0);
+    const val=(+h.price||0)*(+h.shares||0);
+    if(id==='crypto'){ out.crypto.has=true; out.crypto.firstId=h.accountId; const k=groveCoinKey(h.ticker); out.crypto.coins[k]=(out.crypto.coins[k]||0)+val; }
+    if(id==='metals'){ const m=groveMetalOf(h); out.metals.byMetal[m].oz+=(+h.shares||0); out.metals.byMetal[m].value+=val; }
   });
-  (state.physicalGold||[]).forEach(it=>{
-    const val=groveGoldItemValue(it), cost=(+it.paid||0) || val;
-    out.other.contrib+=cost; out.other.value+=val; out.other.mix.gold+=val; out.other.has=true;
-  });
-  out.gold = out.other.mix.gold;
-  out.crypto = out.other.mix.crypto;
   return out;
 }
 
@@ -7925,9 +8020,50 @@ function groveEarn(id, quiet){
   return true;
 }
 
+function groveCardHtml(p){ return `
+        <div class="grove-plot" id="gp-${p.id}">
+          <div class="grove-plot-head">
+            <div class="grove-plot-name"><span class="grove-tag" style="background:${p.color}">${p.tag}</span>${p.name}</div>
+            <div class="grove-lvl" id="gp-${p.id}-lvl"></div>
+          </div>
+          <div class="grove-desc" id="gp-${p.id}-desc">${p.desc}</div>
+          <div class="grove-stage" id="gp-${p.id}-stage" role="img"><canvas></canvas></div>
+          <div class="grove-body">
+            <div class="grove-nums">
+              <div><div class="grove-k">Put in</div><div class="grove-v" id="gp-${p.id}-c"></div></div>
+              <div style="text-align:right"><div class="grove-k">Worth</div><div class="grove-v" id="gp-${p.id}-v"></div></div>
+            </div>
+            <div><div class="grove-next" id="gp-${p.id}-next"></div><div class="grove-bar"><i id="gp-${p.id}-bar" style="background:${p.color}"></i></div></div>
+            <div class="grove-plan" style="--acc:${p.color}" id="gp-${p.id}-plan">
+              <label for="gp-${p.id}-slider">Planning to add each month <b id="gp-${p.id}-mo"></b></label>
+              <input type="range" id="gp-${p.id}-slider" min="0" max="${p.max}" step="25">
+              <div class="grove-proj" id="gp-${p.id}-proj"></div>
+            </div>
+            <div id="gp-${p.id}-cta"></div>
+          </div>
+        </div>`; }
+function groveSectionHtml(title, plots){
+  if(!plots.length) return '';
+  return `<div class="grove-section-title">${title}</div><div class="grove-plots n${plots.length}">${plots.map(groveCardHtml).join('')}</div>`;
+}
+function groveMigrateGold(){
+  // Older versions stored physical gold separately. Move it into a Physical gold account as normal holdings.
+  const items=state.physicalGold; if(!items || !items.length) return;
+  if(!state.accounts) state.accounts=[];
+  let acc=state.accounts.find(a=>a.type==='Gold');
+  if(!acc){ acc={id:'acc-gold-'+Date.now(), type:'Gold', name:'Precious metals', holdings:[]}; state.accounts.push(acc); }
+  items.forEach(it=>{
+    const oz=groveGoldOz(it), paid=+it.paid||0, per=oz>0?paid/oz:0, px=(+state.goldPriceOz||0)||per;
+    state.portfolio.push({ticker:it.label||'Gold', type:'Gold', metal:'gold', shares:oz, cost:per, price:px, accountId:acc.id, qty:+it.qty, unit:it.unit, targetPct:0, live:false, lastRefreshed:null});
+  });
+  delete state.physicalGold;
+  if(!currentUser?.isDemo) setTimeout(save, 0);
+}
+
 function renderGrove(){
   const wrap = document.getElementById('grove');
   if(!wrap) return;
+  groveMigrateGold();
   const tot = groveTotals();
   const track = groveTrack(tot);
   const g = state.grove;
@@ -7961,46 +8097,10 @@ function renderGrove(){
         <button type="button" class="grove-tbtn" id="grove-auto" aria-pressed="false" onclick="groveDemoAuto()">Autopilot</button>
         <div class="grove-time-msg" id="grove-time-msg">Move time forward to watch the grove grow. Each month adds the amounts on the sliders and a random market month.</div>
       </div>` : ''}
-      <div class="grove-plots${visiblePlots.length===4?' four':''}">${visiblePlots.map(p=>`
-        <div class="grove-plot" id="gp-${p.id}">
-          <div class="grove-plot-head">
-            <div class="grove-plot-name"><span class="grove-tag" style="background:${p.color}">${p.tag}</span>${p.name}</div>
-            <div class="grove-lvl" id="gp-${p.id}-lvl"></div>
-          </div>
-          <div class="grove-desc" id="gp-${p.id}-desc">${p.id==='other' ? 'Stocks, ETFs, bonds and Bitcoin in taxable accounts, plus physical gold' : `Stocks, ETFs and bonds in your ${p.tag}`}</div>
-          <div class="grove-stage" id="gp-${p.id}-stage" role="img"><canvas></canvas></div>
-          <div class="grove-body">
-            <div class="grove-nums">
-              <div><div class="grove-k">Put in</div><div class="grove-v" id="gp-${p.id}-c"></div></div>
-              <div style="text-align:right"><div class="grove-k">Worth</div><div class="grove-v" id="gp-${p.id}-v"></div></div>
-            </div>
-            <div><div class="grove-next" id="gp-${p.id}-next"></div><div class="grove-bar"><i id="gp-${p.id}-bar" style="background:${p.color}"></i></div></div>
-            <div class="grove-plan" style="--acc:${p.color}" id="gp-${p.id}-plan">
-              <label for="gp-${p.id}-slider">Planning to add each month <b id="gp-${p.id}-mo"></b></label>
-              <input type="range" id="gp-${p.id}-slider" min="0" max="${p.max}" step="25">
-              <div class="grove-proj" id="gp-${p.id}-proj"></div>
-            </div>
-            ${p.id==='other' ? `<div class="grove-vault">
-              <div class="gv-head"><div><b>Physical gold</b><span id="gv-sum"></span></div><button type="button" class="gv-add" onclick="groveVaultForm(true)">+ Add gold</button></div>
-              <div class="gv-pig" id="gv-pig"></div>
-              <div id="gv-list"></div>
-              <div class="gv-form" id="gv-form" hidden>
-                <input id="gv-label" type="text" placeholder="What is it? e.g. 1 oz Maple Leaf coin" maxlength="60">
-                <div class="gv-row">
-                  <input id="gv-qty" type="number" min="0" step="any" placeholder="Weight">
-                  <select id="gv-unit" aria-label="Unit"><option value="oz">oz (troy)</option><option value="g">grams</option><option value="kg">kg</option></select>
-                </div>
-                <input id="gv-paid" type="number" min="0" step="any" placeholder="What you paid in total ($)">
-                <div class="gv-row"><button type="button" class="gv-save" onclick="groveVaultSave()">Save</button><button type="button" class="gv-cancel" onclick="groveVaultForm(false)">Cancel</button></div>
-                <div class="gv-err" id="gv-err"></div>
-              </div>
-              <label class="gv-price" for="gv-price">Gold price per oz (CAD) <input id="gv-price" type="number" min="0" step="any" placeholder="Optional" onchange="groveVaultPrice(this.value)"></label>
-              <div class="gv-note">Leave the price blank and your gold is valued at what you paid. Add today's price from your dealer or Kitco to track gains.</div>
-            </div>` : ''}
-            <div id="gp-${p.id}-cta"></div>
-          </div>
-        </div>`).join('')}
-      </div>
+      ${groveSectionHtml('Registered accounts', visiblePlots.filter(p=>!p.optional))}
+      ${visiblePlots.some(p=>p.optional) ? groveSectionHtml('Taxable, crypto and precious metals', visiblePlots.filter(p=>p.optional))
+        : `<div class="grove-more">Have a taxable account, crypto, or gold and silver? Each gets its own spot here.
+             <span><button type="button" class="grove-mini" onclick="groveAddAccount('Cash')">Add taxable account</button><button type="button" class="grove-mini" onclick="groveAddMetal()">Add precious metals</button></span></div>`}
       <div class="grove-badges-title">Badges <span>Earned for habits, not for what the market does.</span></div>
       <div class="grove-badges">${GROVE_BADGES.map(b=>`
         <div class="grove-badge" id="gb-${b.id}">
@@ -8047,7 +8147,7 @@ function renderGrove(){
   });
 
   // Gold pig upgrades
-  const pigLvl = grovePigLevel(tot.gold);
+  const pigLvl = grovePigLevel(tot.metals.byMetal.gold.value);
   if(g.levels.pig!==undefined && pigLvl>g.levels.pig && pigLvl>=0) toastMsg = `<strong>Your gold pig upgraded:</strong> ${GROVE_PIG_LEVELS[pigLvl][1]}.`;
   if(g.levels.pig!==pigLvl){ g.levels.pig=pigLvl; track.changed=true; }
 
@@ -8105,19 +8205,24 @@ function groveUpdateText(tot){
       proj = !hi ? 'Fully grown.' : m===Infinity ? 'Set a monthly amount to see when it grows next.' : `${p.levels[li+1]} in <b>${groveDur(m)}</b> at this pace.`;
     }
     document.getElementById(`gp-${p.id}-lvl`).innerHTML=lvlHtml;
-    if(p.id==='other') groveVaultRender(t);
-    if(p.id==='other' && t.mix){
-      const parts=[['Stocks & ETFs',t.mix.taxable],['Bitcoin',t.mix.crypto],['Gold',t.mix.gold]].filter(x=>x[1]>0.5).map(x=>`${x[0]} ${groveFmt(x[1])}`);
-      document.getElementById('gp-other-desc').textContent = parts.length ? parts.join(' · ') : 'Stocks, ETFs, bonds and Bitcoin in taxable accounts, plus physical gold';
+    if(p.id==='metals'){
+      const gv=t.byMetal.gold.value, li=grovePigLevel(gv), nxt=GROVE_PIG_LEVELS[li+1];
+      const ozs=Object.entries(t.byMetal).filter(([,x])=>x.oz>0).map(([m,x])=>`${x.oz.toFixed(x.oz<10?2:1)} oz ${m}`).join(' · ');
+      document.getElementById('gp-metals-desc').innerHTML = `${ozs||'No metals yet'} · Gold pig: <b class="grove-pig-name">${li<0?'needs gold':GROVE_PIG_LEVELS[li][1]}</b>${li>=0&&nxt?` · ${groveFmt(nxt[0]-gv)} more gold to ${nxt[1].toLowerCase()}`:''}`;
+    }
+    if(p.id==='crypto'){
+      const list=Object.entries(t.coins).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`${k} ${groveFmt(v)}`).join(' · ');
+      document.getElementById('gp-crypto-desc').textContent = list || p.desc;
     }
     document.getElementById(`gp-${p.id}-next`).textContent=next;
     document.getElementById(`gp-${p.id}-bar`).style.width=Math.max(0,Math.min(100,pct)).toFixed(1)+'%';
     document.getElementById(`gp-${p.id}-proj`).innerHTML=proj;
     document.getElementById(`gp-${p.id}-stage`).setAttribute('aria-label', `${p.tag}: ${lvlHtml.replace(/<[^>]+>/g,'')}, ${groveFmt(t.contrib)} put in`);
     const cta=document.getElementById(`gp-${p.id}-cta`);
-    const html = (t.has && t.firstId)
-      ? `<button class="grove-btn" onclick="addHoldingToAccount('${t.firstId}')">+ Add to ${p.tag}</button>`
-      : `<button class="grove-btn" onclick="groveAddAccount('${p.types[0]}')">${p.id==='other'?'Add a taxable account':`Open ${p.tag==='TFSA'?'a':'an'} ${p.tag} plot`}</button>`;
+    const html = p.id==='crypto' ? `<button class="grove-btn" onclick="groveAddCrypto()">+ Add crypto</button>`
+      : p.id==='metals' ? `<button class="grove-btn" onclick="groveAddMetal()">+ Add gold, silver or platinum</button>`
+      : (t.has && t.firstId) ? `<button class="grove-btn" onclick="addHoldingToAccount('${t.firstId}')">+ Add to ${p.tag}</button>`
+      : `<button class="grove-btn" onclick="groveAddAccount('${p.accTypes[0]}')">Open ${p.tag==='TFSA'?'a':'an'} ${p.tag} plot</button>`;
     if(cta.dataset.html!==html){ cta.innerHTML=html; cta.dataset.html=html; }
   });
 }
@@ -8133,8 +8238,7 @@ function groveDemoAdvance(months){
     _grove.offset++;
     GROVE_PLOTS.forEach(p=>{
       const amt = g.plan[p.id] ?? p.defPlan;
-      const acc = accounts.find(a=>p.types.includes(a.type)); if(!acc) return;
-      const hs = state.portfolio.filter(h=>h.accountId===acc.id);
+      const hs = state.portfolio.filter(h=>groveHoldingPlot(h)===p.id); if(!hs.length) return;
       hs.forEach(h=>{ h.price = Math.max(0.01, h.price*(1+r)); });
       if(amt>0 && hs.length){
         const h=hs[0], newShares=amt/h.price;
@@ -8180,47 +8284,45 @@ function groveDemoAuto(){
     groveDemoAdvance(1);
   },1500);
 }
-function groveVaultRender(t){
-  const items=state.physicalGold||[], list=document.getElementById('gv-list'); if(!list) return;
-  const oz=items.reduce((s,it)=>s+groveGoldOz(it),0), val=items.reduce((s,it)=>s+groveGoldItemValue(it),0);
-  document.getElementById('gv-sum').textContent = items.length ? `${oz.toFixed(oz<10?2:1)} oz · ${groveFmt(val)}` : 'Bars and coins you hold yourself';
-  const html = items.map(it=>`<div class="gv-item"><span class="gv-name">${escHtml(it.label||'Gold')}</span><span class="gv-w">${(+it.qty).toLocaleString('en-CA')} ${GROVE_GOLD_UNITS[it.unit]||'oz'}</span><span class="gv-v">${groveFmt(groveGoldItemValue(it))}</span><button type="button" class="gv-x" aria-label="Remove ${escHtml(it.label||'gold')}" onclick="groveVaultRemove('${it.id}')">×</button></div>`).join('');
-  if(list.dataset.html!==html){ list.innerHTML=html; list.dataset.html=html; }
-  const pv=document.getElementById('gv-price'); if(pv && document.activeElement!==pv) pv.value = state.goldPriceOz || '';
-  // the pig's own upgrades, based on physical gold
-  const g=(t&&_grove.tot)? _grove.tot.gold : 0, li=grovePigLevel(g), nxt=GROVE_PIG_LEVELS[li+1];
-  document.getElementById('gv-pig').innerHTML = li<0 ? 'Add physical gold to hatch your flying gold pig.'
-    : `Gold pig: <b>${GROVE_PIG_LEVELS[li][1]}</b>${nxt?` · ${groveFmt(nxt[0]-g)} more gold to ${nxt[1].toLowerCase()}`:' · fully upgraded'}`;
+function groveAddCrypto(){
+  const acc=(state.accounts||[]).find(a=>groveAccountPlot(a).id==='taxable');
+  if(!acc){ groveAddAccount('Cash'); if(typeof showToast==='function') showToast('<strong>Add a taxable account first.</strong> Crypto lives in a taxable account.'); return; }
+  addHoldingToAccount(acc.id);
+  setTimeout(()=>{ const t=document.getElementById('p-type'); if(t) t.value='Crypto'; const tk=document.getElementById('p-ticker'); if(tk){ tk.placeholder='e.g. BTC, ETH, SOL, XRP'; tk.focus(); } },0);
 }
-function groveVaultForm(open){
-  const f=document.getElementById('gv-form'); if(!f) return; f.hidden=!open;
-  document.getElementById('gv-err').textContent='';
-  if(open){ ['gv-label','gv-qty','gv-paid'].forEach(id=>document.getElementById(id).value=''); document.getElementById('gv-label').focus(); }
+function groveAddMetal(){
+  if(!state.accounts) state.accounts=[];
+  let acc=state.accounts.find(a=>a.type==='Gold');
+  if(!acc){ acc={id:'acc-metal-'+Date.now(), type:'Gold', name:'Precious metals', holdings:[]}; state.accounts.push(acc); save(); renderAllocator(); }
+  addHoldingToAccount(acc.id);
 }
-function groveVaultSave(){
-  const label=document.getElementById('gv-label').value.trim(), qty=parseFloat(document.getElementById('gv-qty').value),
-        unit=document.getElementById('gv-unit').value, paid=parseFloat(document.getElementById('gv-paid').value)||0;
-  const err=document.getElementById('gv-err');
-  if(!(qty>0)){ err.textContent='Enter the weight, for example 1 for a 1 oz coin.'; return; }
-  if(!(paid>0) && !(+state.goldPriceOz>0)){ err.textContent='Enter what you paid, or set the gold price below, so we can value it.'; return; }
-  if(!state.physicalGold) state.physicalGold=[];
-  state.physicalGold.push({ id:'pg-'+Date.now(), label:label||`${qty} ${GROVE_GOLD_UNITS[unit]} gold`, qty, unit, paid });
-  groveVaultForm(false); save(); renderGrove();
-}
-function groveVaultRemove(id){ state.physicalGold=(state.physicalGold||[]).filter(it=>it.id!==id); save(); renderGrove(); }
-function groveVaultPrice(v){ state.goldPriceOz = parseFloat(v)>0 ? parseFloat(v) : 0; save(); renderGrove(); }
+function groveAddGold(){ groveAddMetal(); }
 // Holding types follow the account: TFSA, RRSP and FHSA take stocks, ETFs and bonds; taxable accounts can also hold Bitcoin.
 const GROVE_REGISTERED = ['TFSA','RRSP','FHSA'];
 function groveSyncTypeOptions(){
   const accSel=document.getElementById('p-account'), typeSel=document.getElementById('p-type'); if(!accSel||!typeSel) return;
   const acc=(state.accounts||[]).find(a=>a.id===accSel.value);
   const reg = acc && GROVE_REGISTERED.includes(acc.type);
-  const opts = reg ? ['Stocks','ETF','Bond'] : ['Stocks','ETF','Bond','Crypto'];
+  const gold = acc && acc.type==='Gold';
+  groveGoldFormMode(gold);
+  const opts = gold ? ['Gold'] : reg ? ['Stocks','ETF','Bond'] : ['Stocks','ETF','Bond','Crypto'];
   const keep = opts.includes(typeSel.value) ? typeSel.value : 'Stocks';
-  typeSel.innerHTML = opts.map(o=>`<option value="${o}">${o==='Crypto'?'Bitcoin / crypto':o}</option>`).join('');
+  typeSel.innerHTML = opts.map(o=>`<option value="${o}">${o==='Crypto'?'Crypto (BTC, ETH, SOL...)':o==='Gold'?'Precious metal':o}</option>`).join('');
   typeSel.value = keep;
 }
 document.addEventListener('change', e=>{ if(e.target && e.target.id==='p-account') groveSyncTypeOptions(); });
+// The same holding form handles physical gold: description, weight with a unit, total paid, and an optional gold price.
+function groveGoldFormMode(on){
+  const set=(id,txt,ph)=>{ const el=document.getElementById(id); if(!el) return; const lab=el.closest('.form-group')?.querySelector('label'); if(lab){ if(!lab.dataset.orig) lab.dataset.orig=lab.innerHTML; lab.innerHTML = on ? txt : lab.dataset.orig; } if(ph!==undefined){ if(el.dataset.ph===undefined) el.dataset.ph=el.placeholder; el.placeholder = on ? ph : el.dataset.ph; } };
+  set('p-ticker','Metal and description','e.g. 1 oz Maple Leaf, 10 oz silver bar');
+  set('p-shares','Weight','e.g. 1');
+  set('p-cost','Total you paid ($)','e.g. 3200');
+  set('p-price','Price per oz today ($) <span style="color:var(--muted);font-weight:400">optional</span>','Leave blank to use what you paid');
+  const metal=document.getElementById('p-metal'); if(metal) metal.style.display = on ? '' : 'none';
+  const unit=document.getElementById('p-unit'); if(unit) unit.style.display = on ? '' : 'none';
+  const tgt=document.getElementById('p-target-pct')?.closest('.form-group'); if(tgt) tgt.style.display = on ? 'none' : '';
+  const typ=document.getElementById('p-type')?.closest('.form-group'); if(typ) typ.style.display = on ? 'none' : '';
+}
 function groveAddAccount(type){ addAccount(); const s=document.getElementById('ac-type'); if(s) s.value=type; }
 
 function groveSize(){
@@ -8251,7 +8353,7 @@ function groveFrame(ms){
     P.disp += (d.contrib-P.disp)*(groveReduce?1:0.07);
     P.dispGain += (Math.max(0,d.value-d.contrib)-P.dispGain)*(groveReduce?1:0.07);
     P.pulse*=0.94; P.flash*=0.96;
-    if(P.def.kind==='tree') groveTree(P,t); else if(P.def.kind==='tower') groveTower(P,t); else if(P.def.kind==='field') groveField(P,t); else groveHouse(P,t);
+    if(P.def.kind==='tree') groveTree(P,t); else if(P.def.kind==='tower') groveTower(P,t); else if(P.def.kind==='field') groveField(P,t); else if(P.def.kind==='coin') groveCoin(P,t); else if(P.def.kind==='vault') groveVault(P,t); else groveHouse(P,t);
     groveParticles(P);
   });
   _grove.drawnOnce = true;
@@ -8452,7 +8554,6 @@ function groveField(P,t){
   const fieldR = li>=5 ? w-108 : w;
   ctx.fillStyle = season==='winter' ? 'rgba(232,237,248,0.10)' : 'rgba(107,79,54,0.30)';
   ctx.beginPath(); ctx.moveTo(0,base); ctx.lineTo(0,horizon); ctx.lineTo(fieldR,horizon); ctx.lineTo(fieldR,base); ctx.closePath(); ctx.fill();
-  if((_grove.tot||{}).crypto>0) groveWindmill(P,t,_grove.tot.crypto,horizon);
   const stalkH = 8 + s*22;
   const blade = {spring:'#86efac', summer:'#2fa760', autumn:'#9a7b45', winter:'#94a3b8'}[season];
   const head  = {spring:null, summer:'#5fd68f', autumn:'#c9a25e', winter:null}[season];
@@ -8476,22 +8577,94 @@ function groveField(P,t){
     }
   }
   // a scarecrow keeps watch once there's a real field
-  if((_grove.tot||{}).gold>0) groveGoldPig(P,t,_grove.tot.gold);
   if(li>=4){ const x=Math.min(fieldR-24, w*0.42), y=base-4; ctx.strokeStyle='#6b4f36'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x,y-46); ctx.moveTo(x-16,y-34); ctx.lineTo(x+16,y-34); ctx.stroke(); ctx.fillStyle='#d6b46b'; ctx.beginPath(); ctx.arc(x,y-50,6,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#8a2f2a'; ctx.fillRect(x-9,y-58,18,4); ctx.fillRect(x-5,y-64,10,6); }
   groveSnow(P,t);
 }
-// A windmill spins on the farm when you hold crypto. More crypto, taller and faster.
-function groveWindmill(P,t,amt,horizon){
-  const {ctx}=P, x=34, sc=0.8+Math.min(0.5,Math.log10(1+amt/100)*0.16), top=horizon-44*sc;
-  ctx.fillStyle='#3b4252'; ctx.beginPath(); ctx.moveTo(x-6*sc,horizon+4); ctx.lineTo(x-2.5*sc,top); ctx.lineTo(x+2.5*sc,top); ctx.lineTo(x+6*sc,horizon+4); ctx.closePath(); ctx.fill();
-  const ang = groveReduce ? 0.4 : t*(1.2+sc);
-  ctx.save(); ctx.translate(x,top);
-  for(let i=0;i<4;i++){ ctx.rotate(Math.PI/2); ctx.fillStyle = i%2 ? 'rgba(167,139,250,0.9)' : 'rgba(96,165,250,0.9)';
-    ctx.save(); ctx.rotate(ang); ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(3*sc,-24*sc); ctx.lineTo(-3*sc,-24*sc); ctx.closePath(); ctx.fill(); ctx.restore(); }
-  ctx.fillStyle='#e8edf8'; ctx.beginPath(); ctx.arc(0,0,2.2*sc,0,Math.PI*2); ctx.fill();
-  ctx.restore();
+// Crypto: your biggest coin rises like a moon, with your other coins orbiting it. Gains add a brighter halo and shooting stars.
+const GROVE_COIN_STYLE = {
+  BTC:{sym:'₿', c:['#fdba74','#f7931a','#c2410c'], ink:'#fff7ed', halo:'247,147,26'},
+  ETH:{sym:'Ξ', c:['#c7d2fe','#818cf8','#4338ca'], ink:'#eef2ff', halo:'129,140,248'},
+  SOL:{sym:'SOL', c:['#a78bfa','#7c3aed','#14b8a6'], ink:'#f5f3ff', halo:'139,92,246'},
+  XRP:{sym:'XRP', c:['#e5e7eb','#9ca3af','#374151'], ink:'#111827', halo:'203,213,225'},
+  ADA:{sym:'ADA', c:['#93c5fd','#3b82f6','#1e3a8a'], ink:'#eff6ff', halo:'59,130,246'},
+  DOGE:{sym:'Ð', c:['#fde68a','#eab308','#a16207'], ink:'#422006', halo:'234,179,8'},
+};
+function groveCoinKey(t){ return String(t||'').toUpperCase().replace(/\.(TO|NE|V|CN|B|U)$/,'').replace(/-?(USD|CAD)$/,''); }
+function groveDrawCoin(ctx,cx,cy,r,key,halo){
+  const st = GROVE_COIN_STYLE[key] || {sym:key.slice(0,3), c:['#cbd5e1','#64748b','#334155'], ink:'#f8fafc', halo:'148,163,184'};
+  if(halo>0){ const hg=ctx.createRadialGradient(cx,cy,r*0.6,cx,cy,r*(1.6+halo)); hg.addColorStop(0,`rgba(${st.halo},${0.25+halo*0.25})`); hg.addColorStop(1,`rgba(${st.halo},0)`); ctx.fillStyle=hg; ctx.beginPath(); ctx.arc(cx,cy,r*(1.6+halo),0,Math.PI*2); ctx.fill(); }
+  const g=ctx.createLinearGradient(cx-r,cy-r,cx+r,cy+r); g.addColorStop(0,st.c[0]); g.addColorStop(0.5,st.c[1]); g.addColorStop(1,st.c[2]);
+  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,0.45)'; ctx.lineWidth=Math.max(1,r*0.08); ctx.beginPath(); ctx.arc(cx,cy,r*0.86,0,Math.PI*2); ctx.stroke();
+  const fs = st.sym.length>1 ? r*0.62 : r*1.05;
+  ctx.fillStyle=st.ink; ctx.font=`800 ${Math.max(7,Math.round(fs))}px Geist, Inter, sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
+  ctx.fillText(st.sym,cx,cy+r*0.04); ctx.textBaseline='alphabetic';
+  ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.beginPath(); ctx.ellipse(cx-r*0.35,cy-r*0.4,r*0.32,r*0.14,-0.6,0,Math.PI*2); ctx.fill();
 }
-// A golden pig flies over the farm when you hold gold. Bigger stash, bigger pig.
+function groveCoin(P,t){
+  const {ctx,w,h}=P, c=P.disp, s=groveGrowth(c);
+  const gainRatio=Math.min(1,P.dispGain/Math.max(500,c*0.25));
+  groveScene(P,gainRatio,t);
+  const base=h-24;
+  for(let i=0;i<26;i++){ const a=0.25+0.5*Math.abs(Math.sin(t*0.8+i*1.3)); ctx.fillStyle=`rgba(232,237,248,${groveReduce?0.5:a})`; ctx.fillRect(groveRand(i+200)*w, groveRand(i+201)*(base-60), 1.6,1.6); }
+  if(c<1){ groveEmpty(P,'Add crypto to light it up'); return; }
+  const coins = Object.entries(((_grove.tot||{}).crypto||{}).coins||{}).sort((a,b)=>b[1]-a[1]);
+  const li=groveLevel(c);
+  const r = 14 + s*44, cx=w/2, cy = base-30-s*(h*0.3) + (groveReduce?0:Math.sin(t*0.9)*3);
+  const total = coins.reduce((x,[,v])=>x+v,0) || 1;
+  // smaller coins orbit behind and in front of the main one
+  const others = coins.slice(1,6);
+  const orbit = others.map(([k,v],i)=>{ const ang=(groveReduce?0:t*0.35)+i*Math.PI*2/Math.max(1,others.length); return {k, ang, rr: Math.max(9, r*0.5*Math.sqrt(v/total)+7)}; });
+  const draw = o=>{ const ox=cx+Math.cos(o.ang)*(r+o.rr+26), oy=cy+Math.sin(o.ang)*(r*0.55+o.rr+6); groveDrawCoin(ctx,ox,oy,o.rr,o.k,0); };
+  orbit.filter(o=>Math.sin(o.ang)<0).forEach(draw);
+  groveDrawCoin(ctx,cx,cy,r,coins[0]?coins[0][0]:'BTC',0.5+gainRatio*0.8);
+  orbit.filter(o=>Math.sin(o.ang)>=0).forEach(draw);
+  if(!groveReduce && gainRatio>0.05){ for(let i=0;i<1+Math.floor(gainRatio*3);i++){ const k=((t*0.35+i*0.37)%1); if(k>0.35) continue; const sx=w*(0.1+groveRand(i+90)*0.5)+k*w*0.9, sy=18+groveRand(i+91)*40+k*30;
+    ctx.strokeStyle=`rgba(253,186,116,${0.8*(1-k/0.35)})`; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(sx,sy); ctx.lineTo(sx-22,sy-8); ctx.stroke(); } }
+  ctx.fillStyle='#161b26'; ctx.beginPath(); ctx.moveTo(0,base); ctx.quadraticCurveTo(w*0.3,base-34,w*0.6,base-14); ctx.quadraticCurveTo(w*0.82,base-30,w,base-12); ctx.lineTo(w,base); ctx.closePath(); ctx.fill();
+  if(li>=5){ const ox=w*0.15, oy=base-18; ctx.fillStyle='#2a3142'; ctx.fillRect(ox-12,oy-10,24,14); ctx.beginPath(); ctx.arc(ox,oy-10,12,Math.PI,0); ctx.fill(); ctx.strokeStyle='#97a2b8'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(ox,oy-14); ctx.lineTo(ox+14,oy-24); ctx.stroke(); }
+  groveSnow(P,t);
+}
+
+// Precious metals: an open vault where bars stack up, coloured by metal. The flying gold pig lives here and upgrades with your gold.
+function groveVault(P,t){
+  const {ctx,w,h}=P, c=P.disp, s=groveGrowth(c);
+  const gainRatio=Math.min(1,P.dispGain/Math.max(500,c*0.25));
+  groveScene(P,gainRatio,t);
+  const base=h-24;
+  if(c<1){ groveEmpty(P,'Your vault is ready'); return; }
+  // vault room: back wall and an open round door
+  const roomW=Math.min(w*0.62,230), rx=w/2-roomW/2+18, roomH=110;
+  ctx.fillStyle='#1d2330'; ctx.fillRect(rx,base-roomH,roomW,roomH);
+  ctx.strokeStyle='rgba(251,191,36,0.18)'; ctx.lineWidth=1; for(let y=base-roomH+12;y<base;y+=14){ ctx.beginPath(); ctx.moveTo(rx,y); ctx.lineTo(rx+roomW,y); ctx.stroke(); }
+  const dx=rx-6, dy=base-roomH/2-4, dr=Math.min(52,roomH*0.46);
+  ctx.fillStyle='#3a4252'; ctx.beginPath(); ctx.arc(dx,dy,dr,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#4b5466'; ctx.beginPath(); ctx.arc(dx,dy,dr*0.82,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#97a2b8'; ctx.lineWidth=3; const spin=groveReduce?0:t*0.15;
+  for(let i=0;i<3;i++){ const a=spin+i*Math.PI*2/3; ctx.beginPath(); ctx.moveTo(dx,dy); ctx.lineTo(dx+Math.cos(a)*dr*0.55,dy+Math.sin(a)*dr*0.55); ctx.stroke(); }
+  ctx.fillStyle='#cbd5e1'; ctx.beginPath(); ctx.arc(dx,dy,5,0,Math.PI*2); ctx.fill();
+  // stacked bars: count grows with what you've put in
+  const bars = Math.max(1, Math.round(1 + s*34)), bw=26, bh=9, perRow=Math.max(3,Math.floor((roomW-30)/(bw+3)));
+  const bm=((_grove.tot||{}).metals||{}).byMetal||{gold:{value:1}};
+  const mixTotal=Object.values(bm).reduce((x,m)=>x+m.value,0)||1;
+  const METAL_RGB={gold:[232,170,30], silver:[205,210,218], platinum:[170,190,222], palladium:[214,196,170]};
+  const order=['gold','platinum','palladium','silver']; const barMetal=[]; order.forEach(m=>{ const n=Math.round(bars*((bm[m]||{}).value||0)/mixTotal); for(let k=0;k<n;k++) barMetal.push(m); });
+  while(barMetal.length<bars) barMetal.push(order.find(m=>(bm[m]||{}).value>0)||'gold');
+  for(let i=0;i<bars;i++){
+    const row=Math.floor(i/perRow), col=i%perRow, offset=(row%2)*bw/2;
+    const x=rx+20+col*(bw+3)+offset, y=base-4-bh-row*(bh+1);
+    if(x+bw>rx+roomW-6 || y<base-roomH+8) continue;
+    const shine = groveReduce?0:Math.max(0,Math.sin(t*1.5 - i*0.35))*gainRatio;
+    const rgb=METAL_RGB[barMetal[i]]||METAL_RGB.gold;
+    ctx.fillStyle = `rgb(${Math.min(255,rgb[0]+shine*20)|0},${Math.min(255,rgb[1]+shine*30)|0},${Math.min(255,rgb[2]+shine*40)|0})`;
+    ctx.beginPath(); ctx.moveTo(x+3,y); ctx.lineTo(x+bw-3,y); ctx.lineTo(x+bw,y+bh); ctx.lineTo(x,y+bh); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.35)'; ctx.fillRect(x+4,y+1.5,bw-8,1.5);
+  }
+  // the pig
+  const gold=(((_grove.tot||{}).metals||{}).byMetal||{}).gold?.value||0;
+  groveGoldPig(P,t,gold);
+}
+
 function groveDrawPig(ctx,x,y,sc,flap,lvl){
   ctx.save(); ctx.translate(x,y); ctx.scale(sc,sc);
   if(lvl>=4){ // royal cape
@@ -8550,6 +8723,192 @@ function groveParticles(P){
   renderPortfolio = function(){ _rp.apply(this, arguments); try{ renderGrove(); }catch(e){ console.error('grove', e); } };
   showPage = function(id){ _sp.apply(this, arguments); if(id==='investments'){ requestAnimationFrame(()=>{ try{ groveSize(); renderGrove(); }catch(e){ console.error('grove', e); } }); } };
 })();
+
+// ══════════════════════════════════════════
+// ADD AN INVESTMENT: one simple sheet for every account and asset class
+// Step 1: where it's held. Step 2: what it is. Step 3: a few numbers.
+// The asset classes offered always match the account.
+// ══════════════════════════════════════════
+const INV_ACCOUNTS = [
+  { type:'TFSA', label:'TFSA',            hint:'Tax-free savings',          classes:['Stocks','ETF','Bond'] },
+  { type:'RRSP', label:'RRSP',            hint:'Retirement',                classes:['Stocks','ETF','Bond'] },
+  { type:'FHSA', label:'FHSA',            hint:'First home savings',        classes:['Stocks','ETF','Bond'] },
+  { type:'Cash', label:'Taxable',         hint:'Regular investing account', classes:['Stocks','ETF','Bond','Crypto'] },
+  { type:'Gold', label:'Precious metals', hint:'Bars and coins you hold',   classes:['Metal'] },
+];
+const INV_CLASS = {
+  Stocks:{label:'Stock',   qty:'Shares',          ph:'e.g. AAPL, RY.TO', fetch:true },
+  ETF:   {label:'ETF',     qty:'Shares',          ph:'e.g. XEQT, VFV',   fetch:true },
+  Bond:  {label:'Bond',    qty:'Units',           ph:'e.g. ZAG, XBB',    fetch:true },
+  Crypto:{label:'Crypto',  qty:'Coins',           ph:'e.g. BTC, ETH, SOL', fetch:false },
+  Metal: {label:'Metal',   qty:'Weight',          ph:'',                 fetch:false },
+};
+const INV_METALS = ['gold','silver','platinum','palladium'];
+let _inv = { accType:null, accountId:null, cls:null, metal:'gold', edit:null };
+
+function invAccDef(type){ return INV_ACCOUNTS.find(a=>a.type===type) || INV_ACCOUNTS[3]; }
+function invTypeOf(acc){ return ['TFSA','RRSP','FHSA','Gold'].includes(acc.type) ? acc.type : 'Cash'; }
+
+function openInvest(opts={}){
+  _inv = { accType:null, accountId:null, cls:null, metal:'gold', edit:null };
+  if(opts.edit){
+    const h=opts.edit, acc=(state.accounts||[]).find(a=>a.id===h.accountId);
+    _inv.edit={ accountId:h.accountId, ticker:h.ticker };
+    _inv.accountId=h.accountId; _inv.accType=acc?invTypeOf(acc):'Cash';
+    _inv.cls = h.type==='Gold' ? 'Metal' : (INV_CLASS[h.type] ? h.type : 'Stocks');
+    _inv.metal = h.metal||'gold';
+  } else {
+    if(opts.accountId){ const acc=(state.accounts||[]).find(a=>a.id===opts.accountId); if(acc){ _inv.accountId=acc.id; _inv.accType=invTypeOf(acc); } }
+    if(opts.accType) _inv.accType=opts.accType;
+    if(opts.cls) _inv.cls=opts.cls;
+  }
+  invRender();
+  document.getElementById('inv-overlay').classList.add('open');
+  if(opts.edit) invFill(opts.edit);
+  setTimeout(()=>{ const f=document.querySelector('#inv-sheet [data-first]'); f&&f.focus(); },50);
+}
+function closeInvest(){ document.getElementById('inv-overlay').classList.remove('open'); }
+
+function invRender(){
+  const el=document.getElementById('inv-sheet');
+  const accDef=_inv.accType?invAccDef(_inv.accType):null;
+  if(accDef && !accDef.classes.includes(_inv.cls)) _inv.cls = accDef.classes.length===1 ? accDef.classes[0] : null;
+  const sameType=(state.accounts||[]).filter(a=>_inv.accType && invTypeOf(a)===_inv.accType);
+  if(sameType.length && !sameType.some(a=>a.id===_inv.accountId)) _inv.accountId=sameType[0].id;
+  if(!sameType.length) _inv.accountId=null;
+  const c=_inv.cls?INV_CLASS[_inv.cls]:null;
+  const chip=(on,txt,sub,click,dis)=>`<button type="button" class="inv-chip${on?' on':''}" ${dis?'disabled':''} onclick="${click}">${txt}${sub?`<span>${sub}</span>`:''}</button>`;
+  el.innerHTML = `
+    <div class="inv-head">
+      <div class="inv-title">${_inv.edit?'Edit investment':'Add an investment'}</div>
+      <button type="button" class="inv-x" onclick="closeInvest()" aria-label="Close">×</button>
+    </div>
+    <div class="inv-step"><div class="inv-label"><b>1</b> Where is it held?</div>
+      <div class="inv-chips">${INV_ACCOUNTS.map(a=>chip(_inv.accType===a.type,a.label,a.hint,`invPickAcc('${a.type}')`)).join('')}</div>
+      ${sameType.length>1?`<select class="inv-input inv-which" onchange="_inv.accountId=this.value;invSummary()" aria-label="Which account">${sameType.map(a=>`<option value="${a.id}" ${a.id===_inv.accountId?'selected':''}>${escHtml(a.name)}</option>`).join('')}</select>`:''}
+      ${_inv.accType && !sameType.length?`<div class="inv-note">You don't have a ${accDef.label} account yet. We'll create one when you save.</div>`:''}
+    </div>
+    ${accDef && accDef.classes.length>1?`<div class="inv-step"><div class="inv-label"><b>2</b> What is it?</div>
+      <div class="inv-chips">${accDef.classes.map(k=>chip(_inv.cls===k, k==='Metal'?'Precious metal':INV_CLASS[k].label, null, `invPickCls('${k}')`)).join('')}</div>
+      ${accDef.type!=='Cash' && accDef.type!=='Gold'?`<div class="inv-note">${accDef.label}s hold stocks, ETFs and bonds. Crypto goes in a taxable account.</div>`:''}
+    </div>`:''}
+    ${c?`<div class="inv-step"><div class="inv-label"><b>${accDef.classes.length>1?3:2}</b> ${_inv.cls==='Metal'?'Which metal, and the details':'The details'}</div>
+      ${_inv.cls==='Metal'?`
+        <div class="inv-chips small">${INV_METALS.map(m=>chip(_inv.metal===m, m[0].toUpperCase()+m.slice(1), null, `invPickMetal('${m}')`)).join('')}</div>
+        <div class="inv-grid">
+          <label class="inv-field wide">What is it?<input id="inv-name" class="inv-input" data-first placeholder="e.g. 1 oz Maple Leaf coin, 10 oz bar" maxlength="60" oninput="invSummary()"></label>
+          <label class="inv-field">Weight<span class="inv-pair"><input id="inv-qty" class="inv-input" type="number" min="0" step="any" placeholder="1" oninput="invSummary()"><select id="inv-unit" class="inv-input" onchange="invSummary()"><option value="oz">oz</option><option value="g">grams</option><option value="kg">kg</option></select></span></label>
+          <label class="inv-field">Total you paid ($)<input id="inv-paid" class="inv-input" type="number" min="0" step="any" placeholder="3200" oninput="invSummary()"></label>
+          <label class="inv-field wide">Price per oz today ($) <em>optional</em><input id="inv-price" class="inv-input" type="number" min="0" step="any" placeholder="Leave blank to value it at what you paid" oninput="invSummary()"></label>
+        </div>`:`
+        <div class="inv-grid">
+          <label class="inv-field">Ticker<input id="inv-ticker" class="inv-input" data-first placeholder="${c.ph}" autocapitalize="characters" oninput="invSummary()"></label>
+          <label class="inv-field">${c.qty}<input id="inv-qty" class="inv-input" type="number" min="0" step="any" placeholder="10" oninput="invSummary()"></label>
+          <label class="inv-field">Price you paid each ($)<input id="inv-cost" class="inv-input" type="number" min="0" step="any" placeholder="28.50" oninput="invSummary()"></label>
+          <label class="inv-field">Price today ($) <em>${c.fetch?'optional, we look it up':'optional'}</em><input id="inv-price" class="inv-input" type="number" min="0" step="any" placeholder="${c.fetch?'Auto':'Same as paid'}" oninput="invSummary()"></label>
+        </div>`}
+    </div>`:''}
+    <div class="inv-err" id="inv-err"></div>
+    <div class="inv-foot">
+      <div class="inv-sum" id="inv-sum"></div>
+      <div class="inv-btns">
+        ${_inv.edit?`<button type="button" class="inv-remove" onclick="invRemove()">Remove</button>`:''}
+        <button type="button" class="inv-save" id="inv-save" onclick="invSave()" ${c?'':'disabled'}>${_inv.edit?'Save changes':accDef?`Add to ${accDef.label}`:'Add'}</button>
+      </div>
+    </div>`;
+  invSummary();
+}
+function invPickAcc(t){ const keep=invGrab(); _inv.accType=t; _inv.accountId=null; invRender(); invRestore(keep); }
+function invPickCls(k){ const keep=invGrab(); _inv.cls=k; invRender(); invRestore(keep); }
+function invPickMetal(m){ const keep=invGrab(); _inv.metal=m; invRender(); invRestore(keep); }
+function invGrab(){ const o={}; ['inv-ticker','inv-name','inv-qty','inv-cost','inv-paid','inv-price','inv-unit'].forEach(id=>{ const e=document.getElementById(id); if(e) o[id]=e.value; }); return o; }
+function invRestore(o){ Object.entries(o).forEach(([id,v])=>{ const e=document.getElementById(id); if(e && v) e.value=v; }); invSummary(); }
+function invVal(id){ return parseFloat((document.getElementById(id)||{}).value)||0; }
+function invOz(q,u){ return u==='g' ? q/31.1035 : u==='kg' ? q*1000/31.1035 : q; }
+
+function invFill(h){
+  const set=(id,v)=>{ const e=document.getElementById(id); if(e!=null && v!=null) e.value=v; };
+  if(_inv.cls==='Metal'){
+    set('inv-name',h.ticker); set('inv-qty',h.qty||+(+h.shares).toFixed(4)); set('inv-unit',h.unit||'oz');
+    set('inv-paid',Math.round(h.cost*h.shares*100)/100); if(Math.abs(h.price-h.cost)>0.005) set('inv-price',h.price);
+  } else {
+    set('inv-ticker',h.ticker); set('inv-qty',h.shares); set('inv-cost',h.cost); set('inv-price',h.price);
+  }
+  invSummary();
+}
+
+function invSummary(){
+  const s=document.getElementById('inv-sum'); if(!s) return;
+  const accDef=_inv.accType?invAccDef(_inv.accType):null;
+  if(!accDef){ s.textContent='Pick where it is held to start.'; return; }
+  if(!_inv.cls){ s.textContent=`Now pick what kind of investment it is.`; return; }
+  const q=invVal('inv-qty');
+  if(_inv.cls==='Metal'){
+    const paid=invVal('inv-paid'), oz=invOz(q,(document.getElementById('inv-unit')||{}).value);
+    s.innerHTML = q ? `${oz.toFixed(oz<10?2:1)} oz of ${_inv.metal}${paid?` · ${groveFmt(paid)} paid`:''}` : `Adds ${_inv.metal} to your precious metals.`;
+  } else {
+    const t=((document.getElementById('inv-ticker')||{}).value||'').trim().toUpperCase(), cost=invVal('inv-cost');
+    s.innerHTML = t&&q ? `${q} ${t}${cost?` · ${groveFmt(q*cost)} invested`:''} in your ${accDef.label}` : `Adds a ${INV_CLASS[_inv.cls].label.toLowerCase()} to your ${accDef.label}.`;
+  }
+}
+
+async function invSave(){
+  const err=document.getElementById('inv-err'); err.textContent='';
+  const accDef=invAccDef(_inv.accType);
+  if(!accDef.classes.includes(_inv.cls)){ err.textContent=`${accDef.label} accounts can't hold ${_inv.cls.toLowerCase()}.`; return; }
+  const q=invVal('inv-qty');
+  // find or create the account
+  if(!state.accounts) state.accounts=[];
+  let acc=(state.accounts||[]).find(a=>a.id===_inv.accountId);
+  const needNew=!acc;
+  let rec;
+  if(_inv.cls==='Metal'){
+    const unit=document.getElementById('inv-unit').value, paid=invVal('inv-paid'), px=invVal('inv-price');
+    const name=document.getElementById('inv-name').value.trim();
+    if(!q){ err.textContent='Enter the weight, for example 1 for a 1 oz coin.'; return; }
+    if(!paid){ err.textContent='Enter the total you paid.'; return; }
+    const oz=invOz(q,unit), per=paid/oz;
+    rec={ ticker:name||`${q} ${unit} ${_inv.metal}`, type:'Gold', metal:_inv.metal, shares:oz, cost:per, price:px>0?px:per, qty:q, unit, targetPct:0, live:false, lastRefreshed:null };
+  } else {
+    const t=document.getElementById('inv-ticker').value.trim().toUpperCase(), cost=invVal('inv-cost');
+    let px=invVal('inv-price');
+    if(!t){ err.textContent='Enter the ticker, for example XEQT.'; return; }
+    if(!q){ err.textContent=`Enter how many ${INV_CLASS[_inv.cls].qty.toLowerCase()} you have.`; return; }
+    if(!cost){ err.textContent='Enter the price you paid for each one.'; return; }
+    const btn=document.getElementById('inv-save');
+    if(!px && INV_CLASS[_inv.cls].fetch && typeof fetchLivePrice==='function'){ btn.textContent='Looking up price…'; btn.disabled=true; try{ px=await fetchLivePrice(t)||0; }catch(e){ px=0; } btn.disabled=false; }
+    rec={ ticker:t, type:_inv.cls, shares:q, cost, price:px>0?px:cost, live:px>0, lastRefreshed:px>0?new Date().toISOString():null };
+  }
+  if(needNew){ acc={ id:'acc-'+Date.now(), type:accDef.type, name:accDef.type==='Cash'?'Taxable account':accDef.type==='Gold'?'Precious metals':accDef.label, holdings:[] }; state.accounts.push(acc); }
+  rec.accountId=acc.id;
+  // editing replaces the original row; adding the same ticker to the same account merges it
+  let existing=null;
+  if(_inv.edit) existing=state.portfolio.find(h=>h.accountId===_inv.edit.accountId && h.ticker===_inv.edit.ticker);
+  if(existing){ Object.assign(existing, rec, {targetPct:existing.targetPct||0}); }
+  else {
+    const same=state.portfolio.find(h=>h.accountId===acc.id && h.ticker===rec.ticker && h.type===rec.type && rec.type!=='Gold');
+    if(same){ const tot=same.shares+rec.shares; same.cost=(same.cost*same.shares+rec.cost*rec.shares)/tot; same.shares=tot; same.price=rec.price; }
+    else state.portfolio.push({ targetPct:0, ...rec });
+  }
+  if(rec.type==='Gold' && invVal('inv-price')>0) state.portfolio.forEach(h=>{ if(h.type==='Gold' && (h.metal||'gold')===rec.metal) h.price=rec.price; });
+  closeInvest(); save(); renderPortfolio(); renderAllocator();
+  if(typeof showToast==='function') showToast(`<strong>${_inv.edit?'Saved':'Added'}.</strong> ${escHtml(rec.ticker)} is in your ${accDef.label}.`);
+}
+function invRemove(){
+  if(!_inv.edit) return;
+  state.portfolio=state.portfolio.filter(h=>!(h.accountId===_inv.edit.accountId && h.ticker===_inv.edit.ticker));
+  closeInvest(); save(); renderPortfolio(); renderAllocator();
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape' && document.getElementById('inv-overlay')?.classList.contains('open')) closeInvest(); });
+
+// Every way of adding or editing a holding now opens this one sheet
+addPortfolioEntry   = function(){ openInvest({}); };
+addHoldingToAccount = function(accountId){ openInvest({ accountId }); };
+editHolding         = function(accountId, ticker){ const h=state.portfolio.find(x=>x.accountId===accountId && x.ticker===ticker); if(h) openInvest({ edit:h }); };
+groveAddCrypto      = function(){ openInvest({ accType:'Cash', cls:'Crypto' }); };
+groveAddMetal       = function(){ openInvest({ accType:'Gold', cls:'Metal' }); };
+
+groveAddAccount     = function(type){ openInvest({ accType: ['TFSA','RRSP','FHSA','Gold'].includes(type)?type:'Cash' }); };
 
 
 // ── Hide amounts: blurs every dollar figure in the app, remembered on this device ──
