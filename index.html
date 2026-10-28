@@ -8131,9 +8131,9 @@ function groveSize(){
 }
 // Phones fire resize while scrolling (the address bar hides and shows). Only resize canvases when the width really changes.
 let _groveW = window.innerWidth;
+document.addEventListener('scroll', ()=>{ _grove.scrollHold = performance.now()+200; }, {passive:true, capture:true});
 window.addEventListener('resize', ()=>{ if(Math.abs(window.innerWidth-_groveW)<2) return; _groveW=window.innerWidth; groveSize(); });
-// Hold the animation still while the page is scrolling, so scrolling stays smooth
-document.addEventListener('scroll', ()=>{ _grove.scrollHold = performance.now()+180; }, {passive:true, capture:true});
+
 
 function groveStart(){ if(!_grove.raf) _grove.raf=requestAnimationFrame(groveFrame); }
 function groveFrame(ms){
@@ -8141,8 +8141,8 @@ function groveFrame(ms){
   const page=document.getElementById('page-investments');
   if(!page || page.offsetParent===null) return; // stop while the page is hidden; renderGrove restarts it
   _grove.raf=requestAnimationFrame(groveFrame);
-  if(document.hidden || ms-(_grove.last||0) < 33) return;   // about 30 frames a second is plenty
-  if(_grove.scrollHold && ms < _grove.scrollHold && _grove.drawnOnce) return;
+  const scrolling = _grove.scrollHold && ms < _grove.scrollHold;
+  if(document.hidden || ms-(_grove.last||0) < (scrolling ? 66 : 33)) return; // 30fps normally, a lighter 15fps while scrolling
   if(page.classList.contains('page-locked') && _grove.drawnOnce) return; // locked behind the paywall: one still frame
   _grove.last=ms;
   const t=ms/1000, tot=_grove.tot||{};
