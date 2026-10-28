@@ -3843,9 +3843,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
           <option value="TFSA">TFSA</option>
           <option value="RRSP">RRSP</option>
           <option value="FHSA">FHSA</option>
-          <option value="Cash">Taxable / non-registered</option>
-          <option value="RESP">RESP</option>
-          <option value="Other">Other</option>
+          <option value="Cash">Taxable (non-registered)</option>
         </select>
       </div>
       <div class="form-group">
@@ -3870,7 +3868,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
       <div class="form-group"><label>Ticker</label><input id="p-ticker" class="bm-input" placeholder="e.g. XEQT"></div>
       <div class="form-group"><label>Security type</label>
         <select id="p-type" class="bm-select">
-          <option>Stocks</option><option>ETF</option><option>Bond</option><option>Crypto</option><option value="Gold">Gold / precious metals</option><option>Other</option>
+          <option>Stocks</option><option>ETF</option><option>Bond</option>
         </select>
       </div>
       <div class="form-group"><label>Shares / units</label><input id="p-shares" class="bm-input" type="number" placeholder="0"></div>
@@ -4245,10 +4243,9 @@ const DEMO_STATE = {
     {ticker:'VFV',  type:'ETF',    shares:26,  cost:118.20,price:134.50,accountId:'acc-1', targetPct:25, live:false, lastRefreshed:null},
     {ticker:'AAPL', type:'Stocks', shares:10,  cost:172.40,price:196.20,accountId:'acc-2', targetPct:50, live:false, lastRefreshed:null},
     {ticker:'RY.TO',type:'Stocks', shares:13,  cost:128.60,price:141.30,accountId:'acc-2', targetPct:50, live:false, lastRefreshed:null},
-    {ticker:'BTC',  type:'Crypto', shares:0.08,cost:54000, price:87400, accountId:'acc-1', targetPct:15, live:false, lastRefreshed:null},
+    {ticker:'BTC',  type:'Crypto', shares:0.08,cost:54000, price:87400, accountId:'acc-2', targetPct:0, live:false, lastRefreshed:null},
     {ticker:'VFV',  type:'ETF',    shares:30,  cost:121.40,price:134.50,accountId:'acc-3', targetPct:100, live:false, lastRefreshed:null},
     {ticker:'XEQT', type:'ETF',    shares:340, cost:26.20, price:28.74, accountId:'acc-4', targetPct:100, live:false, lastRefreshed:null},
-    {ticker:'CGL.C', type:'Gold',  shares:40,  cost:22.10, price:25.40, accountId:'acc-2', targetPct:0, live:false, lastRefreshed:null},
   ],
   physicalGold: [ {id:'pg-demo', label:'1 oz Gold Maple Leaf', qty:1, unit:'oz', paid:3200} ],
   trades: [
@@ -6559,6 +6556,7 @@ function addPortfolioEntry(){
   // Populate account dropdown
   const sel = document.getElementById('p-account');
   sel.innerHTML = accounts.map(a=>`<option value="${a.id}">${a.name} (${a.type})</option>`).join('');
+  if(typeof groveSyncTypeOptions==='function') setTimeout(groveSyncTypeOptions,0);
   document.getElementById('port-form-title').textContent = 'Add Holding';
   document.getElementById('p-edit-ticker').value = '';
   ['p-ticker','p-shares','p-cost','p-price','p-target-pct'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
@@ -6571,6 +6569,8 @@ let _pendingHolding = null;
 
 async function savePortfolio(){
   const accountId = document.getElementById('p-account').value;
+  { const acc=(state.accounts||[]).find(a=>a.id===accountId), t=document.getElementById('p-type').value;
+    if(acc && ['TFSA','RRSP','FHSA'].includes(acc.type) && !['Stocks','ETF','Bond'].includes(t)){ alert(acc.type+' accounts hold stocks, ETFs and bonds. Add Bitcoin to a taxable account instead.'); return; } }
   const ticker    = document.getElementById('p-ticker').value.trim().toUpperCase();
   const type      = document.getElementById('p-type').value;
   const shares    = parseFloat(document.getElementById('p-shares').value)||0;
@@ -7021,6 +7021,7 @@ function addHoldingToAccount(accountId){
   document.getElementById('p-edit-ticker').value = '';
   ['p-ticker','p-shares','p-cost','p-price','p-target-pct'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('port-form').style.display='block';
+  if(typeof groveSyncTypeOptions==='function') groveSyncTypeOptions();
   document.getElementById('port-form').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
@@ -7037,6 +7038,7 @@ function editHolding(accountId, ticker){
   document.getElementById('p-cost').value         = holding.cost;
   document.getElementById('p-price').value        = holding.price;
   document.getElementById('p-target-pct').value   = holding.targetPct||'';
+  if(typeof groveSyncTypeOptions==='function'){ groveSyncTypeOptions(); const ts=document.getElementById('p-type'); if([...ts.options].some(o=>o.value===holding.type)) ts.value=holding.type; }
   document.getElementById('port-form').style.display='block';
   document.getElementById('port-form').scrollIntoView({behavior:'smooth', block:'start'});
 }
@@ -7812,7 +7814,7 @@ const GROVE_PLOTS = [
     levels:['Empty lot','Foundation','Walk-up','Low-rise','Mid-rise','Tower','High-rise','Skyscraper','Skyline'] },
   { id:'fhsa',  types:['FHSA'], tag:'FHSA', name:'First home', color:'#a78bfa', kind:'house', max:666, defPlan:400,
     stages:[[0,'Empty lot'],[0.05,'Foundation poured'],[0.2,'Walls going up'],[0.35,'Front door in'],[0.5,'Windows in'],[0.65,'Roof on'],[0.8,'Chimney built'],[0.9,'Garden planted'],[1,'Down payment ready']] },
-  { id:'other', types:['Cash','RESP','Other'], tag:'Taxable', name:'Taxable, crypto & gold', color:'#fb923c', kind:'field', max:1000, defPlan:100,
+  { id:'other', types:['Cash','RESP','Other'], tag:'Taxable', name:'Taxable, Bitcoin & gold', color:'#fb923c', kind:'field', max:1000, defPlan:100,
     levels:['Bare soil','Seeded','Sprouts','First rows','Field','Full field','Farm','Big farm','Homestead'] },
 ];
 const GROVE_BADGES = [
@@ -7841,11 +7843,6 @@ function groveLvlOf(def,c){ return def.kind==='house' ? groveStage(def,c) : grov
 function groveMonthKey(d){ d=d||groveNow(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
 function groveDur(m){ if(m===Infinity) return null; if(m<12) return `${m} month${m===1?'':'s'}`; const y=Math.floor(m/12), r=m%12; return `${y} yr${y>1?'s':''}${r?` ${r} mo`:''}`; }
 
-const GROVE_GOLD_TICKERS = ['GLD','IAU','GLDM','SGOL','AAAU','BAR','OUNZ','PHYS','CGL','CGL.C','KILO','MNT','GDX','GDXJ','XGD','ZGD','XAU','XAUUSD','GC=F','IGLD'];
-function groveIsGold(h){
-  const t=String(h.ticker||'').toUpperCase().replace(/\.(TO|NE|V|CN)$/,'');
-  return h.type==='Gold' || GROVE_GOLD_TICKERS.includes(t) || t.includes('GOLD');
-}
 const GROVE_CRYPTO_TICKERS = ['BTC','ETH','SOL','ADA','XRP','DOGE','LTC','DOT','AVAX','LINK','MATIC','BTCC','BTCX','QBTC','EBIT','FBTC','IBIT','ETHH','ETHX','QETH','ETHR','BTCQ'];
 function groveIsCrypto(h){
   const t=String(h.ticker||'').toUpperCase().replace(/\.(TO|NE|V|CN|B|U)$/,'').replace(/-?(USD|CAD)$/,'');
@@ -7862,23 +7859,20 @@ function grovePigLevel(g){ let i=-1; GROVE_PIG_LEVELS.forEach(([m],k)=>{ if(g>=m
 // Simple rule: stocks, ETFs and bonds in a TFSA, RRSP or FHSA grow that account's plot.
 // Everything taxable, plus any crypto or gold wherever it's held, goes to the farm.
 function groveTotals(){
+  // Each holding grows the plot for its own account. TFSA, RRSP and FHSA hold stocks, ETFs and bonds.
+  // The farm is taxable accounts (stocks, ETFs, bonds and Bitcoin) plus physical gold.
   const accounts = state.accounts||[];
   const byId = Object.fromEntries(accounts.map(a=>[a.id,a]));
   const out = {};
   GROVE_PLOTS.forEach(p=>{ out[p.id]={ has:false, firstId:null, contrib:0, value:0 }; });
   out.other.mix = { taxable:0, crypto:0, gold:0 };
-  accounts.forEach(a=>{
-    const p = GROVE_PLOTS.find(q=>q.types.includes(a.type)) || GROVE_PLOTS.find(q=>q.id==='other');
-    out[p.id].has = true; if(!out[p.id].firstId) out[p.id].firstId = a.id;
-  });
+  const plotFor = a => GROVE_PLOTS.find(q=>q.id!=='other' && q.types.includes(a.type)) || GROVE_PLOTS.find(q=>q.id==='other');
+  accounts.forEach(a=>{ const p=plotFor(a); out[p.id].has=true; if(!out[p.id].firstId) out[p.id].firstId=a.id; });
   (state.portfolio||[]).forEach(h=>{
-    const a = byId[h.accountId]; if(!a) return;
-    const cost=(+h.cost||0)*(+h.shares||0), val=(+h.price||0)*(+h.shares||0);
-    const gold=groveIsGold(h), crypto=!gold && groveIsCrypto(h);
-    const reg = GROVE_PLOTS.find(q=>q.id!=='other' && q.types.includes(a.type));
-    const id = (gold||crypto||!reg) ? 'other' : reg.id;
-    out[id].contrib+=cost; out[id].value+=val;
-    if(id==='other'){ out.other.has=true; out.other.mix[gold?'gold':crypto?'crypto':'taxable'] += val; }
+    const a=byId[h.accountId]; if(!a) return;
+    const p=plotFor(a), cost=(+h.cost||0)*(+h.shares||0), val=(+h.price||0)*(+h.shares||0);
+    out[p.id].contrib+=cost; out[p.id].value+=val;
+    if(p.id==='other') out.other.mix[groveIsCrypto(h)?'crypto':'taxable'] += val;
   });
   (state.physicalGold||[]).forEach(it=>{
     const val=groveGoldItemValue(it), cost=(+it.paid||0) || val;
@@ -7973,7 +7967,7 @@ function renderGrove(){
             <div class="grove-plot-name"><span class="grove-tag" style="background:${p.color}">${p.tag}</span>${p.name}</div>
             <div class="grove-lvl" id="gp-${p.id}-lvl"></div>
           </div>
-          <div class="grove-desc" id="gp-${p.id}-desc">${p.id==='other' ? 'Taxable accounts, plus crypto and gold from any account' : `Stocks, ETFs and bonds in your ${p.tag}`}</div>
+          <div class="grove-desc" id="gp-${p.id}-desc">${p.id==='other' ? 'Stocks, ETFs, bonds and Bitcoin in taxable accounts, plus physical gold' : `Stocks, ETFs and bonds in your ${p.tag}`}</div>
           <div class="grove-stage" id="gp-${p.id}-stage" role="img"><canvas></canvas></div>
           <div class="grove-body">
             <div class="grove-nums">
@@ -8113,8 +8107,8 @@ function groveUpdateText(tot){
     document.getElementById(`gp-${p.id}-lvl`).innerHTML=lvlHtml;
     if(p.id==='other') groveVaultRender(t);
     if(p.id==='other' && t.mix){
-      const parts=[['Taxable',t.mix.taxable],['Crypto',t.mix.crypto],['Gold',t.mix.gold]].filter(x=>x[1]>0.5).map(x=>`${x[0]} ${groveFmt(x[1])}`);
-      document.getElementById('gp-other-desc').textContent = parts.length ? parts.join(' · ') : 'Taxable accounts, plus crypto and gold from any account';
+      const parts=[['Stocks & ETFs',t.mix.taxable],['Bitcoin',t.mix.crypto],['Gold',t.mix.gold]].filter(x=>x[1]>0.5).map(x=>`${x[0]} ${groveFmt(x[1])}`);
+      document.getElementById('gp-other-desc').textContent = parts.length ? parts.join(' · ') : 'Stocks, ETFs, bonds and Bitcoin in taxable accounts, plus physical gold';
     }
     document.getElementById(`gp-${p.id}-next`).textContent=next;
     document.getElementById(`gp-${p.id}-bar`).style.width=Math.max(0,Math.min(100,pct)).toFixed(1)+'%';
@@ -8193,9 +8187,9 @@ function groveVaultRender(t){
   const html = items.map(it=>`<div class="gv-item"><span class="gv-name">${escHtml(it.label||'Gold')}</span><span class="gv-w">${(+it.qty).toLocaleString('en-CA')} ${GROVE_GOLD_UNITS[it.unit]||'oz'}</span><span class="gv-v">${groveFmt(groveGoldItemValue(it))}</span><button type="button" class="gv-x" aria-label="Remove ${escHtml(it.label||'gold')}" onclick="groveVaultRemove('${it.id}')">×</button></div>`).join('');
   if(list.dataset.html!==html){ list.innerHTML=html; list.dataset.html=html; }
   const pv=document.getElementById('gv-price'); if(pv && document.activeElement!==pv) pv.value = state.goldPriceOz || '';
-  // the pig's own upgrades, based on all gold (physical plus gold ETFs)
+  // the pig's own upgrades, based on physical gold
   const g=(t&&_grove.tot)? _grove.tot.gold : 0, li=grovePigLevel(g), nxt=GROVE_PIG_LEVELS[li+1];
-  document.getElementById('gv-pig').innerHTML = li<0 ? 'Add any gold to hatch your flying gold pig.'
+  document.getElementById('gv-pig').innerHTML = li<0 ? 'Add physical gold to hatch your flying gold pig.'
     : `Gold pig: <b>${GROVE_PIG_LEVELS[li][1]}</b>${nxt?` · ${groveFmt(nxt[0]-g)} more gold to ${nxt[1].toLowerCase()}`:' · fully upgraded'}`;
 }
 function groveVaultForm(open){
@@ -8215,6 +8209,18 @@ function groveVaultSave(){
 }
 function groveVaultRemove(id){ state.physicalGold=(state.physicalGold||[]).filter(it=>it.id!==id); save(); renderGrove(); }
 function groveVaultPrice(v){ state.goldPriceOz = parseFloat(v)>0 ? parseFloat(v) : 0; save(); renderGrove(); }
+// Holding types follow the account: TFSA, RRSP and FHSA take stocks, ETFs and bonds; taxable accounts can also hold Bitcoin.
+const GROVE_REGISTERED = ['TFSA','RRSP','FHSA'];
+function groveSyncTypeOptions(){
+  const accSel=document.getElementById('p-account'), typeSel=document.getElementById('p-type'); if(!accSel||!typeSel) return;
+  const acc=(state.accounts||[]).find(a=>a.id===accSel.value);
+  const reg = acc && GROVE_REGISTERED.includes(acc.type);
+  const opts = reg ? ['Stocks','ETF','Bond'] : ['Stocks','ETF','Bond','Crypto'];
+  const keep = opts.includes(typeSel.value) ? typeSel.value : 'Stocks';
+  typeSel.innerHTML = opts.map(o=>`<option value="${o}">${o==='Crypto'?'Bitcoin / crypto':o}</option>`).join('');
+  typeSel.value = keep;
+}
+document.addEventListener('change', e=>{ if(e.target && e.target.id==='p-account') groveSyncTypeOptions(); });
 function groveAddAccount(type){ addAccount(); const s=document.getElementById('ac-type'); if(s) s.value=type; }
 
 function groveSize(){
@@ -8511,7 +8517,7 @@ function groveDrawPig(ctx,x,y,sc,flap,lvl){
   ctx.strokeStyle='rgba(217,119,6,0.5)'; ctx.lineWidth=0.8; ctx.stroke();
   ctx.restore();
 }
-// A golden pig flies over the farm when you hold any gold. It upgrades as your gold grows.
+// A golden pig flies over the farm when you hold physical gold. It upgrades as your gold grows.
 function groveGoldPig(P,t,gold){
   const {ctx,w}=P, lvl=grovePigLevel(gold);
   if(lvl<0) return;
