@@ -1862,6 +1862,7 @@ input[type=number]{-moz-appearance:textfield}
 .grove-chip.down{background:rgba(248,113,113,0.12);color:#f87171}
 .grove-tbtn:disabled{opacity:0.4;cursor:default}
 .grove-tbtn:disabled:hover{border-color:var(--border)}
+.grove-desc{font-size:0.74rem;color:var(--muted);padding:0 1rem 0.35rem;margin-top:-0.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
 
 /* ── HIDE AMOUNTS ── */
@@ -3809,7 +3810,7 @@ select option{background:#fff;color:var(--ink)}
           <option value="TFSA">TFSA</option>
           <option value="RRSP">RRSP</option>
           <option value="FHSA">FHSA</option>
-          <option value="Cash">Cash / Non-Registered</option>
+          <option value="Cash">Taxable / non-registered</option>
           <option value="RESP">RESP</option>
           <option value="Other">Other</option>
         </select>
@@ -3836,7 +3837,7 @@ select option{background:#fff;color:var(--ink)}
       <div class="form-group"><label>Ticker</label><input id="p-ticker" class="bm-input" placeholder="e.g. XEQT"></div>
       <div class="form-group"><label>Security type</label>
         <select id="p-type" class="bm-select">
-          <option>Stocks</option><option>ETF</option><option>Crypto</option><option value="Gold">Gold / precious metals</option><option>Other</option>
+          <option>Stocks</option><option>ETF</option><option>Bond</option><option>Crypto</option><option value="Gold">Gold / precious metals</option><option>Other</option>
         </select>
       </div>
       <div class="form-group"><label>Shares / units</label><input id="p-shares" class="bm-input" type="number" placeholder="0"></div>
@@ -7777,7 +7778,7 @@ const GROVE_PLOTS = [
     levels:['Empty lot','Foundation','Walk-up','Low-rise','Mid-rise','Tower','High-rise','Skyscraper','Skyline'] },
   { id:'fhsa',  types:['FHSA'], tag:'FHSA', name:'First home', color:'#a78bfa', kind:'house', max:666, defPlan:400,
     stages:[[0,'Empty lot'],[0.05,'Foundation poured'],[0.2,'Walls going up'],[0.35,'Front door in'],[0.5,'Windows in'],[0.65,'Roof on'],[0.8,'Chimney built'],[0.9,'Garden planted'],[1,'Down payment ready']] },
-  { id:'other', types:['Cash','RESP','Other'], tag:'Other', name:'Other investing', color:'#fb923c', kind:'field', max:1000, defPlan:100, optional:true,
+  { id:'other', types:['Cash','RESP','Other'], tag:'Taxable', name:'Taxable, crypto & gold', color:'#fb923c', kind:'field', max:1000, defPlan:100, optional:true,
     levels:['Bare soil','Seeded','Sprouts','First rows','Field','Full field','Farm','Big farm','Homestead'] },
 ];
 const GROVE_BADGES = [
@@ -7811,18 +7812,34 @@ function groveIsGold(h){
   const t=String(h.ticker||'').toUpperCase().replace(/\.(TO|NE|V|CN)$/,'');
   return h.type==='Gold' || GROVE_GOLD_TICKERS.includes(t) || t.includes('GOLD');
 }
+const GROVE_CRYPTO_TICKERS = ['BTC','ETH','SOL','ADA','XRP','DOGE','LTC','DOT','AVAX','LINK','MATIC','BTCC','BTCX','QBTC','EBIT','FBTC','IBIT','ETHH','ETHX','QETH','ETHR','BTCQ'];
+function groveIsCrypto(h){
+  const t=String(h.ticker||'').toUpperCase().replace(/\.(TO|NE|V|CN|B|U)$/,'').replace(/-?(USD|CAD)$/,'');
+  return h.type==='Crypto' || GROVE_CRYPTO_TICKERS.includes(t);
+}
+// Simple rule: stocks, ETFs and bonds in a TFSA, RRSP or FHSA grow that account's plot.
+// Everything taxable, plus any crypto or gold wherever it's held, goes to the farm.
 function groveTotals(){
   const accounts = state.accounts||[];
+  const byId = Object.fromEntries(accounts.map(a=>[a.id,a]));
   const out = {};
-  GROVE_PLOTS.forEach(p=>{
-    const ids = new Set(accounts.filter(a=>p.types.includes(a.type)).map(a=>a.id));
-    const hs = (state.portfolio||[]).filter(h=>ids.has(h.accountId));
-    out[p.id] = { has: ids.size>0, firstId: [...ids][0]||null,
-      contrib: hs.reduce((s,h)=>s+(+h.cost||0)*(+h.shares||0),0),
-      value:   hs.reduce((s,h)=>s+(+h.price||0)*(+h.shares||0),0) };
+  GROVE_PLOTS.forEach(p=>{ out[p.id]={ has:false, firstId:null, contrib:0, value:0 }; });
+  out.other.mix = { taxable:0, crypto:0, gold:0 };
+  accounts.forEach(a=>{
+    const p = GROVE_PLOTS.find(q=>q.types.includes(a.type)) || GROVE_PLOTS.find(q=>q.id==='other');
+    out[p.id].has = true; if(!out[p.id].firstId) out[p.id].firstId = a.id;
   });
-  const goldHs = (state.portfolio||[]).filter(h=>accounts.some(a=>a.id===h.accountId) && groveIsGold(h));
-  out.gold = goldHs.reduce((s,h)=>s+(+h.price||0)*(+h.shares||0),0);
+  (state.portfolio||[]).forEach(h=>{
+    const a = byId[h.accountId]; if(!a) return;
+    const cost=(+h.cost||0)*(+h.shares||0), val=(+h.price||0)*(+h.shares||0);
+    const gold=groveIsGold(h), crypto=!gold && groveIsCrypto(h);
+    const reg = GROVE_PLOTS.find(q=>q.id!=='other' && q.types.includes(a.type));
+    const id = (gold||crypto||!reg) ? 'other' : reg.id;
+    out[id].contrib+=cost; out[id].value+=val;
+    if(id==='other'){ out.other.has=true; out.other.mix[gold?'gold':crypto?'crypto':'taxable'] += val; }
+  });
+  out.gold = out.other.mix.gold;
+  out.crypto = out.other.mix.crypto;
   return out;
 }
 
@@ -7910,6 +7927,7 @@ function renderGrove(){
             <div class="grove-plot-name"><span class="grove-tag" style="background:${p.color}">${p.tag}</span>${p.name}</div>
             <div class="grove-lvl" id="gp-${p.id}-lvl"></div>
           </div>
+          <div class="grove-desc" id="gp-${p.id}-desc">${p.id==='other' ? 'Taxable accounts, plus crypto and gold from any account' : `Stocks, ETFs and bonds in your ${p.tag}`}</div>
           <div class="grove-stage" id="gp-${p.id}-stage" role="img"><canvas></canvas></div>
           <div class="grove-body">
             <div class="grove-nums">
@@ -8018,14 +8036,18 @@ function groveUpdateText(tot){
       proj = !hi ? 'Fully grown.' : m===Infinity ? 'Set a monthly amount to see when it grows next.' : `${p.levels[li+1]} in <b>${groveDur(m)}</b> at this pace.`;
     }
     document.getElementById(`gp-${p.id}-lvl`).innerHTML=lvlHtml;
+    if(p.id==='other' && t.mix){
+      const parts=[['Taxable',t.mix.taxable],['Crypto',t.mix.crypto],['Gold',t.mix.gold]].filter(x=>x[1]>0.5).map(x=>`${x[0]} ${groveFmt(x[1])}`);
+      document.getElementById('gp-other-desc').textContent = parts.length ? parts.join(' · ') : 'Taxable accounts, plus crypto and gold from any account';
+    }
     document.getElementById(`gp-${p.id}-next`).textContent=next;
     document.getElementById(`gp-${p.id}-bar`).style.width=Math.max(0,Math.min(100,pct)).toFixed(1)+'%';
     document.getElementById(`gp-${p.id}-proj`).innerHTML=proj;
     document.getElementById(`gp-${p.id}-stage`).setAttribute('aria-label', `${p.tag}: ${lvlHtml.replace(/<[^>]+>/g,'')}, ${groveFmt(t.contrib)} put in`);
     const cta=document.getElementById(`gp-${p.id}-cta`);
-    const html = t.has
+    const html = (t.has && t.firstId)
       ? `<button class="grove-btn" onclick="addHoldingToAccount('${t.firstId}')">+ Add to ${p.tag}</button>`
-      : `<button class="grove-btn" onclick="groveAddAccount('${p.types[0]}')">Open ${p.tag==='TFSA'?'a':'an'} ${p.tag} plot</button>`;
+      : `<button class="grove-btn" onclick="groveAddAccount('${p.types[0]}')">${p.id==='other'?'Add a taxable account':`Open ${p.tag==='TFSA'?'a':'an'} ${p.tag} plot`}</button>`;
     if(cta.dataset.html!==html){ cta.innerHTML=html; cta.dataset.html=html; }
   });
 }
@@ -8308,6 +8330,7 @@ function groveField(P,t){
   const fieldR = li>=5 ? w-108 : w;
   ctx.fillStyle = season==='winter' ? 'rgba(232,237,248,0.10)' : 'rgba(107,79,54,0.30)';
   ctx.beginPath(); ctx.moveTo(0,base); ctx.lineTo(0,horizon); ctx.lineTo(fieldR,horizon); ctx.lineTo(fieldR,base); ctx.closePath(); ctx.fill();
+  if((_grove.tot||{}).crypto>0) groveWindmill(P,t,_grove.tot.crypto,horizon);
   const stalkH = 8 + s*22;
   const blade = {spring:'#86efac', summer:'#2fa760', autumn:'#9a7b45', winter:'#94a3b8'}[season];
   const head  = {spring:null, summer:'#5fd68f', autumn:'#c9a25e', winter:null}[season];
@@ -8334,6 +8357,17 @@ function groveField(P,t){
   if((_grove.tot||{}).gold>0) groveGoldPig(P,t,_grove.tot.gold);
   if(li>=4){ const x=Math.min(fieldR-24, w*0.42), y=base-4; ctx.strokeStyle='#6b4f36'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x,y-46); ctx.moveTo(x-16,y-34); ctx.lineTo(x+16,y-34); ctx.stroke(); ctx.fillStyle='#d6b46b'; ctx.beginPath(); ctx.arc(x,y-50,6,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#8a2f2a'; ctx.fillRect(x-9,y-58,18,4); ctx.fillRect(x-5,y-64,10,6); }
   groveSnow(P,t);
+}
+// A windmill spins on the farm when you hold crypto. More crypto, taller and faster.
+function groveWindmill(P,t,amt,horizon){
+  const {ctx}=P, x=34, sc=0.8+Math.min(0.5,Math.log10(1+amt/100)*0.16), top=horizon-44*sc;
+  ctx.fillStyle='#3b4252'; ctx.beginPath(); ctx.moveTo(x-6*sc,horizon+4); ctx.lineTo(x-2.5*sc,top); ctx.lineTo(x+2.5*sc,top); ctx.lineTo(x+6*sc,horizon+4); ctx.closePath(); ctx.fill();
+  const ang = groveReduce ? 0.4 : t*(1.2+sc);
+  ctx.save(); ctx.translate(x,top);
+  for(let i=0;i<4;i++){ ctx.rotate(Math.PI/2); ctx.fillStyle = i%2 ? 'rgba(167,139,250,0.9)' : 'rgba(96,165,250,0.9)';
+    ctx.save(); ctx.rotate(ang); ctx.beginPath(); ctx.moveTo(0,0); ctx.lineTo(3*sc,-24*sc); ctx.lineTo(-3*sc,-24*sc); ctx.closePath(); ctx.fill(); ctx.restore(); }
+  ctx.fillStyle='#e8edf8'; ctx.beginPath(); ctx.arc(0,0,2.2*sc,0,Math.PI*2); ctx.fill();
+  ctx.restore();
 }
 // A golden pig flies over the farm when you hold gold. Bigger stash, bigger pig.
 function groveGoldPig(P,t,gold){
