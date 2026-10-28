@@ -1817,7 +1817,7 @@ input[type=number]{-moz-appearance:textfield}
 .grove-tag{font-family:var(--font-body,var(--font-body));font-size:0.7rem;font-weight:700;color:#08140c;border-radius:6px;padding:0.15rem 0.45rem;letter-spacing:0}
 .grove-lvl{font-size:0.74rem;color:var(--muted);white-space:nowrap}
 .grove-lvl b{color:var(--text);font-weight:600}
-.grove-stage{position:relative;height:230px;cursor:pointer;-webkit-tap-highlight-color:transparent;contain:strict}
+.grove-stage{position:relative;height:280px;background:#0b0f18;cursor:pointer;-webkit-tap-highlight-color:transparent;contain:strict}
 .grove-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
 .grove-body{padding:0.75rem 1rem 1rem;display:flex;flex-direction:column;gap:0.7rem}
 .grove-nums{display:flex;justify-content:space-between;gap:0.6rem}
@@ -1902,6 +1902,7 @@ input[type=number]{-moz-appearance:textfield}
 .grove-pig-name{color:#fbbf24;font-weight:600}
 .badge-gold{background:rgba(251,191,36,0.14)!important;color:#fbbf24!important}
 #p-unit{margin-top:0.35rem}
+@media(max-width:600px){.grove-stage{height:250px}}
 
 /* ── ADD AN INVESTMENT SHEET ── */
 .inv-overlay{position:fixed;inset:0;background:rgba(5,7,10,0.72);z-index:650;display:none;align-items:center;justify-content:center;padding:1rem}
@@ -8119,6 +8120,8 @@ function renderGrove(){
         const gold = (tot[p.id].value-tot[p.id].contrib)>0;
         for(let i=0;i<10;i++) P.parts.push({x:e.clientX-r.left,y:e.clientY-r.top,vx:(Math.random()-0.5)*3,vy:-Math.random()*3-1,life:1,r:2+Math.random()*2,col:gold?'#fbbf24':p.color});
       });
+      stage.addEventListener('pointermove', e=>{ if(e.pointerType!=='mouse') return; const r=stage.getBoundingClientRect(); P.camT=Math.max(-1,Math.min(1,((e.clientX-r.left)/r.width-0.5)*2.2)); });
+      stage.addEventListener('pointerleave', ()=>{ P.camT=0; });
       const sl = document.getElementById(`gp-${p.id}-slider`);
       sl.value = g.plan[p.id] ?? p.defPlan;
       sl.addEventListener('input', ()=>{ g.plan[p.id]=+sl.value; groveUpdateText(groveTotals()); clearTimeout(_grove.saveT); _grove.saveT=setTimeout(save, 600); });
@@ -8346,33 +8349,23 @@ function groveFrame(ms){
   if(page.classList.contains('page-locked') && _grove.drawnOnce) return; // locked behind the paywall: one still frame
   _grove.last=ms;
   const t=ms/1000, tot=_grove.tot||{};
+  _grove.ph = grovePhase(); _grove.composed = false; _grove.warmed = false;
   Object.values(_grove.plots).forEach(P=>{
-    if(P.visible===false) return;                             // skip plots scrolled off screen
+    if(P.visible===false){ if(P.back || _grove.warmed) return; _grove.warmed=true; } // skip plots scrolled off screen (but build each one's scenery once, one per frame)
     if(!P.w){ groveSize(); if(!P.w) return; }
     const d=tot[P.def.id]||{contrib:0,value:0};
     P.disp += (d.contrib-P.disp)*(groveReduce?1:0.07);
     P.dispGain += (Math.max(0,d.value-d.contrib)-P.dispGain)*(groveReduce?1:0.07);
     P.pulse*=0.94; P.flash*=0.96;
+    P.cam = (P.cam||0) + (((P.camT||0) + (groveReduce?0:Math.sin(t*0.12+P.def.id.length)*0.35)) - (P.cam||0))*0.06;
     if(P.def.kind==='tree') groveTree(P,t); else if(P.def.kind==='tower') groveTower(P,t); else if(P.def.kind==='field') groveField(P,t); else if(P.def.kind==='coin') groveCoin(P,t); else if(P.def.kind==='vault') groveVault(P,t); else groveHouse(P,t);
+    groveFore(P,t);
     groveParticles(P);
   });
   _grove.drawnOnce = true;
 }
 
 // ── drawing ──
-const GROVE_SKY = { winter:['#0f1420','#18202e'], spring:['#111a1c','#162227'], summer:['#0f1a16','#15241d'], autumn:['#17140f','#211b14'] };
-function groveScene(P,glow,t){
-  const {ctx,w,h}=P, season=groveSeason(groveNow().getMonth()), sk=GROVE_SKY[season];
-  const g=ctx.createLinearGradient(0,0,0,h); g.addColorStop(0,sk[0]); g.addColorStop(1,sk[1]); ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
-  const rg=ctx.createRadialGradient(w/2,h*0.7,10,w/2,h*0.7,w*0.6);
-  rg.addColorStop(0,groveHexA(P.def.color,0.07+glow*0.11+P.flash*0.25+P.pulse*0.06)); rg.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=rg; ctx.fillRect(0,0,w,h);
-  const nClouds=1+Math.floor(groveGrowth(P.disp)*3);
-  for(let i=0;i<nClouds;i++){ const sp=6+groveRand(i+40)*8, x=((t*sp+groveRand(i+11)*w*2)%(w+160))-80, y=22+groveRand(i+5)*50;
-    ctx.fillStyle='rgba(232,237,248,0.05)'; ctx.beginPath(); ctx.ellipse(x,y,38,11,0,0,Math.PI*2); ctx.ellipse(x+22,y-6,22,10,0,0,Math.PI*2); ctx.fill(); }
-  ctx.fillStyle=season==='winter'?'#2a3140':'#1c2230'; ctx.fillRect(0,h-24,w,24);
-  ctx.fillStyle=season==='winter'?'rgba(232,237,248,0.55)':groveHexA(P.def.color,0.25); ctx.fillRect(0,h-24,w,season==='winter'?4:2);
-  return season;
-}
 function groveSnow(P,t){
   if(groveSeason(groveNow().getMonth())!=='winter'||groveReduce) return;
   const {ctx,w,h}=P; ctx.fillStyle='rgba(232,237,248,0.7)';
@@ -8498,7 +8491,7 @@ function groveTower(P,t){
   const gainRatio=Math.min(1,P.dispGain/Math.max(500,c*0.25));
   groveScene(P,gainRatio,t);
   if(c<1 && !(_grove.tot||{})[P.def.id]?.has){ groveEmpty(P,'Break ground here'); return; }
-  const night=(Math.sin(t*0.15)+1)/2, floors=Math.max(0,Math.round(s*42));
+  const night=Math.min(1,groveNight()*0.85+0.1*(Math.sin(t*0.15)+1)/2), floors=Math.max(0,Math.round(s*42));
   const bw=Math.min(w*0.5,46+s*70), x0=w/2-bw/2, base=h-24, avail=h-62, fh=floors?Math.min(14,avail/floors):0;
   const cols=bw>100?5:bw>76?4:3, li=groveLevel(c);
   const small=(x,bh,seed)=>{ ctx.fillStyle='#1f2738'; ctx.fillRect(x,base-bh,30,bh); for(let r=0;r<Math.floor(bh/10);r++) for(let k=0;k<2;k++){ ctx.fillStyle=groveRand(seed*100+r*3+k)<0.5?'rgba(96,165,250,0.45)':'rgba(255,255,255,0.05)'; ctx.fillRect(x+5+k*13,base-bh+5+r*10,8,5); } };
@@ -8525,7 +8518,7 @@ function groveHouse(P,t){
   if(p<1&&sW>0&&sR<1){ ctx.strokeStyle='rgba(251,191,36,0.35)'; ctx.lineWidth=1.2; const sh=wallH*sW+10; for(const sx of [hx-10,hx+hw+4]){ ctx.strokeRect(sx,base-7-sh,6,sh); for(let y=base-7;y>base-7-sh;y-=14){ ctx.beginPath(); ctx.moveTo(sx,y); ctx.lineTo(sx+6,y-14); ctx.stroke(); } } }
   if(sF>0){ ctx.fillStyle='#3a3f4f'; ctx.fillRect(hx-6,base-7,(hw+12)*sF,7); }
   if(sW>0){ const wh=wallH*sW; ctx.fillStyle='#3b3357'; ctx.fillRect(hx,base-7-wh,hw,wh); ctx.strokeStyle='rgba(255,255,255,0.05)'; for(let y=base-7;y>base-7-wh;y-=8){ ctx.beginPath(); ctx.moveTo(hx,y); ctx.lineTo(hx+hw,y); ctx.stroke(); } }
-  const warm=0.35+gainRatio*0.65;
+  const warm=Math.min(1,0.3+gainRatio*0.5+groveNight()*0.45);
   if(sD>0){ ctx.fillStyle='#a78bfa'; const dh=38*sD; ctx.fillRect(hx+hw/2-12,base-7-dh,24,dh); }
   if(sWi>0){ [[hx+16,base-7-58],[hx+hw-46,base-7-58]].forEach(([x,y])=>{ ctx.fillStyle=`rgba(251,191,36,${(0.25+0.75*warm)*sWi})`; ctx.fillRect(x,y,30,24); ctx.strokeStyle='#2a2440'; ctx.lineWidth=2; ctx.strokeRect(x,y,30,24); ctx.beginPath(); ctx.moveTo(x+15,y); ctx.lineTo(x+15,y+24); ctx.moveTo(x,y+12); ctx.lineTo(x+30,y+12); ctx.stroke(); }); }
   if(sC>0){ ctx.fillStyle='#4a3f6b'; const ch=32*sC; ctx.fillRect(hx+hw*0.72,base-7-wallH-ch+6,16,ch); }
@@ -8552,8 +8545,9 @@ function groveField(P,t){
   const rows = 2 + Math.floor(s*4);
   const horizon = base - 22 - rows*16;
   const fieldR = li>=5 ? w-108 : w;
-  ctx.fillStyle = season==='winter' ? 'rgba(232,237,248,0.10)' : 'rgba(107,79,54,0.30)';
-  ctx.beginPath(); ctx.moveTo(0,base); ctx.lineTo(0,horizon); ctx.lineTo(fieldR,horizon); ctx.lineTo(fieldR,base); ctx.closePath(); ctx.fill();
+  const soil=ctx.createLinearGradient(0,horizon-6,0,base); const sc0=season==='winter'?'232,237,248':'107,79,54';
+  soil.addColorStop(0,`rgba(${sc0},0)`); soil.addColorStop(0.25,`rgba(${sc0},${season==='winter'?0.08:0.22})`); soil.addColorStop(1,`rgba(${sc0},${season==='winter'?0.14:0.42})`); ctx.fillStyle=soil;
+  ctx.beginPath(); ctx.moveTo(0,base); ctx.lineTo(0,horizon-6); ctx.lineTo(fieldR,horizon-6); ctx.lineTo(fieldR,base); ctx.closePath(); ctx.fill();
   const stalkH = 8 + s*22;
   const blade = {spring:'#86efac', summer:'#2fa760', autumn:'#9a7b45', winter:'#94a3b8'}[season];
   const head  = {spring:null, summer:'#5fd68f', autumn:'#c9a25e', winter:null}[season];
@@ -8606,7 +8600,6 @@ function groveCoin(P,t){
   const gainRatio=Math.min(1,P.dispGain/Math.max(500,c*0.25));
   groveScene(P,gainRatio,t);
   const base=h-24;
-  for(let i=0;i<26;i++){ const a=0.25+0.5*Math.abs(Math.sin(t*0.8+i*1.3)); ctx.fillStyle=`rgba(232,237,248,${groveReduce?0.5:a})`; ctx.fillRect(groveRand(i+200)*w, groveRand(i+201)*(base-60), 1.6,1.6); }
   if(c<1){ groveEmpty(P,'Add crypto to light it up'); return; }
   const coins = Object.entries(((_grove.tot||{}).crypto||{}).coins||{}).sort((a,b)=>b[1]-a[1]);
   const li=groveLevel(c);
@@ -8621,7 +8614,7 @@ function groveCoin(P,t){
   orbit.filter(o=>Math.sin(o.ang)>=0).forEach(draw);
   if(!groveReduce && gainRatio>0.05){ for(let i=0;i<1+Math.floor(gainRatio*3);i++){ const k=((t*0.35+i*0.37)%1); if(k>0.35) continue; const sx=w*(0.1+groveRand(i+90)*0.5)+k*w*0.9, sy=18+groveRand(i+91)*40+k*30;
     ctx.strokeStyle=`rgba(253,186,116,${0.8*(1-k/0.35)})`; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(sx,sy); ctx.lineTo(sx-22,sy-8); ctx.stroke(); } }
-  ctx.fillStyle='#161b26'; ctx.beginPath(); ctx.moveTo(0,base); ctx.quadraticCurveTo(w*0.3,base-34,w*0.6,base-14); ctx.quadraticCurveTo(w*0.82,base-30,w,base-12); ctx.lineTo(w,base); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='rgba(10,8,22,0.85)'; ctx.beginPath(); ctx.moveTo(0,base); ctx.quadraticCurveTo(w*0.3,base-34,w*0.6,base-14); ctx.quadraticCurveTo(w*0.82,base-30,w,base-12); ctx.lineTo(w,base); ctx.closePath(); ctx.fill();
   if(li>=5){ const ox=w*0.15, oy=base-18; ctx.fillStyle='#2a3142'; ctx.fillRect(ox-12,oy-10,24,14); ctx.beginPath(); ctx.arc(ox,oy-10,12,Math.PI,0); ctx.fill(); ctx.strokeStyle='#97a2b8'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(ox,oy-14); ctx.lineTo(ox+14,oy-24); ctx.stroke(); }
   groveSnow(P,t);
 }
@@ -8636,6 +8629,9 @@ function groveVault(P,t){
   // vault room: back wall and an open round door
   const roomW=Math.min(w*0.62,230), rx=w/2-roomW/2+18, roomH=110;
   ctx.fillStyle='#1d2330'; ctx.fillRect(rx,base-roomH,roomW,roomH);
+  const il=ctx.createRadialGradient(rx+roomW/2,base-10,4,rx+roomW/2,base-10,roomW*0.75); il.addColorStop(0,`rgba(251,191,36,${0.16+gainRatio*0.12})`); il.addColorStop(1,'rgba(251,191,36,0)');
+  ctx.fillStyle=il; ctx.fillRect(rx,base-roomH,roomW,roomH);
+  ctx.strokeStyle='rgba(251,191,36,0.35)'; ctx.lineWidth=2; ctx.strokeRect(rx+1,base-roomH+1,roomW-2,roomH-1);
   ctx.strokeStyle='rgba(251,191,36,0.18)'; ctx.lineWidth=1; for(let y=base-roomH+12;y<base;y+=14){ ctx.beginPath(); ctx.moveTo(rx,y); ctx.lineTo(rx+roomW,y); ctx.stroke(); }
   const dx=rx-6, dy=base-roomH/2-4, dr=Math.min(52,roomH*0.46);
   ctx.fillStyle='#3a4252'; ctx.beginPath(); ctx.arc(dx,dy,dr,0,Math.PI*2); ctx.fill();
@@ -8714,6 +8710,334 @@ function groveGoldPig(P,t,gold){
 function groveParticles(P){
   const {ctx}=P; P.parts=P.parts.filter(pt=>pt.life>0);
   P.parts.forEach(pt=>{ pt.vy+=0.12; pt.x+=pt.vx; pt.y+=pt.vy; pt.life-=0.025; ctx.globalAlpha=Math.max(0,pt.life); ctx.fillStyle=pt.col; ctx.beginPath(); ctx.arc(pt.x,pt.y,pt.r,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1; });
+}
+
+// ── Immersive scenery ──
+// Each plot is a little world: a sky that follows your real time of day, far and mid layers that drift with parallax,
+// the plot itself, then a foreground, ambient life, light and a vignette. Static layers are drawn once to offscreen
+// canvases and blitted each frame, so the extra depth costs almost nothing.
+const GROVE_PHASE = {
+  night:{sky:['#04060c','#0a1020','#16203a'], far:'#141c30', haze:'40,60,110',  ground:['#121826','#090c13'], stars:1,    body:'moon', tint:'rgba(25,45,110,0.13)', warm:'150,175,230', dark:0.72},
+  dawn: {sky:['#0b1124','#2d2547','#8a5060'], far:'#2c2742', haze:'255,170,150', ground:['#1b1d29','#0e1017'], stars:0.35, body:'sun',  tint:'rgba(255,150,130,0.05)', warm:'255,190,170', dark:0.45},
+  day:  {sky:['#0d2236','#173a52','#33656f'], far:'#21414f', haze:'170,215,230', ground:['#18262a','#0d1417'], stars:0,    body:'sun',  tint:'rgba(0,0,0,0)', warm:'255,240,205', dark:0.14},
+  dusk: {sky:['#0c1026','#3d2443','#bb5c3c'], far:'#35233b', haze:'255,140,90',  ground:['#1d1a22','#0f0d13'], stars:0.25, body:'sun',  tint:'rgba(255,115,60,0.07)', warm:'255,170,120', dark:0.48},
+};
+const GROVE_SEASON_MID = {summer:'#173c27', spring:'#1e432b', autumn:'#3d2b14', winter:'#3a4560'};
+const GROVE_GRASS = {summer:'#3cc472', spring:'#86efac', autumn:'#c9a25e', winter:'#e8edf8'};
+const GROVE_PAR = {far:3, mid:6, content:9, fore:15};
+
+function groveMix(a,b,k){
+  const p=x=>[1,3,5].map(i=>parseInt(x.slice(i,i+2),16)), A=p(a), B=p(b);
+  return '#'+A.map((v,i)=>Math.round(v+(B[i]-v)*k).toString(16).padStart(2,'0')).join('');
+}
+function grovePhase(){
+  if(_grove.phaseOverride) return _grove.phaseOverride;
+  const d=new Date(), hr=d.getHours()+d.getMinutes()/60;
+  return (hr>=21||hr<5) ? 'night' : hr<8 ? 'dawn' : hr<17 ? 'day' : 'dusk';
+}
+function groveNight(){ return {night:1, dusk:0.65, dawn:0.45, day:0.1}[_grove.ph||'day']; }
+function groveCanvas(w,h){
+  const dpr=Math.min(1.5,window.devicePixelRatio||1), c=document.createElement('canvas');
+  c.width=Math.ceil(w*dpr); c.height=Math.ceil(h*dpr); const x=c.getContext('2d'); x.setTransform(dpr,0,0,dpr,0,0); return [c,x];
+}
+// smooth deterministic ridge line
+function groveRidgeY(x,base,amp,seed,jag){
+  const a=x*0.0105+seed;
+  return base - amp*(0.55 + 0.25*Math.sin(a) + 0.14*Math.sin(a*2.3+1.7) + jag*0.09*Math.sin(a*7.1+seed*3) + jag*0.05*Math.sin(a*15.3));
+}
+function groveRidgePath(x,W,h,base,amp,seed,jag){
+  x.beginPath(); x.moveTo(0,h); for(let px=0;px<=W+6;px+=5) x.lineTo(px,groveRidgeY(px,base,amp,seed,jag)); x.lineTo(W,h); x.closePath();
+}
+function groveSunPos(P,ph){
+  const {w,h}=P, base=h-24;
+  if(ph==='dawn') return [w*0.8, base-92];
+  if(ph==='dusk') return [w*0.2, base-88];
+  if(ph==='night') return [w*0.8, h*0.2];
+  return [w*0.78, h*0.17];
+}
+
+// ── far layer: sky, stars, nebula, horizon glow, distant mountains, mist ──
+function groveBuildFar(P,ph,season,kind){
+  const {w,h}=P, m=GROVE_PAR.far+2, W=w+m*2, base=h-24, pal=GROVE_PHASE[ph];
+  const [c,x]=groveCanvas(W,h);
+  let sky=pal.sky.slice();
+  if(kind==='coin') sky=['#03040a','#0a0a1e','#1c1438'];
+  if(season==='winter' && kind!=='coin') sky[2]=groveMix(sky[2],'#93a8c8',0.2);
+  if(season==='autumn' && kind!=='coin') sky[2]=groveMix(sky[2],'#c06a32',0.12);
+  const g=x.createLinearGradient(0,0,0,base); g.addColorStop(0,sky[0]); g.addColorStop(0.55,sky[1]); g.addColorStop(1,sky[2]);
+  x.fillStyle=g; x.fillRect(0,0,W,h);
+
+  const starA = kind==='coin' ? 1 : pal.stars;
+  if(starA>0){
+    const n = kind==='coin' ? 170 : 80;
+    for(let i=0;i<n;i++){ const sx=groveRand(i+1000)*W, sy=groveRand(i+1001)*base*0.85, r=groveRand(i+1002);
+      x.fillStyle=`rgba(232,237,248,${(0.12+r*0.65)*starA*(1-sy/base*0.8)})`; const s=r>0.93?1.9:r>0.7?1.3:0.9; x.fillRect(sx,sy,s,s); }
+  }
+  if(kind==='coin'){
+    // nebula clouds and a ringed planet
+    [[0.22,0.28,'139,92,246',0.2],[0.72,0.18,'45,212,191',0.14],[0.52,0.5,'247,147,26',0.08],[0.9,0.55,'236,72,153',0.08]].forEach(([fx,fy,rgb,a],i)=>{
+      const r=w*(0.32+i*0.06), cx=m+fx*w, cy=fy*h, rg=x.createRadialGradient(cx,cy,0,cx,cy,r);
+      rg.addColorStop(0,`rgba(${rgb},${a})`); rg.addColorStop(0.5,`rgba(${rgb},${a*0.4})`); rg.addColorStop(1,`rgba(${rgb},0)`); x.fillStyle=rg; x.fillRect(0,0,W,h); });
+    const px=m+w*0.15, py=h*0.2, pr=12;
+    const pg=x.createLinearGradient(px-pr,py-pr,px+pr,py+pr); pg.addColorStop(0,'#5eead4'); pg.addColorStop(1,'#1e1b4b');
+    x.strokeStyle='rgba(204,251,241,0.35)'; x.lineWidth=1.5; x.beginPath(); x.ellipse(px,py,pr*2,pr*0.55,-0.35,Math.PI,Math.PI*2); x.stroke();
+    x.fillStyle=pg; x.beginPath(); x.arc(px,py,pr,0,Math.PI*2); x.fill();
+    x.beginPath(); x.ellipse(px,py,pr*2,pr*0.55,-0.35,0,Math.PI); x.stroke();
+  }
+  // horizon glow toward the sun
+  if(kind!=='coin'){
+    const [sx]=groveSunPos(P,ph), hx=sx+m, hgr=x.createRadialGradient(hx,base,0,hx,base,w*0.9);
+    const ga = ph==='day'?0.16 : ph==='night'?0.12 : 0.42;
+    hgr.addColorStop(0,`rgba(${pal.haze},${ga})`); hgr.addColorStop(1,`rgba(${pal.haze},0)`); x.fillStyle=hgr; x.fillRect(0,0,W,h);
+  }
+  // distant mountains, two ranges
+  const far = kind==='coin' ? '#151030' : pal.far;
+  const ranges = kind==='tower' ? [[34,2.1,0.5]] : [[64,0.6,1],[40,3.3,0.6]];
+  ranges.forEach(([amp,seed,jag],ri)=>{
+    const top=base-amp-14, mg=x.createLinearGradient(0,top,0,base);
+    const peak = season==='winter'&&kind!=='coin' ? groveMix(far,'#dfe7f3',ri?0.25:0.45) : groveMix(far,'#ffffff',ri?0.05:0.1);
+    mg.addColorStop(0,peak); mg.addColorStop(1,groveMix(far,ri?'#000000':'#000000',ri?0.12:0));
+    x.fillStyle=mg; groveRidgePath(x,W,h,base-(ri?0:8),amp,seed,jag*(kind==='coin'?2.2:1)); x.fill();
+  });
+  // mist band at the horizon
+  const mist=x.createLinearGradient(0,base-40,0,base); mist.addColorStop(0,`rgba(${pal.haze},0)`); mist.addColorStop(1,`rgba(${pal.haze},${kind==='coin'?0.05:ph==='night'?0.06:0.12})`);
+  x.fillStyle=mist; x.fillRect(0,base-40,W,40);
+  return c;
+}
+
+// ── mid layer: the place each plot lives in, plus the ground ──
+function groveBuildMid(P,ph,season,kind){
+  const {w,h}=P, m=GROVE_PAR.mid+2, W=w+m*2, base=h-24, pal=GROVE_PHASE[ph], n=groveNight();
+  const [c,x]=groveCanvas(W,h);
+  const mid=groveMix(GROVE_SEASON_MID[season],'#0a0d16',pal.dark);
+  const darker=groveMix(mid,'#05070b',0.35);
+  const hill=(amp,seed,col,jag)=>{ const hg=x.createLinearGradient(0,base-amp-10,0,base); hg.addColorStop(0,groveMix(col,'#ffffff',0.05)); hg.addColorStop(1,groveMix(col,'#000000',0.25)); x.fillStyle=hg; groveRidgePath(x,W,h,base+4,amp,seed,jag); x.fill(); };
+  const inCenter=px=>{ const f=(px-m)/w; return f>0.34&&f<0.66; };
+  P.mill=null; P.beacon=null;
+
+  if(kind==='tree'){
+    hill(30,5.2,mid,0.4);
+    for(let px=4;px<W;px+=11){ if(inCenter(px)||groveRand(px+3)<0.35) continue;
+      const y=groveRidgeY(px,base+4,30,5.2,0.4), th=9+groveRand(px)*12; x.fillStyle=darker;
+      x.beginPath(); x.moveTo(px,y-th); x.lineTo(px-th*0.32,y+2); x.lineTo(px+th*0.32,y+2); x.closePath(); x.fill();
+      if(season==='winter'){ x.fillStyle='rgba(232,237,248,0.5)'; x.beginPath(); x.moveTo(px,y-th); x.lineTo(px-th*0.14,y-th*0.55); x.lineTo(px+th*0.14,y-th*0.55); x.closePath(); x.fill(); } }
+  }
+  else if(kind==='house'){
+    hill(26,7.9,mid,0.3);
+    for(let i=0;i<6;i++){ const px=m+(i<3 ? 0.04+i*0.1 : 0.7+(i-3)*0.1)*w + groveRand(i+60)*10; const y=groveRidgeY(px,base+4,26,7.9,0.3)+3, s=7+groveRand(i+61)*4;
+      x.fillStyle=darker; x.fillRect(px-s,y-s,s*2,s); x.beginPath(); x.moveTo(px-s-2,y-s); x.lineTo(px,y-s*1.8); x.lineTo(px+s+2,y-s); x.closePath(); x.fill();
+      if(n>0.3){ x.fillStyle=`rgba(253,224,140,${0.35+n*0.5})`; x.fillRect(px-s*0.55,y-s*0.7,2.4,2.4); if(groveRand(i+62)<0.6) x.fillRect(px+s*0.25,y-s*0.7,2.4,2.4); } }
+  }
+  else if(kind==='field'){
+    hill(30,1.4,mid,0.2);
+    const strip = {summer:['#2f7d47','#a68a3a','#3f9a57'], spring:['#4fae6a','#7bc98a','#3c8f55'], autumn:['#a07b35','#7a5a2a','#c09449'], winter:['#c9d3e2','#aab6c8','#dfe6ef']}[season];
+    for(let j=0;j<4;j++){ x.strokeStyle=groveMix(strip[j%3],'#0a0d16',pal.dark*0.85); x.lineWidth=4.5;
+      x.beginPath(); for(let px=0;px<=W;px+=6){ const y=groveRidgeY(px,base+4,30,1.4,0.2)+5+j*5.5; px?x.lineTo(px,y):x.moveTo(px,y); } x.stroke(); }
+    for(let px=6;px<W;px+=7){ if(groveRand(px+9)<0.55||inCenter(px)) continue; const y=groveRidgeY(px,base+4,30,1.4,0.2); x.fillStyle=darker; x.beginPath(); x.arc(px,y-3,3.5+groveRand(px)*2.5,0,Math.PI*2); x.fill(); }
+    // a windmill on the ridge; its blades turn live
+    const mx=m+w*0.13, my=groveRidgeY(mx,base+4,30,1.4,0.2)+2;
+    x.fillStyle=darker; x.beginPath(); x.moveTo(mx-4,my); x.lineTo(mx-1.6,my-30); x.lineTo(mx+1.6,my-30); x.lineTo(mx+4,my); x.closePath(); x.fill();
+    P.mill={x:mx-m, y:my-30, col:darker};
+  }
+  else if(kind==='tower'){
+    // a city skyline behind your tower
+    const sky=groveMix('#131a2a','#06080e',pal.dark*0.6); let px=-4, i=0, tallest={h:0};
+    const litP={night:0.5, dusk:0.4, dawn:0.22, day:0.06}[ph];
+    while(px<W){ const bw=14+groveRand(i+70)*22, bh=24+groveRand(i+71)*(inCenter(px+bw/2)?40:62);
+      x.fillStyle=groveRand(i+72)<0.5?sky:groveMix(sky,'#000000',0.25); x.fillRect(px,base-bh,bw,bh+4);
+      if(groveRand(i+73)<0.25){ x.fillRect(px+bw/2-1,base-bh-9,2,9); }
+      for(let wy=base-bh+5; wy<base-4; wy+=6) for(let wx=px+3; wx<px+bw-4; wx+=5){ const r=groveRand(i*977+wy*13+wx);
+        if(r<litP){ x.fillStyle = r<litP*0.25 ? 'rgba(147,197,253,0.65)' : `rgba(253,224,150,${0.45+r})`; x.fillRect(wx,wy,2,2.5); } }
+      if(bh>tallest.h && !inCenter(px+bw/2)) tallest={h:bh, x:px+bw/2-m, y:base-bh-9};
+      px+=bw+1+groveRand(i+74)*3; i++; }
+    P.beacon=tallest.h?tallest:null;
+  }
+  else if(kind==='coin'){
+    const rock='#120e24'; x.fillStyle=rock; groveRidgePath(x,W,h,base+4,34,9.1,2.4); x.fill();
+    for(let px=8;px<W;px+=17){ if(groveRand(px+5)<0.5) continue; const y=groveRidgeY(px,base+4,34,9.1,2.4)+4, ch=8+groveRand(px)*14;
+      const cg=x.createLinearGradient(px,y-ch,px,y); const col=groveRand(px+1)<0.5?'45,212,191':'167,139,250';
+      cg.addColorStop(0,`rgba(${col},0.75)`); cg.addColorStop(1,`rgba(${col},0.05)`); x.fillStyle=cg;
+      x.beginPath(); x.moveTo(px,y-ch); x.lineTo(px-3.5,y); x.lineTo(px+3.5,y); x.closePath(); x.fill(); }
+  }
+  else if(kind==='vault'){
+    // the vault is cut into a rock face
+    const rock=groveMix('#2c303c','#0a0d16',pal.dark*0.55);
+    x.fillStyle=mid; groveRidgePath(x,W,h,base+4,22,3.3,0.5); x.fill();
+    const L=m+w*0.06, R=m+w*0.97, top=base-150;
+    const rg=x.createLinearGradient(0,top,0,base); rg.addColorStop(0,groveMix(rock,'#ffffff',0.07)); rg.addColorStop(1,groveMix(rock,'#000000',0.3)); x.fillStyle=rg;
+    x.beginPath(); x.moveTo(L,base+4); x.lineTo(L+w*0.05,base-80); x.lineTo(L+w*0.15,base-126); x.lineTo(L+w*0.3,top); x.lineTo(L+w*0.46,top+12); x.lineTo(L+w*0.6,top-6); x.lineTo(L+w*0.75,top+20); x.lineTo(R-w*0.04,base-96); x.lineTo(R,base+4); x.closePath(); x.fill();
+    x.strokeStyle='rgba(0,0,0,0.25)'; x.lineWidth=1.2;
+    for(let i=0;i<9;i++){ const sx=L+groveRand(i+80)*(R-L), sy=top+30+groveRand(i+81)*90; x.beginPath(); x.moveTo(sx,sy); x.lineTo(sx+8+groveRand(i+82)*10,sy+6); x.lineTo(sx+14,sy+16); x.stroke(); }
+    if(season==='winter'){ x.fillStyle='rgba(232,237,248,0.55)'; x.beginPath(); x.moveTo(L+w*0.2,top+18); x.lineTo(L+w*0.3,top); x.lineTo(L+w*0.46,top+12); x.lineTo(L+w*0.6,top-6); x.lineTo(L+w*0.7,top+14); x.lineTo(L+w*0.6,top+4); x.lineTo(L+w*0.46,top+18); x.lineTo(L+w*0.3,top+8); x.closePath(); x.fill(); }
+  }
+
+  // ground
+  const gcol = kind==='coin' ? ['#100d1e','#07060d'] : kind==='tower' ? ['#151923','#0a0c12'] : kind==='vault' ? ['#1a1d27','#0b0d12'] : pal.ground;
+  const gg=x.createLinearGradient(0,base,0,h); gg.addColorStop(0,gcol[0]); gg.addColorStop(1,gcol[1]); x.fillStyle=gg; x.fillRect(0,base,W,h-base);
+  if(kind==='house'){ // a path from the front door toward you
+    const cx=m+w/2, pg=x.createLinearGradient(0,base,0,h); pg.addColorStop(0,'rgba(196,181,253,0.18)'); pg.addColorStop(1,'rgba(196,181,253,0.05)');
+    x.fillStyle=pg; x.beginPath(); x.moveTo(cx-11,base); x.lineTo(cx+11,base); x.quadraticCurveTo(cx+20,base+12,cx+42,h); x.lineTo(cx-18,h); x.quadraticCurveTo(cx-4,base+12,cx-11,base); x.closePath(); x.fill(); }
+  if(kind==='tower'){ x.fillStyle='rgba(232,237,248,0.12)'; for(let px=6;px<W;px+=22) x.fillRect(px,base+12,11,1.5); x.fillStyle='#2a3142'; x.fillRect(0,base,W,3); }
+  else {
+    const edge = kind==='coin' ? 'rgba(167,139,250,0.35)' : kind==='vault' ? 'rgba(251,191,36,0.22)' : groveMix(GROVE_GRASS[season],'#0a0d16',pal.dark*0.7);
+    x.fillStyle=edge; x.fillRect(0,base,W,season==='winter'&&kind!=='coin'?4:2);
+    x.fillStyle='rgba(255,255,255,0.025)'; for(let i=0;i<70;i++) x.fillRect(groveRand(i+400)*W, base+4+groveRand(i+401)*(h-base-6), 2, 1);
+  }
+  return c;
+}
+
+// ── foreground: silhouettes nearest the viewer, kept to the edges so they frame the plot ──
+function groveBuildFore(P,ph,season,kind){
+  const {w,h}=P, m=GROVE_PAR.fore+2, W=w+m*2, pal=GROVE_PHASE[ph];
+  const [c,x]=groveCanvas(W,h);
+  const ink = kind==='coin' ? '#07050f' : '#05070b';
+  const edgeH = px=>{ const f=(px-m)/w; const d=f<0.5?f:1-f; return d<0.2 ? 1-d/0.2 : 0; };
+  P.lamps=[];
+  if(kind==='tower'){
+    x.fillStyle=ink; x.fillRect(0,h-7,W,7);
+    [m+w*0.05, m+w*0.95].forEach(lx=>{ x.fillRect(lx-1.2,h-58,2.4,52); x.fillRect(lx-7,h-60,14,3.5); P.lamps.push({x:lx-m, y:h-55}); });
+  } else if(kind==='coin'){
+    for(const side of [0,1]) for(let i=0;i<5;i++){ const px=side? W-6-i*9-groveRand(i+30)*6 : 6+i*9+groveRand(i+31)*6, ch=10+groveRand(i+side*9)*22*(1-i/6);
+      x.fillStyle=ink; x.beginPath(); x.moveTo(px,h-ch); x.lineTo(px-5,h); x.lineTo(px+5,h); x.closePath(); x.fill();
+      x.strokeStyle='rgba(167,139,250,0.35)'; x.lineWidth=1; x.beginPath(); x.moveTo(px,h-ch); x.lineTo(px+5,h); x.stroke(); }
+  } else {
+    // grass, with taller clumps and a bush at each edge
+    x.fillStyle=ink; x.fillRect(0,h-4,W,4);
+    for(let px=0;px<W;px+=2.5){ const e=edgeH(px), hh=3+groveRand(px*7)*4 + e*(10+groveRand(px*3)*12);
+      const lean=(groveRand(px*5)-0.5)*4; x.beginPath(); x.moveTo(px-1.4,h); x.quadraticCurveTo(px+lean*0.4,h-hh*0.6,px+lean,h-hh); x.lineTo(px+1.4,h); x.closePath(); x.fill(); }
+    if(kind!=='vault'){ [[m+w*0.02,15],[m+w*0.98,13]].forEach(([bx,r])=>{ x.beginPath(); x.arc(bx,h-2,r,Math.PI,0); x.arc(bx+r*0.8,h-2,r*0.7,Math.PI,0); x.arc(bx-r*0.8,h-2,r*0.6,Math.PI,0); x.fill(); }); }
+    if(season!=='winter' && kind!=='vault'){ const fl=season==='autumn'?['#c2410c','#d97706']:['#f9a8d4','#fde68a','#c4b5fd'];
+      for(let i=0;i<9;i++){ const px=groveRand(i+50)<0.5 ? m+groveRand(i+51)*w*0.16 : m+w*0.84+groveRand(i+51)*w*0.16; x.fillStyle=groveMix(fl[i%fl.length],'#0a0d16',pal.dark*0.6); x.beginPath(); x.arc(px,h-10-groveRand(i+52)*12,1.8,0,Math.PI*2); x.fill(); } }
+    if(season==='winter'){ x.fillStyle='rgba(232,237,248,0.6)'; x.fillRect(0,h-4,W,2); }
+    if(kind==='vault'){ // rocks and a lantern post
+      [[m+w*0.03,13],[m+w*0.1,8],[m+w*0.97,11]].forEach(([rx,r])=>{ x.fillStyle=ink; x.beginPath(); x.ellipse(rx,h-2,r*1.3,r,0,Math.PI,0); x.fill(); });
+      const lx=m+w*0.93; x.fillStyle=ink; x.fillRect(lx-1.2,h-48,2.4,46); x.fillRect(lx-5,h-54,10,8); P.lamps.push({x:lx-m, y:h-50});
+    }
+  }
+  return c;
+}
+
+function groveVignette(w,h){
+  const k=w+'x'+h; if(_grove.vig && _grove.vig.k===k) return _grove.vig.c;
+  const [c,x]=groveCanvas(w,h);
+  const vg=x.createRadialGradient(w/2,h*0.52,Math.min(w,h)*0.32,w/2,h*0.52,Math.max(w,h)*0.78);
+  vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,0.5)'); x.fillStyle=vg; x.fillRect(0,0,w,h);
+  const bg=x.createLinearGradient(0,h-36,0,h); bg.addColorStop(0,'rgba(0,0,0,0)'); bg.addColorStop(1,'rgba(0,0,0,0.3)'); x.fillStyle=bg; x.fillRect(0,h-36,w,36);
+  _grove.vig={k,c}; return c;
+}
+function groveCloudSprite(rgb){
+  const k='cloud'+rgb; if(_grove[k]) return _grove[k];
+  const c=document.createElement('canvas'); c.width=240; c.height=90; const x=c.getContext('2d');
+  [[58,58,38],[104,44,46],[150,54,40],[192,62,28],[30,64,24],[124,64,34]].forEach(([cx,cy,r])=>{ const g=x.createRadialGradient(cx,cy,0,cx,cy,r);
+    g.addColorStop(0,`rgba(${rgb},0.5)`); g.addColorStop(0.55,`rgba(${rgb},0.22)`); g.addColorStop(1,`rgba(${rgb},0)`); x.fillStyle=g; x.beginPath(); x.arc(cx,cy,r,0,Math.PI*2); x.fill(); });
+  return _grove[k]=c;
+}
+
+function groveScene(P,glow,t){
+  const {ctx,w,h}=P, season=groveSeason(groveNow().getMonth()), ph=_grove.ph||grovePhase(), kind=P.def.kind, pal=GROVE_PHASE[ph];
+  const dpr=Math.min(1.5,window.devicePixelRatio||1), key=[w,h,ph,season,kind,dpr].join('|');
+  if(P.sceneKey!==key){ P.sceneKey=key; P.far=groveBuildFar(P,ph,season,kind); P.mid=groveBuildMid(P,ph,season,kind); P.fore=groveBuildFore(P,ph,season,kind); }
+  const cam=P.cam||0, base=h-24;
+  P.off={far:-cam*GROVE_PAR.far, mid:-cam*GROVE_PAR.mid, content:-cam*GROVE_PAR.content, fore:-cam*GROVE_PAR.fore};
+  const fm=GROVE_PAR.far+2, mm=GROVE_PAR.mid+2;
+  const now=performance.now(), scrolling=_grove.scrollHold && now<_grove.scrollHold;
+  if(!P.back || P.backKey!==key || (!scrolling && !_grove.composed && (now-(P.backT||0)>120 || Math.abs(cam-(P.backCam||0))>0.03))){
+    if(!P.back || P.backKey!==key){ [P.back,P.backCtx]=groveCanvas(w,h); [P.front,P.frontCtx]=groveCanvas(w,h); P.backKey=key; }
+    P.backT=now; P.backCam=cam; _grove.composed=true;
+    P.backCtx.clearRect(0,0,w,h); groveComposeBack(P,P.backCtx,t,ph,pal,kind,base,fm,mm);
+    P.frontCtx.clearRect(0,0,w,h); groveComposeFront(P,P.frontCtx,t);
+  }
+  ctx.drawImage(P.back,0,0,w,h);
+  // the plot's own glow: brighter with gains and when you tap
+  const rg=ctx.createRadialGradient(w/2,h*0.7,10,w/2,h*0.7,w*0.6);
+  rg.addColorStop(0,groveHexA(P.def.color,0.05+glow*0.1+P.flash*0.25+P.pulse*0.06)); rg.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=rg; ctx.fillRect(0,0,w,h);
+
+  ctx.save(); ctx.translate(P.off.content,0);
+  return season;
+}
+
+function groveAmbient(P,t){
+  if(groveReduce) return;
+  const {ctx,w,h}=P, base=h-24, kind=P.def.kind, n=groveNight(), pal=GROVE_PHASE[_grove.ph||'day'];
+  if(kind==='coin'){
+    for(let i=0;i<16;i++){ const a=Math.sin(t*1.3+i*2.3); if(a<0.55) continue; const x=groveRand(i+1500)*w, y=groveRand(i+1501)*(base-50), s=(a-0.55)*9;
+      ctx.strokeStyle=`rgba(232,237,248,${a})`; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x-s,y); ctx.lineTo(x+s,y); ctx.moveTo(x,y-s); ctx.lineTo(x,y+s); ctx.stroke(); }
+    return;
+  }
+  if(kind==='vault'){
+    for(let i=0;i<14;i++){ const k=((t*0.07+groveRand(i+1600))%1), x=w*0.22+groveRand(i+1601)*w*0.62+Math.sin(t*0.6+i)*8, y=base-6-k*130;
+      ctx.fillStyle=`rgba(253,224,140,${0.55*Math.sin(k*Math.PI)})`; ctx.fillRect(x,y,1.6,1.6); }
+    return;
+  }
+  if(kind==='tower') return;
+  if(n>=0.45){
+    for(let i=0;i<10;i++){ const x=(groveRand(i+1700)*w+Math.sin(t*0.35+i)*28+w)%w, y=base-8-groveRand(i+1701)*80+Math.cos(t*0.5+i*1.3)*10, a=Math.max(0,Math.sin(t*1.9+i*1.9));
+      ctx.fillStyle=`rgba(253,230,138,${a*0.22})`; ctx.beginPath(); ctx.arc(x,y,4.5,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle=`rgba(254,249,195,${0.25+a*0.75})`; ctx.beginPath(); ctx.arc(x,y,1.3,0,Math.PI*2); ctx.fill(); }
+  } else {
+    for(let i=0;i<14;i++){ const k=((t*0.04+groveRand(i+1800))%1), x=((groveRand(i+1801)*w + k*60 + Math.sin(t*0.7+i)*6)%w), y=base-10-k*(base-30);
+      ctx.fillStyle=`rgba(${pal.warm},${0.5*Math.sin(k*Math.PI)})`; ctx.fillRect(x,y,1.5,1.5); }
+  }
+}
+
+// Called after each plot draws itself: foreground, lamps, ambient life, light and the vignette.
+function groveFore(P,t){
+  const {ctx,w,h}=P; if(!P.fore) return;
+  ctx.restore();
+  const ph=_grove.ph||'day', pal=GROVE_PHASE[ph], fm=GROVE_PAR.fore+2, n=groveNight();
+  groveAmbient(P,t);
+  if(P.front) ctx.drawImage(P.front,0,0,w,h);
+}
+
+function groveComposeBack(P,ctx,t,ph,pal,kind,base,fm,mm){
+  const {w,h}=P;
+  ctx.drawImage(P.far, P.off.far-fm, 0, w+fm*2, h);
+
+  // sun or moon, with light rays
+  if(kind!=='coin'){
+    let [sx,sy]=groveSunPos(P,ph); sx+=P.off.far; sy+=groveReduce?0:Math.sin(t*0.05)*2;
+    const rgb=pal.warm, gr=ctx.createRadialGradient(sx,sy,0,sx,sy,ph==='night'?60:90);
+    gr.addColorStop(0,`rgba(${rgb},${ph==='night'?0.22:0.38})`); gr.addColorStop(1,`rgba(${rgb},0)`); ctx.fillStyle=gr; ctx.fillRect(sx-90,sy-90,180,180);
+    if(pal.body==='moon'){
+      ctx.fillStyle='#e6ebf5'; ctx.beginPath(); ctx.arc(sx,sy,10,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='rgba(120,135,165,0.35)'; [[-3,-2,2.4],[3,3,1.8],[2,-4,1.2],[-2,4,1.1]].forEach(([dx,dy,r])=>{ ctx.beginPath(); ctx.arc(sx+dx,sy+dy,r,0,Math.PI*2); ctx.fill(); });
+    } else {
+      ctx.fillStyle = ph==='day' ? 'rgba(255,230,160,0.35)' : 'rgba(255,170,110,0.3)'; ctx.beginPath(); ctx.arc(sx,sy,ph==='day'?20:21,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = ph==='day' ? '#ffe9a8' : '#ffb27a'; ctx.beginPath(); ctx.arc(sx,sy,ph==='day'?12:13,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle = ph==='day' ? '#fffaf0' : '#ffd2a8'; ctx.beginPath(); ctx.arc(sx,sy,ph==='day'?7:8,0,Math.PI*2); ctx.fill();
+      if(!groveReduce && (kind==='tree'||kind==='field'||kind==='house')){
+        const len=h*1.5, rg=ctx.createRadialGradient(sx,sy,0,sx,sy,len); rg.addColorStop(0,`rgba(${rgb},${ph==='day'?0.05:0.07})`); rg.addColorStop(1,`rgba(${rgb},0)`);
+        ctx.fillStyle=rg; const toward=Math.atan2(base-sy, w/2-sx);
+        for(let i=0;i<4;i++){ const a=toward+(i-1.5)*0.24+Math.sin(t*0.15+i*1.7)*0.04, sp=0.07+0.025*Math.sin(t*0.3+i);
+          ctx.beginPath(); ctx.moveTo(sx,sy); ctx.lineTo(sx+Math.cos(a-sp)*len,sy+Math.sin(a-sp)*len); ctx.lineTo(sx+Math.cos(a+sp)*len,sy+Math.sin(a+sp)*len); ctx.closePath(); ctx.fill(); }
+      }
+    }
+    // drifting clouds
+    const spr=groveCloudSprite(pal.warm), nC=2+Math.floor(groveGrowth(P.disp)*2);
+    for(let i=0;i<nC;i++){ const sc=0.55+groveRand(i+40)*0.5, cw=240*sc*0.75, sp=3+groveRand(i+41)*5;
+      const cx=((t*sp+groveRand(i+11)*(w+cw)*3)%(w+cw))-cw+P.off.far*1.5, cy=14+groveRand(i+5)*(base*0.35);
+      ctx.globalAlpha=(ph==='night'?0.22:0.4)*(0.6+groveRand(i+42)*0.4); ctx.drawImage(spr,cx,cy,cw,90*sc*0.75); }
+    ctx.globalAlpha=1;
+  }
+
+  ctx.drawImage(P.mid, P.off.mid-mm, 0, w+mm*2, h);
+  // live parts of the mid layer
+  if(P.mill){ const mx=P.mill.x+P.off.mid, my=P.mill.y, a=groveReduce?0.4:t*0.9; ctx.strokeStyle=P.mill.col; ctx.lineWidth=2; ctx.lineCap='round';
+    for(let i=0;i<4;i++){ const b=a+i*Math.PI/2; ctx.beginPath(); ctx.moveTo(mx,my); ctx.lineTo(mx+Math.cos(b)*14,my+Math.sin(b)*14); ctx.stroke(); }
+    ctx.fillStyle=P.mill.col; ctx.beginPath(); ctx.arc(mx,my,2.2,0,Math.PI*2); ctx.fill(); }
+  if(P.beacon && (groveReduce || Math.sin(t*2.4)>0.2)){ ctx.fillStyle='rgba(248,113,113,0.95)'; ctx.beginPath(); ctx.arc(P.beacon.x+P.off.mid,P.beacon.y,1.8,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='rgba(248,113,113,0.2)'; ctx.beginPath(); ctx.arc(P.beacon.x+P.off.mid,P.beacon.y,5,0,Math.PI*2); ctx.fill(); }
+
+}
+
+function groveComposeFront(P,ctx,t){
+  const {w,h}=P, ph=_grove.ph||'day', pal=GROVE_PHASE[ph], fm=GROVE_PAR.fore+2, n=groveNight();
+  ctx.drawImage(P.fore, (P.off?P.off.fore:0)-fm, 0, w+fm*2, h);
+  if(n>0.3 && P.lamps) P.lamps.forEach((L,i)=>{ const x=L.x+(P.off?P.off.fore:0), y=L.y, fl=groveReduce?1:0.9+0.1*Math.sin(t*7+i*3);
+    const g=ctx.createRadialGradient(x,y,0,x,y,40); g.addColorStop(0,`rgba(253,224,150,${0.4*n*fl})`); g.addColorStop(1,'rgba(253,224,150,0)'); ctx.fillStyle=g; ctx.fillRect(x-40,y-40,80,80);
+    ctx.fillStyle=`rgba(254,243,199,${0.6+0.4*n})`; ctx.beginPath(); ctx.arc(x,y,2.2,0,Math.PI*2); ctx.fill(); });
+  if(P.def.kind!=='coin' && pal.tint!=='rgba(0,0,0,0)'){ ctx.fillStyle=pal.tint; ctx.fillRect(0,0,w,h); }
+  ctx.drawImage(groveVignette(w,h),0,0,w,h);
 }
 
 // Re-render the grove whenever investments change or the page opens
