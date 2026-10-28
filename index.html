@@ -1801,6 +1801,55 @@ input[type=number]{-moz-appearance:textfield}
 /* Yearly table numbers */
 #yearly-table td{font-variant-numeric:tabular-nums}
 
+/* ── MONEY GROVE ── */
+.grove{margin:0 0 1.4rem}
+.grove-head{display:flex;justify-content:space-between;align-items:flex-end;gap:1rem;flex-wrap:wrap;margin-bottom:0.9rem}
+.grove-title{font-family:var(--font-display,var(--font-display));font-weight:800;font-size:1.35rem;letter-spacing:-0.035em;color:var(--text)}
+.grove-sub{font-size:0.85rem;color:var(--muted);max-width:60ch}
+.grove-meta{display:flex;gap:0.5rem;flex-wrap:wrap}
+.grove-pill{font-size:0.76rem;color:var(--muted);border:1px solid var(--border);border-radius:999px;padding:0.25rem 0.7rem;white-space:nowrap}
+.grove-streak{color:#4ade80;border-color:rgba(74,222,128,0.35)}
+.grove-plots{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:0.9rem}
+@media(min-width:1000px){.grove-plots.four{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.grove-plot{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;display:flex;flex-direction:column;min-width:0}
+.grove-plot-head{display:flex;justify-content:space-between;align-items:center;gap:0.3rem 0.6rem;flex-wrap:wrap;padding:0.85rem 1rem 0.4rem}
+.grove-plot-name{display:flex;align-items:center;gap:0.5rem;font-family:var(--font-display,var(--font-display));font-weight:700;font-size:0.98rem;letter-spacing:-0.02em;color:var(--text);min-width:0;white-space:nowrap}
+.grove-tag{font-family:var(--font-body,var(--font-body));font-size:0.7rem;font-weight:700;color:#08140c;border-radius:6px;padding:0.15rem 0.45rem;letter-spacing:0}
+.grove-lvl{font-size:0.74rem;color:var(--muted);white-space:nowrap}
+.grove-lvl b{color:var(--text);font-weight:600}
+.grove-stage{position:relative;height:230px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.grove-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.grove-body{padding:0.75rem 1rem 1rem;display:flex;flex-direction:column;gap:0.7rem}
+.grove-nums{display:flex;justify-content:space-between;gap:0.6rem}
+.grove-k{font-size:0.72rem;color:var(--muted)}
+.grove-v{font-size:1.15rem;font-weight:600;letter-spacing:-0.02em;color:var(--text);font-variant-numeric:tabular-nums}
+.grove-v small{font-size:0.74rem;font-weight:500;color:#fbbf24;margin-left:0.25rem}
+.grove-next{font-size:0.75rem;color:var(--muted)}
+.grove-bar{height:5px;border-radius:5px;background:rgba(255,255,255,0.07);overflow:hidden;margin-top:0.35rem}
+.grove-bar i{display:block;height:100%;border-radius:5px;transition:width .5s cubic-bezier(.2,.8,.2,1)}
+.grove-plan{display:flex;flex-direction:column;gap:0.3rem;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:0.6rem 0.75rem}
+.grove-plan label{display:flex;justify-content:space-between;gap:0.5rem;font-size:0.75rem;color:var(--muted);margin:0}
+.grove-plan label b{color:var(--text);font-variant-numeric:tabular-nums}
+.grove-plan input[type=range]{width:100%;accent-color:var(--acc,#4ade80);margin:0.15rem 0}
+.grove-proj{font-size:0.74rem;color:var(--muted);line-height:1.45}
+.grove-proj b{color:var(--text)}
+.grove-btn{width:100%;background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:0.55rem;font-weight:600;font-size:0.84rem;cursor:pointer;font-family:inherit}
+.grove-btn:hover{border-color:rgba(255,255,255,0.22)}
+.grove-badges-title{margin:1.1rem 0 0.6rem;font-family:var(--font-display,var(--font-display));font-weight:700;font-size:1rem;letter-spacing:-0.02em;color:var(--text)}
+.grove-badges-title span{font-family:var(--font-body,var(--font-body));font-weight:400;font-size:0.8rem;color:var(--muted);margin-left:0.5rem;letter-spacing:0}
+.grove-badges{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.6rem}
+@media(max-width:900px){.grove-badges{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.grove-badge{display:flex;gap:0.6rem;align-items:center;background:var(--card);border:1px solid var(--border);border-radius:12px;padding:0.6rem;min-width:0}
+.grove-badge-ic{width:32px;height:32px;border-radius:9px;flex-shrink:0;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.05);color:var(--muted)}
+.grove-badge b{display:block;font-size:0.8rem;font-weight:600;color:var(--muted)}
+.grove-badge span{display:block;font-size:0.7rem;color:var(--muted);opacity:0.75;line-height:1.35}
+.grove-badge.got{border-color:rgba(251,191,36,0.4);background:linear-gradient(135deg,rgba(251,191,36,0.08),var(--card) 60%)}
+.grove-badge.got .grove-badge-ic{background:#fbbf24;color:#08140c}
+.grove-badge.got b{color:var(--text)}
+.grove-badge.got span{opacity:1}
+@media (prefers-reduced-motion: reduce){.grove-bar i{transition:none}}
+
+
 /* ═══════════════════════════════════════════════════════════
    QUALISIGHT REDESIGN — "polymer note"
    Light, calm surfaces. Every section borrows the colour of a
@@ -3710,6 +3759,9 @@ select option{background:#fff;color:var(--ink)}
     </div>
     <div class="iv-hero-mini" id="iv-hero-mini"></div>
   </div>
+
+  <!-- Money grove: rendered by renderGrove() -->
+  <div id="grove" class="grove"></div>
 
   <!-- Hidden stat row kept for any legacy references (not displayed) -->
   <div class="stat-row" id="port-stats" style="display:none"></div>
@@ -7669,6 +7721,391 @@ function askRentVsBuy(){
   if(!panel.classList.contains('open')) toggleAI();
   setTimeout(()=>{ document.getElementById('ai-input').value=q; document.getElementById('ai-input').focus(); }, 400);
 }
+
+// ══════════════════════════════════════════
+// MONEY GROVE
+// Each account type becomes something that grows with what you've put in
+// (cost basis). Market gains show as gold on top and never shrink anything.
+// ══════════════════════════════════════════
+const GROVE_MILESTONES = [500,1000,2500,5000,10000,25000,50000,100000];
+const GROVE_FHSA_GOAL = 40000;
+const GROVE_PLOTS = [
+  { id:'tfsa',  types:['TFSA'], tag:'TFSA', name:'Tax-free savings', color:'#4ade80', kind:'tree',  max:1000, defPlan:300,
+    levels:['Seed','Sprout','Sapling','Young tree','Tree','Grand tree','Old oak','Grove','Forest'] },
+  { id:'rrsp',  types:['RRSP'], tag:'RRSP', name:'Retirement', color:'#60a5fa', kind:'tower', max:1500, defPlan:150,
+    levels:['Empty lot','Foundation','Walk-up','Low-rise','Mid-rise','Tower','High-rise','Skyscraper','Skyline'] },
+  { id:'fhsa',  types:['FHSA'], tag:'FHSA', name:'First home', color:'#a78bfa', kind:'house', max:666, defPlan:400,
+    stages:[[0,'Empty lot'],[0.05,'Foundation poured'],[0.2,'Walls going up'],[0.35,'Front door in'],[0.5,'Windows in'],[0.65,'Roof on'],[0.8,'Chimney built'],[0.9,'Garden planted'],[1,'Down payment ready']] },
+  { id:'other', types:['Cash','RESP','Other'], tag:'Other', name:'Other investing', color:'#fbbf24', kind:'tree', max:1000, defPlan:0, optional:true,
+    levels:['Seed','Sprout','Sapling','Young tree','Tree','Grand tree','Old oak','Grove','Forest'] },
+];
+const GROVE_BADGES = [
+  {id:'first',  name:'First contribution', desc:'Put money into any account',          ic:'<path d="M12 5v14M5 12h14"/>'},
+  {id:'k1',     name:'$1,000 club',         desc:'An account reaches $1,000 put in',    ic:'<circle cx="12" cy="12" r="8"/><path d="M12 8v8"/>'},
+  {id:'steady', name:'Steady hands',        desc:'Contribute in a month the market fell', ic:'<path d="M3 17l5-5 4 4 8-8"/><path d="M3 21h18"/>'},
+  {id:'s6',     name:'Half-year habit',     desc:'Contribute 6 months in a row',        ic:'<path d="M12 3c1 3-1 4.5-2.5 6S7 12 7 14.5A5 5 0 0 0 17 15c0-2-1-3.5-2-4.5-.2 1.2-.8 2-1.6 2.5.4-3.4-.4-7-1.4-10z"/>'},
+  {id:'s12',    name:'Year of habits',      desc:'Contribute 12 months in a row',       ic:'<rect x="4" y="5" width="16" height="15" rx="2"/><path d="M4 10h16M9 3v4M15 3v4"/>'},
+  {id:'three',  name:'Three plots',         desc:'TFSA, RRSP and FHSA each past $2,500', ic:'<path d="M5 20V10M12 20V4M19 20v-7"/>'},
+  {id:'k10',    name:'Five figures',        desc:'$10,000 put in across your grove',    ic:'<path d="M4 20h16M6 20V9l6-5 6 5v11"/>'},
+  {id:'keys',   name:'Keys in hand',        desc:'Fill your FHSA to $40,000',           ic:'<circle cx="8" cy="12" r="4"/><path d="M12 12h9M18 12v3"/>'},
+];
+const groveFmt = n => (n<0?'-$':'$') + Math.abs(Math.round(n)).toLocaleString('en-CA');
+const GROVE_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const groveReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+let _grove = { plots:{}, raf:null, saveT:null };
+
+function groveSeason(m){ return [11,0,1].includes(m)?'winter':[2,3,4].includes(m)?'spring':[5,6,7].includes(m)?'summer':'autumn'; }
+function groveGrowth(c){ return Math.min(1, Math.log10(1+Math.max(0,c)/100)/Math.log10(1+100000/100)); }
+function groveRand(n){ let t=(n*2654435761)>>>0; t^=t>>>15; t=Math.imul(t,2246822519)>>>0; t^=t>>>13; return (t>>>0)/4294967296; }
+function groveHexA(hex,a){ const n=parseInt(hex.slice(1),16); return `rgba(${n>>16},${(n>>8)&255},${n&255},${a})`; }
+function groveLevel(c){ let i=0; GROVE_MILESTONES.forEach((m,k)=>{ if(c>=m) i=k+1; }); return i; }
+function groveStage(def,c){ const p=c/GROVE_FHSA_GOAL; let i=0; def.stages.forEach(([t],k)=>{ if(p>=t) i=k; }); return i; }
+function groveLvlOf(def,c){ return def.kind==='house' ? groveStage(def,c) : groveLevel(c); }
+function groveMonthKey(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
+function groveDur(m){ if(m===Infinity) return null; if(m<12) return `${m} month${m===1?'':'s'}`; const y=Math.floor(m/12), r=m%12; return `${y} yr${y>1?'s':''}${r?` ${r} mo`:''}`; }
+
+function groveTotals(){
+  const accounts = state.accounts||[];
+  const out = {};
+  GROVE_PLOTS.forEach(p=>{
+    const ids = new Set(accounts.filter(a=>p.types.includes(a.type)).map(a=>a.id));
+    const hs = (state.portfolio||[]).filter(h=>ids.has(h.accountId));
+    out[p.id] = { has: ids.size>0, firstId: [...ids][0]||null,
+      contrib: hs.reduce((s,h)=>s+(+h.cost||0)*(+h.shares||0),0),
+      value:   hs.reduce((s,h)=>s+(+h.price||0)*(+h.shares||0),0) };
+  });
+  return out;
+}
+
+// Tracks monthly snapshots so streaks and badges come from real behaviour
+function groveTrack(tot){
+  if(!state.grove) state.grove = { history:{}, badges:[], levels:{}, plan:{} };
+  const g = state.grove; g.history=g.history||{}; g.badges=g.badges||[]; g.levels=g.levels||{}; g.plan=g.plan||{};
+  const c = Object.values(tot).reduce((s,x)=>s+x.contrib,0);
+  const v = Object.values(tot).reduce((s,x)=>s+x.value,0);
+  const key = groveMonthKey(), keys = Object.keys(g.history).sort();
+  let changed = false;
+  if(!g.history[key]){
+    const last = keys.length ? g.history[keys[keys.length-1]] : null;
+    g.history[key] = { base: last? last.c : c, vBase: last? last.v : v, c, v };
+    changed = true;
+  } else if(g.history[key].c!==c || g.history[key].v!==v){
+    g.history[key].c=c; g.history[key].v=v; changed=true;
+  }
+  // keep two years of history
+  const all = Object.keys(g.history).sort();
+  while(all.length>24){ delete g.history[all.shift()]; changed=true; }
+  return { c, v, changed };
+}
+function groveStreak(){
+  const h = state.grove.history; let streak=0;
+  const d = new Date(); let first=true;
+  for(let i=0;i<24;i++){
+    const rec = h[groveMonthKey(d)];
+    const did = rec && rec.c > rec.base + 0.5;
+    if(did) streak++;
+    else if(!first) break;
+    first=false;
+    d.setMonth(d.getMonth()-1);
+  }
+  return streak;
+}
+
+function groveEarn(id, quiet){
+  const g=state.grove; if(g.badges.includes(id)) return false;
+  g.badges.push(id);
+  const b=GROVE_BADGES.find(x=>x.id===id);
+  if(!quiet && typeof showToast==='function') showToast(`<strong>Badge earned: ${b.name}.</strong> ${b.desc}.`);
+  return true;
+}
+
+function renderGrove(){
+  const wrap = document.getElementById('grove');
+  if(!wrap) return;
+  const tot = groveTotals();
+  const track = groveTrack(tot);
+  const g = state.grove;
+  const firstRender = !wrap.dataset.ready;
+  const visiblePlots = GROVE_PLOTS.filter(p=>!p.optional || tot[p.id].has);
+  const streak = groveStreak();
+
+  // Build cards once (or when the set of plots changes)
+  const sig = visiblePlots.map(p=>p.id).join(',');
+  if(wrap.dataset.sig!==sig){
+    wrap.dataset.sig=sig; wrap.dataset.ready='1';
+    const now=new Date(), season=groveSeason(now.getMonth());
+    wrap.innerHTML = `
+      <div class="grove-head">
+        <div>
+          <div class="grove-title">Your money grove</div>
+          <div class="grove-sub">Grows with what you put in. Market gains show as gold, and a down month never takes anything away.</div>
+        </div>
+        <div class="grove-meta">
+          <span class="grove-pill" id="grove-season"></span>
+          <span class="grove-pill grove-streak" id="grove-streak"></span>
+        </div>
+      </div>
+      <div class="grove-plots${visiblePlots.length===4?' four':''}">${visiblePlots.map(p=>`
+        <div class="grove-plot" id="gp-${p.id}">
+          <div class="grove-plot-head">
+            <div class="grove-plot-name"><span class="grove-tag" style="background:${p.color}">${p.tag}</span>${p.name}</div>
+            <div class="grove-lvl" id="gp-${p.id}-lvl"></div>
+          </div>
+          <div class="grove-stage" id="gp-${p.id}-stage" role="img"><canvas></canvas></div>
+          <div class="grove-body">
+            <div class="grove-nums">
+              <div><div class="grove-k">Put in</div><div class="grove-v" id="gp-${p.id}-c"></div></div>
+              <div style="text-align:right"><div class="grove-k">Worth</div><div class="grove-v" id="gp-${p.id}-v"></div></div>
+            </div>
+            <div><div class="grove-next" id="gp-${p.id}-next"></div><div class="grove-bar"><i id="gp-${p.id}-bar" style="background:${p.color}"></i></div></div>
+            <div class="grove-plan" style="--acc:${p.color}" id="gp-${p.id}-plan">
+              <label for="gp-${p.id}-slider">Planning to add each month <b id="gp-${p.id}-mo"></b></label>
+              <input type="range" id="gp-${p.id}-slider" min="0" max="${p.max}" step="25">
+              <div class="grove-proj" id="gp-${p.id}-proj"></div>
+            </div>
+            <div id="gp-${p.id}-cta"></div>
+          </div>
+        </div>`).join('')}
+      </div>
+      <div class="grove-badges-title">Badges <span>Earned for habits, not for what the market does.</span></div>
+      <div class="grove-badges">${GROVE_BADGES.map(b=>`
+        <div class="grove-badge" id="gb-${b.id}">
+          <div class="grove-badge-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${b.ic}</svg></div>
+          <div style="min-width:0"><b>${b.name}</b><span>${b.desc}</span></div>
+        </div>`).join('')}
+      </div>`;
+    _grove.plots = {};
+    visiblePlots.forEach(p=>{
+      const P = _grove.plots[p.id] = { def:p, parts:[], pulse:0, flash:0 };
+      P.cv = document.querySelector(`#gp-${p.id}-stage canvas`); P.ctx = P.cv.getContext('2d');
+      P.disp = tot[p.id].contrib; P.dispGain = Math.max(0, tot[p.id].value - tot[p.id].contrib);
+      const stage = document.getElementById(`gp-${p.id}-stage`);
+      stage.addEventListener('click', e=>{
+        const r=stage.getBoundingClientRect(); P.pulse=1;
+        const gold = (tot[p.id].value-tot[p.id].contrib)>0;
+        for(let i=0;i<10;i++) P.parts.push({x:e.clientX-r.left,y:e.clientY-r.top,vx:(Math.random()-0.5)*3,vy:-Math.random()*3-1,life:1,r:2+Math.random()*2,col:gold?'#fbbf24':p.color});
+      });
+      const sl = document.getElementById(`gp-${p.id}-slider`);
+      sl.value = g.plan[p.id] ?? p.defPlan;
+      sl.addEventListener('input', ()=>{ g.plan[p.id]=+sl.value; groveUpdateText(groveTotals()); clearTimeout(_grove.saveT); _grove.saveT=setTimeout(save, 600); });
+    });
+    groveSize();
+  }
+
+  // Milestone toasts (only for real increases after the first time we've seen this plot)
+  let toastMsg = null;
+  visiblePlots.forEach(p=>{
+    const lvl = groveLvlOf(p, tot[p.id].contrib);
+    const prev = g.levels[p.id];
+    if(prev!==undefined && lvl>prev){
+      if(_grove.plots[p.id]) _grove.plots[p.id].flash=1;
+      toastMsg = p.kind==='house' ? `<strong>${p.tag}:</strong> ${p.stages[lvl][1].toLowerCase()}.`
+                                  : `<strong>${p.tag} reached ${groveFmt(GROVE_MILESTONES[lvl-1])}.</strong> New level: ${p.levels[lvl]}.`;
+    }
+    if(prev!==lvl){ g.levels[p.id]=lvl; track.changed=true; }
+  });
+
+  // Badges
+  const quiet = firstRender && !g.badges.length; // don't flood a returning user on first load
+  const earned = [];
+  const rec = g.history[groveMonthKey()];
+  if(track.c>0) earned.push('first');
+  if(GROVE_PLOTS.some(p=>tot[p.id].contrib>=1000)) earned.push('k1');
+  if(rec && rec.c>rec.base+0.5 && (rec.v-rec.c) < (rec.vBase-rec.base) - 0.5) earned.push('steady');
+  if(streak>=6) earned.push('s6');
+  if(streak>=12) earned.push('s12');
+  if(['tfsa','rrsp','fhsa'].every(id=>tot[id].contrib>=2500)) earned.push('three');
+  if(track.c>=10000) earned.push('k10');
+  if(tot.fhsa.contrib>=GROVE_FHSA_GOAL) earned.push('keys');
+  earned.forEach(id=>{ if(groveEarn(id, quiet || !!toastMsg)) track.changed=true; });
+  if(toastMsg && typeof showToast==='function') showToast(toastMsg);
+  GROVE_BADGES.forEach(b=>document.getElementById('gb-'+b.id)?.classList.toggle('got', g.badges.includes(b.id)));
+
+  const now=new Date(), season=groveSeason(now.getMonth());
+  const sn = {winter:'Winter',spring:'Spring',summer:'Summer',autumn:'Autumn'}[season];
+  document.getElementById('grove-season').textContent = `${GROVE_MONTHS[now.getMonth()]}, ${sn.toLowerCase()}`;
+  document.getElementById('grove-streak').textContent = streak ? `${streak}-month contribution streak` : 'Add money this month to start a streak';
+
+  _grove.tot = tot;
+  groveUpdateText(tot);
+  if(track.changed && !currentUser?.isDemo){ clearTimeout(_grove.saveT); _grove.saveT=setTimeout(save, 800); }
+  groveStart();
+}
+
+function groveUpdateText(tot){
+  const g=state.grove;
+  Object.values(_grove.plots).forEach(P=>{
+    const p=P.def, t=tot[p.id], gain=t.value-t.contrib, plan=g.plan[p.id] ?? p.defPlan;
+    document.getElementById(`gp-${p.id}-c`).textContent = groveFmt(t.contrib);
+    document.getElementById(`gp-${p.id}-v`).innerHTML = groveFmt(t.value) + (gain>0.5?`<small>+${groveFmt(gain)}</small>`:'');
+    document.getElementById(`gp-${p.id}-mo`).textContent = groveFmt(plan);
+    const left = (target)=> Math.max(0,target-t.contrib);
+    const months = (target)=> left(target)<=0 ? 0 : plan>0 ? Math.ceil(left(target)/plan) : Infinity;
+    let lvlHtml, next, pct, proj;
+    if(p.kind==='house'){
+      const si=groveStage(p,t.contrib), nxt=p.stages[si+1];
+      pct=Math.min(100,t.contrib/GROVE_FHSA_GOAL*100);
+      lvlHtml=`<b>${Math.round(pct)}%</b> of $40,000`;
+      next = nxt ? `${groveFmt(left(nxt[0]*GROVE_FHSA_GOAL))} to "${nxt[1].toLowerCase()}"` : 'House complete. You hit the lifetime limit.';
+      const m=months(GROVE_FHSA_GOAL);
+      proj = m===0 ? 'Fully built.' : m===Infinity ? 'Set a monthly amount to see when your house is done.' : `House done in <b>${groveDur(m)}</b> at this pace. The annual limit is $8,000.`;
+    } else {
+      const li=groveLevel(t.contrib), lo=li?GROVE_MILESTONES[li-1]:0, hi=GROVE_MILESTONES[li];
+      lvlHtml=`Level ${li+1}: <b>${p.levels[li]}</b>`;
+      next = hi ? `${groveFmt(hi-t.contrib)} to ${p.levels[li+1].toLowerCase()}` : 'Fully grown';
+      pct = hi ? (t.contrib-lo)/(hi-lo)*100 : 100;
+      const m=months(hi||0);
+      proj = !hi ? 'Fully grown.' : m===Infinity ? 'Set a monthly amount to see when it grows next.' : `${p.levels[li+1]} in <b>${groveDur(m)}</b> at this pace.`;
+    }
+    document.getElementById(`gp-${p.id}-lvl`).innerHTML=lvlHtml;
+    document.getElementById(`gp-${p.id}-next`).textContent=next;
+    document.getElementById(`gp-${p.id}-bar`).style.width=Math.max(0,Math.min(100,pct)).toFixed(1)+'%';
+    document.getElementById(`gp-${p.id}-proj`).innerHTML=proj;
+    document.getElementById(`gp-${p.id}-stage`).setAttribute('aria-label', `${p.tag}: ${lvlHtml.replace(/<[^>]+>/g,'')}, ${groveFmt(t.contrib)} put in`);
+    const cta=document.getElementById(`gp-${p.id}-cta`);
+    const html = t.has
+      ? `<button class="grove-btn" onclick="addHoldingToAccount('${t.firstId}')">+ Add to ${p.tag}</button>`
+      : `<button class="grove-btn" onclick="groveAddAccount('${p.types[0]}')">Open ${p.tag==='TFSA'?'a':'an'} ${p.tag} plot</button>`;
+    if(cta.dataset.html!==html){ cta.innerHTML=html; cta.dataset.html=html; }
+  });
+}
+function groveAddAccount(type){ addAccount(); const s=document.getElementById('ac-type'); if(s) s.value=type; }
+
+function groveSize(){
+  const dpr=Math.min(2,window.devicePixelRatio||1);
+  Object.values(_grove.plots).forEach(P=>{ const r=P.cv.getBoundingClientRect(); if(!r.width) return; P.w=r.width; P.h=r.height; P.cv.width=Math.round(r.width*dpr); P.cv.height=Math.round(r.height*dpr); P.ctx.setTransform(dpr,0,0,dpr,0,0); });
+}
+window.addEventListener('resize', ()=>groveSize());
+
+function groveStart(){ if(!_grove.raf) _grove.raf=requestAnimationFrame(groveFrame); }
+function groveFrame(ms){
+  _grove.raf=null;
+  const page=document.getElementById('page-investments');
+  if(!page || page.offsetParent===null) return; // stop while the page is hidden; renderGrove restarts it
+  const t=ms/1000, tot=_grove.tot||{};
+  Object.values(_grove.plots).forEach(P=>{
+    if(!P.w){ groveSize(); if(!P.w) return; }
+    const d=tot[P.def.id]||{contrib:0,value:0};
+    P.disp += (d.contrib-P.disp)*(groveReduce?1:0.07);
+    P.dispGain += (Math.max(0,d.value-d.contrib)-P.dispGain)*(groveReduce?1:0.07);
+    P.pulse*=0.94; P.flash*=0.96;
+    if(P.def.kind==='tree') groveTree(P,t); else if(P.def.kind==='tower') groveTower(P,t); else groveHouse(P,t);
+    groveParticles(P);
+  });
+  _grove.raf=requestAnimationFrame(groveFrame);
+}
+
+// ── drawing ──
+const GROVE_SKY = { winter:['#0f1420','#18202e'], spring:['#111a1c','#162227'], summer:['#0f1a16','#15241d'], autumn:['#17140f','#211b14'] };
+function groveScene(P,glow,t){
+  const {ctx,w,h}=P, season=groveSeason(new Date().getMonth()), sk=GROVE_SKY[season];
+  const g=ctx.createLinearGradient(0,0,0,h); g.addColorStop(0,sk[0]); g.addColorStop(1,sk[1]); ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+  const rg=ctx.createRadialGradient(w/2,h*0.7,10,w/2,h*0.7,w*0.6);
+  rg.addColorStop(0,groveHexA(P.def.color,0.07+glow*0.11+P.flash*0.25+P.pulse*0.06)); rg.addColorStop(1,'rgba(0,0,0,0)'); ctx.fillStyle=rg; ctx.fillRect(0,0,w,h);
+  const nClouds=1+Math.floor(groveGrowth(P.disp)*3);
+  for(let i=0;i<nClouds;i++){ const sp=6+groveRand(i+40)*8, x=((t*sp+groveRand(i+11)*w*2)%(w+160))-80, y=22+groveRand(i+5)*50;
+    ctx.fillStyle='rgba(232,237,248,0.05)'; ctx.beginPath(); ctx.ellipse(x,y,38,11,0,0,Math.PI*2); ctx.ellipse(x+22,y-6,22,10,0,0,Math.PI*2); ctx.fill(); }
+  ctx.fillStyle=season==='winter'?'#2a3140':'#1c2230'; ctx.fillRect(0,h-24,w,24);
+  ctx.fillStyle=season==='winter'?'rgba(232,237,248,0.55)':groveHexA(P.def.color,0.25); ctx.fillRect(0,h-24,w,season==='winter'?4:2);
+  return season;
+}
+function groveSnow(P,t){
+  if(groveSeason(new Date().getMonth())!=='winter'||groveReduce) return;
+  const {ctx,w,h}=P; ctx.fillStyle='rgba(232,237,248,0.7)';
+  for(let i=0;i<30;i++){ const sp=18+groveRand(i)*22, x=(groveRand(i+3)*w+Math.sin(t*0.8+i)*10+w)%w, y=(t*sp+groveRand(i+7)*h)%h; ctx.beginPath(); ctx.arc(x,y,1+groveRand(i+9)*1.4,0,Math.PI*2); ctx.fill(); }
+}
+function groveEmpty(P,label){
+  const {ctx,w,h}=P; ctx.setLineDash([4,5]); ctx.strokeStyle=groveHexA(P.def.color,0.4); ctx.strokeRect(w/2-60,h-24-70,120,70); ctx.setLineDash([]);
+  ctx.fillStyle='#97a2b8'; ctx.font='500 12px Geist, Inter, sans-serif'; ctx.textAlign='center'; ctx.fillText(label,w/2,h-24-30);
+}
+function groveTree(P,t){
+  const {ctx,w,h}=P, c=P.disp, s=groveGrowth(c);
+  const gainRatio=Math.min(1,P.dispGain/Math.max(500,c*0.25));
+  const season=groveScene(P,gainRatio,t);
+  if(c<1 && !(_grove.tot||{})[P.def.id]?.has){ groveEmpty(P,'Plant your first dollar'); return; }
+  const depth=Math.max(1,Math.min(8,1+Math.floor(s*8.4))), trunk=16+s*h*0.26, tips=[];
+  const bounce = 1 + P.pulse*0.04;
+  (function br(x,y,len,ang,d,id){
+    const sway=groveReduce?0:Math.sin(t*1.3+id*0.9)*0.018*(depth-d+1);
+    const x2=x+Math.cos(ang+sway)*len*bounce, y2=y+Math.sin(ang+sway)*len*bounce;
+    ctx.strokeStyle='#6b4f36'; ctx.lineCap='round'; ctx.lineWidth=Math.max(1.2,d*(1.1+s*1.6));
+    ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x2,y2); ctx.stroke();
+    if(d<=1){ tips.push([x2,y2,id]); return; }
+    const r1=groveRand(id*2+7), r2=groveRand(id*2+11);
+    br(x2,y2,len*(0.7+r1*0.1),ang-0.32-r1*0.28,d-1,id*2); br(x2,y2,len*(0.7+r2*0.1),ang+0.32+r2*0.28,d-1,id*2+1);
+  })(w/2,h-24,trunk,-Math.PI/2,depth,1);
+  const leafR=5+s*9;
+  const pal={summer:['#1f7a45','#2a9a59','#3cc472','#4ade80'],spring:['#2a9a59','#3cc472','#4ade80','#f9a8d4'],autumn:['#c2410c','#ea580c','#f59e0b','#b45309'],winter:['#e8edf8','#cbd5e1']}[season];
+  tips.forEach(([x,y,id])=>{ if(season==='winter'&&groveRand(id+21)<0.55) return; const bob=groveReduce?0:Math.sin(t*1.6+id)*1.2;
+    ctx.fillStyle=pal[Math.floor(groveRand(id+3)*pal.length)]; ctx.beginPath(); ctx.arc(x,y+bob,leafR*(season==='winter'?0.5:0.75+groveRand(id)*0.5),0,Math.PI*2); ctx.fill(); });
+  if(season==='autumn'&&!groveReduce){ for(let i=0;i<5;i++){ const k=(t*0.18+groveRand(i))%1; const tp=tips[Math.floor(groveRand(i+50)*tips.length)]; if(!tp) break;
+    ctx.fillStyle=pal[i%pal.length]; ctx.globalAlpha=1-k; ctx.beginPath(); ctx.ellipse(tp[0]+Math.sin(t+i)*14,tp[1]+k*(h-24-tp[1]),3,2,t+i,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1; } }
+  const fruit=Math.min(tips.length,Math.round(gainRatio*tips.length*0.6));
+  for(let i=0;i<fruit;i++){ const tp=tips[Math.floor(groveRand(i*13+5)*tips.length)]; const bob=groveReduce?0:Math.sin(t*2+i)*1.5;
+    ctx.fillStyle='#fbbf24'; ctx.shadowColor='rgba(251,191,36,0.7)'; ctx.shadowBlur=10; ctx.beginPath(); ctx.arc(tp[0]+(groveRand(i)-0.5)*leafR,tp[1]+leafR*0.5+bob,2.8+s*1.6,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; }
+  if(c<120){ ctx.fillStyle='#4ade80'; ctx.beginPath(); ctx.ellipse(w/2,h-28,4,7,0,0,Math.PI*2); ctx.fill(); }
+  const li=groveLevel(c);
+  if(li>=4&&!groveReduce){ ctx.strokeStyle='rgba(232,237,248,0.55)'; ctx.lineWidth=1.4; for(let i=0;i<Math.min(4,li-3);i++){ const sp=22+groveRand(i+70)*14, x=((t*sp+groveRand(i+90)*w*3)%(w+100))-50, y=46+groveRand(i+60)*36+Math.sin(t*2+i)*4, f=Math.sin(t*9+i)*4;
+    ctx.beginPath(); ctx.moveTo(x-6,y-f); ctx.quadraticCurveTo(x-3,y-2,x,y); ctx.quadraticCurveTo(x+3,y-2,x+6,y-f); ctx.stroke(); } }
+  if(li>=5){ ctx.fillStyle='#4b3a2a'; ctx.fillRect(w/2+48,h-36,34,4); ctx.fillRect(w/2+50,h-32,3,8); ctx.fillRect(w/2+77,h-32,3,8); }
+  groveSnow(P,t);
+}
+function groveTower(P,t){
+  const {ctx,w,h}=P, c=P.disp, s=groveGrowth(c);
+  const gainRatio=Math.min(1,P.dispGain/Math.max(500,c*0.25));
+  groveScene(P,gainRatio,t);
+  if(c<1 && !(_grove.tot||{})[P.def.id]?.has){ groveEmpty(P,'Break ground here'); return; }
+  const night=(Math.sin(t*0.15)+1)/2, floors=Math.max(0,Math.round(s*42));
+  const bw=Math.min(w*0.5,46+s*70), x0=w/2-bw/2, base=h-24, avail=h-62, fh=floors?Math.min(14,avail/floors):0;
+  const cols=bw>100?5:bw>76?4:3, li=groveLevel(c);
+  const small=(x,bh,seed)=>{ ctx.fillStyle='#1f2738'; ctx.fillRect(x,base-bh,30,bh); for(let r=0;r<Math.floor(bh/10);r++) for(let k=0;k<2;k++){ ctx.fillStyle=groveRand(seed*100+r*3+k)<0.5?'rgba(96,165,250,0.45)':'rgba(255,255,255,0.05)'; ctx.fillRect(x+5+k*13,base-bh+5+r*10,8,5); } };
+  if(li>=3) small(x0-42,40+li*6,1); if(li>=5) small(x0+bw+12,54+li*7,2);
+  ctx.fillStyle='#2a3142'; ctx.fillRect(x0-6,base-6,bw+12,6);
+  for(let f=0;f<floors;f++){ const y=base-6-(f+1)*fh; ctx.fillStyle=f%2?'#26324a':'#2b3852'; ctx.fillRect(x0,y,bw,fh-0.5);
+    const ww=(bw-(cols+1)*4)/cols, wh=Math.max(1.5,fh-5);
+    for(let k=0;k<cols;k++){ const id=f*7+k, lit=groveRand(id)<0.35+night*0.35, gold=groveRand(id*3+1)<gainRatio*0.55, fl=groveReduce?1:(0.8+0.2*Math.sin(t*2+id));
+      ctx.fillStyle=gold?`rgba(251,191,36,${0.9*fl})`:lit?'rgba(96,165,250,0.75)':'rgba(255,255,255,0.06)'; ctx.fillRect(x0+4+k*(ww+4),y+2.5,ww,wh); } }
+  const top=base-6-floors*fh;
+  if((Math.abs(P.disp-c)>5||P.pulse>0.05)&&floors>0){ ctx.strokeStyle='#fbbf24'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(x0+bw*0.75,top); ctx.lineTo(x0+bw*0.75,top-34); ctx.lineTo(x0+bw*0.75-50,top-34); ctx.lineTo(x0+bw*0.75+18,top-34); ctx.stroke(); }
+  else if(floors>8){ ctx.strokeStyle='#97a2b8'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(w/2,top); ctx.lineTo(w/2,top-18); ctx.stroke(); ctx.fillStyle=(groveReduce||Math.sin(t*3)>0)?'#f87171':'#5a2a2a'; ctx.beginPath(); ctx.arc(w/2,top-19,2.5,0,Math.PI*2); ctx.fill(); }
+  if(li>=5&&!groveReduce){ const x=((t*40)%(w+200))-100; ctx.fillStyle='rgba(232,237,248,0.6)'; ctx.fillRect(x,38,14,2.5); ctx.fillRect(x+4,35,4,8); }
+  groveSnow(P,t);
+}
+function groveHouse(P,t){
+  const {ctx,w,h}=P, p=Math.min(1,P.disp/GROVE_FHSA_GOAL);
+  const gainRatio=Math.min(1,P.dispGain/Math.max(500,P.disp*0.25));
+  const season=groveScene(P,gainRatio,t);
+  if(P.disp<1 && !(_grove.tot||{})[P.def.id]?.has){ groveEmpty(P,'Your future home'); return; }
+  const base=h-24, hw=Math.min(160,w*0.55), hx=w/2-hw/2, wallH=82, seg=(lo,hi)=>Math.max(0,Math.min(1,(p-lo)/(hi-lo)));
+  const sF=seg(0,0.05), sW=seg(0.05,0.2), sD=seg(0.2,0.35), sWi=seg(0.35,0.5), sR=seg(0.5,0.65), sC=seg(0.65,0.8), sG=seg(0.8,0.9), sDn=seg(0.9,1);
+  ctx.setLineDash([4,5]); ctx.strokeStyle='rgba(167,139,250,0.35)'; ctx.lineWidth=1; ctx.strokeRect(hx-14,base-wallH-58,hw+28,wallH+58); ctx.setLineDash([]);
+  if(p<1&&sW>0&&sR<1){ ctx.strokeStyle='rgba(251,191,36,0.35)'; ctx.lineWidth=1.2; const sh=wallH*sW+10; for(const sx of [hx-10,hx+hw+4]){ ctx.strokeRect(sx,base-7-sh,6,sh); for(let y=base-7;y>base-7-sh;y-=14){ ctx.beginPath(); ctx.moveTo(sx,y); ctx.lineTo(sx+6,y-14); ctx.stroke(); } } }
+  if(sF>0){ ctx.fillStyle='#3a3f4f'; ctx.fillRect(hx-6,base-7,(hw+12)*sF,7); }
+  if(sW>0){ const wh=wallH*sW; ctx.fillStyle='#3b3357'; ctx.fillRect(hx,base-7-wh,hw,wh); ctx.strokeStyle='rgba(255,255,255,0.05)'; for(let y=base-7;y>base-7-wh;y-=8){ ctx.beginPath(); ctx.moveTo(hx,y); ctx.lineTo(hx+hw,y); ctx.stroke(); } }
+  const warm=0.35+gainRatio*0.65;
+  if(sD>0){ ctx.fillStyle='#a78bfa'; const dh=38*sD; ctx.fillRect(hx+hw/2-12,base-7-dh,24,dh); }
+  if(sWi>0){ [[hx+16,base-7-58],[hx+hw-46,base-7-58]].forEach(([x,y])=>{ ctx.fillStyle=`rgba(251,191,36,${(0.25+0.75*warm)*sWi})`; ctx.shadowColor='rgba(251,191,36,0.6)'; ctx.shadowBlur=gainRatio*14; ctx.fillRect(x,y,30,24); ctx.shadowBlur=0; ctx.strokeStyle='#2a2440'; ctx.lineWidth=2; ctx.strokeRect(x,y,30,24); ctx.beginPath(); ctx.moveTo(x+15,y); ctx.lineTo(x+15,y+24); ctx.moveTo(x,y+12); ctx.lineTo(x+30,y+12); ctx.stroke(); }); }
+  if(sC>0){ ctx.fillStyle='#4a3f6b'; const ch=32*sC; ctx.fillRect(hx+hw*0.72,base-7-wallH-ch+6,16,ch); }
+  if(sR>0){ const peak=base-7-wallH-50*sR; ctx.fillStyle='#6d4fc2'; ctx.beginPath(); ctx.moveTo(hx-12,base-7-wallH); ctx.lineTo(w/2,peak); ctx.lineTo(hx+hw+12,base-7-wallH); ctx.closePath(); ctx.fill();
+    if(season==='winter'){ ctx.fillStyle='rgba(232,237,248,0.85)'; ctx.beginPath(); ctx.moveTo(hx-12,base-7-wallH); ctx.lineTo(w/2,peak); ctx.lineTo(hx+hw+12,base-7-wallH); ctx.lineTo(hx+hw+4,base-7-wallH-4); ctx.lineTo(w/2,peak+6); ctx.lineTo(hx-4,base-7-wallH-4); ctx.closePath(); ctx.fill(); } }
+  if(sC>=1&&gainRatio>0.05&&!groveReduce){ for(let i=0;i<4;i++){ const k=(t*0.4+i/4)%1; ctx.fillStyle=`rgba(232,237,248,${0.25*(1-k)*Math.min(1,gainRatio*2)})`; ctx.beginPath(); ctx.arc(hx+hw*0.72+8+Math.sin(t+i)*4,base-7-wallH-32-k*40,4+k*7,0,Math.PI*2); ctx.fill(); } }
+  if(sG>0){ ctx.fillStyle=season==='winter'?'#cbd5e1':season==='autumn'?'#ea580c':season==='spring'?'#f9a8d4':'#3cc472'; for(let i=0;i<Math.round(8*sG);i++){ const x=hx-10+i*((hw+20)/7); ctx.beginPath(); ctx.arc(x,base-4,5,0,Math.PI*2); ctx.fill(); } }
+  if(sDn>0){ ctx.strokeStyle='rgba(232,237,248,0.55)'; ctx.lineWidth=1.5; const fx=hx-24, fw=(hw+48)*sDn; ctx.beginPath(); ctx.moveTo(fx,base-12); ctx.lineTo(fx+fw,base-12); ctx.stroke(); for(let x=fx;x<fx+fw;x+=10){ ctx.beginPath(); ctx.moveTo(x,base-1); ctx.lineTo(x,base-17); ctx.stroke(); } }
+  if(p>=1){ ctx.fillStyle='#4ade80'; ctx.font='600 12px Geist, Inter, sans-serif'; ctx.textAlign='center'; ctx.fillText('Down payment ready',w/2,18); }
+  groveSnow(P,t);
+}
+function groveParticles(P){
+  const {ctx}=P; P.parts=P.parts.filter(pt=>pt.life>0);
+  P.parts.forEach(pt=>{ pt.vy+=0.12; pt.x+=pt.vx; pt.y+=pt.vy; pt.life-=0.025; ctx.globalAlpha=Math.max(0,pt.life); ctx.fillStyle=pt.col; ctx.beginPath(); ctx.arc(pt.x,pt.y,pt.r,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1; });
+}
+
+// Re-render the grove whenever investments change or the page opens
+(function(){
+  const _ra = renderAllocator, _rp = renderPortfolio, _sp = showPage;
+  renderAllocator = function(){ _ra.apply(this, arguments); try{ renderGrove(); }catch(e){ console.error('grove', e); } };
+  renderPortfolio = function(){ _rp.apply(this, arguments); try{ renderGrove(); }catch(e){ console.error('grove', e); } };
+  showPage = function(id){ _sp.apply(this, arguments); if(id==='investments'){ requestAnimationFrame(()=>{ try{ groveSize(); renderGrove(); }catch(e){ console.error('grove', e); } }); } };
+})();
 
 // Legacy stub kept so renderAll doesn't crash
 function calcRental(){ calcBuy(); }
