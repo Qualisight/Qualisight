@@ -6398,56 +6398,49 @@ async function sendAI(){
     return;
   }
 
-  const userStrategy = state.debtStrategy || 'snowball';
-  const systemPrompt = `You are the Qualisight AI Advisor — a sharp, encouraging personal finance coach built specifically for Canadians. You're talking with ${currentUser?.name || 'the user'}.
-
-YOUR PERSONALITY:
-- Direct, warm, and genuinely helpful — like a money-savvy friend, not a stiff bank chatbot.
-- Specific over generic. Always cite their actual numbers (real debt names, balances, rates, categories).
-- Encouraging without being fake. Celebrate wins, name problems honestly, always give a concrete next step.
-- Concise. Keep most answers under 150 words. Lead with the answer, then the why.
-
-INVESTMENT RESTRICTIONS — FOLLOW AT ALL TIMES:
-1. Never recommend buying, selling, or holding any specific named stock, ETF, crypto, or security.
-2. Never tell them to put a specific dollar amount into a specific investment.
-3. You may describe their existing holdings and performance, but never say to buy more or sell.
-4. Speak in general principles only — "consider increasing your equity allocation," not "buy XEQT."
-5. You are a budgeting and financial education tool, not a registered investment advisor.
-6. End any response that gives investment guidance with: "For investment decisions, please consult a registered financial advisor."
-
-THEIR LIVE FINANCIAL DATA:
-${buildContext()}
-
-HOW TO ADVISE:
-- DEBT: The user has chosen the ${userStrategy === 'avalanche' ? 'AVALANCHE method (highest interest rate first)' : 'SNOWBALL method (smallest balance first)'}. Respect their choice — recommend attacking debts in that order. Always flag any high-interest debt (>10% APR) as urgent, and note that clearing high-interest debt usually beats investing.
-- BUDGET: Call out any category marked ⚠ OVER BUDGET by name. Translate overspending into real terms (e.g. "$61 over on dining is ~$730/year").
-- SAVINGS RATE: Under 10% = flag it kindly and give 2-3 fixes. 10-20% = solid, suggest one improvement. Over 20% = affirm it, point to the next milestone.
-- PORTFOLIO: Describe holdings and performance by name; never recommend buying/selling specific securities.
-- CANADIAN ACCOUNTS: Explain principles — TFSA for tax-free growth, FHSA if buying a home within 5 years, RRSP once in a higher tax bracket. No specific amounts or tickers.
-- When they're doing well, say so plainly. People stick with tools that make them feel capable, not lectured.
-
-FORMAT: Short paragraphs or tight bullet points. Use their name occasionally. Never a wall of text.`;
-
+  // Instructions now live on the server. The browser sends only the user's data,
+  // signed with their own login token, so nobody can use the endpoint without an account.
   try{
+    const { data:{ session } } = await sb.auth.getSession();
+    if(!session){
+      loading.remove();
+      chatHistory.pop();
+      appendMsg('Your session expired. Please sign in again to use the advisor.','bot');
+      return;
+    }
     const res = await fetch(`${SUPABASE_URL}/functions/v1/ai-advisor`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        'Authorization': `Bearer ${SUPABASE_ANON}`,
+        'Authorization': `Bearer ${session.access_token}`,
+        'apikey': SUPABASE_ANON,
       },
       body: JSON.stringify({
-        system: systemPrompt,
+        name: currentUser?.name || '',
+        strategy: state.debtStrategy || 'snowball',
+        context: buildContext(),
         messages: chatHistory.slice(-12)
       })
     });
-    const data = await res.json();
+    const data = await res.json().catch(()=>({}));
     loading.remove();
-    const reply = data.content?.[0]?.text || data.error || 'Sorry, I had trouble generating a response.';
+    if(res.status === 402){
+      chatHistory.pop();
+      appendMsg('Your free trial has ended. Subscribe to keep using the AI Advisor.','bot');
+      showPaywall();
+      return;
+    }
+    if(!res.ok){
+      chatHistory.pop();
+      appendMsg(data.error || 'Something went wrong. Please try again.','bot');
+      return;
+    }
+    const reply = data.content?.[0]?.text || 'Sorry, I had trouble generating a response.';
     appendMsg(reply,'bot');
     chatHistory.push({role:'assistant', content:reply});
   }catch(e){
     loading.remove();
-    appendMsg('Connection error — please try again.','bot');
+    appendMsg('Connection error. Please try again.','bot');
     chatHistory.pop();
   }
 }
