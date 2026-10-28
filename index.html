@@ -3836,7 +3836,7 @@ select option{background:#fff;color:var(--ink)}
       <div class="form-group"><label>Ticker</label><input id="p-ticker" class="bm-input" placeholder="e.g. XEQT"></div>
       <div class="form-group"><label>Security type</label>
         <select id="p-type" class="bm-select">
-          <option>Stocks</option><option>ETF</option><option>Crypto</option><option>Other</option>
+          <option>Stocks</option><option>ETF</option><option>Crypto</option><option value="Gold">Gold / precious metals</option><option>Other</option>
         </select>
       </div>
       <div class="form-group"><label>Shares / units</label><input id="p-shares" class="bm-input" type="number" placeholder="0"></div>
@@ -4214,6 +4214,7 @@ const DEMO_STATE = {
     {ticker:'BTC',  type:'Crypto', shares:0.08,cost:54000, price:87400, accountId:'acc-1', targetPct:15, live:false, lastRefreshed:null},
     {ticker:'VFV',  type:'ETF',    shares:30,  cost:121.40,price:134.50,accountId:'acc-3', targetPct:100, live:false, lastRefreshed:null},
     {ticker:'XEQT', type:'ETF',    shares:340, cost:26.20, price:28.74, accountId:'acc-4', targetPct:100, live:false, lastRefreshed:null},
+    {ticker:'CGL.C', type:'Gold',  shares:40,  cost:22.10, price:25.40, accountId:'acc-2', targetPct:0, live:false, lastRefreshed:null},
   ],
   trades: [
     {date:'2026-03-19', sym:'BTC', buy:67000, sell:87400, shares:0.03, profit:612, wl:'W'},
@@ -7805,6 +7806,11 @@ function groveLvlOf(def,c){ return def.kind==='house' ? groveStage(def,c) : grov
 function groveMonthKey(d){ d=d||groveNow(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
 function groveDur(m){ if(m===Infinity) return null; if(m<12) return `${m} month${m===1?'':'s'}`; const y=Math.floor(m/12), r=m%12; return `${y} yr${y>1?'s':''}${r?` ${r} mo`:''}`; }
 
+const GROVE_GOLD_TICKERS = ['GLD','IAU','GLDM','SGOL','AAAU','BAR','OUNZ','PHYS','CGL','CGL.C','KILO','MNT','GDX','GDXJ','XGD','ZGD','XAU','XAUUSD','GC=F','IGLD'];
+function groveIsGold(h){
+  const t=String(h.ticker||'').toUpperCase().replace(/\.(TO|NE|V|CN)$/,'');
+  return h.type==='Gold' || GROVE_GOLD_TICKERS.includes(t) || t.includes('GOLD');
+}
 function groveTotals(){
   const accounts = state.accounts||[];
   const out = {};
@@ -7815,6 +7821,8 @@ function groveTotals(){
       contrib: hs.reduce((s,h)=>s+(+h.cost||0)*(+h.shares||0),0),
       value:   hs.reduce((s,h)=>s+(+h.price||0)*(+h.shares||0),0) };
   });
+  const goldHs = (state.portfolio||[]).filter(h=>accounts.some(a=>a.id===h.accountId) && groveIsGold(h));
+  out.gold = goldHs.reduce((s,h)=>s+(+h.price||0)*(+h.shares||0),0);
   return out;
 }
 
@@ -7822,8 +7830,8 @@ function groveTotals(){
 function groveTrack(tot){
   if(!state.grove) state.grove = { history:{}, badges:[], levels:{}, plan:{} };
   const g = state.grove; g.history=g.history||{}; g.badges=g.badges||[]; g.levels=g.levels||{}; g.plan=g.plan||{};
-  const c = Object.values(tot).reduce((s,x)=>s+x.contrib,0);
-  const v = Object.values(tot).reduce((s,x)=>s+x.value,0);
+  const c = GROVE_PLOTS.reduce((s,p)=>s+tot[p.id].contrib,0);
+  const v = GROVE_PLOTS.reduce((s,p)=>s+tot[p.id].value,0);
   const key = groveMonthKey(), keys = Object.keys(g.history).sort();
   let changed = false;
   if(!g.history[key]){
@@ -8323,8 +8331,43 @@ function groveField(P,t){
     }
   }
   // a scarecrow keeps watch once there's a real field
+  if((_grove.tot||{}).gold>0) groveGoldPig(P,t,_grove.tot.gold);
   if(li>=4){ const x=Math.min(fieldR-24, w*0.42), y=base-4; ctx.strokeStyle='#6b4f36'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x,y-46); ctx.moveTo(x-16,y-34); ctx.lineTo(x+16,y-34); ctx.stroke(); ctx.fillStyle='#d6b46b'; ctx.beginPath(); ctx.arc(x,y-50,6,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#8a2f2a'; ctx.fillRect(x-9,y-58,18,4); ctx.fillRect(x-5,y-64,10,6); }
   groveSnow(P,t);
+}
+// A golden pig flies over the farm when you hold gold. Bigger stash, bigger pig.
+function groveGoldPig(P,t,gold){
+  const {ctx,w,h}=P;
+  const period=11, phase=(t%period)/period;           // one pass every 11 seconds
+  if(groveReduce && phase>0.02) return;
+  const sc = 0.8 + Math.min(0.7, Math.log10(1+gold/100)*0.22);
+  const x = groveReduce ? w*0.5 : -60 + phase*(w+120);
+  const y = 46 + Math.sin(t*2.2)*7 + Math.sin(phase*Math.PI)*-10;
+  const flap = groveReduce ? 0.5 : (Math.sin(t*14)+1)/2;
+  // sparkle trail
+  if(!groveReduce) for(let i=1;i<7;i++){ const tx=x-i*9*sc, ty=y+Math.sin(t*2.2-i*0.4)*5+4*sc;
+    ctx.fillStyle=`rgba(251,191,36,${0.5-i*0.07})`; ctx.beginPath(); ctx.arc(tx,ty,(2.2-i*0.25)*sc,0,Math.PI*2); ctx.fill(); }
+  ctx.save(); ctx.translate(x,y); ctx.scale(sc,sc);
+  // back wing
+  ctx.fillStyle='rgba(254,243,199,0.55)'; ctx.beginPath(); ctx.moveTo(-2,-6); ctx.quadraticCurveTo(-10,-18-flap*8,4,-14-flap*10); ctx.quadraticCurveTo(4,-9,-2,-6); ctx.fill();
+  // legs
+  ctx.fillStyle='#d97706'; [[-8,6],[-3,7],[5,7],[10,6]].forEach(([lx,ly])=>{ ctx.fillRect(lx,ly,2.6,4.5); });
+  // body
+  const g=ctx.createLinearGradient(0,-10,0,10); g.addColorStop(0,'#fde68a'); g.addColorStop(0.55,'#fbbf24'); g.addColorStop(1,'#d97706');
+  ctx.shadowColor='rgba(251,191,36,0.7)'; ctx.shadowBlur=12;
+  ctx.fillStyle=g; ctx.beginPath(); ctx.ellipse(0,0,15,10,0,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(13,-3,7.5,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
+  // ear, snout, eye, tail
+  ctx.fillStyle='#f59e0b'; ctx.beginPath(); ctx.moveTo(10,-9); ctx.lineTo(13,-15); ctx.lineTo(16,-9); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#fcd34d'; ctx.beginPath(); ctx.ellipse(20,-1.5,3.4,2.8,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#b45309'; ctx.beginPath(); ctx.arc(19.2,-1.8,0.7,0,Math.PI*2); ctx.arc(21.2,-1.8,0.7,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#3b2a12'; ctx.beginPath(); ctx.arc(15,-5,1.1,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#d97706'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.moveTo(-15,-1); ctx.bezierCurveTo(-21,-6,-17,-10,-19,-4); ctx.stroke();
+  // shine and front wing
+  ctx.fillStyle='rgba(255,255,255,0.55)'; ctx.beginPath(); ctx.ellipse(-4,-5,5,2,-0.3,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='rgba(255,251,235,0.95)'; ctx.beginPath(); ctx.moveTo(1,-7); ctx.quadraticCurveTo(-6,-22-flap*9,10,-17-flap*11); ctx.quadraticCurveTo(9,-10,1,-7); ctx.fill();
+  ctx.strokeStyle='rgba(217,119,6,0.5)'; ctx.lineWidth=0.8; ctx.stroke();
+  ctx.restore();
 }
 function groveParticles(P){
   const {ctx}=P; P.parts=P.parts.filter(pt=>pt.life>0);
