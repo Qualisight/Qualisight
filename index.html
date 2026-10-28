@@ -1862,6 +1862,21 @@ input[type=number]{-moz-appearance:textfield}
 .grove-chip.down{background:rgba(248,113,113,0.12);color:#f87171}
 
 
+/* ── HIDE AMOUNTS ── */
+.hide-figs-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;flex-shrink:0;margin-left:auto;margin-right:0.4rem}
+.hide-figs-btn:hover{color:var(--text);border-color:rgba(255,255,255,0.22)}
+.hide-figs-btn .eye-off{display:none}
+body.hide-figures .hide-figs-btn{color:#4ade80;border-color:rgba(74,222,128,0.45);background:rgba(74,222,128,0.1)}
+body.hide-figures .hide-figs-btn .eye-on{display:none}
+body.hide-figures .hide-figs-btn .eye-off{display:block}
+body.hide-figures .qs-money:not(.qs-reveal),
+body.hide-figures .cents,
+body.hide-figures #app-main input[type=number]{filter:blur(7px);-webkit-user-select:none;user-select:none;cursor:pointer}
+body.hide-figures .qs-money{transition:filter .15s}
+@media (prefers-reduced-motion: reduce){body.hide-figures .qs-money{transition:none}}
+@media(max-width:700px){.hide-figs-btn{width:34px;height:34px;margin-right:0.3rem}header .user-pill-name,header .user-pill-dot{display:none}header .user-pill{padding:0.2rem}header .user-pill:has(#settings-gear-btn[style*="none"]){display:none}}
+
+
 /* ═══════════════════════════════════════════════════════════
    QUALISIGHT REDESIGN — "polymer note"
    Light, calm surfaces. Every section borrows the colour of a
@@ -3411,6 +3426,7 @@ select option{background:#fff;color:var(--ink)}
     <button class="nav-tab"        data-page="investments" onclick="showPage('investments')">Investments</button>
     <button class="nav-tab"        data-page="rental"      onclick="showPage('rental')">Housing</button>
   </div>
+  <button class="hide-figs-btn" id="hide-figs-btn" type="button" onclick="toggleHideFigures()" title="Hide amounts" aria-label="Hide amounts" aria-pressed="false"><svg class="eye-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.1M6.6 6.6C3.9 8.3 2 12 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg></button>
   <button class="ai-toggle" id="ai-toggle-btn" onclick="toggleAI()">AI Advisor</button>
   <div class="user-pill" style="position:relative">
     <div class="user-pill-dot"></div>
@@ -8221,6 +8237,62 @@ function groveParticles(P){
   renderPortfolio = function(){ _rp.apply(this, arguments); try{ renderGrove(); }catch(e){ console.error('grove', e); } };
   showPage = function(id){ _sp.apply(this, arguments); if(id==='investments'){ requestAnimationFrame(()=>{ try{ groveSize(); renderGrove(); }catch(e){ console.error('grove', e); } }); } };
 })();
+
+
+// ── Hide amounts: blurs every dollar figure in the app, remembered on this device ──
+const QS_MONEY_RE = /[+\-\u2212]?\s?(?:CA)?\$\s?\d[\d,]*(?:\.\d+)?(?:\s?[KkMm](?![a-z]))?(?:\s?\/\s?(?:mo|month|yr|year))?/g;
+let _qsMaskObs = null, _qsMaskQueued = false;
+function qsMaskMoney(root){
+  if(!root) return;
+  const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+    acceptNode(n){
+      const el = n.parentElement;
+      if(!el || !n.nodeValue || n.nodeValue.indexOf('$')<0) return NodeFilter.FILTER_REJECT;
+      if(el.closest('script,style,textarea,input,select,option,.qs-money,#landing-page,#auth-screen,.tos-overlay,.paywall-overlay,#hide-figs-btn')) return NodeFilter.FILTER_REJECT;
+      return NodeFilter.FILTER_ACCEPT;
+    }
+  });
+  const nodes=[]; while(walker.nextNode()) nodes.push(walker.currentNode);
+  nodes.forEach(n=>{
+    const text=n.nodeValue; QS_MONEY_RE.lastIndex=0;
+    if(!QS_MONEY_RE.test(text)) return;
+    QS_MONEY_RE.lastIndex=0;
+    const frag=document.createDocumentFragment(); let last=0, m;
+    while((m=QS_MONEY_RE.exec(text))){
+      if(m.index>last) frag.appendChild(document.createTextNode(text.slice(last,m.index)));
+      const sp=document.createElement('span'); sp.className='qs-money'; sp.textContent=m[0]; frag.appendChild(sp);
+      last=m.index+m[0].length;
+    }
+    if(last<text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+    n.parentNode.replaceChild(frag,n);
+  });
+}
+function qsQueueMask(){
+  if(_qsMaskQueued) return; _qsMaskQueued=true;
+  requestAnimationFrame(()=>{ _qsMaskQueued=false; if(!document.body.classList.contains('hide-figures')) return;
+    _qsMaskObs && _qsMaskObs.disconnect();
+    qsMaskMoney(document.getElementById('app-main')); qsMaskMoney(document.getElementById('ai-panel')); qsMaskMoney(document.getElementById('rollover-toast'));
+    _qsMaskObs && _qsMaskObs.observe(document.body,{childList:true,subtree:true,characterData:true});
+  });
+}
+function setHideFigures(on){
+  document.body.classList.toggle('hide-figures', on);
+  const b=document.getElementById('hide-figs-btn');
+  if(b){ b.setAttribute('aria-pressed', on); b.title = on?'Show amounts':'Hide amounts'; b.setAttribute('aria-label', b.title); }
+  try{ localStorage.setItem('qs_hide_figures', on?'1':'0'); }catch(e){}
+  if(on){
+    if(!_qsMaskObs) _qsMaskObs = new MutationObserver(qsQueueMask);
+    qsQueueMask();
+  } else if(_qsMaskObs){ _qsMaskObs.disconnect(); }
+}
+function toggleHideFigures(){ setHideFigures(!document.body.classList.contains('hide-figures')); }
+// Tap a hidden amount to peek at it for a few seconds
+document.addEventListener('click', e=>{
+  if(!document.body.classList.contains('hide-figures')) return;
+  const m=e.target.closest('.qs-money'); if(!m) return;
+  m.classList.add('qs-reveal'); clearTimeout(m._t); m._t=setTimeout(()=>m.classList.remove('qs-reveal'),3000);
+});
+try{ if(localStorage.getItem('qs_hide_figures')==='1') setHideFigures(true); }catch(e){}
 
 // Legacy stub kept so renderAll doesn't crash
 function calcRental(){ calcBuy(); }
