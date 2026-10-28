@@ -3914,6 +3914,12 @@ select option{background:#fff;color:var(--ink)}
               onfocus="this.style.borderColor='rgba(74,222,128,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.07)'">
           </div>
           <div class="form-group">
+            <label>Household income before tax ($/year)</label>
+            <input id="rv-gross" type="number" placeholder="e.g. 85000" oninput="state.grossIncome=parseFloat(this.value)||0;save();autoCalcBuy()"
+              style="background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:0.85rem;padding:0.5rem 0.7rem;outline:none;transition:border-color 0.15s">
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:0.35rem">Lenders use income before tax, not take-home pay.</div>
+          </div>
+          <div class="form-group">
             <label>Mortgage Rate (%)</label>
             <input id="rv-rate" type="number" value="5.0" step="0.05"
               style="background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:0.85rem;padding:0.5rem 0.7rem;outline:none;transition:border-color 0.15s"
@@ -7307,9 +7313,25 @@ const MAINT_RATE    = {condo:0.005, semi:0.008, townhouse:0.008, detached:0.010}
 const INSURANCE_MO  = {condo:80,   semi:150,   townhouse:130,   detached:180};
 const CONDO_FEE_MO  = {1:550, 2:650, 3:750, 4:850};
 
+// ── Canadian mortgage rules (federal rules in effect since Dec 2024) ──
+const INSURED_PRICE_CAP = 1500000;     // homes at $1.5M+ can't use mortgage insurance, need 20% down
+const STRESS_FLOOR      = 5.25;        // OSFI / insured minimum qualifying rate
+const GDS_MAX = 39, TDS_MAX = 44;      // CMHC limits for insured mortgages
+const GDS_COMFY = 32, TDS_COMFY = 40;  // common conventional guideline
+const HEAT_MO = {condo:75, semi:110, townhouse:100, detached:130};
+
+function minDownPayment(price){
+  if(price >= INSURED_PRICE_CAP) return price*0.20;
+  if(price <= 500000) return price*0.05;
+  return 500000*0.05 + (price-500000)*0.10;
+}
+function qualifyingRate(contractRate){
+  return Math.max(contractRate + 2, STRESS_FLOOR);
+}
+
 function cmhcPremium(price, down){
   const p = down/price*100;
-  if(p>=20) return 0;
+  if(p>=20 || price>=INSURED_PRICE_CAP) return 0;
   if(p>=15) return 0.028;
   if(p>=10) return 0.031;
   return 0.040;
@@ -7342,7 +7364,7 @@ function rvbSetMode(mode){
   document.getElementById('rvb-buy-tab').classList.toggle('active', mode==='buy');
   document.getElementById('rvb-rent-mode').style.display = mode==='rent'?'block':'none';
   document.getElementById('rvb-buy-mode').style.display  = mode==='buy' ?'block':'none';
-  if(mode==='buy') renderBuyFinancesSummary();
+  if(mode==='buy'){ renderBuyFinancesSummary(); const g=document.getElementById('rv-gross'); if(g && !g.value && state.grossIncome) g.value=state.grossIncome; }
   if(mode==='rent') calcRent();
 }
 
@@ -7360,7 +7382,7 @@ function calcRent(){
         <span style="color:var(--muted)">${b} Bedroom${b>1?'s':''}</span>
         <span style="font-weight:600">$${bench[b].toLocaleString()}/mo</span>
       </div>`).join('') +
-    `<div style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem">Source: CMHC / Rentals.ca 2026</div>`;
+    `<div style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem">Source: CMHC / Rentals.ca 2026. Ontario cities only for now. Outside Ontario, compare against local listings.</div>`;
 
   if(!rent){ document.getElementById('rent-results').style.display='none'; return; }
 
@@ -7398,7 +7420,7 @@ function calcRent(){
 
   document.getElementById('rent-metrics').innerHTML = [
     ['Monthly Rent',      fmt(rent),                                    '',                         "The amount you're considering"],
-    ['% of Your Income',  rentPct!==null?rentPct.toFixed(1)+'%':'—',    rentPct===null?'':rentPct<=30?'pos':rentPct<=40?'neutral':'neg', '30% or less is the guideline'],
+    ['% of Take-Home Pay',  rentPct!==null?rentPct.toFixed(1)+'%':'—',    rentPct===null?'':rentPct<=30?'pos':rentPct<=40?'neutral':'neg', '30% or less keeps room to save'],
     ['Left After Rent',   totalIncome>0?fmt(leftAfterRent):'—',         totalIncome>0&&leftAfterRent>0?'pos':'neg', 'Income minus this rent'],
     ['Monthly Savings',   monthlySaveable!==null?(monthlySaveable>0?'+':'')+fmt(monthlySaveable):'—',
                           monthlySaveable===null?'':monthlySaveable>0?'pos':'neg',                  'After rent + your current expenses'],
@@ -7471,7 +7493,15 @@ function calcBuy(){
   const rate          = parseFloat(document.getElementById('rv-rate').value)||5.0;
   const appreciation  = parseFloat(document.getElementById('rv-appreciation').value)||4.0;
   if(!price||!down){ alert('Please enter a purchase price and down payment.'); return; }
-  if(down < price*0.05){ alert('Minimum down payment in Canada is 5%.'); return; }
+  const minDown = minDownPayment(price);
+  if(down < minDown - 0.5){
+    alert(price >= INSURED_PRICE_CAP
+      ? `Homes priced at $1.5 million or more need at least 20% down (${fmt(Math.ceil(minDown))}).`
+      : price > 500000
+        ? `The minimum down payment for this price is ${fmt(Math.ceil(minDown))}: 5% of the first $500,000 plus 10% of the rest.`
+        : `The minimum down payment in Canada is 5% (${fmt(Math.ceil(minDown))}).`);
+    return;
+  }
 
   const totalIncome  = state.income.reduce((s,x)=>s+x.actual, 0);
   const totalExp     = state.expenses.reduce((s,x)=>s+x.actual, 0);
@@ -7487,8 +7517,19 @@ function calcBuy(){
   const insurance= INSURANCE_MO[type];
   const condoFee = type==='condo' ? (CONDO_FEE_MO[2]||650) : 0;
   const totalCosts = mortgage + propTax + maint + insurance + condoFee;
-  const costPct    = totalIncome>0 ? (totalCosts/totalIncome*100) : null;
-  const incomeNeeded = totalCosts / 0.32;
+  const costPct    = totalIncome>0 ? (totalCosts/totalIncome*100) : null; // share of take-home pay
+
+  // Lender check: stress-tested payment, before-tax income, GDS and TDS
+  const qRate     = qualifyingRate(rate);
+  const qMortgage = monthlyMortgage(principal, qRate, 25);
+  const heat      = HEAT_MO[type];
+  const gdsCosts  = qMortgage + propTax + heat + condoFee*0.5;
+  const debtPmts  = (state.debts||[]).reduce((s,d)=>s+(+d.min||0),0);
+  const grossYr   = parseFloat(document.getElementById('rv-gross')?.value) || state.grossIncome || 0;
+  const grossMo   = grossYr/12;
+  const gds       = grossMo>0 ? gdsCosts/grossMo*100 : null;
+  const tds       = grossMo>0 ? (gdsCosts+debtPmts)/grossMo*100 : null;
+  const incomeNeeded = Math.max(gdsCosts/(GDS_MAX/100), (gdsCosts+debtPmts)/(TDS_MAX/100)) * 12; // gross, per year
   const monthsToDP = (monthlySavings>0) ? Math.ceil(down/monthlySavings) : null;
   const yearsToDP  = monthsToDP ? (monthsToDP/12).toFixed(1) : null;
 
@@ -7516,21 +7557,21 @@ function calcBuy(){
 
   // Plain-English verdict
   let verdictCls, verdictMsg;
-  if(!totalIncome){
+  if(gds===null){
     verdictCls='rvb-verdict-warn';
-    verdictMsg=' Add your income on the Monthly page to see if you can afford this.';
-  } else if(costPct<=32){
+    verdictMsg=`Add your household income before tax to see whether a lender would approve this. You'd need about ${fmt(Math.round(incomeNeeded))} a year to qualify.`;
+  } else if(gds<=GDS_COMFY && tds<=TDS_COMFY){
     verdictCls='rvb-verdict-ok';
-    verdictMsg=`✓ Monthly costs are ${costPct.toFixed(1)}% of your income, within CMHC's 32% guideline. This looks affordable for your income.`;
-  } else if(costPct<=42){
+    verdictMsg=`✓ You'd likely qualify. At the stress test rate of ${qRate.toFixed(2)}%, housing costs are ${gds.toFixed(1)}% of your before-tax income (GDS) and ${tds.toFixed(1)}% with your debts (TDS), inside the comfortable 32% and 40% guidelines.`;
+  } else if(gds<=GDS_MAX && tds<=TDS_MAX){
     verdictCls='rvb-verdict-warn';
-    verdictMsg=` Monthly costs are ${costPct.toFixed(1)}% of your income, above the 32% guideline. You might qualify but it will be tight.`;
+    verdictMsg=` You might qualify, but it's tight. At the stress test rate of ${qRate.toFixed(2)}%, your GDS is ${gds.toFixed(1)}% and TDS is ${tds.toFixed(1)}%. That's under the 39% and 44% limits for insured mortgages, but above the comfortable range.`;
   } else {
     verdictCls='rvb-verdict-bad';
-    verdictMsg=`✗ Monthly costs are ${costPct.toFixed(1)}% of your income, significantly above guidelines. You'd need higher income or a lower-priced property.`;
+    verdictMsg=`✗ A lender likely wouldn't approve this yet. At the stress test rate of ${qRate.toFixed(2)}%, your GDS is ${gds.toFixed(1)}% and TDS is ${tds.toFixed(1)}%, over the 39% and 44% limits. You'd need about ${fmt(Math.round(incomeNeeded))} a year, a bigger down payment, or a lower price.`;
   }
 
-  _rvbLastBuy = { mode:'buy', price, down, type, rate, appreciation, cityLabel, mortgage, totalCosts, costPct, incomeNeeded, monthsToDP, yearsToDP, totalIncome, value5, value10, equity5, equity10 };
+  _rvbLastBuy = { mode:'buy', price, down, type, rate, qRate, gds, tds, grossYr, appreciation, cityLabel, mortgage, totalCosts, costPct, incomeNeeded, monthsToDP, yearsToDP, totalIncome, value5, value10, equity5, equity10 };
   state.rental = _rvbLastBuy;
   save();
 
@@ -7538,7 +7579,7 @@ function calcBuy(){
     ['Purchase Price',      fmt(price),             '',     ''],
     ['Down Payment',        fmt(down)+' ('+(down/price*100).toFixed(1)+'%)'+(cmhcAmt>0?` + ${fmt(cmhcAmt)} CMHC`:''), cmhcAmt>0?'neutral':'pos', cmhcAmt>0?'Insurance added to mortgage':'No mortgage insurance required'],
     ['Monthly Mortgage',    fmt(Math.round(mortgage)), '',  `25yr @ ${rate}%, Canadian semi-annual compounding`],
-    ['Total Monthly Costs', fmt(Math.round(totalCosts)), costPct!==null?(costPct<=32?'pos':costPct<=42?'neutral':'neg'):'', 'Mortgage + tax + maintenance + insurance'+(condoFee?'+condo fee':'')],
+    ['Total Monthly Costs', fmt(Math.round(totalCosts)), gds!==null?(gds<=GDS_COMFY&&tds<=TDS_COMFY?'pos':gds<=GDS_MAX&&tds<=TDS_MAX?'neutral':'neg'):'', 'Mortgage + tax + maintenance + insurance'+(condoFee?' + condo fee':'')],
   ].map(([l,v,c,s])=>`<div class="rental-metric"><div class="rm-label">${l}</div><div class="rm-value ${c}">${v}</div><div class="rm-sub">${s}</div></div>`).join('');
 
   document.getElementById('buy-costs-breakdown').innerHTML = `
@@ -7552,10 +7593,15 @@ function calcBuy(){
   document.getElementById('buy-affordability').innerHTML = `
     <div class="rvb-verdict ${verdictCls}" style="margin-bottom:0.8rem">${verdictMsg}</div>
     <div class="rvb-result-row">
-      <span class="rvb-result-label">Income needed to qualify</span>
-      <span class="rvb-result-val ${totalIncome>=incomeNeeded?'pos':'neg'}">${fmt(Math.round(incomeNeeded))}/mo</span>
+      <span class="rvb-result-label">Stress test rate (what lenders qualify you at)</span>
+      <span class="rvb-result-val">${qRate.toFixed(2)}%</span>
     </div>
-    ${totalIncome?`<div class="rvb-result-row"><span class="rvb-result-label">Your income</span><span class="rvb-result-val">${fmt(totalIncome)}/mo</span></div>`:''}
+    <div class="rvb-result-row">
+      <span class="rvb-result-label">Income before tax needed to qualify</span>
+      <span class="rvb-result-val ${grossYr>=incomeNeeded?'pos':'neg'}">${fmt(Math.round(incomeNeeded))}/yr</span>
+    </div>
+    ${grossYr?`<div class="rvb-result-row"><span class="rvb-result-label">Your income before tax</span><span class="rvb-result-val">${fmt(grossYr)}/yr</span></div>`:''}
+    ${costPct!==null?`<div class="rvb-result-row"><span class="rvb-result-label">Real monthly costs as a share of take-home pay</span><span class="rvb-result-val ${costPct<=35?'pos':costPct<=45?'neutral':'neg'}">${costPct.toFixed(1)}%</span></div>`:''}
     <div class="rvb-result-row">
       <span class="rvb-result-label">Time to save down payment</span>
       <span class="rvb-result-val ${monthsToDP?'pos':'neutral'}">
@@ -7615,7 +7661,7 @@ function askRentVsBuy(){
     q = `I'm considering renting in ${r.city} for $${r.rent.toLocaleString()}/month. That's ${r.rentPct!==null?r.rentPct.toFixed(1)+'%':''} of my income. My monthly income is ${fmt(totalIncome)}, expenses are ${fmt(totalExp)}, so I currently save about ${fmt(savings)}/month. My debts: ${debts}.${r.dpGoal?` My down payment goal is $${r.dpGoal.toLocaleString()}.`:''}  Should I rent at this price, and how does it affect my ability to eventually buy?`;
   } else if(_rvbLastBuy){
     const b = _rvbLastBuy;
-    q = `I'm considering buying a ${b.type} in ${b.cityLabel} for $${parseInt(b.price).toLocaleString()} with $${parseInt(b.down).toLocaleString()} down. Monthly mortgage would be ${fmt(Math.round(b.mortgage))}, total costs ${fmt(Math.round(b.totalCosts))}. My monthly income is ${fmt(totalIncome)}, expenses ${fmt(totalExp)}, savings ${fmt(savings)}/month. My debts: ${debts}. Should I buy this property or keep renting?`;
+    q = `I'm considering buying a ${b.type} in ${b.cityLabel} for $${parseInt(b.price).toLocaleString()} with $${parseInt(b.down).toLocaleString()} down. Monthly mortgage would be ${fmt(Math.round(b.mortgage))}, total costs ${fmt(Math.round(b.totalCosts))}. At the ${b.qRate.toFixed(2)}% stress test rate${b.gds!==null?`, my GDS would be ${b.gds.toFixed(1)}% and TDS ${b.tds.toFixed(1)}% on ${fmt(b.grossYr)} before-tax income`:''}. My monthly income is ${fmt(totalIncome)}, expenses ${fmt(totalExp)}, savings ${fmt(savings)}/month. My debts: ${debts}. Should I buy this property or keep renting?`;
   } else {
     q = `Based on my finances, income ${fmt(totalIncome)}/mo, expenses ${fmt(totalExp)}/mo, savings ${fmt(savings)}/mo, debts: ${debts}, should I be renting or buying right now?`;
   }
@@ -8102,7 +8148,7 @@ function lpBind(el,fn){
   if(!income)return;
   function calc(){
     const inc=+income.value,dn=+down.value,r=+rate.value/100/12;
-    const stressR=(+rate.value+2)/100/12,n=25*12;
+    const stressR=Math.max(+rate.value+2,5.25)/100/12,n=25*12;
     const maxGDS=inc/12*0.32,avail=maxGDS-250-150;
     const maxMortgage=avail*(1-Math.pow(1+stressR,-n))/stressR;
     const maxPrice=Math.round((maxMortgage+dn)/5000)*5000;
