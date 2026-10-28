@@ -4242,10 +4242,7 @@ async function acceptTermsAndCreate(){
   if(data.session){
     // Set trial start for new accounts
     await handleSignedInUser(data.user);
-    if(!state.trial_start){
-      state.trial_start = new Date().toISOString();
-      save();
-    }
+    // Trial starts from the account creation date (server side)
     return;
   }
 
@@ -4669,7 +4666,8 @@ function wtAutoAdvance(completedStep){
 async function handleSignedInUser(user){
   if(currentUser && currentUser.id === user.id) return;
   const name = user.user_metadata?.name || user.email.split('@')[0];
-  currentUser = { id:user.id, name, email:user.email, isDemo:false };
+  currentUser = { id:user.id, name, email:user.email, isDemo:false, createdAt:user.created_at };
+  await loadSubscription();
   const row = await loadUserData();
   state = (row && row.data && Object.keys(row.data).length > 0)
     ? { ...JSON.parse(JSON.stringify(EMPTY_STATE)), ...row.data }
@@ -4694,12 +4692,6 @@ async function handleSignedInUser(user){
   }
 
   showApp(); renderAll();
-
-  // Set trial_start for users who signed up before paywall was added
-  if(!state.trial_start && !state.premium){
-    state.trial_start = new Date().toISOString();
-    save();
-  }
 
   // Handle Stripe return URL and update trial banner
   checkPaymentReturn();
@@ -4843,11 +4835,7 @@ async function confirmCancelSub(){
   document.getElementById('cancel-sub-overlay').classList.remove('open');
   showToast('Opening billing portal…');
   try{
-    const { data: profile } = await sb
-      .from('profiles')
-      .select('stripe_customer_id')
-      .eq('id', currentUser.id)
-      .single();
+    const profile = await loadSubscription();
 
     if(profile?.stripe_customer_id){
       // Dynamic portal session via edge function
@@ -7643,16 +7631,35 @@ function askPaycheckAI(amount){
 const TRIAL_DAYS  = 14;
 const PREMIUM_PAGES = new Set(['investments','rental']); // + AI Advisor
 
+// Premium comes from the subscriptions table, which only the Stripe webhook can write.
+// The trial is measured from when the account was created. Neither can be edited in the browser.
+let serverSubscription = null;
+
+async function loadSubscription(){
+  serverSubscription = null;
+  if(!currentUser || currentUser.isDemo) return null;
+  const { data, error } = await sb
+    .from('subscriptions')
+    .select('status, current_period_end, stripe_customer_id')
+    .eq('user_id', currentUser.id)
+    .maybeSingle();
+  if(error){ console.error('loadSubscription', error); return null; }
+  serverSubscription = data || null;
+  return serverSubscription;
+}
+
 function getTrialDaysLeft(){
-  if(!state.trial_start) return TRIAL_DAYS; // no start = still in grace
-  const start    = new Date(state.trial_start);
+  if(!currentUser?.createdAt) return 0;
+  const start    = new Date(currentUser.createdAt);
   const elapsed  = (Date.now() - start.getTime()) / (1000*60*60*24);
   return Math.max(0, Math.ceil(TRIAL_DAYS - elapsed));
 }
 
 function isPremium(){
   if(!currentUser || currentUser.isDemo) return true; // demo has full access
-  return state.premium === true;
+  const sub = serverSubscription;
+  if(!sub || !['active','trialing'].includes(sub.status)) return false;
+  return !sub.current_period_end || new Date(sub.current_period_end).getTime() > Date.now();
 }
 
 function isTrialActive(){
@@ -7706,23 +7713,35 @@ async function startCheckout(){
   const base   = 'https://buy.stripe.com/8x2dRb1jM5Bf5FPaih7ok00';
   const params = new URLSearchParams();
   if(currentUser?.email) params.set('prefilled_email', currentUser.email);
+  // Lets the webhook link the payment to this exact account
+  if(currentUser?.id) params.set('client_reference_id', currentUser.id);
   window.location.href = base + (params.toString() ? '?'+params.toString() : '');
 }
 
 function checkPaymentReturn(){
   const params = new URLSearchParams(window.location.search);
   if(params.get('payment')==='success'){
-    // Mark as premium
-    state.premium = true;
-    save();
+    // Don't trust the URL. Wait for Stripe's webhook to confirm the payment on the server.
     history.replaceState(null,'',window.location.pathname);
     closePaywall();
-    updateTrialBanner();
-    // Show success toast
-    showToast('<strong>Welcome to Qualisight Premium!</strong><br>All features are now unlocked.');
+    showToast('<strong>Payment received.</strong><br>Confirming with Stripe, this takes a few seconds.');
+    waitForPremium();
   } else if(params.get('payment')==='cancel'){
     history.replaceState(null,'',window.location.pathname);
   }
+}
+
+async function waitForPremium(){
+  for(let i=0;i<12;i++){
+    await loadSubscription();
+    if(isPremium()){
+      updateTrialBanner();
+      showToast('<strong>Welcome to Qualisight Premium!</strong><br>All features are now unlocked.');
+      return;
+    }
+    await new Promise(r=>setTimeout(r,2500));
+  }
+  showToast('<strong>Still confirming your payment.</strong><br>Refresh in a minute. If nothing changes, email hello@qualisight.ca.');
 }
 
 function renderAll(){
