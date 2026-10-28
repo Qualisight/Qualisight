@@ -1864,6 +1864,33 @@ input[type=number]{-moz-appearance:textfield}
 .grove-tbtn:disabled:hover{border-color:var(--border)}
 .grove-desc{font-size:0.74rem;color:var(--muted);padding:0 1rem 0.35rem;margin-top:-0.15rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 
+.grove-vault{display:flex;flex-direction:column;gap:0.45rem;border:1px solid rgba(251,191,36,0.28);background:linear-gradient(135deg,rgba(251,191,36,0.07),transparent 70%);border-radius:12px;padding:0.65rem 0.75rem}
+.gv-head{display:flex;justify-content:space-between;align-items:center;gap:0.5rem}
+.gv-head b{display:block;font-size:0.82rem;color:var(--text)}
+.gv-head span{display:block;font-size:0.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.gv-add{background:#fbbf24;color:#08140c;border:none;border-radius:8px;padding:0.35rem 0.7rem;font-weight:700;font-size:0.78rem;cursor:pointer;font-family:inherit;white-space:nowrap}
+.gv-pig{font-size:0.74rem;color:var(--muted)}
+.gv-pig b{color:#fbbf24}
+.gv-item{display:flex;align-items:center;gap:0.5rem;font-size:0.78rem;padding:0.3rem 0;border-top:1px solid var(--border)}
+.gv-name{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;color:var(--text)}
+.gv-w{color:var(--muted);white-space:nowrap}
+.gv-v{color:var(--text);font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
+.gv-x{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:1rem;line-height:1;padding:0 0.2rem}
+.gv-x:hover{color:#f87171}
+.gv-form{display:flex;flex-direction:column;gap:0.4rem}
+.gv-form[hidden]{display:none}
+.gv-form input,.gv-form select,.gv-price input{background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:inherit;font-size:0.82rem;padding:0.45rem 0.6rem;min-width:0}
+.gv-form input:focus,.gv-form select:focus,.gv-price input:focus{outline:none;border-color:#fbbf24}
+.gv-row{display:flex;gap:0.4rem}
+.gv-row > *{flex:1}
+.gv-save{background:#fbbf24;color:#08140c;border:none;border-radius:8px;padding:0.45rem;font-weight:700;cursor:pointer;font-family:inherit}
+.gv-cancel{background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:8px;padding:0.45rem;cursor:pointer;font-family:inherit}
+.gv-err{font-size:0.74rem;color:#f87171}
+.gv-err:empty{display:none}
+.gv-price{display:flex;justify-content:space-between;align-items:center;gap:0.5rem;font-size:0.74rem;color:var(--muted);margin:0}
+.gv-price input{width:110px;text-align:right}
+.gv-note{font-size:0.7rem;color:var(--muted);opacity:0.8;line-height:1.4}
+
 
 /* ── HIDE AMOUNTS ── */
 .hide-figs-btn{display:inline-flex;align-items:center;justify-content:center;width:36px;height:36px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;flex-shrink:0;margin-left:auto;margin-right:0.4rem}
@@ -4223,6 +4250,7 @@ const DEMO_STATE = {
     {ticker:'XEQT', type:'ETF',    shares:340, cost:26.20, price:28.74, accountId:'acc-4', targetPct:100, live:false, lastRefreshed:null},
     {ticker:'CGL.C', type:'Gold',  shares:40,  cost:22.10, price:25.40, accountId:'acc-2', targetPct:0, live:false, lastRefreshed:null},
   ],
+  physicalGold: [ {id:'pg-demo', label:'1 oz Gold Maple Leaf', qty:1, unit:'oz', paid:3200} ],
   trades: [
     {date:'2026-03-19', sym:'BTC', buy:67000, sell:87400, shares:0.03, profit:612, wl:'W'},
     {date:'2026-03-13', sym:'RCL', buy:272, sell:286, shares:9, profit:126, wl:'W'},
@@ -7784,7 +7812,7 @@ const GROVE_PLOTS = [
     levels:['Empty lot','Foundation','Walk-up','Low-rise','Mid-rise','Tower','High-rise','Skyscraper','Skyline'] },
   { id:'fhsa',  types:['FHSA'], tag:'FHSA', name:'First home', color:'#a78bfa', kind:'house', max:666, defPlan:400,
     stages:[[0,'Empty lot'],[0.05,'Foundation poured'],[0.2,'Walls going up'],[0.35,'Front door in'],[0.5,'Windows in'],[0.65,'Roof on'],[0.8,'Chimney built'],[0.9,'Garden planted'],[1,'Down payment ready']] },
-  { id:'other', types:['Cash','RESP','Other'], tag:'Taxable', name:'Taxable, crypto & gold', color:'#fb923c', kind:'field', max:1000, defPlan:100, optional:true,
+  { id:'other', types:['Cash','RESP','Other'], tag:'Taxable', name:'Taxable, crypto & gold', color:'#fb923c', kind:'field', max:1000, defPlan:100,
     levels:['Bare soil','Seeded','Sprouts','First rows','Field','Full field','Farm','Big farm','Homestead'] },
 ];
 const GROVE_BADGES = [
@@ -7823,6 +7851,14 @@ function groveIsCrypto(h){
   const t=String(h.ticker||'').toUpperCase().replace(/\.(TO|NE|V|CN|B|U)$/,'').replace(/-?(USD|CAD)$/,'');
   return h.type==='Crypto' || GROVE_CRYPTO_TICKERS.includes(t);
 }
+// ── Physical gold (bars, coins) ──
+const GROVE_G_PER_OZ = 31.1035;
+const GROVE_GOLD_UNITS = { oz:'oz', g:'grams', kg:'kg' };
+const GROVE_PIG_LEVELS = [[0.01,'Piglet'],[2500,'Golden pig'],[10000,'Crowned pig'],[25000,'Treasure pig'],[50000,'Pig king']];
+function groveGoldOz(it){ const q=+it.qty||0; return it.unit==='g' ? q/GROVE_G_PER_OZ : it.unit==='kg' ? q*1000/GROVE_G_PER_OZ : q; }
+function groveGoldItemValue(it){ const px=+state.goldPriceOz||0; return px>0 ? groveGoldOz(it)*px : (+it.paid||0); }
+function grovePigLevel(g){ let i=-1; GROVE_PIG_LEVELS.forEach(([m],k)=>{ if(g>=m) i=k; }); return i; }
+
 // Simple rule: stocks, ETFs and bonds in a TFSA, RRSP or FHSA grow that account's plot.
 // Everything taxable, plus any crypto or gold wherever it's held, goes to the farm.
 function groveTotals(){
@@ -7843,6 +7879,10 @@ function groveTotals(){
     const id = (gold||crypto||!reg) ? 'other' : reg.id;
     out[id].contrib+=cost; out[id].value+=val;
     if(id==='other'){ out.other.has=true; out.other.mix[gold?'gold':crypto?'crypto':'taxable'] += val; }
+  });
+  (state.physicalGold||[]).forEach(it=>{
+    const val=groveGoldItemValue(it), cost=(+it.paid||0) || val;
+    out.other.contrib+=cost; out.other.value+=val; out.other.mix.gold+=val; out.other.has=true;
   });
   out.gold = out.other.mix.gold;
   out.crypto = out.other.mix.crypto;
@@ -7946,6 +7986,23 @@ function renderGrove(){
               <input type="range" id="gp-${p.id}-slider" min="0" max="${p.max}" step="25">
               <div class="grove-proj" id="gp-${p.id}-proj"></div>
             </div>
+            ${p.id==='other' ? `<div class="grove-vault">
+              <div class="gv-head"><div><b>Physical gold</b><span id="gv-sum"></span></div><button type="button" class="gv-add" onclick="groveVaultForm(true)">+ Add gold</button></div>
+              <div class="gv-pig" id="gv-pig"></div>
+              <div id="gv-list"></div>
+              <div class="gv-form" id="gv-form" hidden>
+                <input id="gv-label" type="text" placeholder="What is it? e.g. 1 oz Maple Leaf coin" maxlength="60">
+                <div class="gv-row">
+                  <input id="gv-qty" type="number" min="0" step="any" placeholder="Weight">
+                  <select id="gv-unit" aria-label="Unit"><option value="oz">oz (troy)</option><option value="g">grams</option><option value="kg">kg</option></select>
+                </div>
+                <input id="gv-paid" type="number" min="0" step="any" placeholder="What you paid in total ($)">
+                <div class="gv-row"><button type="button" class="gv-save" onclick="groveVaultSave()">Save</button><button type="button" class="gv-cancel" onclick="groveVaultForm(false)">Cancel</button></div>
+                <div class="gv-err" id="gv-err"></div>
+              </div>
+              <label class="gv-price" for="gv-price">Gold price per oz (CAD) <input id="gv-price" type="number" min="0" step="any" placeholder="Optional" onchange="groveVaultPrice(this.value)"></label>
+              <div class="gv-note">Leave the price blank and your gold is valued at what you paid. Add today's price from your dealer or Kitco to track gains.</div>
+            </div>` : ''}
             <div id="gp-${p.id}-cta"></div>
           </div>
         </div>`).join('')}
@@ -7994,6 +8051,11 @@ function renderGrove(){
     }
     if(prev!==lvl){ g.levels[p.id]=lvl; track.changed=true; }
   });
+
+  // Gold pig upgrades
+  const pigLvl = grovePigLevel(tot.gold);
+  if(g.levels.pig!==undefined && pigLvl>g.levels.pig && pigLvl>=0) toastMsg = `<strong>Your gold pig upgraded:</strong> ${GROVE_PIG_LEVELS[pigLvl][1]}.`;
+  if(g.levels.pig!==pigLvl){ g.levels.pig=pigLvl; track.changed=true; }
 
   // Badges
   const quiet = firstRender && !g.badges.length; // don't flood a returning user on first load
@@ -8049,6 +8111,7 @@ function groveUpdateText(tot){
       proj = !hi ? 'Fully grown.' : m===Infinity ? 'Set a monthly amount to see when it grows next.' : `${p.levels[li+1]} in <b>${groveDur(m)}</b> at this pace.`;
     }
     document.getElementById(`gp-${p.id}-lvl`).innerHTML=lvlHtml;
+    if(p.id==='other') groveVaultRender(t);
     if(p.id==='other' && t.mix){
       const parts=[['Taxable',t.mix.taxable],['Crypto',t.mix.crypto],['Gold',t.mix.gold]].filter(x=>x[1]>0.5).map(x=>`${x[0]} ${groveFmt(x[1])}`);
       document.getElementById('gp-other-desc').textContent = parts.length ? parts.join(' · ') : 'Taxable accounts, plus crypto and gold from any account';
@@ -8123,6 +8186,35 @@ function groveDemoAuto(){
     groveDemoAdvance(1);
   },1500);
 }
+function groveVaultRender(t){
+  const items=state.physicalGold||[], list=document.getElementById('gv-list'); if(!list) return;
+  const oz=items.reduce((s,it)=>s+groveGoldOz(it),0), val=items.reduce((s,it)=>s+groveGoldItemValue(it),0);
+  document.getElementById('gv-sum').textContent = items.length ? `${oz.toFixed(oz<10?2:1)} oz · ${groveFmt(val)}` : 'Bars and coins you hold yourself';
+  const html = items.map(it=>`<div class="gv-item"><span class="gv-name">${escHtml(it.label||'Gold')}</span><span class="gv-w">${(+it.qty).toLocaleString('en-CA')} ${GROVE_GOLD_UNITS[it.unit]||'oz'}</span><span class="gv-v">${groveFmt(groveGoldItemValue(it))}</span><button type="button" class="gv-x" aria-label="Remove ${escHtml(it.label||'gold')}" onclick="groveVaultRemove('${it.id}')">×</button></div>`).join('');
+  if(list.dataset.html!==html){ list.innerHTML=html; list.dataset.html=html; }
+  const pv=document.getElementById('gv-price'); if(pv && document.activeElement!==pv) pv.value = state.goldPriceOz || '';
+  // the pig's own upgrades, based on all gold (physical plus gold ETFs)
+  const g=(t&&_grove.tot)? _grove.tot.gold : 0, li=grovePigLevel(g), nxt=GROVE_PIG_LEVELS[li+1];
+  document.getElementById('gv-pig').innerHTML = li<0 ? 'Add any gold to hatch your flying gold pig.'
+    : `Gold pig: <b>${GROVE_PIG_LEVELS[li][1]}</b>${nxt?` · ${groveFmt(nxt[0]-g)} more gold to ${nxt[1].toLowerCase()}`:' · fully upgraded'}`;
+}
+function groveVaultForm(open){
+  const f=document.getElementById('gv-form'); if(!f) return; f.hidden=!open;
+  document.getElementById('gv-err').textContent='';
+  if(open){ ['gv-label','gv-qty','gv-paid'].forEach(id=>document.getElementById(id).value=''); document.getElementById('gv-label').focus(); }
+}
+function groveVaultSave(){
+  const label=document.getElementById('gv-label').value.trim(), qty=parseFloat(document.getElementById('gv-qty').value),
+        unit=document.getElementById('gv-unit').value, paid=parseFloat(document.getElementById('gv-paid').value)||0;
+  const err=document.getElementById('gv-err');
+  if(!(qty>0)){ err.textContent='Enter the weight, for example 1 for a 1 oz coin.'; return; }
+  if(!(paid>0) && !(+state.goldPriceOz>0)){ err.textContent='Enter what you paid, or set the gold price below, so we can value it.'; return; }
+  if(!state.physicalGold) state.physicalGold=[];
+  state.physicalGold.push({ id:'pg-'+Date.now(), label:label||`${qty} ${GROVE_GOLD_UNITS[unit]} gold`, qty, unit, paid });
+  groveVaultForm(false); save(); renderGrove();
+}
+function groveVaultRemove(id){ state.physicalGold=(state.physicalGold||[]).filter(it=>it.id!==id); save(); renderGrove(); }
+function groveVaultPrice(v){ state.goldPriceOz = parseFloat(v)>0 ? parseFloat(v) : 0; save(); renderGrove(); }
 function groveAddAccount(type){ addAccount(); const s=document.getElementById('ac-type'); if(s) s.value=type; }
 
 function groveSize(){
@@ -8394,37 +8486,51 @@ function groveWindmill(P,t,amt,horizon){
   ctx.restore();
 }
 // A golden pig flies over the farm when you hold gold. Bigger stash, bigger pig.
-function groveGoldPig(P,t,gold){
-  const {ctx,w,h}=P;
-  const period=11, phase=(t%period)/period;           // one pass every 11 seconds
-  if(groveReduce && phase>0.02) return;
-  const sc = 0.8 + Math.min(0.7, Math.log10(1+gold/100)*0.22);
-  const x = groveReduce ? w*0.5 : -60 + phase*(w+120);
-  const y = 46 + Math.sin(t*2.2)*7 + Math.sin(phase*Math.PI)*-10;
-  const flap = groveReduce ? 0.5 : (Math.sin(t*14)+1)/2;
-  // sparkle trail
-  if(!groveReduce) for(let i=1;i<7;i++){ const tx=x-i*9*sc, ty=y+Math.sin(t*2.2-i*0.4)*5+4*sc;
-    ctx.fillStyle=`rgba(251,191,36,${0.5-i*0.07})`; ctx.beginPath(); ctx.arc(tx,ty,(2.2-i*0.25)*sc,0,Math.PI*2); ctx.fill(); }
+function groveDrawPig(ctx,x,y,sc,flap,lvl){
   ctx.save(); ctx.translate(x,y); ctx.scale(sc,sc);
-  // back wing
+  if(lvl>=4){ // royal cape
+    ctx.fillStyle='#b91c1c'; ctx.beginPath(); ctx.moveTo(-6,-8); ctx.quadraticCurveTo(-24,-4+flap*3,-26,8); ctx.lineTo(-10,6); ctx.closePath(); ctx.fill(); }
   ctx.fillStyle='rgba(254,243,199,0.55)'; ctx.beginPath(); ctx.moveTo(-2,-6); ctx.quadraticCurveTo(-10,-18-flap*8,4,-14-flap*10); ctx.quadraticCurveTo(4,-9,-2,-6); ctx.fill();
-  // legs
   ctx.fillStyle='#d97706'; [[-8,6],[-3,7],[5,7],[10,6]].forEach(([lx,ly])=>{ ctx.fillRect(lx,ly,2.6,4.5); });
-  // body
   const g=ctx.createLinearGradient(0,-10,0,10); g.addColorStop(0,'#fde68a'); g.addColorStop(0.55,'#fbbf24'); g.addColorStop(1,'#d97706');
+  ctx.fillStyle='rgba(251,191,36,0.18)'; ctx.beginPath(); ctx.ellipse(2,-1,24,17,0,0,Math.PI*2); ctx.fill();
   ctx.fillStyle=g; ctx.beginPath(); ctx.ellipse(0,0,15,10,0,0,Math.PI*2); ctx.fill();
   ctx.beginPath(); ctx.arc(13,-3,7.5,0,Math.PI*2); ctx.fill();
-  // ear, snout, eye, tail
   ctx.fillStyle='#f59e0b'; ctx.beginPath(); ctx.moveTo(10,-9); ctx.lineTo(13,-15); ctx.lineTo(16,-9); ctx.closePath(); ctx.fill();
   ctx.fillStyle='#fcd34d'; ctx.beginPath(); ctx.ellipse(20,-1.5,3.4,2.8,0,0,Math.PI*2); ctx.fill();
   ctx.fillStyle='#b45309'; ctx.beginPath(); ctx.arc(19.2,-1.8,0.7,0,Math.PI*2); ctx.arc(21.2,-1.8,0.7,0,Math.PI*2); ctx.fill();
   ctx.fillStyle='#3b2a12'; ctx.beginPath(); ctx.arc(15,-5,1.1,0,Math.PI*2); ctx.fill();
   ctx.strokeStyle='#d97706'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.moveTo(-15,-1); ctx.bezierCurveTo(-21,-6,-17,-10,-19,-4); ctx.stroke();
-  // shine and front wing
   ctx.fillStyle='rgba(255,255,255,0.55)'; ctx.beginPath(); ctx.ellipse(-4,-5,5,2,-0.3,0,Math.PI*2); ctx.fill();
+  if(lvl>=2){ // crown
+    ctx.fillStyle='#facc15'; ctx.beginPath(); ctx.moveTo(8,-10); ctx.lineTo(8,-16); ctx.lineTo(10.5,-13); ctx.lineTo(13,-18); ctx.lineTo(15.5,-13); ctx.lineTo(18,-16); ctx.lineTo(18,-10); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#ef4444'; ctx.beginPath(); ctx.arc(13,-12,1.1,0,Math.PI*2); ctx.fill(); }
+  if(lvl>=3){ // treasure sack
+    ctx.fillStyle='#92400e'; ctx.beginPath(); ctx.ellipse(-2,11,5,4,0,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.arc(-2,8,1.6,0,Math.PI*2); ctx.fill(); }
   ctx.fillStyle='rgba(255,251,235,0.95)'; ctx.beginPath(); ctx.moveTo(1,-7); ctx.quadraticCurveTo(-6,-22-flap*9,10,-17-flap*11); ctx.quadraticCurveTo(9,-10,1,-7); ctx.fill();
   ctx.strokeStyle='rgba(217,119,6,0.5)'; ctx.lineWidth=0.8; ctx.stroke();
   ctx.restore();
+}
+// A golden pig flies over the farm when you hold any gold. It upgrades as your gold grows.
+function groveGoldPig(P,t,gold){
+  const {ctx,w}=P, lvl=grovePigLevel(gold);
+  if(lvl<0) return;
+  const period = lvl>=1 ? 9 : 11, phase=(t%period)/period;
+  if(groveReduce && phase>0.02) return;
+  const sc = [0.7,0.95,1.1,1.25,1.4][lvl];
+  const x = groveReduce ? w*0.5 : -70 + phase*(w+140);
+  const y = 46 + Math.sin(t*2.2)*7 + Math.sin(phase*Math.PI)*-10;
+  const flap = groveReduce ? 0.5 : (Math.sin(t*14)+1)/2;
+  if(!groveReduce && lvl>=1){ const n=4+lvl*2; for(let i=1;i<n;i++){ const tx=x-i*9*sc, ty=y+Math.sin(t*2.2-i*0.4)*5+4*sc;
+    ctx.fillStyle=`rgba(251,191,36,${Math.max(0,0.55-i*(0.5/n))})`; ctx.beginPath(); ctx.arc(tx,ty,Math.max(0.6,(2.4-i*0.18)*sc),0,Math.PI*2); ctx.fill(); } }
+  if(!groveReduce && lvl>=3){ // coins drop from the treasure pig
+    for(let i=0;i<3;i++){ const k=((t*0.9+i/3)%1), cx=x-10*sc-i*14, cy=y+12*sc+k*60;
+      ctx.globalAlpha=1-k; ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.ellipse(cx,cy,2.6,2.6*Math.abs(Math.cos(t*6+i)),0,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1; } }
+  groveDrawPig(ctx,x,y,sc,flap,lvl);
+  if(lvl>=4){ // two piglets follow the king
+    groveDrawPig(ctx,x-46*sc,y+10+Math.sin(t*3)*4,sc*0.5,(Math.sin(t*16+1)+1)/2,0);
+    groveDrawPig(ctx,x-70*sc,y-4+Math.sin(t*3+1)*4,sc*0.45,(Math.sin(t*16+2)+1)/2,0);
+  }
 }
 function groveParticles(P){
   const {ctx}=P; P.parts=P.parts.filter(pt=>pt.life>0);
