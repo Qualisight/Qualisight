@@ -2726,7 +2726,7 @@ select option{background:#fff;color:var(--ink)}
       <button class="lp-btn-primary" onclick="lpShowSignup()">Start your 14-day free trial</button>
       <button class="lp-btn-secondary" onclick="lpTryDemo()">Explore the demo</button>
     </div>
-    <p class="lp-hero-note">No credit card required · Cancel anytime · $12/month after trial</p>
+    <p class="lp-hero-note">No credit card required. Budget and debt tools are free forever.</p>
 
     <!-- PRODUCT PREVIEW -->
     <div class="lp-preview-wrap">
@@ -3013,29 +3013,27 @@ select option{background:#fff;color:var(--ink)}
     <div class="lp-container">
       <div class="lp-head">
         <p class="lp-eyebrow">Pricing</p>
-        <h2 class="lp-h2">One plan. Everything included.</h2>
-        <p class="lp-lead">No tiers, no upsells, no surprise fees. Try it free for two weeks and cancel anytime from inside the app.</p>
+        <h2 class="lp-h2">Free to start. $12 for the full toolkit.</h2>
+        <p class="lp-lead">Budget and debt tracking are free forever. Try investing, housing, and the AI advisor free for 14 days, then keep them for $12 a month. Cancel anytime from inside the app.</p>
       </div>
       <div class="lp-pricing-wrap">
         <div class="lp-price-card">
           <div class="lp-price-glow"></div>
-          <div class="lp-price-plan">Qualisight Full Access</div>
+          <div class="lp-price-plan">Qualisight Premium</div>
           <div class="lp-price-amt">
             <span class="lp-price-num">$12</span>
             <span class="lp-price-per">/ month CAD</span>
           </div>
-          <span class="lp-price-trial">14-day free trial included</span>
+          <span class="lp-price-trial">14 days free, no card needed</span>
           <ul class="lp-price-feats">
-            <li><span class="lp-check">✓</span>Unlimited budget tracking</li>
-            <li><span class="lp-check">✓</span>Debt snowball planner</li>
-            <li><span class="lp-check">✓</span>TFSA, RRSP, and FHSA planning</li>
-            <li><span class="lp-check">✓</span>Housing affordability calculator</li>
-            <li><span class="lp-check">✓</span>Investment tracker</li>
-            <li><span class="lp-check">✓</span>AI finance advisor</li>
-            <li><span class="lp-check">✓</span>Works on any device</li>
+            <li><span class="lp-check">✓</span>AI finance advisor that reads your numbers</li>
+            <li><span class="lp-check">✓</span>Investment tracker with allocation targets</li>
+            <li><span class="lp-check">✓</span>TFSA, RRSP, and FHSA accounts in one view</li>
+            <li><span class="lp-check">✓</span>Rent vs buy and housing affordability</li>
+            <li><span class="lp-check">✓</span>Everything in Free: budget, debt payoff, dashboard</li>
           </ul>
           <button class="lp-btn-primary" onclick="lpShowSignup()">Start your free trial</button>
-          <p class="lp-price-fine">No credit card required to start</p>
+          <p class="lp-price-fine">Budget and debt tools stay free whether or not you subscribe.</p>
         </div>
       </div>
     </div>
@@ -3059,7 +3057,7 @@ select option{background:#fff;color:var(--ink)}
         </div>
         <div class="lp-faq-item">
           <button class="lp-faq-q" onclick="lpToggleFaq(this)">What happens after the 14-day trial?<span class="lp-faq-icon">+</span></button>
-          <div class="lp-faq-a">You only get charged if you choose to continue at $12/month CAD. There is no automatic surprise: you will know exactly where you stand, and you can cancel anytime from the customer portal inside the app.</div>
+          <div class="lp-faq-a">Your budget, debt planner, and dashboard stay free. Investments, Housing, and the AI Advisor lock until you subscribe for $12/month CAD. The trial never needs a card, so you are only charged if you choose to subscribe, and you can cancel anytime from inside the app.</div>
         </div>
         <div class="lp-faq-item">
           <button class="lp-faq-q" onclick="lpToggleFaq(this)">Can I cancel easily?<span class="lp-faq-icon">+</span></button>
@@ -3256,7 +3254,7 @@ select option{background:#fff;color:var(--ink)}
   <div class="paywall-box">
     <div class="paywall-logo">Qualisight</div>
     <div class="paywall-title">Premium Features</div>
-    <div class="paywall-sub">Your 14-day free trial has ended. Subscribe to keep access to:</div>
+    <div class="paywall-sub" id="paywall-sub">Your 14-day free trial has ended. Subscribe to keep access to:</div>
     <ul class="paywall-features">
       <li><strong>AI Advisor</strong>, personalized financial coaching based on your actual data</li>
       <li><strong>Investments</strong>, account blocks, allocation targets, paycheck recommender</li>
@@ -3265,7 +3263,7 @@ select option{background:#fff;color:var(--ink)}
     <div class="paywall-free-note">Dashboard, Budget, and Debt are always free.</div>
     <button class="paywall-btn" id="paywall-subscribe-btn" onclick="startCheckout()">
       Subscribe, CA$12/month
-      <span style="display:block;font-size:0.72rem;font-weight:500;opacity:0.85;margin-top:0.15rem">Includes 14-day free trial · Cancel anytime</span>
+      <span style="display:block;font-size:0.72rem;font-weight:500;opacity:0.85;margin-top:0.15rem">Billed monthly · Cancel anytime</span>
     </button>
     <button class="paywall-close" onclick="closePaywall()">Maybe later</button>
   </div>
@@ -4143,7 +4141,7 @@ async function submitForgot(){
   if(!email||!email.includes('@')){ err.textContent='Please enter your email address.'; return; }
   btn.textContent='Sending...'; btn.disabled=true;
   const { error } = await sb.auth.resetPasswordForEmail(email, {
-    redirectTo: 'https://qualisight.github.io/Qualisight/',
+    redirectTo: 'https://qualisight.ca/',
   });
   btn.textContent='Send Reset Link'; btn.disabled=false;
   if(error){ err.textContent=error.message; return; }
@@ -4858,12 +4856,17 @@ async function confirmDeleteAccount(){
   const btn = document.getElementById('delete-account-btn');
   btn.textContent = 'Deleting…'; btn.disabled = true;
   try{
-    // Delete user_data row from Supabase
-    if(currentUser?.id){
-      await sb.from('user_data').delete().eq('user_id', currentUser.id);
-    }
-    // Sign out
-    await sb.auth.signOut();
+    // The server cancels any subscription, deletes the data, and removes the login itself
+    const { data:{ session } } = await sb.auth.getSession();
+    if(!session) throw new Error('Your session expired. Sign in again, then delete your account.');
+    const res = await fetch(`${SUPABASE_URL}/functions/v1/delete-account`, {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${session.access_token}`, 'apikey': SUPABASE_ANON, 'Content-Type': 'application/json' },
+      body: '{}'
+    });
+    const out = await res.json().catch(()=>({}));
+    if(!res.ok) throw new Error(out.error || 'The server could not delete your account.');
+    await sb.auth.signOut().catch(()=>{});
     // Reset local state
     currentUser = null;
     state = JSON.parse(JSON.stringify(EMPTY_STATE));
@@ -4884,7 +4887,7 @@ async function confirmDeleteAccount(){
     }, 100);
   } catch(e){
     btn.textContent = 'Delete My Account'; btn.disabled = false;
-    alert('Could not delete account: ' + e.message);
+    alert('Your account was not deleted. ' + e.message + ' If this keeps happening, email privacy@qualisight.ca.');
   }
 }
 
@@ -7693,6 +7696,13 @@ function updateTrialBanner(){
 }
 
 function showPaywall(){
+  const sub = document.getElementById('paywall-sub');
+  if(sub){
+    const days = getTrialDaysLeft();
+    sub.textContent = days > 0
+      ? `You have ${days} day${days===1?'':'s'} left in your free trial. Subscribe now to keep these after it ends:`
+      : 'Your 14-day free trial has ended. Subscribe to keep access to:';
+  }
   document.getElementById('paywall-overlay').classList.add('open');
 }
 function closePaywall(){
@@ -8020,7 +8030,7 @@ function lpBind(el,fn){
       This will <strong style="color:var(--text)">permanently delete your account and all your financial data</strong>. This cannot be undone.
     </div>
     <div style="background:rgba(248,113,113,0.08);border:1px solid rgba(248,113,113,0.2);border-radius:8px;padding:0.7rem 0.9rem;font-size:0.8rem;color:var(--muted);margin-bottom:1.4rem;line-height:1.5">
-      All income, expenses, debts, investments, and settings will be erased. Your Supabase account data will be deleted immediately.
+      All income, expenses, debts, investments, and settings will be erased, your login will be removed, and any active subscription will be cancelled.
     </div>
     <button class="tos-accept-btn" style="background:var(--red);margin-bottom:0.6rem" id="delete-account-btn" onclick="confirmDeleteAccount()">Delete My Account</button>
     <button class="tos-accept-btn" style="background:var(--card2);color:var(--text);border:1px solid var(--border)" onclick="document.getElementById('delete-account-overlay').classList.remove('open')">Cancel</button>
