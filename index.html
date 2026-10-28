@@ -7967,6 +7967,13 @@ function renderGrove(){
       sl.addEventListener('input', ()=>{ g.plan[p.id]=+sl.value; groveUpdateText(groveTotals()); clearTimeout(_grove.saveT); _grove.saveT=setTimeout(save, 600); });
     });
     groveSize();
+    if('IntersectionObserver' in window){
+      _grove.io && _grove.io.disconnect();
+      _grove.io = new IntersectionObserver(entries=>entries.forEach(en=>{
+        const P=Object.values(_grove.plots).find(q=>q.cv.parentElement===en.target); if(P) P.visible=en.isIntersecting;
+      }));
+      Object.values(_grove.plots).forEach(P=>_grove.io.observe(P.cv.parentElement));
+    }
   }
 
   // Milestone toasts (only for real increases after the first time we've seen this plot)
@@ -8113,7 +8120,7 @@ function groveDemoAuto(){
 function groveAddAccount(type){ addAccount(); const s=document.getElementById('ac-type'); if(s) s.value=type; }
 
 function groveSize(){
-  const dpr=Math.min(2,window.devicePixelRatio||1);
+  const dpr=Math.min(1.5,window.devicePixelRatio||1);
   Object.values(_grove.plots).forEach(P=>{ const r=P.cv.getBoundingClientRect(); if(!r.width) return; P.w=r.width; P.h=r.height; P.cv.width=Math.round(r.width*dpr); P.cv.height=Math.round(r.height*dpr); P.ctx.setTransform(dpr,0,0,dpr,0,0); });
 }
 window.addEventListener('resize', ()=>groveSize());
@@ -8123,8 +8130,12 @@ function groveFrame(ms){
   _grove.raf=null;
   const page=document.getElementById('page-investments');
   if(!page || page.offsetParent===null) return; // stop while the page is hidden; renderGrove restarts it
+  _grove.raf=requestAnimationFrame(groveFrame);
+  if(document.hidden || ms-(_grove.last||0) < 33) return;   // about 30 frames a second is plenty
+  _grove.last=ms;
   const t=ms/1000, tot=_grove.tot||{};
   Object.values(_grove.plots).forEach(P=>{
+    if(P.visible===false) return;                             // skip plots scrolled off screen
     if(!P.w){ groveSize(); if(!P.w) return; }
     const d=tot[P.def.id]||{contrib:0,value:0};
     P.disp += (d.contrib-P.disp)*(groveReduce?1:0.07);
@@ -8133,7 +8144,6 @@ function groveFrame(ms){
     if(P.def.kind==='tree') groveTree(P,t); else if(P.def.kind==='tower') groveTower(P,t); else if(P.def.kind==='field') groveField(P,t); else groveHouse(P,t);
     groveParticles(P);
   });
-  _grove.raf=requestAnimationFrame(groveFrame);
 }
 
 // ── drawing ──
@@ -8233,7 +8243,8 @@ function groveTree(P,t){
     const tp=tips[Math.floor(groveRand(i*13+5)*tips.length)], bob=groveReduce?0:Math.sin(t*2+i)*1.4;
     const fx=tp[0]+(groveRand(i)-0.5)*leafR, fy=tp[1]+leafR*0.6+bob, fr=2.6+s*1.8;
     ctx.strokeStyle='#5d4430'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(fx,fy-fr); ctx.lineTo(fx+1,fy-fr-3); ctx.stroke();
-    ctx.fillStyle='#fbbf24'; ctx.shadowColor='rgba(251,191,36,0.7)'; ctx.shadowBlur=10; ctx.beginPath(); ctx.arc(fx,fy,fr,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
+    ctx.fillStyle='rgba(251,191,36,0.22)'; ctx.beginPath(); ctx.arc(fx,fy,fr*2,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.arc(fx,fy,fr,0,Math.PI*2); ctx.fill();
     ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.beginPath(); ctx.arc(fx-fr*0.35,fy-fr*0.35,fr*0.3,0,Math.PI*2); ctx.fill();
   }
 
@@ -8264,7 +8275,7 @@ function groveTree(P,t){
   if(li>=7 && !groveReduce){
     // fireflies drift through the canopy
     for(let i=0;i<8;i++){ const fx=cx+Math.sin(t*0.6+i*1.7)*spread*0.9, fy=base-trunk-Math.cos(t*0.5+i)*trunk*0.6, a=0.4+0.6*Math.max(0,Math.sin(t*3+i*2));
-      ctx.fillStyle=`rgba(253,230,138,${a})`; ctx.shadowColor='rgba(253,230,138,0.9)'; ctx.shadowBlur=8; ctx.beginPath(); ctx.arc(fx,fy,1.6,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0; }
+      ctx.fillStyle=`rgba(253,230,138,${a})`; ctx.beginPath(); ctx.arc(fx,fy,1.6,0,Math.PI*2); ctx.fill(); }
   }
   groveSnow(P,t);
 }
@@ -8303,7 +8314,7 @@ function groveHouse(P,t){
   if(sW>0){ const wh=wallH*sW; ctx.fillStyle='#3b3357'; ctx.fillRect(hx,base-7-wh,hw,wh); ctx.strokeStyle='rgba(255,255,255,0.05)'; for(let y=base-7;y>base-7-wh;y-=8){ ctx.beginPath(); ctx.moveTo(hx,y); ctx.lineTo(hx+hw,y); ctx.stroke(); } }
   const warm=0.35+gainRatio*0.65;
   if(sD>0){ ctx.fillStyle='#a78bfa'; const dh=38*sD; ctx.fillRect(hx+hw/2-12,base-7-dh,24,dh); }
-  if(sWi>0){ [[hx+16,base-7-58],[hx+hw-46,base-7-58]].forEach(([x,y])=>{ ctx.fillStyle=`rgba(251,191,36,${(0.25+0.75*warm)*sWi})`; ctx.shadowColor='rgba(251,191,36,0.6)'; ctx.shadowBlur=gainRatio*14; ctx.fillRect(x,y,30,24); ctx.shadowBlur=0; ctx.strokeStyle='#2a2440'; ctx.lineWidth=2; ctx.strokeRect(x,y,30,24); ctx.beginPath(); ctx.moveTo(x+15,y); ctx.lineTo(x+15,y+24); ctx.moveTo(x,y+12); ctx.lineTo(x+30,y+12); ctx.stroke(); }); }
+  if(sWi>0){ [[hx+16,base-7-58],[hx+hw-46,base-7-58]].forEach(([x,y])=>{ ctx.fillStyle=`rgba(251,191,36,${(0.25+0.75*warm)*sWi})`; ctx.fillRect(x,y,30,24); ctx.strokeStyle='#2a2440'; ctx.lineWidth=2; ctx.strokeRect(x,y,30,24); ctx.beginPath(); ctx.moveTo(x+15,y); ctx.lineTo(x+15,y+24); ctx.moveTo(x,y+12); ctx.lineTo(x+30,y+12); ctx.stroke(); }); }
   if(sC>0){ ctx.fillStyle='#4a3f6b'; const ch=32*sC; ctx.fillRect(hx+hw*0.72,base-7-wallH-ch+6,16,ch); }
   if(sR>0){ const peak=base-7-wallH-50*sR; ctx.fillStyle='#6d4fc2'; ctx.beginPath(); ctx.moveTo(hx-12,base-7-wallH); ctx.lineTo(w/2,peak); ctx.lineTo(hx+hw+12,base-7-wallH); ctx.closePath(); ctx.fill();
     if(season==='winter'){ ctx.fillStyle='rgba(232,237,248,0.85)'; ctx.beginPath(); ctx.moveTo(hx-12,base-7-wallH); ctx.lineTo(w/2,peak); ctx.lineTo(hx+hw+12,base-7-wallH); ctx.lineTo(hx+hw+4,base-7-wallH-4); ctx.lineTo(w/2,peak+6); ctx.lineTo(hx-4,base-7-wallH-4); ctx.closePath(); ctx.fill(); } }
@@ -8337,7 +8348,7 @@ function groveField(P,t){
   for(let r=0;r<rows;r++){
     const k=(r+1)/rows, y=horizon + (base-horizon)*k, sc=0.5+0.5*k;
     ctx.fillStyle = season==='winter'?'rgba(232,237,248,0.18)':'rgba(70,50,34,0.55)'; ctx.fillRect(0,y-1,fieldR,2.5*sc);
-    const gap=15*sc, n=Math.floor((fieldR-8)/gap), off=(r%2)*gap/2;
+    const gap=19*sc, n=Math.floor((fieldR-8)/gap), off=(r%2)*gap/2;
     for(let i=0;i<n;i++){
       const x=8+off+i*gap;
       const sway=groveReduce?0:Math.sin(t*1.4+i*0.35+r*0.8)*2.2*sc;
@@ -8347,8 +8358,8 @@ function groveField(P,t){
       const isGold = season!=='winter' && groveRand(r*31+i*7) < gainRatio*0.6;
       if(isGold || head){
         ctx.fillStyle = isGold ? '#fbbf24' : head;
-        if(isGold){ ctx.shadowColor='rgba(251,191,36,0.65)'; ctx.shadowBlur=7*sc; }
-        ctx.beginPath(); ctx.ellipse(x+sway,y-hh-3*sc,2.2*sc,4.2*sc,0,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
+        if(isGold){ }
+        ctx.beginPath(); ctx.ellipse(x+sway,y-hh-3*sc,2.2*sc,4.2*sc,0,0,Math.PI*2); ctx.fill();
       }
       if(season==='winter'){ ctx.fillStyle='rgba(232,237,248,0.8)'; ctx.beginPath(); ctx.arc(x+sway,y-hh,1.6*sc,0,Math.PI*2); ctx.fill(); }
     }
@@ -8388,9 +8399,8 @@ function groveGoldPig(P,t,gold){
   ctx.fillStyle='#d97706'; [[-8,6],[-3,7],[5,7],[10,6]].forEach(([lx,ly])=>{ ctx.fillRect(lx,ly,2.6,4.5); });
   // body
   const g=ctx.createLinearGradient(0,-10,0,10); g.addColorStop(0,'#fde68a'); g.addColorStop(0.55,'#fbbf24'); g.addColorStop(1,'#d97706');
-  ctx.shadowColor='rgba(251,191,36,0.7)'; ctx.shadowBlur=12;
   ctx.fillStyle=g; ctx.beginPath(); ctx.ellipse(0,0,15,10,0,0,Math.PI*2); ctx.fill();
-  ctx.beginPath(); ctx.arc(13,-3,7.5,0,Math.PI*2); ctx.fill(); ctx.shadowBlur=0;
+  ctx.beginPath(); ctx.arc(13,-3,7.5,0,Math.PI*2); ctx.fill();
   // ear, snout, eye, tail
   ctx.fillStyle='#f59e0b'; ctx.beginPath(); ctx.moveTo(10,-9); ctx.lineTo(13,-15); ctx.lineTo(16,-9); ctx.closePath(); ctx.fill();
   ctx.fillStyle='#fcd34d'; ctx.beginPath(); ctx.ellipse(20,-1.5,3.4,2.8,0,0,Math.PI*2); ctx.fill();
