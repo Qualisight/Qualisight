@@ -8241,7 +8241,7 @@ function renderGrove(){
 
   _grove.tot = tot;
   groveUpdateText(tot);
-  groveRefMaybeSync(); groveRefRender();
+  groveRefMaybeSync(); groveRefRender(); groveMaybeSyncPrices();
   if(_grove.focusP) groveFocusStats();
   groveTimeButtons();
   if(track.changed && !currentUser?.isDemo){ clearTimeout(_grove.saveT); _grove.saveT=setTimeout(save, 800); }
@@ -10179,6 +10179,119 @@ function groveFocusClose(){
   const F=_grove.focusP; if(F){ const live=(_grove.plots||{})[F.def.id]; if(live) live.lightsOff=F.lightsOff; }
   _grove.focusP=null; document.body.style.overflow='';
 }
+
+// ── Daily price feed (reads the shared prices the refresh-prices function keeps up to date) ──
+// When you open the app, every holding gets the latest market price, and the last month of daily
+// closes feeds the bull and bear markets, so they're accurate from day one with no Refresh needed.
+// Tickers nobody has added before get fetched on the spot. If the feed isn't set up or is down,
+// nothing breaks: the old Refresh prices button still works.
+const QS_PRICE_KEY_RE = /^(SEC|CRYPTO):[A-Z0-9][A-Z0-9.\-=^:]{0,19}$|^METAL:(gold|silver|platinum|palladium)$/;
+const QS_METALS = ['gold','silver','platinum','palladium'];
+
+// Same rule as the server (refresh-prices/index.ts priceKey)
+function qsPriceKey(h, accType){
+  if(!h) return null;
+  if(accType==='Gold' || h.type==='Gold'){ const m=String(h.metal||'gold').toLowerCase(); return 'METAL:'+(QS_METALS.includes(m)?m:'gold'); }
+  const t=String(h.ticker||'').toUpperCase().replace(/\s+/g,'');
+  if(!t) return null;
+  if(h.type==='Crypto') return 'CRYPTO:'+t.replace(/[-.]?(USD|CAD)$/,'');
+  return 'SEC:'+t;
+}
+function qsHoldingKey(h){ const a=(state.accounts||[]).find(x=>x.id===h.accountId); const k=qsPriceKey(h, a&&a.type); return k && QS_PRICE_KEY_RE.test(k) ? k : null; }
+function qsDayIdx(iso){ return Math.floor(Date.parse(iso+'T12:00:00Z')/864e5); }
+function qsPriceKeys(){ return [...new Set((state.portfolio||[]).filter(h=>h && +h.shares>0).map(qsHoldingKey).filter(Boolean))].sort(); }
+
+async function qsReadPrices(keys){
+  const map={}, hist={}, since=new Date(Date.now()-45*864e5).toISOString().slice(0,10);
+  for(let i=0;i<keys.length;i+=25){
+    const ch=keys.slice(i,i+25);
+    const [a,b]=await Promise.all([
+      sb.from('prices').select('key,symbol,price,currency,day,status,updated_at').in('key',ch),
+      sb.from('price_history').select('key,day,close').in('key',ch).gte('day',since).order('day').limit(2000),
+    ]);
+    if(a.error) throw a.error;
+    (a.data||[]).forEach(r=>{ map[r.key]=r; });
+    if(!b.error) (b.data||[]).forEach(r=>{ (hist[r.key]=hist[r.key]||[]).push([qsDayIdx(r.day), +r.close]); });
+  }
+  return {map,hist};
+}
+
+async function groveSyncPrices(opts){
+  opts=opts||{};
+  if(!currentUser || currentUser.isDemo || typeof sb==='undefined') return {skipped:true};
+  if(_grove.priceBusy) return _grove.priceBusy;
+  const run=(async()=>{
+    const keys=qsPriceKeys(); if(!keys.length) return {keys:0, found:0, updated:0};
+    let rows=await qsReadPrices(keys);
+    // ask the server for tickers it hasn't seen, or that look stale (forced from the Refresh button)
+    const now=Date.now(), asked=_grove.priceAsked=_grove.priceAsked||{};
+    const need=keys.filter(k=>{ const r=rows.map[k];
+      if(!r) return opts.force || !asked[k];
+      const age=now-Date.parse(r.updated_at);
+      if(opts.force) return r.status==='ok' ? age>6*3600e3 : age>3*864e5;
+      return r.status==='ok' && age>2*864e5 && !asked[k]; });
+    let fnError=null;
+    if(need.length){
+      need.forEach(k=>{ asked[k]=1; });
+      for(let i=0;i<need.length;i+=15){
+        const { error } = await sb.functions.invoke('refresh-prices', { body:{ keys:need.slice(i,i+15) } });
+        if(error){ fnError=error; console.warn('refresh-prices', error.message||error); break; }
+      }
+      if(!fnError) rows=await qsReadPrices(keys);
+    }
+    // apply prices and merge the daily closes into each holding's history
+    let updated=0, changed=false;
+    (state.portfolio||[]).forEach(h=>{
+      if(!h || !(+h.shares>0)) return;
+      const k=qsHoldingKey(h), r=k&&rows.map[k];
+      if(!r || r.status!=='ok' || !(+r.price>0)) return;
+      const p=+r.price;
+      if(Math.abs((+h.price||0)-p)>1e-9){ h.price=p; updated++; changed=true; }
+      if(!h.live || h.lastRefreshed!==r.updated_at || h.priceSymbol!==r.symbol){ h.live=true; h.lastRefreshed=r.updated_at; h.priceSymbol=r.symbol; h.priceCurrency=r.currency; changed=true; }
+      const hist=rows.hist[k];
+      if(hist && hist.length){
+        const m=new Map((h.marks||[]).map(x=>[x[0],x[1]])); let diff=false;
+        hist.forEach(([d,c])=>{ if(m.get(d)!==c){ m.set(d,c); diff=true; } });
+        if(diff){ h.marks=[...m.entries()].sort((a,b)=>a[0]-b[0]).slice(-130); changed=true; }
+      }
+    });
+    _grove.priceSyncedAt=Date.now();
+    if(changed){ save(); renderPortfolio(); renderAllocator(); }
+    const found=keys.filter(k=>rows.map[k] && rows.map[k].status==='ok').length;
+    return {keys:keys.length, found, updated, fnError, newest:Object.values(rows.map).reduce((a,r)=>r.status==='ok'&&r.day>a?r.day:a,'')};
+  })();
+  _grove.priceBusy=run;
+  try{ return await run; }
+  catch(e){ console.warn('price feed', e.message||e); return {error:e}; }
+  finally{ _grove.priceBusy=null; }
+}
+
+// Called on every grove render: syncs right away when your holdings change, otherwise every 30 minutes
+function groveMaybeSyncPrices(){
+  if(!currentUser || currentUser.isDemo) return;
+  const sig=qsPriceKeys().join(',');
+  if(!sig) return;
+  if(sig===_grove.priceSig && Date.now()-(_grove.priceAt||0)<30*60*1000) return;
+  _grove.priceSig=sig; _grove.priceAt=Date.now();
+  groveSyncPrices().catch(()=>{});
+}
+
+// The Refresh prices button now uses the feed (instant, no daily limit, includes crypto and metals).
+// If the feed isn't set up yet, it falls back to the old Alpha Vantage lookup.
+const _qsRefreshAV = refreshAllPrices;
+refreshAllPrices = async function(){
+  if(!currentUser || currentUser.isDemo) return _qsRefreshAV.apply(this, arguments);
+  const btn=document.getElementById('refresh-btn');
+  if(btn){ btn.textContent='Refreshing...'; btn.disabled=true; }
+  let res=null; try{ res=await groveSyncPrices({force:true}); }catch(e){ res=null; }
+  if(btn){ btn.textContent='⟳ Refresh prices'; btn.disabled=false; }
+  if(!res || res.error || !res.found) return _qsRefreshAV.apply(this, arguments);
+  const el=document.getElementById('port-last-updated');
+  if(el){
+    const miss=res.keys-res.found, when=res.newest ? new Date(res.newest+'T12:00:00Z').toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : 'today';
+    el.textContent=`Market prices as of ${when} · ${res.found} of ${res.keys} priced automatically${miss?` · ${miss} without a market price keep the price you entered`:''}`;
+  }
+};
 
 // Re-render the grove whenever investments change or the page opens
 (function(){
