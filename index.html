@@ -3,8 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Qualisight, Budget & Wealth Planner</title>
+<title>Qualisight: Canadian Budget, Debt and TFSA Planner</title>
 <meta name="description" content="Budget, debt payoff and your TFSA, RRSP and FHSA in one place, built for Canadians. Budgeting is free forever. Try investing, housing and the AI advisor free for 14 days, no card needed.">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Qualisight","alternateName":"qualisight.ca","url":"https://qualisight.ca/"}</script>
 <link rel="canonical" href="https://qualisight.ca/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Qualisight">
@@ -2723,6 +2724,8 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="Qualisight">
   <link rel="apple-touch-icon" href="/icon-192.png">
+  <link rel="icon" href="/favicon.ico" sizes="48x48">
+  <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 64 64%22%3E%3Crect width=%2264%22 height=%2264%22 rx=%2214%22 fill=%22%234ade80%22/%3E%3Cpath transform=%22translate%2816.64 42.48%29 scale%280.0423 -0.0423%29%22 fill=%22%2308140c%22 d=%22M681 -157Q606 -172 553.5 -176.0Q501 -180 460.5 -176.0Q420 -172 382.0 -164.0Q344 -156 300.0 -148.0Q256 -140 196.0 -136.0Q136 -132 49 -136V-5Q76 -7 116.5 -6.5Q157 -6 203.5 -2.5Q250 1 296.0 7.0Q342 13 380.5 22.5Q419 32 441 45V58Q359 34 294.5 35.0Q230 36 182.5 58.0Q135 80 105.0 120.0Q75 160 60.0 214.0Q45 268 45 332Q45 405 65.0 467.5Q85 530 125.0 576.0Q165 622 225.0 648.0Q285 674 366 674Q466 674 536.5 633.0Q607 592 644.5 516.0Q682 440 682 334Q682 238 655.0 173.5Q628 109 580.5 69.0Q533 29 468.5 7.5Q404 -14 329 -23V-37Q384 -43 429.0 -47.0Q474 -51 515.0 -51.0Q556 -51 596.0 -46.0Q636 -41 681 -29ZM367 111Q419 111 453.0 134.5Q487 158 503.5 205.0Q520 252 520 323Q520 396 502.5 445.0Q485 494 449.5 519.5Q414 545 361 545Q311 545 276.5 520.5Q242 496 225.0 448.0Q208 400 208 328Q208 256 225.5 207.5Q243 159 279.0 135.0Q315 111 367 111Z%22/%3E%3C/svg%3E">
 </head>
 <body>
@@ -3295,7 +3298,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
         <div><b>Rewards for habits, not luck</b><span>Levels, streaks and badges come from what you put in. A down month never takes anything away.</span></div>
         <div><b>Share it without the numbers</b><span>Post your grove, levels and streak. Your dollar amounts never leave the app.</span></div>
       </div>
-      <div class="lp-grove-cta"><button class="lp-btn-primary" onclick="lpTryDemo();setTimeout(function(){showPage('investments');window.scrollTo(0,0);},350)">See a grove in the demo</button></div>
+      <div class="lp-grove-cta"><button class="lp-btn-primary" onclick="lpTryDemo();setTimeout(function(){showPage('investments');var g=document.getElementById('grove');window.scrollTo({top:g?Math.max(0,g.getBoundingClientRect().top+window.scrollY-72):0,behavior:'instant'});},450)">See a grove in the demo</button></div>
     </div>
   </section>
 
@@ -11570,8 +11573,16 @@ captureSignupSource();
     if(session){
       await handleSignedInUser(session.user);
     } else {
-      // No session — show landing page, auth opens when they click a CTA
-      document.getElementById('landing-page').classList.remove('hidden');
+      // No session: show the landing page, auth opens when they click a CTA.
+      // Ad links can open the demo straight away: ?demo=1 (dashboard) or ?demo=grove (the money grove)
+      let dq=null; try{ dq=new URLSearchParams(location.search).get('demo'); }catch(e){}
+      if(dq){
+        try{ const u=new URL(location.href); u.searchParams.delete('demo'); history.replaceState(null,'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams:'')+u.hash); }catch(e){}
+        let tries=0; const open=()=>{ // the demo code loads in a later script, so wait for it
+          if(typeof lpTryDemo!=='function' || typeof startDemo!=='function'){ if(++tries<60) return setTimeout(open,50); document.getElementById('landing-page').classList.remove('hidden'); return; }
+          lpTryDemo(); if(dq==='grove') setTimeout(()=>{ showPage('investments'); const g=document.getElementById('grove'); window.scrollTo({top: g ? Math.max(0, g.getBoundingClientRect().top+window.scrollY-72) : 0, behavior:'instant'}); },450); };
+        open();
+      } else document.getElementById('landing-page').classList.remove('hidden');
     }
   } catch(e){
     document.getElementById('landing-page').classList.remove('hidden');
