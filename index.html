@@ -1912,6 +1912,29 @@ input[type=number]{-moz-appearance:textfield}
 .grove-mood[hidden]{display:none}
 .grove-mood em{font-style:normal;font-weight:700;color:#67e8f9;margin-left:0.15rem}
 .grove-mood.mecha{border-color:rgba(103,232,249,0.5)}
+.grove-share-btn{display:inline-flex;align-items:center;gap:0.4rem;background:#4ade80;color:#08140c;border:none;border-radius:999px;padding:0.3rem 0.8rem;font-weight:700;font-size:0.78rem;cursor:pointer;font-family:inherit;white-space:nowrap}
+.grove-share-btn:hover{background:#86efac}
+.grove-boost{display:block;margin-top:0.2rem;color:#4ade80}
+.grove-boost b{color:#4ade80}
+.gs-overlay{position:fixed;inset:0;z-index:660;background:rgba(5,7,11,0.78);display:none;align-items:center;justify-content:center;padding:16px}
+.gs-overlay.open{display:flex}
+.gs-sheet{width:100%;max-width:440px;max-height:calc(100vh - 32px);overflow:auto;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1rem;display:flex;flex-direction:column;gap:0.8rem}
+.gs-head{display:flex;justify-content:space-between;gap:0.8rem;align-items:flex-start}
+.gs-title{font-family:var(--font-display,var(--font-display));font-weight:800;font-size:1.15rem;letter-spacing:-0.03em;color:var(--text)}
+.gs-sub{font-size:0.8rem;color:var(--muted);margin-top:0.15rem}
+.gs-x{background:transparent;border:none;color:var(--muted);font-size:1.5rem;line-height:1;cursor:pointer;padding:0 0.2rem}
+.gs-x:hover{color:var(--text)}
+.gs-preview{position:relative;aspect-ratio:4/5;border-radius:14px;overflow:hidden;background:#0b0f18;border:1px solid var(--border)}
+.gs-preview img{width:100%;height:100%;display:block;object-fit:contain}
+.gs-preview img:not([src]){display:none}
+.gs-loading{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:0.85rem;color:var(--muted)}
+.gs-loading[hidden]{display:none}
+.gs-caption{font-size:0.8rem;color:var(--muted);background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:0.55rem 0.7rem;line-height:1.45}
+.gs-actions{display:flex;gap:0.5rem;flex-wrap:wrap}
+.gs-btn{flex:1;min-width:110px;background:var(--card2);border:1px solid var(--border);color:var(--text);border-radius:10px;padding:0.6rem;font-weight:600;font-size:0.85rem;cursor:pointer;font-family:inherit}
+.gs-btn:hover{border-color:rgba(255,255,255,0.22)}
+.gs-btn.primary{background:#4ade80;border-color:#4ade80;color:#08140c}
+.gs-btn[hidden]{display:none}
 
 /* ── ADD AN INVESTMENT SHEET ── */
 .inv-overlay{position:fixed;inset:0;background:rgba(5,7,10,0.72);z-index:650;display:none;align-items:center;justify-content:center;padding:1rem}
@@ -8099,6 +8122,7 @@ function renderGrove(){
         <div class="grove-meta">
           <span class="grove-pill" id="grove-season"></span>
           <span class="grove-pill grove-streak" id="grove-streak"></span>
+          <button type="button" class="grove-share-btn" onclick="groveShare()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>Share my grove</button>
         </div>
       </div>
       ${currentUser?.isDemo ? `<div class="grove-time">
@@ -8220,6 +8244,12 @@ function groveUpdateText(tot){
       const m=months(hi||0);
       proj = !hi ? 'Fully grown.' : m===Infinity ? 'Set a monthly amount to see when it grows next.' : `${p.levels[li+1]} in <b>${groveDur(m)}</b> at this pace.`;
     }
+    // the honest speed-up: show how much sooner the next level comes with a bit more each month
+    { const bump=100, tgt = p.kind==='house' ? GROVE_FHSA_GOAL : (GROVE_MILESTONES[groveLevel(t.contrib)]||0), lft=Math.max(0,tgt-t.contrib);
+      const capOk = p.kind!=='house' || plan+bump <= 8000/12;
+      if(lft>0 && capOk){ const m1=plan>0?Math.ceil(lft/plan):Infinity, m2=Math.ceil(lft/(plan+bump));
+        if(m1===Infinity) proj+=` <span class="grove-boost">Even ${groveFmt(bump)} a month gets you there in <b>${groveDur(m2)}</b>.</span>`;
+        else if(m1-m2>=1) proj+=` <span class="grove-boost">Add ${groveFmt(bump)} more a month and you're there <b>${groveDur(m1-m2)} sooner</b>.</span>`; } }
     document.getElementById(`gp-${p.id}-lvl`).innerHTML=lvlHtml;
     if(p.id==='metals'){
       const gv=t.byMetal.gold.value, li=grovePigLevel(gv), nxt=GROVE_PIG_LEVELS[li+1];
@@ -9267,7 +9297,7 @@ function groveRefreshMoods(){
   const pg=document.getElementById('page-investments'), seen=!!(pg && pg.offsetParent!==null);
   if(seen){
     if(ck==='bull' && _grove.prevCrypto!=='bull' && !_grove.mecha){
-      if(_grove.mechaForce || Math.random()<1/1000){ _grove.mecha=true; if(typeof showToast==='function') showToast('<strong>A mecha bull appeared.</strong> It shows up in about 1 in 1,000 crypto bull markets.'); }
+      if(_grove.mechaForce || Math.random()<1/1000){ _grove.mecha=true; clearTimeout(_grove.mechaT); _grove.mechaT=setTimeout(()=>{ if(typeof groveShare==='function' && !document.getElementById('inv-overlay')?.classList.contains('open')) groveShare('mecha'); },1500); }
     }
     _grove.prevCrypto=ck;
   }
@@ -9353,6 +9383,166 @@ function groveSimLive(){
     groveSimDay();
     renderPortfolio(); renderAllocator();
   },3000);
+}
+
+// ── Share my grove ──
+// Builds a 1080 x 1350 image (the 4:5 size Instagram, TikTok and X all show well) of your grove: each scene,
+// its level, your streak, badges and rare finds. Dollar amounts are never on it.
+const GROVE_SHARE_W = 1080;
+
+function groveShareTile(def, w, h, opts){
+  // render a fresh copy of the scene at a moment when its herd is out, without touching the live canvases
+  const cv=document.createElement('canvas'), sc=(opts&&opts.scale)||2; cv.width=w*sc; cv.height=h*sc;
+  const ctx=cv.getContext('2d'); ctx.setTransform(sc,0,0,sc,0,0);
+  const tot=(_grove.tot||{})[def.id]||{contrib:0,value:0};
+  const live=(_grove.plots||{})[def.id];
+  const P={def, cv, ctx, w, h, parts:[], pulse:0, flash:0, cam:0, visible:true,
+    disp:tot.contrib, dispGain:Math.max(0,tot.value-tot.contrib)};
+  const seed=[...def.id].reduce((s,c)=>s+c.charCodeAt(0),0), first=2+groveRand(seed+4)*10;
+  const t=first+GROVE_VISIT.walk+(opts&&opts.mecha?9:4);                       // mid-visit, everyone on screen
+  const prev={mood:_grove.moodOverride, mecha:_grove.mecha};
+  if(opts && opts.mecha){ _grove.moodOverride={kind:'bull',n:2}; _grove.mecha=true; }
+  try{
+    const k=def.kind;
+    if(k==='tree') groveTree(P,t); else if(k==='tower') groveTower(P,t); else if(k==='field') groveField(P,t);
+    else if(k==='coin') groveCoin(P,t); else if(k==='vault') groveVault(P,t); else groveHouse(P,t);
+    groveFore(P,t);
+  } finally { _grove.moodOverride=prev.mood; _grove.mecha=prev.mecha; }
+  return cv;
+}
+function groveRoundRect(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+function groveLevelText(def, contrib){
+  if(def.kind==='house'){ const si=groveStage(def,contrib); return def.stages[si] ? def.stages[si][1] : 'Breaking ground'; }
+  const li=groveLevel(contrib); return `Level ${li+1}: ${def.levels[li]}`;
+}
+function groveShareStats(){
+  const tot=_grove.tot||groveTotals();
+  const plots=GROVE_PLOTS.filter(p=>!p.optional || tot[p.id].has);
+  const levels=plots.reduce((s,p)=>s+(p.kind==='house'?Math.round(Math.min(1,tot[p.id].contrib/GROVE_FHSA_GOAL)*10):groveLevel(tot[p.id].contrib)+1),0);
+  return { plots, tot, streak:groveStreak(), badges:(state.grove&&state.grove.badges||[]).length, levels };
+}
+
+async function groveShareImage(variant){
+  try{ await document.fonts.ready; }catch(e){}
+  const S=groveShareStats(), mecha=variant==='mecha';
+  const W=GROVE_SHARE_W, H=1350, pad=48;
+  const cv=document.createElement('canvas'); cv.width=W; cv.height=H; const x=cv.getContext('2d');
+  const disp="'Bricolage Grotesque', 'Syne', sans-serif", body="Geist, Inter, sans-serif";
+  // background
+  const bg=x.createLinearGradient(0,0,0,H); bg.addColorStop(0,'#0f131b'); bg.addColorStop(1,'#090b10'); x.fillStyle=bg; x.fillRect(0,0,W,H);
+  const gl=x.createRadialGradient(W*0.85,0,0,W*0.85,0,W*0.9); gl.addColorStop(0,mecha?'rgba(34,211,238,0.16)':'rgba(74,222,128,0.14)'); gl.addColorStop(1,'rgba(0,0,0,0)'); x.fillStyle=gl; x.fillRect(0,0,W,H);
+  // brand
+  x.fillStyle='#4ade80'; groveRoundRect(x,pad,pad,52,52,13); x.fill();
+  x.fillStyle='#08140c'; x.font=`800 34px ${disp}`; x.textAlign='center'; x.textBaseline='middle'; x.fillText('Q',pad+26,pad+28);
+  x.textAlign='left'; x.fillStyle='#4ade80'; x.font=`700 30px ${disp}`; x.fillText('Qualisight',pad+68,pad+27);
+  x.textBaseline='alphabetic';
+  // title
+  x.fillStyle='#e8edf8'; x.font=`800 ${mecha?66:72}px ${disp}`;
+  x.fillText(mecha?'I found the mecha bull':'My money grove', pad, 210);
+  x.fillStyle='#97a2b8'; x.font=`400 30px ${body}`;
+  x.fillText(mecha?'It shows up in about 1 in 1,000 crypto bull markets.':'Growing a little every month.', pad, 258);
+  // stat chips
+  const chips=[];
+  if(S.streak>0) chips.push([`${S.streak}-month streak`,'#4ade80']);
+  chips.push([`${S.plots.length} account${S.plots.length===1?'':'s'} growing`,'#e8edf8']);
+  if(S.badges) chips.push([`${S.badges} badge${S.badges===1?'':'s'}`,'#fbbf24']);
+  if(_grove.mecha || mecha) chips.push(['Rare find: mecha bull','#67e8f9']);
+  let cx=pad, cy=296; x.font=`600 26px ${body}`;
+  chips.forEach(([txt,col])=>{ const tw=x.measureText(txt).width+44; if(cx+tw>W-pad){ cx=pad; cy+=62; }
+    x.fillStyle='rgba(255,255,255,0.05)'; groveRoundRect(x,cx,cy,tw,50,25); x.fill(); x.strokeStyle='rgba(255,255,255,0.12)'; x.lineWidth=1.5; x.stroke();
+    x.fillStyle=col; x.beginPath(); x.arc(cx+22,cy+25,6,0,Math.PI*2); x.fill();
+    x.fillStyle='#e8edf8'; x.fillText(txt,cx+36,cy+34); cx+=tw+12; });
+  // tiles
+  const top=cy+86, footer=120, availH=H-top-footer;
+  const list = mecha ? S.plots.filter(p=>p.id==='crypto') : S.plots;
+  const cols = list.length<=2 ? 1 : 2, rows=Math.ceil(list.length/cols), gap=22, labelH=72;
+  const tw=(W-pad*2-gap*(cols-1))/cols, th=Math.min((availH-gap*(rows-1))/rows-labelH, tw*(list.length===1?0.8:0.62));
+  list.forEach((p,i)=>{
+    const c=i%cols, r=Math.floor(i/cols), tx=pad+c*(tw+gap), ty=top+r*(th+labelH+gap);
+    // draw each scene at its real height (280) and widen it to fit, so tall trees and towers never get clipped
+    const sceneH=280, sceneW=Math.round(sceneH*tw/th), scale=Math.max(2,Math.ceil(tw/sceneW));
+    const img=groveShareTile(p, sceneW, sceneH, {mecha: mecha && p.id==='crypto', scale});
+    x.save(); groveRoundRect(x,tx,ty,tw,th+labelH,22); x.clip();
+    x.fillStyle='#141821'; x.fillRect(tx,ty,tw,th+labelH);
+    x.drawImage(img,tx,ty,tw,th);
+    x.restore();
+    x.strokeStyle='rgba(255,255,255,0.1)'; x.lineWidth=2; groveRoundRect(x,tx,ty,tw,th+labelH,22); x.stroke();
+    // label: tag, name, level (never an amount)
+    const ly=ty+th+labelH/2+2; x.font=`700 ${cols===1?24:20}px ${body}`;
+    const tagW=x.measureText(p.tag).width+20; x.fillStyle=p.color; groveRoundRect(x,tx+18,ly-17,tagW,32,8); x.fill();
+    x.fillStyle='#08140c'; x.textBaseline='middle'; x.fillText(p.tag,tx+28,ly);
+    const tot=S.tot[p.id], lvl=groveLevelText(p,tot.contrib);
+    x.fillStyle='#e8edf8'; x.font=`600 ${cols===1?28:22}px ${body}`; x.textAlign='right';
+    let lt=lvl; while(x.measureText(lt).width>tw-tagW-60 && lt.length>4) lt=lt.slice(0,-2);
+    x.fillText(lt===lvl?lvl:lt+'…',tx+tw-18,ly); x.textAlign='left'; x.textBaseline='alphabetic';
+  });
+  // footer
+  x.fillStyle='rgba(255,255,255,0.08)'; x.fillRect(pad,H-footer+10,W-pad*2,1.5);
+  x.fillStyle='#e8edf8'; x.font=`700 34px ${disp}`; x.fillText('Grow yours at qualisight.ca',pad,H-46);
+  x.fillStyle='#6b7488'; x.font=`400 22px ${body}`; x.textAlign='right'; x.fillText('No dollar amounts shown',W-pad,H-50); x.textAlign='left';
+  return cv;
+}
+
+function groveShareCaption(variant){
+  const S=groveShareStats();
+  if(variant==='mecha') return `I just found the 1 in 1,000 mecha bull in my money grove  Grow yours at qualisight.ca`;
+  const best=S.plots.map(p=>({p,l:p.kind==='house'?-1:groveLevel(S.tot[p.id].contrib)})).sort((a,b)=>b.l-a.l)[0];
+  const bits=[];
+  if(best && best.l>=0) bits.push(`my ${best.p.tag} just reached Level ${best.l+1} (${best.p.levels[best.l]})`);
+  if(S.streak>1) bits.push(`${S.streak} months in a row of adding money`);
+  return `My money grove on Qualisight: ${bits.join(', ')||'just planted my first dollar'}. Grow yours at qualisight.ca`;
+}
+
+function groveShareEnsureModal(){
+  if(document.getElementById('gs-overlay')) return;
+  const el=document.createElement('div'); el.id='gs-overlay'; el.className='gs-overlay';
+  el.innerHTML=`<div class="gs-sheet" role="dialog" aria-modal="true" aria-labelledby="gs-title">
+    <div class="gs-head"><div><div class="gs-title" id="gs-title">Share your grove</div><div class="gs-sub" id="gs-sub">Levels, streak and badges only. No dollar amounts.</div></div>
+      <button type="button" class="gs-x" onclick="groveShareClose()" aria-label="Close">×</button></div>
+    <div class="gs-preview"><img id="gs-img" alt="Your money grove share image"><div class="gs-loading" id="gs-loading">Drawing your grove…</div></div>
+    <div class="gs-caption"><span id="gs-cap"></span></div>
+    <div class="gs-actions">
+      <button type="button" class="gs-btn primary" id="gs-share" onclick="groveShareNative()">Share</button>
+      <button type="button" class="gs-btn" onclick="groveShareDownload()">Save image</button>
+      <button type="button" class="gs-btn" onclick="groveShareCopy()" id="gs-copy">Copy caption</button>
+    </div></div>`;
+  el.addEventListener('click',e=>{ if(e.target===el) groveShareClose(); });
+  document.body.appendChild(el);
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape' && el.classList.contains('open')) groveShareClose(); });
+}
+async function groveShare(variant){
+  groveShareEnsureModal();
+  const ov=document.getElementById('gs-overlay'), img=document.getElementById('gs-img');
+  _grove.shareVariant=variant||'grove';
+  document.getElementById('gs-title').textContent = variant==='mecha' ? 'You found the mecha bull' : 'Share your grove';
+  document.getElementById('gs-sub').textContent = variant==='mecha' ? 'About 1 in 1,000 crypto bull markets. Worth bragging about.' : 'Levels, streak and badges only. No dollar amounts.';
+  document.getElementById('gs-cap').textContent = groveShareCaption(variant);
+  img.removeAttribute('src'); document.getElementById('gs-loading').hidden=false;
+  ov.classList.add('open');
+  const cv=await groveShareImage(variant);
+  _grove.shareBlob = await new Promise(r=>cv.toBlob(r,'image/png'));
+  if(_grove.shareUrl) URL.revokeObjectURL(_grove.shareUrl);
+  _grove.shareUrl=URL.createObjectURL(_grove.shareBlob); img.src=_grove.shareUrl;
+  document.getElementById('gs-loading').hidden=true;
+  const file=new File([_grove.shareBlob],'my-money-grove.png',{type:'image/png'});
+  const can = navigator.canShare && navigator.canShare({files:[file]});
+  document.getElementById('gs-share').hidden = !can;
+}
+function groveShareClose(){ document.getElementById('gs-overlay')?.classList.remove('open'); }
+async function groveShareNative(){
+  if(!_grove.shareBlob) return;
+  const file=new File([_grove.shareBlob],'my-money-grove.png',{type:'image/png'});
+  try{ await navigator.share({files:[file], text:groveShareCaption(_grove.shareVariant)}); }catch(e){ /* closed the share sheet */ }
+}
+function groveShareDownload(){
+  if(!_grove.shareUrl) return;
+  const a=document.createElement('a'); a.href=_grove.shareUrl; a.download=_grove.shareVariant==='mecha'?'mecha-bull.png':'my-money-grove.png';
+  document.body.appendChild(a); a.click(); a.remove();
+}
+async function groveShareCopy(){
+  const txt=groveShareCaption(_grove.shareVariant), b=document.getElementById('gs-copy');
+  try{ await navigator.clipboard.writeText(txt); b.textContent='Copied'; }catch(e){ b.textContent='Copy failed'; }
+  setTimeout(()=>{ b.textContent='Copy caption'; },1800);
 }
 
 // Re-render the grove whenever investments change or the page opens
