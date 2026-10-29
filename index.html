@@ -10290,17 +10290,13 @@ async function qsReadPrices(keys){
   return {map,hist};
 }
 
-// Some tickers trade in two places, e.g. Apple on NASDAQ and a much cheaper CDR in Toronto. The server picks
-// the usual one; if your own cost clearly matches the other listing (more than 2.5x apart, so it's a different
-// product, not just US vs Canadian dollars), use that one for you instead.
+// Which listing to use. A ticker with no exchange never means a CDR (the server already picked the real share or
+// the Canadian listing). To hold a CDR, type it with .TO, e.g. AAPL.TO, and that exact listing is used.
 function qsPickListing(h,r){
   const opts=[{symbol:r.symbol, price:+r.price, currency:r.currency, hkey:r.key}]
     .concat((r.alts||[]).filter(x=>+x.price>0).map(x=>({symbol:x.symbol, price:+x.price, currency:x.currency, hkey:r.key+'|'+x.symbol})));
   if(h.listing){ const pin=opts.find(o=>o.symbol===h.listing); if(pin) return pin; }
-  const cost=+h.cost; if(!(cost>0) || opts.length<2) return opts[0];
-  const off=o=>Math.abs(Math.log(o.price/cost)), p=opts[0];
-  const other=opts.slice(1).filter(o=>Math.abs(Math.log(o.price/p.price))>Math.log(2.5)).sort((a,b)=>off(a)-off(b))[0];
-  return other && off(other)<off(p) ? other : p;
+  return opts[0];
 }
 
 async function groveSyncPrices(opts){
@@ -10568,7 +10564,8 @@ function invRender(){
           <label class="inv-field">${c.qty}<input id="inv-qty" class="inv-input" type="number" min="0" step="any" placeholder="10" oninput="invSummary()"></label>
           <label class="inv-field">Price you paid each ($)<input id="inv-cost" class="inv-input" type="number" min="0" step="any" placeholder="28.50" oninput="invSummary()"></label>
           <label class="inv-field">Price today ($) <em>${c.fetch?'optional, we look it up':'optional'}</em><input id="inv-price" class="inv-input" type="number" min="0" step="any" placeholder="${c.fetch?'Auto':'Same as paid'}" oninput="invSummary()"></label>
-        </div>`}
+        </div>
+        ${c.fetch?`<div class="inv-note">Prices update on their own every day. A ticker like AAPL means the real US share. Holding a Canadian CDR? Add .TO, like AAPL.TO.</div>`:''}`}
     </div>`:''}
     <div class="inv-err" id="inv-err"></div>
     <div class="inv-foot">
