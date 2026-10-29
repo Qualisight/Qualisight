@@ -2010,6 +2010,16 @@ input[type=number]{-moz-appearance:textfield}
   .dt-card-metarow{gap:0.3rem 0.9rem}
 }
 
+/* since your last visit, and the shimmer when the next level is close */
+.grove-since{font-size:0.72rem;font-weight:500;font-variant-numeric:tabular-nums;color:var(--muted);margin-top:0.1rem;min-height:0}
+.grove-since:empty{display:none}
+.grove-since.up{color:#4ade80}
+.grove-since.down{color:#f87171}
+.grove-bar.near i{position:relative;overflow:hidden}
+.grove-bar.near i::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent 0%,rgba(255,255,255,0.55) 50%,transparent 100%);transform:translateX(-100%);animation:groveShimmer 2.6s ease-in-out infinite}
+@keyframes groveShimmer{0%{transform:translateX(-100%)}60%,100%{transform:translateX(100%)}}
+@media (prefers-reduced-motion: reduce){.grove-bar.near i::after{animation:none;opacity:0.35;transform:none}}
+
 /* ── ADD AN INVESTMENT SHEET ── */
 .inv-overlay{position:fixed;inset:0;background:rgba(5,7,10,0.72);z-index:650;display:none;align-items:center;justify-content:center;padding:1rem}
 .inv-overlay.open{display:flex}
@@ -8165,7 +8175,7 @@ function groveCardHtml(p){ return `
           <div class="grove-body">
             <div class="grove-nums">
               <div><div class="grove-k">Put in</div><div class="grove-v" id="gp-${p.id}-c"></div></div>
-              <div style="text-align:right"><div class="grove-k">Worth</div><div class="grove-v" id="gp-${p.id}-v"></div></div>
+              <div style="text-align:right"><div class="grove-k">Worth</div><div class="grove-v" id="gp-${p.id}-v"></div><div class="grove-since" id="gp-${p.id}-since"></div></div>
             </div>
             <div><div class="grove-next" id="gp-${p.id}-next"></div><div class="grove-bar"><i id="gp-${p.id}-bar" style="background:${p.color}"></i></div></div>
             <div class="grove-plan" style="--acc:${p.color}" id="gp-${p.id}-plan">
@@ -8326,6 +8336,7 @@ function renderGrove(){
   document.getElementById('grove-streak').textContent = streak ? `${streak}-month contribution streak` : 'Add money this month to start a streak';
 
   _grove.tot = tot;
+  groveLifeRender(tot);
   groveUpdateText(tot);
   groveRefMaybeSync(); groveRefRender(); groveMaybeSyncPrices(); groveMaybeShowUpgrade(); qsMaybeBillingToast(); qsSimplifyInvestUI();
   if(_grove.focusP) groveFocusStats();
@@ -8387,6 +8398,7 @@ function groveUpdateText(tot){
       : `<button class="grove-btn" onclick="groveAddAccount('${p.accTypes[0]}')">Open ${p.tag==='TFSA'?'a':'an'} ${p.tag} plot</button>`;
     if(cta.dataset.html!==html){ cta.innerHTML=html; cta.dataset.html=html; }
   });
+  groveNearRender(); groveSinceRender();
 }
 function groveDemoAdvance(months){
   if(!currentUser?.isDemo) return;
@@ -8573,7 +8585,7 @@ function groveTree(P,t){
     const sway=groveReduce?0:Math.sin(t*1.2+id*0.9)*0.016*(depth-d+1)*(1+gust) + Math.sin(t*24+id)*0.05*shake*(depth-d+1)/Math.max(1,depth)*2.4;
     const a=ang+sway, x2=x+Math.cos(a)*len*bounce, y2=y+Math.sin(a)*len*bounce;
     const bend=(groveRand(id+500)-0.5)*len*0.25;
-    segs.push({x,y,x2,y2,mx:(x+x2)/2+Math.cos(a+Math.PI/2)*bend,my:(y+y2)/2+Math.sin(a+Math.PI/2)*bend,d});
+    segs.push({x,y,x2,y2,mx:(x+x2)/2+Math.cos(a+Math.PI/2)*bend,my:(y+y2)/2+Math.sin(a+Math.PI/2)*bend,d,id});
     if(d<=2) nodes.push([x2,y2,id]);
     if(d<=1){ tips.push([x2,y2,id]); return; }
     const r1=groveRand(id*2+7), r2=groveRand(id*2+11);
@@ -8602,9 +8614,12 @@ function groveTree(P,t){
   const clumps = tips.concat(depth>=4 ? nodes : []);
   if(pal){
     const bob=(id)=>groveReduce?0:Math.sin(t*1.5+id)*1.1;
-    clumps.forEach(([x,y,id])=>{ ctx.fillStyle=pal[0]; ctx.beginPath(); ctx.arc(x-L*leafR*0.25,y+leafR*0.3+bob(id),leafR*(0.95+groveRand(id)*0.4),0,Math.PI*2); ctx.fill(); });
-    clumps.forEach(([x,y,id])=>{ ctx.fillStyle=pal[1]; ctx.beginPath(); ctx.arc(x,y+bob(id),leafR*(0.8+groveRand(id+1)*0.35),0,Math.PI*2); ctx.fill(); });
-    clumps.forEach(([x,y,id])=>{ if(groveRand(id+2)<0.7){ ctx.fillStyle=pal[2]; ctx.globalAlpha=0.85; ctx.beginPath(); ctx.arc(x+L*leafR*0.3,y-leafR*0.3+bob(id),leafR*(0.38+groveRand(id+3)*0.2),0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1; } });
+    // each layer is one path and one fill (much cheaper than a fill per clump)
+    const layer=(col,fn)=>{ ctx.fillStyle=col; ctx.beginPath(); clumps.forEach(q=>{ const c=fn(q); if(c){ ctx.moveTo(c[0]+c[2],c[1]); ctx.arc(c[0],c[1],c[2],0,Math.PI*2); } }); ctx.fill(); };
+    layer(pal[0],([x,y,id])=>[x-L*leafR*0.25,y+leafR*0.3+bob(id),leafR*(0.95+groveRand(id)*0.4)]);
+    layer(pal[1],([x,y,id])=>[x,y+bob(id),leafR*(0.8+groveRand(id+1)*0.35)]);
+    groveLeafEdges(ctx,clumps,pal,leafR,t);
+    ctx.globalAlpha=0.85; layer(pal[2],([x,y,id])=>groveRand(id+2)<0.7?[x+L*leafR*0.3,y-leafR*0.3+bob(id),leafR*(0.38+groveRand(id+3)*0.2)]:null); ctx.globalAlpha=1;
     if(season==='spring'){ tips.forEach(([x,y,id])=>{ if(groveRand(id+40)<0.6){ ctx.fillStyle=groveRand(id+41)<0.5?'#f9a8d4':'#fce7f3'; ctx.beginPath(); ctx.arc(x+(groveRand(id+42)-0.5)*leafR*1.4,y+(groveRand(id+43)-0.5)*leafR*1.2,1.8+s*1.2,0,Math.PI*2); ctx.fill(); } }); }
   } else {
     // winter: a few hardy leaves and snow resting in the crown
@@ -8627,6 +8642,7 @@ function groveTree(P,t){
     ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.beginPath(); ctx.arc(fx-fr*0.35,fy-fr*0.35,fr*0.3,0,Math.PI*2); ctx.fill();
   }
 
+  groveTreeExtras(P,t,{segs,nodes,depth,base,cx,li,season,c,L,leafR,s});
   // seedling
   if(c<120){ ctx.strokeStyle='#3cc472'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(cx,base); ctx.lineTo(cx,base-12); ctx.stroke(); ctx.fillStyle='#4ade80'; ctx.beginPath(); ctx.ellipse(cx-5,base-13,5,2.6,-0.5,0,Math.PI*2); ctx.ellipse(cx+5,base-15,5,2.6,0.5,0,Math.PI*2); ctx.fill(); }
 
@@ -8644,13 +8660,7 @@ function groveTree(P,t){
     for(let i=0;i<Math.min(4,li-3);i++){ const sp=22+groveRand(i+70)*14, x=((t*sp+groveRand(i+90)*w*3)%(w+100))-50, y=40+groveRand(i+60)*34+Math.sin(t*2+i)*4, f=Math.sin(t*9+i)*4;
       ctx.beginPath(); ctx.moveTo(x-6,y-f); ctx.quadraticCurveTo(x-3,y-2,x,y); ctx.quadraticCurveTo(x+3,y-2,x+6,y-f); ctx.stroke(); } }
   if(li>=5){ const bx=cx+spread*0.75; ctx.fillStyle='#5d4430'; ctx.fillRect(bx,base-12,30,3.5); ctx.fillRect(bx,base-19,30,2.5); ctx.fillRect(bx+2,base-9,2.5,9); ctx.fillRect(bx+25.5,base-9,2.5,9); }
-  if(li>=6 && segs.length>6){
-    // a swing hangs from a low branch
-    const sg=segs.filter(q=>q.d===depth-1).sort((a,b)=>b.y2-a.y2)[0] || segs[2];
-    const ax=(sg.x+sg.x2)/2, ay=(sg.y+sg.y2)/2, swing=groveReduce?0:Math.sin(t*1.6)*6, sy=Math.min(base-14, ay+46);
-    ctx.strokeStyle='rgba(232,237,248,0.55)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(ax-6,ay); ctx.lineTo(ax-6+swing,sy); ctx.moveTo(ax+6,ay); ctx.lineTo(ax+6+swing,sy); ctx.stroke();
-    ctx.fillStyle='#76573d'; ctx.fillRect(ax-9+swing,sy,18,3);
-  }
+  if(li>=6 && segs.length>6) groveSwing(P,t,segs,depth,base,cx,s,li>=5?cx+spread*0.75:null); // a swing tied to one low branch
   if(li>=7 && !groveReduce){
     // fireflies drift through the canopy
     for(let i=0;i<8;i++){ const fx=cx+Math.sin(t*0.6+i*1.7)*spread*0.9, fy=base-trunk-Math.cos(t*0.5+i)*trunk*0.6, a=0.4+0.6*Math.max(0,Math.sin(t*3+i*2));
@@ -8975,10 +8985,12 @@ function groveFore(P,t){
   ctx.restore();
   const ph=_grove.ph||'day', pal=GROVE_PHASE[ph], fm=GROVE_PAR.fore+2, n=groveNight();
   groveAmbient(P,t);
+  if(typeof groveVisitFlowers==='function'){ groveVisitFlowers(P,t); groveVisitor(P,t); }
   groveHerd(P,t);
   if(typeof groveWeather==='function') groveWeather(P,t);
   if(P.front) ctx.drawImage(P.front,0,0,w,h);
   if(typeof groveCursorLight==='function') groveCursorLight(P);
+  if(typeof groveTapHint==='function') groveTapHint(P,t);
 }
 
 function groveComposeBack(P,ctx,t,ph,pal,kind,base,fm,mm){
@@ -9752,6 +9764,7 @@ function groveTower(P,t){
     // lit edge
     ctx.fillStyle='rgba(255,255,255,0.16)'; if(L<0) ctx.fillRect(x0,top,1.2,fy-top); else { ctx.strokeStyle='rgba(255,255,255,0.16)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x0+bw+depth,fy-dy); ctx.lineTo(x0+bw+depth,top-dy); ctx.stroke(); }
     // glass elevator riding the corner
+    groveTowerExtras(P,t,{x0,bw,top,fy,floors,n,li});
     if(floors>10){ const k=(Math.sin(t*0.28)+1)/2, ey=fy-6-k*(fy-top-14); ctx.fillStyle='rgba(253,230,170,0.95)'; ctx.fillRect(x0+bw+1,ey-dy*0.08,3.2,5.5); ctx.fillStyle='rgba(253,230,170,0.18)'; ctx.fillRect(x0+bw-1,ey-3,7,11); }
   }
 
@@ -9845,6 +9858,7 @@ function groveHouse(P,t){
       ctx.fillStyle='#5b6275'; ctx.fillRect(dx-6,g0,dw+12,3); ctx.fillRect(dx-9,g0+3,dw+18,3);
       const lx=dx-7, ly=dyy+6; ctx.fillStyle='#2a2440'; ctx.fillRect(lx-2,ly,4,6); ctx.fillStyle=lightsOn&&n>0.3?'#fde68a':'#6b5f8f'; ctx.fillRect(lx-1.3,ly+1,2.6,4);
       if(lightsOn && n>0.3){ const lg=ctx.createRadialGradient(lx,ly+3,0,lx,ly+3,30); lg.addColorStop(0,`rgba(253,224,150,${0.3*n})`); lg.addColorStop(1,'rgba(253,224,150,0)'); ctx.fillStyle=lg; ctx.fillRect(lx-30,ly-27,60,60); } } }
+  groveHouseExtras(P,t,{hx,hw,g0,sWi,sD,season});
   // roof with shingles and a gable window
   if(sR>0){ const eave=g0-wallH, peak=eave-46*sR;
     ctx.fillStyle=L>0?'#6a4cc4':'#4b3496'; groveQuad(ctx,[hx+hw/2,peak],[hx+hw/2+depth,peak-dy],[hx+hw+12+depth,eave-dy],[hx+hw+12,eave]); ctx.fill();
@@ -9963,6 +9977,7 @@ function groveField(P,t){
     if(n>0.35){ ctx.fillStyle=`rgba(254,249,195,${0.15*n})`; ctx.beginPath(); ctx.moveTo(10,-7); ctx.lineTo(40,-13); ctx.lineTo(40,1); ctx.closePath(); ctx.fill(); ctx.fillStyle='#fef9c3'; ctx.fillRect(9.5,-7.5,1.6,1.6); }
     ctx.restore();
     if(!groveReduce) for(let i=0;i<3;i++){ const q=((t*0.8+i/3)%1); ctx.fillStyle=`rgba(200,206,216,${0.28*(1-q)})`; ctx.beginPath(); ctx.arc(tx+dir*1.8-dir*q*10,ty-22-q*12,1.5+q*3,0,Math.PI*2); ctx.fill(); } }
+  groveFieldExtras(P,t,{season,n,fieldR,base});
   groveSnow(P,t);
 }
 
@@ -10121,7 +10136,7 @@ function groveGoldPig(P,t,gold){
 // ── Interaction, weather and focus mode ──
 
 function groveDrawPlot(P,t){
-  const k=P.def.kind;
+  const k=P.def.kind; P.taps=[];
   if(k==='tree') groveTree(P,t); else if(k==='tower') groveTower(P,t); else if(k==='field') groveField(P,t);
   else if(k==='coin') groveCoin(P,t); else if(k==='vault') groveVault(P,t); else groveHouse(P,t);
   groveFore(P,t);
@@ -10157,8 +10172,11 @@ function groveParticles(P){
 // What a tap does, scene by scene
 function groveTap(P,x,y){
   const t=performance.now()/1000, off=(P.off&&P.off.content)||0, base=P.h-24, geo=P.geo||{};
-  P.pulse=1;
-  // animals and the pig answer first
+  P.pulse=1; groveMarkTapped();
+  // small things you can poke (the swing, the owl, today's visitor...) answer first
+  const z=(P.taps||[]).slice().reverse().find(q=>Math.hypot(q.x-x,q.y-y)<q.r);
+  if(z){ z.on(t); return; }
+  // then animals and the pig
   const hit=(P.hits||[]).find(hh=>Math.hypot(hh.x-x,(hh.y-y)*1.2)<hh.r);
   if(hit){ P.animalTap={i:hit.i,t,kind:hit.kind};
     const col=hit.kind==='bear'?'#f87171':hit.kind==='mecha'?'#67e8f9':'#4ade80';
@@ -10217,7 +10235,7 @@ function groveCursorLight(P){
 
 // ── Focus mode: open any scene big ──
 const GROVE_FOCUS_HINT = {
-  tree:'Tap the tree to shake loose some leaves. Gold fruit drops as coins.',
+  tree:'Tap the tree to shake loose some leaves. Gold fruit drops as coins. Give the swing a push once you have one.',
   tower:'Tap the tower to send a wave of light up every floor.',
   house:'Tap the house to switch the lights on or off.',
   field:'Tap the field to send a gust through the crops and startle the birds.',
@@ -10257,7 +10275,9 @@ function groveFocus(id){
   const el=document.getElementById('gf-overlay'), cv=el.querySelector('canvas'), def=live.def;
   const F={def, cv, ctx:cv.getContext('2d'), parts:[], pulse:0, flash:0, cam:0, visible:true, focus:true, disp:live.disp, dispGain:live.dispGain, lightsOff:live.lightsOff};
   document.getElementById('gf-title').innerHTML=`<span class="grove-tag" style="background:${def.color}">${def.tag}</span>${def.name}`;
-  document.getElementById('gf-hint').textContent=(GROVE_FOCUS_HINT[def.kind]||'')+' Tap a bull or bear to say hi.';
+  const vk=live.visitorKind, vis=vk ? ` ${GROVE_VISITOR_NAME[vk]} is visiting today. Something different stops by every day.` : '';
+  const fl=['tree','house','field'].includes(def.kind) ? ' A wildflower blooms for each day you check in.' : '';
+  document.getElementById('gf-hint').textContent=(GROVE_FOCUS_HINT[def.kind]||'')+' Tap a bull or bear to say hi.'+vis+fl;
   el.classList.add('open'); document.body.style.overflow='hidden';
   _grove.focusP=F; groveFocusStats();
   requestAnimationFrame(()=>{ groveFocusSize(F); groveStart(); });
@@ -10271,6 +10291,441 @@ function groveFocusClose(){
   const el=document.getElementById('gf-overlay'); if(el) el.classList.remove('open');
   const F=_grove.focusP; if(F){ const live=(_grove.plots||{})[F.def.id]; if(live) live.lightsOff=F.lightsOff; }
   _grove.focusP=null; document.body.style.overflow='';
+}
+
+// ── Grove life: small things that change from day to day ──
+// A different animal stops by each day, a wildflower blooms for every day you check in, each card tells you
+// what the market did since your last visit, and the scenes pick up small details as they grow.
+
+function groveToday(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function groveDaySeed(){ const s=groveToday(); let h=0; for(const c of s) h=Math.imul(h^c.charCodeAt(0),16777619)>>>0; return h%100000; }
+function groveEase(q){ q=Math.max(0,Math.min(1,q)); return q*q*(3-2*q); }
+// a point along a branch (they're drawn as quadratic curves)
+function groveQPt(q,u){ const a=(1-u)*(1-u), b=2*(1-u)*u, c=u*u; return [a*q.x+b*q.mx+c*q.x2, a*q.y+b*q.my+c*q.y2]; }
+// tappable spots, registered each frame (content=true means the point is in scene space and moves with the camera)
+function groveTapZone(P,x,y,r,on,content){ const o=content!==false&&P.off?P.off.content:0; (P.taps=P.taps||[]).push({x:x+o,y,r,on}); }
+
+// ── first tap hint, until you've tapped any scene once ──
+function groveTapped(){ if(state.grove && state.grove.tapped) return true; try{ return localStorage.getItem('qs_grove_tapped')==='1'; }catch(e){ return false; } }
+function groveMarkTapped(){
+  if(groveTapped()) return;
+  try{ localStorage.setItem('qs_grove_tapped','1'); }catch(e){}
+  if(state.grove && !currentUser?.isDemo){ state.grove.tapped=true; clearTimeout(_grove.saveT); _grove.saveT=setTimeout(save,1500); }
+}
+function groveTapHint(P,t){
+  if(P.focus || groveTapped()) return;
+  const first=Object.values(_grove.plots||{}).find(q=>q.visible!==false); if(first!==P) return;
+  if(!_grove.hintT0) _grove.hintT0=t;
+  const k=t-_grove.hintT0-2.5; if(k<0) return;
+  const {ctx,w,h}=P, x=w/2+(P.off?P.off.content:0), y=h-24-46, fade=Math.min(1,k/0.8);
+  for(let i=0;i<2;i++){ const q=((k*0.6+i*0.5)%1); ctx.strokeStyle=`rgba(255,255,255,${0.5*(1-q)*fade})`; ctx.lineWidth=1.5; ctx.beginPath(); ctx.arc(x,y,6+q*22,0,Math.PI*2); ctx.stroke(); }
+  ctx.fillStyle=`rgba(255,255,255,${0.9*fade})`; ctx.beginPath(); ctx.arc(x,y,3,0,Math.PI*2); ctx.fill();
+  ctx.font='600 10px Geist, Inter, sans-serif'; ctx.textAlign='center';
+  ctx.fillStyle=`rgba(10,12,20,${0.55*fade})`; groveRR(ctx,x-22,y+20,44,16,8); ctx.fill();
+  ctx.fillStyle=`rgba(255,255,255,${0.95*fade})`; ctx.fillText('Tap me',x,y+31.5);
+}
+
+// ── visits: a wildflower for each day you check in (last 30 days, up to 12) ──
+function groveVisitTrack(){
+  if(!state.grove) return;
+  const g=state.grove, today=groveToday();
+  if(currentUser?.isDemo){ _grove.flowers=5; return; }
+  g.visits=Array.isArray(g.visits)?g.visits:[];
+  if(!g.visits.includes(today)){
+    g.visits.push(today); g.visits=g.visits.slice(-40);
+    if(g.visits.length>1) _grove.bloomAt=performance.now()/1000+1.2; // today's flower grows in while you watch
+    if(g.visits.length>=2 && !g.flowerTip){ g.flowerTip=true; _grove.flowerToast=true; }
+    clearTimeout(_grove.saveT); _grove.saveT=setTimeout(save,1200);
+  }
+  const cut=Date.now()-30*864e5;
+  _grove.flowers=Math.min(12, g.visits.filter(d=>Date.parse(d+'T12:00:00')>=cut).length);
+}
+const GROVE_FLOWER_X=[0.08,0.9,0.16,0.82,0.04,0.95,0.22,0.76,0.12,0.86,0.28,0.7];
+function groveVisitFlowers(P,t){
+  const k=P.def.kind; if(k!=='tree' && k!=='house' && k!=='field') return;
+  const n=_grove.flowers||0; if(!n) return;
+  const {ctx,w,h}=P, base=h-24, o=P.off?P.off.content:0, season=groveSeason(groveNow().getMonth());
+  const cols = season==='autumn' ? ['#c084fc','#f97316','#facc15'] : season==='winter' ? ['#f8fafc'] : ['#f9a8d4','#fde68a','#c4b5fd','#fca5a5','#ffffff'];
+  for(let i=0;i<n;i++){
+    let g=1; if(i===n-1 && _grove.bloomAt){ g=groveEase((t-_grove.bloomAt)/2.2); if(g<=0) continue; }
+    const x=GROVE_FLOWER_X[i]*w+o+(groveRand(i+6100)-0.5)*8, y=base+2+groveRand(i+6101)*4, sh=(6+groveRand(i+6102)*5)*g, sway=groveReduce?0:Math.sin(t*1.6+i)*0.8;
+    ctx.strokeStyle=season==='winter'?'#7f9c8a':'#3f9a5c'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x,y); ctx.quadraticCurveTo(x+sway*0.4,y-sh*0.6,x+sway,y-sh); ctx.stroke();
+    ctx.fillStyle='#3f9a5c'; ctx.beginPath(); ctx.ellipse(x+1.8,y-sh*0.4,2,0.9,-0.6,0,Math.PI*2); ctx.fill();
+    const fx=x+sway, fy=y-sh, c=cols[i%cols.length];
+    if(season==='winter'){ // snowdrops nod over
+      ctx.fillStyle=c; ctx.beginPath(); ctx.ellipse(fx+1.5,fy+1.5,1.3*g,2.2*g,0.4,0,Math.PI*2); ctx.fill(); continue; }
+    ctx.fillStyle=c; for(let p=0;p<5;p++){ const a=p/5*Math.PI*2+i; ctx.beginPath(); ctx.arc(fx+Math.cos(a)*1.7*g,fy+Math.sin(a)*1.7*g,1.25*g,0,Math.PI*2); ctx.fill(); }
+    ctx.fillStyle='#f59e0b'; ctx.beginPath(); ctx.arc(fx,fy,0.9*g,0,Math.PI*2); ctx.fill();
+    if(i===n-1 && _grove.bloomAt && t-_grove.bloomAt<3.5 && !groveReduce){ const q=(t-_grove.bloomAt)/3.5; ctx.strokeStyle=`rgba(253,230,138,${0.7*(1-q)})`; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(fx,fy,3+q*12,0,Math.PI*2); ctx.stroke(); }
+  }
+}
+
+// ── since your last visit: what the market did, per card ──
+function groveSeenTrack(tot){
+  if(!state.grove || !currentUser || currentUser.isDemo){ _grove.prevSeen=null; return; }
+  const g=state.grove, today=groveToday(), gains={};
+  GROVE_PLOTS.forEach(p=>{ const x=tot[p.id]; if(x && x.has && x.contrib>0) gains[p.id]=Math.round((x.value-x.contrib)*100)/100; });
+  if(!g.seen || g.seen.day!==today){ if(g.seen && g.seen.g) g.seenPrev=g.seen; g.seen={day:today, g:gains}; clearTimeout(_grove.saveT); _grove.saveT=setTimeout(save,1200); }
+  else g.seen.g=gains;
+  _grove.prevSeen=g.seenPrev||null;
+}
+function groveSinceLabel(day){
+  const then=new Date(day+'T12:00:00'), now=new Date(groveToday()+'T12:00:00'), d=Math.round((now-then)/864e5);
+  if(d<=1) return 'since yesterday';
+  if(d<7) return 'since '+then.toLocaleDateString('en-CA',{weekday:'long'});
+  return 'since '+then.toLocaleDateString('en-CA',{month:'short',day:'numeric'});
+}
+function groveSinceRender(){
+  const prev=_grove.prevSeen, tot=_grove.tot||{};
+  Object.values(_grove.plots||{}).forEach(P=>{
+    const id=P.def.id, el=document.getElementById(`gp-${id}-since`); if(!el) return;
+    const x=tot[id], old=prev && prev.g ? prev.g[id] : undefined;
+    const fresh = prev && (Date.now()-Date.parse(prev.day+'T12:00:00')) < 60*864e5;
+    if(!fresh || old===undefined || !x || !(x.contrib>0)){ el.textContent=''; el.className='grove-since'; return; }
+    const d=(x.value-x.contrib)-old;
+    if(Math.abs(d)<1){ el.textContent=''; el.className='grove-since'; return; }
+    el.className='grove-since '+(d>0?'up':'down');
+    el.textContent=(d>0?'+':'-')+'$'+Math.abs(Math.round(d)).toLocaleString('en-CA')+' '+groveSinceLabel(prev.day);
+    el.title='How much the market moved this account since your last visit. Money you added is not counted.';
+  });
+}
+// near the next level: the bar shimmers
+function groveNearRender(){
+  Object.values(_grove.plots||{}).forEach(P=>{
+    const bar=document.getElementById(`gp-${P.def.id}-bar`), nx=document.getElementById(`gp-${P.def.id}-next`); if(!bar||!nx) return;
+    const t=(_grove.tot||{})[P.def.id]||{contrib:0}, c=t.contrib; let k=0;
+    if(P.def.kind==='house'){ const st=P.def.stages, si=groveStage(P.def,c), nxt=st[si+1]; if(nxt){ const lo=st[si][0]*GROVE_FHSA_GOAL, hi=nxt[0]*GROVE_FHSA_GOAL; k=(c-lo)/(hi-lo); } }
+    else { const li=groveLevel(c), lo=li?GROVE_MILESTONES[li-1]:0, hi=GROVE_MILESTONES[li]; if(hi) k=(c-lo)/(hi-lo); }
+    const near=c>0 && k>=0.85 && k<1;
+    bar.parentElement.classList.toggle('near',near);
+    if(near && !nx.textContent.startsWith('Almost there')) nx.textContent='Almost there: '+nx.textContent;
+  });
+}
+function groveLifeRender(tot){
+  groveVisitTrack(); groveSeenTrack(tot||_grove.tot||{}); groveSinceRender(); groveNearRender();
+  if(_grove.flowerToast && typeof showToast==='function'){ _grove.flowerToast=false; setTimeout(()=>showToast('<strong>A wildflower bloomed in your grove.</strong> One grows for each day you check in.'),2500); }
+}
+
+// ── the swing (TFSA tree, Old oak and up) ──
+// It's tied to one branch for good and hangs from points on the branch itself, so it can't hop between branches.
+function groveSwing(P,t,segs,depth,base,cx,s,bench){
+  const {ctx}=P, U=0.66;
+  if(!P.swingPick || P.swingPick.depth!==depth){
+    // the flattest limb that reaches well out from the trunk, low enough for ropes, clear of the bench
+    const score=(q,strict)=>{ if(q.d<depth-2 || q.d>=depth) return -1e9;
+      const dx=q.x2-q.x, dy=q.y2-q.y, len=Math.hypot(dx,dy)||1, horiz=Math.abs(dx)/len, [ax,ay]=groveQPt(q,U);
+      if(base-ay<46 || Math.abs(ax-cx)<22) return -1e9;
+      if(strict && (horiz<0.45 || (bench!=null && ax>bench-14 && ax<bench+44))) return -1e9;
+      return horiz*3+Math.min(1.2,Math.abs(ax-cx)/60)+ay/base*0.5; };
+    let best=null;
+    for(const strict of [true,false]){ let bs=-1e8; segs.forEach(q=>{ const v=score(q,strict); if(v>bs){ bs=v; best=q.id; } }); if(best!=null) break; }
+    P.swingPick={depth, id:best};
+  }
+  const sg=segs.find(q=>q.id===P.swingPick.id); if(!sg) return;
+  const len=Math.hypot(sg.x2-sg.x,sg.y2-sg.y)||1, du=Math.min(0.22,7.5/len), lw=Math.max(1.1, sg.d*(1.05+s*1.7));
+  let A=groveQPt(sg,U-du), B=groveQPt(sg,U+du); if(A[0]>B[0]){ const tmp=A; A=B; B=tmp; }
+  A=[A[0],A[1]+lw*0.38]; B=[B[0],B[1]+lw*0.38];
+  const px=(A[0]+B[0])/2, py=(A[1]+B[1])/2, Lr=Math.max(24,Math.min(62,base-14-py)), half=Math.max(6,(B[0]-A[0])/2+1);
+  const push=Math.max(0,1-groveSince(P,t,'swingT')/7), a=groveReduce?0:Math.sin(t*1.7)*(0.14+0.5*push*push);
+  const sx=px+Math.sin(a)*Lr, sy=py+Math.cos(a)*Lr, ex=Math.cos(a)*half, ey=-Math.sin(a)*half;
+  // shadow on the ground follows the seat
+  ctx.fillStyle='rgba(0,0,0,0.18)'; ctx.beginPath(); ctx.ellipse(sx,base+1,half+3,1.8,0,0,Math.PI*2); ctx.fill();
+  // ropes, with a wrap where each one ties on
+  ctx.strokeStyle='rgba(214,196,160,0.85)'; ctx.lineWidth=1.1; ctx.beginPath(); ctx.moveTo(A[0],A[1]); ctx.lineTo(sx-ex,sy-ey); ctx.moveTo(B[0],B[1]); ctx.lineTo(sx+ex,sy+ey); ctx.stroke();
+  ctx.strokeStyle='#c8b28a'; ctx.lineWidth=1.2; [A,B].forEach(([x,y])=>{ ctx.beginPath(); ctx.moveTo(x-1.6,y-1.4); ctx.lineTo(x+1.6,y-0.2); ctx.moveTo(x-1.6,y-0.2); ctx.lineTo(x+1.6,y+1); ctx.stroke(); });
+  // wooden seat
+  ctx.save(); ctx.translate(sx,sy); ctx.rotate(-a);
+  ctx.fillStyle='#6b4a2e'; ctx.fillRect(-half-2,0,half*2+4,3.4);
+  ctx.fillStyle='#8a6440'; ctx.fillRect(-half-2,0,half*2+4,1.4);
+  ctx.fillStyle='rgba(0,0,0,0.25)'; ctx.fillRect(-half-2,3.4,half*2+4,0.8);
+  ctx.restore();
+  groveTapZone(P,sx,sy,16,tt=>{ P.swingT=tt; });
+}
+
+// ── tree details ──
+function groveTreeExtras(P,t,o){
+  const {ctx}=P, {segs,nodes,depth,base,cx,li,season,c,L,leafR,s}=o, n=groveNight();
+  const trunkSeg=segs.find(q=>q.d===depth);
+  // a young tree is staked and tied, with a watering can nearby
+  if(c>=120 && li<=2 && trunkSeg){
+    const sx=cx-9, top=Math.max(trunkSeg.y2+4, base-34);
+    ctx.fillStyle='#8a6a48'; ctx.fillRect(sx-1.2,top,2.4,base-top+2); ctx.fillStyle='#a7845c'; ctx.fillRect(sx-1.2,top,1,base-top+2);
+    const ty=top+6, [tx]=groveQPt(trunkSeg,(base-ty)/Math.max(1,base-trunkSeg.y2));
+    ctx.strokeStyle='#34d399'; ctx.lineWidth=1.3; ctx.beginPath(); ctx.moveTo(sx,ty); ctx.quadraticCurveTo((sx+tx)/2,ty+2,tx,ty); ctx.stroke();
+  }
+  if(c>=1 && li<=1){
+    const wx=cx+22, wy=base+1;
+    ctx.fillStyle='#64748b'; groveRR(ctx,wx-5,wy-9,10,9,2); ctx.fill();
+    ctx.fillStyle='#94a3b8'; ctx.fillRect(wx-5,wy-9,10,2);
+    ctx.strokeStyle='#64748b'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.moveTo(wx+4,wy-6); ctx.lineTo(wx+11,wy-11); ctx.stroke();
+    ctx.beginPath(); ctx.arc(wx,wy-10,3.5,Math.PI,0); ctx.stroke();
+    ctx.fillStyle='#94a3b8'; ctx.beginPath(); ctx.arc(wx+11.5,wy-11.4,1.4,0,Math.PI*2); ctx.fill();
+  }
+  // a knot in the trunk; after dark an owl looks out of it
+  if(li>=4 && trunkSeg){
+    const [kx,ky]=groveQPt(trunkSeg,0.62), r=2.4+s*2.2;
+    ctx.fillStyle='#2a1c12'; ctx.beginPath(); ctx.ellipse(kx,ky,r*0.75,r,0,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle='rgba(120,90,60,0.8)'; ctx.lineWidth=1; ctx.beginPath(); ctx.ellipse(kx,ky,r*0.75+1,r+1,0,0,Math.PI*2); ctx.stroke();
+    if(li>=5 && n>0.55){
+      const blink=groveReduce?1:(Math.sin(t*0.9)>0.97?0.15:1), look=groveReduce?0:Math.sin(t*0.4)*0.6, owlT=groveSince(P,t,'owlT');
+      const er=r*0.32, ey=ky-r*0.15;
+      ctx.fillStyle='#8a6a48'; ctx.beginPath(); ctx.ellipse(kx,ky+r*0.15,r*0.6,r*0.75,0,0,Math.PI*2); ctx.fill();
+      [-1,1].forEach(sd=>{ ctx.fillStyle='#fde68a'; ctx.beginPath(); ctx.ellipse(kx+sd*er*1.15,ey,er,er*blink*(owlT<1.2?1.35:1),0,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle='#1c120b'; ctx.beginPath(); ctx.arc(kx+sd*er*1.15+look*er*0.4,ey,er*0.45*blink,0,Math.PI*2); ctx.fill(); });
+      ctx.fillStyle='#f59e0b'; ctx.beginPath(); ctx.moveTo(kx-1,ey+er*0.9); ctx.lineTo(kx+1,ey+er*0.9); ctx.lineTo(kx,ey+er*1.7); ctx.closePath(); ctx.fill();
+      groveTapZone(P,kx,ky,12,tt=>{ P.owlT=tt; for(let i=0;i<3;i++) groveSpawn(P,{type:'spark',x:kx+(P.off?P.off.content:0),y:ky-6,vx:(Math.random()-0.5)*1.2,vy:-0.8-Math.random(),r:2.5,col:'#fde68a'}); });
+    }
+  }
+  // mushrooms by the roots in autumn
+  if(season==='autumn' && li>=2){
+    [[-18,1],[-12,0.75],[15,0.9]].forEach(([dx,k],i)=>{ const mx=cx+dx-L*2, my=base+1, r=3.2*k;
+      ctx.fillStyle='#efe4cf'; ctx.fillRect(mx-0.9*k,my-4*k,1.8*k,4*k);
+      ctx.fillStyle=i===1?'#b45309':'#dc2626'; ctx.beginPath(); ctx.ellipse(mx,my-4*k,r,r*0.65,0,Math.PI,0); ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,0.85)'; ctx.beginPath(); ctx.arc(mx-r*0.4,my-4*k-r*0.3,0.6,0,Math.PI*2); ctx.arc(mx+r*0.35,my-4*k-r*0.4,0.5,0,Math.PI*2); ctx.fill(); });
+  }
+  // a nest in the canopy; by day a robin sits on it (tap and it flies off for a bit)
+  if(li>=3 && nodes.length && season!=='winter'){
+    if(!P.nestPick || P.nestPick.depth!==depth){
+      const cand=nodes.filter(([x,y])=>Math.abs(x-cx)>leafR && Math.abs(x-cx)<leafR*5).sort((a,b)=>b[1]-a[1]);
+      P.nestPick={depth, id:(cand[Math.min(cand.length-1,1)]||nodes[0])[2]};
+    }
+    const nd=nodes.find(q=>q[2]===P.nestPick.id);
+    if(nd){
+      const nx=nd[0], ny=nd[1]+leafR*0.55;
+      ctx.fillStyle='#6b4a2e'; ctx.beginPath(); ctx.ellipse(nx,ny,6,3,0,0,Math.PI); ctx.fill();
+      ctx.strokeStyle='#8a6440'; ctx.lineWidth=0.8; for(let i=0;i<4;i++){ ctx.beginPath(); ctx.moveTo(nx-6+i*3,ny+0.5); ctx.lineTo(nx-3+i*3,ny+2.5); ctx.stroke(); }
+      const away=groveSince(P,t,'nestT'), home=away>14;
+      if(n<0.6 && home){
+        const bob=groveReduce?0:(Math.sin(t*0.7)>0.6?Math.sin(t*14)*0.8:0);
+        ctx.fillStyle='#57534e'; ctx.beginPath(); ctx.ellipse(nx,ny-2.5,4.2,3,0,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle='#ea580c'; ctx.beginPath(); ctx.ellipse(nx+1.6,ny-1.8,2.2,2,0,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle='#44403c'; ctx.beginPath(); ctx.arc(nx+3.2,ny-5+bob,2.3,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.moveTo(nx+5.2,ny-5.4+bob); ctx.lineTo(nx+7.4,ny-4.8+bob); ctx.lineTo(nx+5.2,ny-4.2+bob); ctx.closePath(); ctx.fill();
+        ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(nx+3.8,ny-5.6+bob,0.55,0,Math.PI*2); ctx.fill();
+        groveTapZone(P,nx,ny-3,11,tt=>{ P.nestT=tt; groveSpawn(P,{type:'bird',x:nx+(P.off?P.off.content:0),y:ny-4,vx:1.4,vy:-1.6,col:'#44403c'}); });
+      } else if(season==='spring'){ ['#93c5fd','#bfdbfe','#93c5fd'].forEach((cl,i)=>{ ctx.fillStyle=cl; ctx.beginPath(); ctx.ellipse(nx-2.5+i*2.5,ny-0.8,1.3,1.7,0,0,Math.PI*2); ctx.fill(); }); }
+    }
+  }
+}
+// small leaves around each clump so the canopy reads as leaves, not circles
+function groveLeafEdges(ctx,clumps,pal,leafR,t){
+  if(clumps.length>260) return;
+  for(let j=0;j<2;j++){
+    ctx.fillStyle=pal[1+j]; ctx.beginPath();
+    for(const [x,y,id] of clumps){ const a=groveRand(id*5+j)*Math.PI*2, d=leafR*(0.85+groveRand(id*7+j)*0.3), r=a+(groveReduce?0:Math.sin(t*1.5+id+j)*0.15);
+      const ex=x+Math.cos(a)*d, ey=y+Math.sin(a)*d; ctx.moveTo(ex+Math.cos(r)*2.6,ey+Math.sin(r)*2.6); ctx.ellipse(ex,ey,2.6,1.3,r,0,Math.PI*2); }
+    ctx.fill();
+  }
+}
+
+// ── small details in the other scenes ──
+// tower: a window washer works the glass on bright days
+function groveTowerExtras(P,t,o){
+  const {ctx}=P, {x0,bw,top,fy,floors,n,li}=o;
+  if(li<4 || floors<12 || n>0.5) return;
+  const k=groveReduce?0.5:(Math.sin(t*0.05)+1)/2, gy=top+10+k*(fy-top-30), gx=x0+bw*0.18, gw=bw*0.4;
+  ctx.strokeStyle='rgba(200,210,225,0.5)'; ctx.lineWidth=0.7; ctx.beginPath(); ctx.moveTo(gx+2,top); ctx.lineTo(gx+2,gy); ctx.moveTo(gx+gw-2,top); ctx.lineTo(gx+gw-2,gy); ctx.stroke();
+  ctx.fillStyle='#cbd5e1'; ctx.fillRect(gx,gy,gw,2.4); ctx.fillStyle='#94a3b8'; ctx.fillRect(gx,gy-3.5,gw,0.8);
+  const wx=gx+gw*0.5+(groveReduce?0:Math.sin(t*1.3)*gw*0.25);
+  ctx.fillStyle='#f59e0b'; ctx.fillRect(wx-1.5,gy-5,3,5); ctx.beginPath(); ctx.arc(wx,gy-6.3,1.4,0,Math.PI*2); ctx.fill();
+}
+// house: flower boxes under the windows and a mat at the door
+function groveHouseExtras(P,t,o){
+  const {ctx}=P, {hx,hw,g0,sWi,sD,season}=o;
+  if(sWi>=1 && season!=='winter'){
+    [[hx+14,28],[hx+hw-42,28]].forEach(([x,ww],j)=>{ const y=g0-56+22+3.5;
+      ctx.fillStyle='#6b4a2e'; ctx.fillRect(x-2,y,ww+4,4);
+      const fl=season==='autumn'?['#f97316','#facc15']:['#f9a8d4','#fde68a','#fca5a5'];
+      for(let i=0;i<6;i++){ ctx.fillStyle='#2f8a4f'; ctx.beginPath(); ctx.arc(x+2+i*(ww/5.5),y-0.5,2.2,0,Math.PI*2); ctx.fill();
+        ctx.fillStyle=fl[(i+j)%fl.length]; ctx.beginPath(); ctx.arc(x+2+i*(ww/5.5)+0.5,y-2.2,1.2,0,Math.PI*2); ctx.fill(); } });
+  }
+  if(sD>=1){ const dx=hx+hw/2; ctx.fillStyle='#7c2d12'; ctx.fillRect(dx-9,g0+6,18,2.4); ctx.fillStyle='rgba(253,186,116,0.45)'; ctx.fillRect(dx-7,g0+6.6,14,0.7); }
+}
+// field: butterflies over the crops on warm days
+function groveFieldExtras(P,t,o){
+  const {ctx}=P, {season,n,fieldR,base}=o;
+  if(groveReduce || n>0.5 || (season!=='spring' && season!=='summer')) return;
+  for(let i=0;i<2;i++){ const x=(fieldR*0.15+((t*9+i*120)%(fieldR*0.7))), y=base-34-i*12+Math.sin(t*1.1+i*2)*8, f=Math.abs(Math.sin(t*12+i));
+    ctx.fillStyle=i?'#fde68a':'#f9a8d4'; ctx.beginPath(); ctx.ellipse(x-1.6*f,y,2.2*f+0.3,1.6,0.3,0,Math.PI*2); ctx.ellipse(x+1.6*f,y,2.2*f+0.3,1.6,-0.3,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#1c120b'; ctx.fillRect(x-0.4,y-1.5,0.8,3); }
+}
+
+// ── today's visitor ──
+// Each card gets one small animal a day (a rare one about one day in eight). It wanders near its spot,
+// and if you tap it, it scampers off and comes back a little later.
+const GROVE_VISITORS = {
+  tree:  {common:['squirrel','robin','rabbit'], rare:'deer'},
+  house: {common:['cat','robin','squirrel'], rare:'fox'},
+  field: {common:['rabbit','robin'], rare:'fox'},
+  tower: {common:['pigeon'], rare:'balloon'},
+  vault: {common:['mouse'], rare:'cat'},
+  coin:  {common:['satellite'], rare:'comet'},
+};
+const GROVE_VISITOR_NAME = {squirrel:'A squirrel',robin:'A robin',rabbit:'A rabbit',deer:'A deer',cat:'A cat',fox:'A fox',pigeon:'A pigeon',balloon:'A hot air balloon',mouse:'A mouse',satellite:'A satellite',comet:'A comet'};
+function groveVisitorKind(P){
+  const v=GROVE_VISITORS[P.def.kind]; if(!v) return null;
+  const seed=groveDaySeed()+[...P.def.id].reduce((s,c)=>s+c.charCodeAt(0),0)*31;
+  if(groveRand(seed+7)<0.125) return v.rare;
+  return v.common[Math.floor(groveRand(seed+11)*v.common.length)];
+}
+function groveVisitor(P,t){
+  const kind=groveVisitorKind(P); if(!kind) return;
+  P.visitorKind=kind;
+  const {ctx,w,h}=P, base=h-24, o=P.off?P.off.content:0, n=groveNight(), seed=groveDaySeed()%997;
+  // sky visitors
+  if(kind==='satellite'){
+    const span=w+80, x=((t*11+seed*3)%span)-40, y=26+groveRand(seed)*20+Math.sin(x*0.02)*3, on=groveReduce||Math.sin(t*4)>0.3;
+    ctx.fillStyle='#cbd5e1'; ctx.fillRect(x-1.5,y-1.5,3,3); ctx.fillStyle='rgba(96,165,250,0.85)'; ctx.fillRect(x-7,y-1,5,2); ctx.fillRect(x+2,y-1,5,2);
+    if(on){ ctx.fillStyle='rgba(248,113,113,0.95)'; ctx.beginPath(); ctx.arc(x,y-2.4,0.9,0,Math.PI*2); ctx.fill(); }
+    groveTapZone(P,x,y,14,tt=>{ for(let i=0;i<6;i++) groveSpawn(P,{type:'spark',x,y,vx:(Math.random()-0.5)*2.5,vy:(Math.random()-0.5)*2.5,r:2.5,col:'#93c5fd'}); },false);
+    return;
+  }
+  if(kind==='comet'){
+    const cyc=14, k=((t+seed)%cyc)/cyc; if(k>0.45) return; const q=k/0.45, x=w*0.15+q*w*0.75, y=22+q*36;
+    const g=ctx.createLinearGradient(x,y,x-46,y-20); g.addColorStop(0,'rgba(186,230,253,0.9)'); g.addColorStop(1,'rgba(186,230,253,0)');
+    ctx.strokeStyle=g; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x-46,y-20); ctx.stroke(); ctx.fillStyle='#f0f9ff'; ctx.beginPath(); ctx.arc(x,y,2,0,Math.PI*2); ctx.fill();
+    return;
+  }
+  if(kind==='balloon'){
+    const lift=Math.max(0,1-groveSince(P,t,'visT')/4), x=((t*4+seed*5)%(w+60))-30, y=48+Math.sin(t*0.5)*4-lift*18;
+    ctx.strokeStyle='rgba(30,30,40,0.6)'; ctx.lineWidth=0.6; ctx.beginPath(); ctx.moveTo(x-5,y+6); ctx.lineTo(x-2.5,y+13); ctx.moveTo(x+5,y+6); ctx.lineTo(x+2.5,y+13); ctx.stroke();
+    ['#ef4444','#fbbf24','#ef4444','#fbbf24'].forEach((c,i)=>{ ctx.fillStyle=c; ctx.beginPath(); ctx.ellipse(x-4.5+i*3,y-1,1.8,9,0,0,Math.PI*2); ctx.fill(); });
+    ctx.fillStyle='rgba(255,255,255,0.25)'; ctx.beginPath(); ctx.ellipse(x-3,y-4,2,4,0,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#78350f'; ctx.fillRect(x-2.5,y+13,5,3.5);
+    if(lift>0){ ctx.fillStyle=`rgba(251,146,60,${lift})`; ctx.beginPath(); ctx.arc(x,y+9,1.6,0,Math.PI*2); ctx.fill(); }
+    groveTapZone(P,x,y,16,tt=>{ P.visT=tt; },false);
+    return;
+  }
+  // ground visitors: a home spot clear of the main subject
+  const homes={tree:w*0.24, house:w*0.17, field:w*0.3, tower:w*0.22, vault:w*0.11};
+  const hx=homes[P.def.kind]||w*0.25, range=P.def.kind==='vault'?16:34;
+  const tgt=k=>hx+(groveRand(seed+k*13)-0.5)*range;
+  const seg=Math.floor(t/5), u=(t%5)/5, a0=tgt(seg-1), b0=tgt(seg), q=groveReduce?1:Math.min(1,u*5/1.3);
+  let x=a0+(b0-a0)*groveEase(q), dir=b0>=a0?1:-1, mv=q<1 && Math.abs(b0-a0)>2, fast=false, fly=0;
+  const since=groveSince(P,t,'visT');
+  if(since<24){
+    const x0=P.visX!=null?P.visX:x, edge=x0<w/2?-40:w+40;
+    if(since<2){ const k=groveEase(since/2); x=x0+(edge-x0)*k; dir=edge>x0?1:-1; mv=true; fast=true; fly=since; }
+    else if(since<21) return;
+    else { const k=groveEase((since-21)/3); x=edge+(x-edge)*k; dir=x>edge?1:-1; mv=true; }
+  }
+  const sx=x+o, y=base+3;
+  const draw={squirrel:groveDrawSquirrel, robin:groveDrawRobin, pigeon:groveDrawRobin, rabbit:groveDrawRabbit, deer:groveDrawDeer, cat:groveDrawCat, fox:groveDrawFox, mouse:groveDrawMouse}[kind];
+  if(!draw) return;
+  const flying=(kind==='robin'||kind==='pigeon') && fly>0;
+  draw(ctx,sx,flying?y-fly*fly*22:y,dir,t,mv,{fast,n,pigeon:kind==='pigeon',flying,seed});
+  groveTapZone(P,sx,y-6,kind==='deer'?20:13,tt=>{ P.visT=tt; P.visX=x;
+    for(let i=0;i<4;i++) groveSpawn(P,{type:'spark',x:sx,y:y-12,vx:(Math.random()-0.5)*1.6,vy:-0.8-Math.random(),r:2.2,col:'#fde68a'}); },false);
+}
+
+// ── critters (all drawn facing right; dir=-1 flips) ──
+function groveDrawSquirrel(ctx,x,y,dir,t,mv,o){
+  ctx.save(); ctx.translate(x,y); ctx.scale(dir,1);
+  if(mv) ctx.translate(0,-Math.abs(Math.sin(t*(o.fast?22:15)))*3);
+  const tw=groveReduce?0:Math.sin(t*3)*0.2, nib=!mv && !groveReduce && Math.sin(t*2.2)>0;
+  ctx.strokeStyle='#7a4a22'; ctx.lineCap='round'; ctx.lineWidth=5; ctx.beginPath(); ctx.moveTo(-4,-3); ctx.bezierCurveTo(-13,-4,-13+tw*10,-16,-5,-17); ctx.stroke();
+  ctx.strokeStyle='rgba(222,184,135,0.55)'; ctx.lineWidth=1.3; ctx.beginPath(); ctx.moveTo(-6,-5); ctx.bezierCurveTo(-14,-6,-14+tw*10,-18,-5,-19); ctx.stroke();
+  ctx.fillStyle='#9a5f2c'; ctx.beginPath(); ctx.ellipse(0,-4.5,4.8,3.8,-0.35,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#ead2ad'; ctx.beginPath(); ctx.ellipse(2.4,-3.6,2,2.6,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#9a5f2c'; ctx.beginPath(); ctx.arc(4.4,-8.8,2.9,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(3,-11); ctx.lineTo(3.6,-13.6); ctx.lineTo(5,-11); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#111'; ctx.beginPath(); ctx.arc(5.6,-9.3,0.7,0,Math.PI*2); ctx.fill();
+  if(nib){ ctx.fillStyle='#a16207'; ctx.beginPath(); ctx.arc(7,-6.6,1.3,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#713f12'; ctx.fillRect(6,-8.2,2,0.9); }
+  ctx.fillStyle='#7a4a22'; ctx.fillRect(-2.5,-1.2,2,1.6); ctx.fillRect(2,-1.2,2,1.6);
+  ctx.restore();
+}
+function groveDrawRabbit(ctx,x,y,dir,t,mv,o){
+  ctx.save(); ctx.translate(x,y); ctx.scale(dir,1);
+  const hop=mv?Math.abs(Math.sin(t*(o.fast?16:10))):0; ctx.translate(0,-hop*4);
+  const ear=groveReduce?0:Math.sin(t*1.7)*0.12;
+  ctx.fillStyle='#a8a29e'; ctx.beginPath(); ctx.ellipse(0,-4,5.6,4,0,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(-2,-1.6,3.6,2.2,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#f5f5f4'; ctx.beginPath(); ctx.arc(-5.6,-4.5,1.8,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#a8a29e'; ctx.beginPath(); ctx.arc(4.6,-7.2,2.8,0,Math.PI*2); ctx.fill();
+  ctx.save(); ctx.translate(3.6,-9.4); ctx.rotate(-0.25+ear); ctx.beginPath(); ctx.ellipse(0,-3.6,1.1,3.8,0,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#f9a8d4'; ctx.beginPath(); ctx.ellipse(0,-3.6,0.45,2.8,0,0,Math.PI*2); ctx.fill(); ctx.restore();
+  ctx.fillStyle='#8f8984'; ctx.save(); ctx.translate(5.2,-9); ctx.rotate(0.2-ear); ctx.beginPath(); ctx.ellipse(0,-3.4,1,3.5,0,0,Math.PI*2); ctx.fill(); ctx.restore();
+  ctx.fillStyle='#111'; ctx.beginPath(); ctx.arc(5.8,-7.6,0.65,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#f9a8d4'; ctx.beginPath(); ctx.arc(7.3,-6.8,0.5,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#8f8984'; ctx.fillRect(2,-1,2,1.4);
+  ctx.restore();
+}
+function groveDrawRobin(ctx,x,y,dir,t,mv,o){
+  ctx.save(); ctx.translate(x,y); ctx.scale(dir,1);
+  if(mv && !o.flying) ctx.translate(0,-Math.abs(Math.sin(t*12))*2.5);
+  const peck=!mv && !groveReduce && Math.sin(t*1.9+o.seed)>0.75 ? Math.sin(t*20)*0.5+0.5 : 0;
+  const body=o.pigeon?'#94a3b8':'#57534e', head=o.pigeon?'#64748b':'#44403c';
+  if(o.flying){ const f=Math.sin(t*30)*4; ctx.fillStyle=body; ctx.beginPath(); ctx.moveTo(-1,-5); ctx.lineTo(-6,-9-f); ctx.lineTo(2,-6); ctx.closePath(); ctx.fill(); }
+  ctx.fillStyle=body; ctx.beginPath(); ctx.ellipse(0,-4,4.2,3,0,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(-3.5,-4.5); ctx.lineTo(-7.5,-6); ctx.lineTo(-3.5,-2.6); ctx.closePath(); ctx.fill();
+  ctx.fillStyle=o.pigeon?'rgba(52,211,153,0.6)':'#ea580c'; ctx.beginPath(); ctx.ellipse(1.8,-3.4,2.3,2.1,0,0,Math.PI*2); ctx.fill();
+  ctx.save(); ctx.translate(3,-6.4); ctx.rotate(peck*0.9);
+  ctx.fillStyle=head; ctx.beginPath(); ctx.arc(0,0,2.2,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle=o.pigeon?'#cbd5e1':'#fbbf24'; ctx.beginPath(); ctx.moveTo(1.8,-0.6); ctx.lineTo(4,0); ctx.lineTo(1.8,0.6); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#fff'; ctx.beginPath(); ctx.arc(0.7,-0.6,0.5,0,Math.PI*2); ctx.fill(); ctx.restore();
+  if(!o.flying){ ctx.strokeStyle='#a16207'; ctx.lineWidth=0.7; ctx.beginPath(); ctx.moveTo(-0.5,-1.2); ctx.lineTo(-0.5,0.3); ctx.moveTo(1,-1.2); ctx.lineTo(1,0.3); ctx.stroke(); }
+  ctx.restore();
+}
+function groveDrawCat(ctx,x,y,dir,t,mv,o){
+  ctx.save(); ctx.translate(x,y); ctx.scale(dir,1);
+  const fur=groveRand(o.seed+3)<0.5?'#d97706':'#27272a', dark=fur==='#d97706'?'#b45309':'#18181b', tail=groveReduce?0:Math.sin(t*1.4)*3;
+  if(mv){ // walking
+    const st=t*(o.fast?16:8);
+    ctx.fillStyle=dark; [[-4,0],[3,Math.PI]].forEach(([lx,ph])=>{ ctx.fillRect(lx+Math.sin(st+ph)*1.2,-3,1.6,3.2); });
+    ctx.fillStyle=fur; ctx.beginPath(); ctx.ellipse(0,-5,6,3,0,0,Math.PI*2); ctx.fill();
+    [[-3,Math.PI],[4,0]].forEach(([lx,ph])=>{ ctx.fillRect(lx+Math.sin(st+ph)*1.2,-3,1.6,3.2); });
+    ctx.strokeStyle=fur; ctx.lineWidth=1.6; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(-5.5,-6); ctx.quadraticCurveTo(-10,-9,-9+tail*0.5,-13); ctx.stroke();
+    ctx.beginPath(); ctx.arc(6.3,-7.5,2.8,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(4.6,-9.4); ctx.lineTo(5.2,-12); ctx.lineTo(6.6,-10); ctx.moveTo(6.8,-10); ctx.lineTo(8.2,-12); ctx.lineTo(8.6,-9); ctx.fill();
+    if(o.n>0.5){ ctx.fillStyle='#bef264'; ctx.beginPath(); ctx.arc(7.6,-8,0.7,0,Math.PI*2); ctx.fill(); }
+  } else { // sitting, tail curling
+    ctx.strokeStyle=fur; ctx.lineWidth=1.8; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(-2,-1); ctx.quadraticCurveTo(-9,0,-8+tail,-6); ctx.stroke();
+    ctx.fillStyle=fur; ctx.beginPath(); ctx.ellipse(0,-5,3.8,5.2,0,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.arc(0.8,-11.4,3,0,Math.PI*2); ctx.fill();
+    ctx.beginPath(); ctx.moveTo(-1.6,-13); ctx.lineTo(-1.2,-16); ctx.lineTo(0.6,-14); ctx.moveTo(1.2,-14); ctx.lineTo(3,-16); ctx.lineTo(3.3,-12.8); ctx.fill();
+    ctx.fillStyle=dark; ctx.fillRect(-1,-0.6,1.6,0.8); ctx.fillRect(1.4,-0.6,1.6,0.8);
+    const blink=!groveReduce && Math.sin(t*0.8+o.seed)>0.96;
+    ctx.fillStyle=o.n>0.5?'#bef264':'#111'; if(!blink){ ctx.beginPath(); ctx.arc(-0.2,-11.6,0.65,0,Math.PI*2); ctx.arc(2,-11.6,0.65,0,Math.PI*2); ctx.fill(); }
+    if(o.n>0.5 && !blink){ ctx.fillStyle='rgba(190,242,100,0.25)'; ctx.beginPath(); ctx.arc(0.9,-11.6,3,0,Math.PI*2); ctx.fill(); }
+  }
+  ctx.restore();
+}
+function groveDrawFox(ctx,x,y,dir,t,mv,o){
+  ctx.save(); ctx.translate(x,y); ctx.scale(dir,1);
+  const st=mv?t*(o.fast?18:9):0, tail=groveReduce?0:Math.sin(t*2)*1.5;
+  ctx.fillStyle='#1c1917'; [[-5,0],[4,Math.PI],[-3,Math.PI],[6,0]].forEach(([lx,ph])=>{ ctx.fillRect(lx+Math.sin(st+ph)*1.4,-4,1.5,4.2); });
+  ctx.fillStyle='#ea580c'; ctx.beginPath(); ctx.moveTo(-6,-6); ctx.quadraticCurveTo(-14,-6+tail,-16,-3+tail); ctx.quadraticCurveTo(-11,-1,-6,-4); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#fff7ed'; ctx.beginPath(); ctx.arc(-15.4,-3+tail,1.6,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#ea580c'; ctx.beginPath(); ctx.ellipse(0,-6,7,3.2,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#fff7ed'; ctx.beginPath(); ctx.ellipse(3.5,-4.4,3,1.4,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#ea580c'; ctx.beginPath(); ctx.moveTo(5,-9); ctx.lineTo(11,-7); ctx.lineTo(5.5,-5); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(5.4,-8.6); ctx.lineTo(6,-12); ctx.lineTo(7.6,-8.6); ctx.fill();
+  ctx.fillStyle='#1c1917'; ctx.beginPath(); ctx.arc(11,-7,0.8,0,Math.PI*2); ctx.arc(7.6,-8,0.6,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+}
+function groveDrawDeer(ctx,x,y,dir,t,mv,o){
+  ctx.save(); ctx.translate(x,y); ctx.scale(dir,1);
+  const st=mv?t*(o.fast?16:7):0, graze=!mv && !groveReduce && Math.sin(t*0.45+o.seed)>0 ? 1 : 0;
+  ctx.strokeStyle='#7c5a3a'; ctx.lineWidth=1.3; [[-6,0],[5,Math.PI],[-4,Math.PI],[7,0]].forEach(([lx,ph])=>{ ctx.beginPath(); ctx.moveTo(lx,-9); ctx.lineTo(lx+Math.sin(st+ph)*2,0); ctx.stroke(); });
+  ctx.fillStyle='#b07a4f'; ctx.beginPath(); ctx.ellipse(0,-11,8.5,4.2,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#f5f5f4'; ctx.beginPath(); ctx.ellipse(-8,-12.5,1.6,2,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,0.35)'; [[-3,-12],[0,-13],[3,-12]].forEach(([sx,sy])=>{ ctx.beginPath(); ctx.arc(sx,sy,0.7,0,Math.PI*2); ctx.fill(); });
+  ctx.save(); ctx.translate(6.5,-13); ctx.rotate(graze?1.15:0);
+  ctx.fillStyle='#b07a4f'; ctx.beginPath(); ctx.moveTo(-1.5,0); ctx.lineTo(1.6,-6); ctx.lineTo(4,-5); ctx.lineTo(2,1); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(3.6,-6.4,3.4,2,0.25,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.ellipse(1.2,-9,0.9,2,-0.5,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#1c1917'; ctx.beginPath(); ctx.arc(6.6,-5.8,0.7,0,Math.PI*2); ctx.arc(4,-7,0.55,0,Math.PI*2); ctx.fill();
+  ctx.restore(); ctx.restore();
+}
+function groveDrawMouse(ctx,x,y,dir,t,mv,o){
+  ctx.save(); ctx.translate(x,y); ctx.scale(dir,1);
+  if(mv) ctx.translate(0,-Math.abs(Math.sin(t*24))*1);
+  ctx.strokeStyle='#a8a29e'; ctx.lineWidth=0.7; ctx.beginPath(); ctx.moveTo(-3,-1.5); ctx.quadraticCurveTo(-7,-1+(groveReduce?0:Math.sin(t*4)),-9,-3); ctx.stroke();
+  ctx.fillStyle='#a8a29e'; ctx.beginPath(); ctx.ellipse(0,-2,3.4,2.2,0,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(2,-3.5); ctx.lineTo(5.6,-1.6); ctx.lineTo(2,-0.6); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#d6d3d1'; ctx.beginPath(); ctx.arc(1.6,-4.2,1.3,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#f9a8d4'; ctx.beginPath(); ctx.arc(5.6,-1.6,0.5,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#111'; ctx.beginPath(); ctx.arc(3.4,-2.6,0.45,0,Math.PI*2); ctx.fill();
+  ctx.restore();
 }
 
 // ── Daily price feed (reads the shared prices the refresh-prices function keeps up to date) ──
