@@ -1935,6 +1935,22 @@ input[type=number]{-moz-appearance:textfield}
 .gs-btn:hover{border-color:rgba(255,255,255,0.22)}
 .gs-btn.primary{background:#4ade80;border-color:#4ade80;color:#08140c}
 .gs-btn[hidden]{display:none}
+.grove-ref-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:0.85rem;display:flex;flex-direction:column;gap:0.75rem}
+.grove-ref-row{display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap}
+.grove-ref-note{font-size:0.82rem;color:var(--muted);margin-right:auto}
+.grove-ref-link{flex:1;min-width:180px;background:var(--card2);border:1px solid var(--border);border-radius:9px;color:var(--text);font-family:inherit;font-size:0.84rem;padding:0.45rem 0.65rem;font-variant-numeric:tabular-nums}
+.grove-ref-link:focus{outline:none;border-color:#a78bfa}
+.grove-ref-prog .grove-next{color:var(--text)}
+.grove-rewards{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.6rem}
+@media(max-width:900px){.grove-rewards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.grove-reward{display:flex;gap:0.6rem;align-items:center;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:0.6rem;min-width:0}
+.grove-reward b{display:block;font-size:0.8rem;font-weight:600;color:var(--muted)}
+.grove-reward span{display:block;font-size:0.7rem;color:var(--muted);opacity:0.75;line-height:1.35}
+.grove-reward.got{border-color:rgba(167,139,250,0.45);background:linear-gradient(135deg,rgba(167,139,250,0.1),var(--card2) 60%)}
+.grove-reward.got .grove-badge-ic{background:#a78bfa;color:#120a24}
+.grove-reward.got b{color:var(--text)}.grove-reward.got span{opacity:1}
+.grove-ref-fine{font-size:0.72rem;color:var(--muted);opacity:0.8}
+.grove-mini[aria-pressed="true"]{border-color:rgba(167,139,250,0.55);color:#c4b5fd}
 
 /* ── ADD AN INVESTMENT SHEET ── */
 .inv-overlay{position:fixed;inset:0;background:rgba(5,7,10,0.72);z-index:650;display:none;align-items:center;justify-content:center;padding:1rem}
@@ -8144,7 +8160,8 @@ function renderGrove(){
           <div class="grove-badge-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${b.ic}</svg></div>
           <div style="min-width:0"><b>${b.name}</b><span>${b.desc}</span></div>
         </div>`).join('')}
-      </div>`;
+      </div>
+      <div class="grove-ref" id="grove-ref"></div>`;
     _grove.plots = {};
     visiblePlots.forEach(p=>{
       const P = _grove.plots[p.id] = { def:p, parts:[], pulse:0, flash:0 };
@@ -8213,6 +8230,7 @@ function renderGrove(){
 
   _grove.tot = tot;
   groveUpdateText(tot);
+  groveRefMaybeSync(); groveRefRender();
   groveTimeButtons();
   if(track.changed && !currentUser?.isDemo){ clearTimeout(_grove.saveT); _grove.saveT=setTimeout(save, 800); }
   groveStart();
@@ -8929,6 +8947,7 @@ function groveBuildMid(P,ph,season,kind){
     x.fillStyle=edge; x.fillRect(0,base,W,season==='winter'&&kind!=='coin'?4:2);
     x.fillStyle='rgba(255,255,255,0.025)'; for(let i=0;i<70;i++) x.fillRect(groveRand(i+400)*W, base+4+groveRand(i+401)*(h-base-6), 2, 1);
   }
+  if(kind==='tree' && typeof groveHasReward==='function' && groveHasReward('pond')) groveDrawPond(x, m+w*0.8, base+6, pal, season);
   return c;
 }
 
@@ -8960,6 +8979,10 @@ function groveBuildFore(P,ph,season,kind){
       const lx=m+w*0.93; x.fillStyle=ink; x.fillRect(lx-1.2,h-48,2.4,46); x.fillRect(lx-5,h-54,10,8); P.lamps.push({x:lx-m, y:h-50});
     }
   }
+  if(typeof groveHasReward==='function'){
+    if(kind==='tower' && groveHasReward('statue')) groveDrawStatue(x, m+w*0.13, h-5, pal);
+    if(kind==='house' && groveHasReward('mailbox')) groveDrawMailbox(P, x, m+w*0.14, h-6, pal);
+  }
   return c;
 }
 
@@ -8981,7 +9004,7 @@ function groveCloudSprite(rgb){
 
 function groveScene(P,glow,t){
   const {ctx,w,h}=P, season=groveSeason(groveNow().getMonth()), ph=_grove.ph||grovePhase(), kind=P.def.kind, pal=GROVE_PHASE[ph];
-  const dpr=Math.min(1.5,window.devicePixelRatio||1), key=[w,h,ph,season,kind,dpr].join('|');
+  const dpr=Math.min(1.5,window.devicePixelRatio||1), key=[w,h,ph,season,kind,dpr,(typeof groveRewardKey==='function'?groveRewardKey():'')].join('|');
   if(P.sceneKey!==key){ P.sceneKey=key; P.far=groveBuildFar(P,ph,season,kind); P.mid=groveBuildMid(P,ph,season,kind); P.fore=groveBuildFore(P,ph,season,kind); }
   const cam=P.cam||0, base=h-24;
   P.off={far:-cam*GROVE_PAR.far, mid:-cam*GROVE_PAR.mid, content:-cam*GROVE_PAR.content, fore:-cam*GROVE_PAR.fore};
@@ -9067,6 +9090,7 @@ function groveComposeBack(P,ctx,t,ph,pal,kind,base,fm,mm){
     ctx.globalAlpha=1;
   }
 
+  if(typeof groveHasReward==='function' && groveHasReward('aurora') && ['tfsa','rrsp','fhsa'].includes(P.def.id)) groveAurora(P,ctx,t,ph);
   ctx.drawImage(P.mid, P.off.mid-mm, 0, w+mm*2, h);
   // live parts of the mid layer
   if(P.mill){ const mx=P.mill.x+P.off.mid, my=P.mill.y, a=groveReduce?0.4:t*0.9; ctx.strokeStyle=P.mill.col; ctx.lineWidth=2; ctx.lineCap='round';
@@ -9081,8 +9105,8 @@ function groveComposeFront(P,ctx,t){
   const {w,h}=P, ph=_grove.ph||'day', pal=GROVE_PHASE[ph], fm=GROVE_PAR.fore+2, n=groveNight();
   ctx.drawImage(P.fore, (P.off?P.off.fore:0)-fm, 0, w+fm*2, h);
   if(n>0.3 && P.lamps) P.lamps.forEach((L,i)=>{ const x=L.x+(P.off?P.off.fore:0), y=L.y, fl=groveReduce?1:0.9+0.1*Math.sin(t*7+i*3);
-    const g=ctx.createRadialGradient(x,y,0,x,y,40); g.addColorStop(0,`rgba(253,224,150,${0.4*n*fl})`); g.addColorStop(1,'rgba(253,224,150,0)'); ctx.fillStyle=g; ctx.fillRect(x-40,y-40,80,80);
-    ctx.fillStyle=`rgba(254,243,199,${0.6+0.4*n})`; ctx.beginPath(); ctx.arc(x,y,2.2,0,Math.PI*2); ctx.fill(); });
+    const R=L.small?22:40, g=ctx.createRadialGradient(x,y,0,x,y,R); g.addColorStop(0,`rgba(253,224,150,${(L.small?0.3:0.4)*n*fl})`); g.addColorStop(1,'rgba(253,224,150,0)'); ctx.fillStyle=g; ctx.fillRect(x-R,y-R,R*2,R*2);
+    if(!L.small){ ctx.fillStyle=`rgba(254,243,199,${0.6+0.4*n})`; ctx.beginPath(); ctx.arc(x,y,2.2,0,Math.PI*2); ctx.fill(); } });
   if(P.def.kind!=='coin' && pal.tint!=='rgba(0,0,0,0)'){ ctx.fillStyle=pal.tint; ctx.fillRect(0,0,w,h); }
   ctx.drawImage(groveVignette(w,h),0,0,w,h);
 }
@@ -9447,6 +9471,8 @@ async function groveShareImage(variant){
   chips.push([`${S.plots.length} account${S.plots.length===1?'':'s'} growing`,'#e8edf8']);
   if(S.badges) chips.push([`${S.badges} badge${S.badges===1?'':'s'}`,'#fbbf24']);
   if(_grove.mecha || mecha) chips.push(['Rare find: mecha bull','#67e8f9']);
+  const jn=currentUser?.isDemo?0:groveRefJoined(); if(jn>0) chips.push([`${jn} friend${jn===1?'':'s'} invited`,'#a78bfa']);
+  if(groveHasReward('aurora')) chips.push(['Founding grower','#fbbf24']);
   let cx=pad, cy=296; x.font=`600 26px ${body}`;
   chips.forEach(([txt,col])=>{ const tw=x.measureText(txt).width+44; if(cx+tw>W-pad){ cx=pad; cy+=62; }
     x.fillStyle='rgba(255,255,255,0.05)'; groveRoundRect(x,cx,cy,tw,50,25); x.fill(); x.strokeStyle='rgba(255,255,255,0.12)'; x.lineWidth=1.5; x.stroke();
@@ -9543,6 +9569,190 @@ async function groveShareCopy(){
   const txt=groveShareCaption(_grove.shareVariant), b=document.getElementById('gs-copy');
   try{ await navigator.clipboard.writeText(txt); b.textContent='Copied'; }catch(e){ b.textContent='Copy failed'; }
   setTimeout(()=>{ b.textContent='Copy caption'; },1800);
+}
+
+// ── Invite friends, upgrade your grove ──
+// Every user gets a short invite link. When a friend signs up with it and confirms their email, the inviter
+// unlocks cosmetic upgrades. Nothing here involves money. Counting happens on the server (referrals.sql).
+const GROVE_REWARDS = [
+  {n:1,  id:'statue', name:'Golden bull statue', desc:'A small gold bull on a plinth outside your retirement tower',
+   ic:'<path d="M4 20h16"/><path d="M7 20v-3h10v3"/><path d="M8 17c0-3 2-5 4-5s4 2 4 5"/><path d="M9 9c-2-1-3-3-2-5 1 2 3 3 5 3s4-1 5-3c1 2 0 4-2 5"/>'},
+  {n:3,  id:'pond',   name:'Lily pond', desc:'A little pond with lily pads beside your TFSA tree',
+   ic:'<ellipse cx="12" cy="15" rx="9" ry="4"/><path d="M8 14.5a2 1.2 0 0 0 3 0"/><circle cx="15" cy="14" r="1.3"/><path d="M12 11V6M12 6c-2 0-3 1-3 2M12 6c2 0 3 1 3 2"/>'},
+  {n:5,  id:'mailbox', name:'Mailbox and porch lamp', desc:'A mailbox and a lamp post that lights up at night at your first home',
+   ic:'<path d="M5 21v-9"/><rect x="2.5" y="8" width="7" height="4.5" rx="2"/><path d="M9.5 9.5h2v-2"/><path d="M18 21V7"/><path d="M15.5 7h5l-1-3h-3z"/>'},
+  {n:10, id:'aurora', name:'Northern lights', desc:'An aurora across your TFSA, RRSP and FHSA skies, and a Founding grower tag when you share',
+   ic:'<path d="M3 15c3-6 6-6 9-2s6 4 9-2"/><path d="M3 19c3-4 6-4 9-1s6 3 9-1" opacity="0.6"/><path d="M8 4l.5 1.5L10 6l-1.5.5L8 8l-.5-1.5L6 6l1.5-.5z"/>'},
+];
+const GROVE_REF_RE = /^[A-Z0-9]{6}$/;
+
+// remember an invite code from the link (first one wins), then tidy the address bar
+(function groveCaptureRef(){
+  try{
+    const u=new URL(window.location.href), c=(u.searchParams.get('ref')||'').trim().toUpperCase();
+    if(!c) return;
+    if(GROVE_REF_RE.test(c) && !localStorage.getItem('qs_ref')) localStorage.setItem('qs_ref', c);
+    u.searchParams.delete('ref'); history.replaceState(null,'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams:'')+u.hash);
+  }catch(e){}
+})();
+
+function groveRefJoined(){ return currentUser?.isDemo ? (_grove.refPreview?99:0) : ((_grove.ref&&_grove.ref.joined)||0); }
+function groveHasReward(id){ const r=GROVE_REWARDS.find(x=>x.id===id); return !!r && groveRefJoined()>=r.n; }
+function groveRewardKey(){ return GROVE_REWARDS.filter(r=>groveHasReward(r.id)).map(r=>r.id[0]).join(''); }
+function groveRefLink(){ return _grove.ref&&_grove.ref.code ? `https://qualisight.ca/?ref=${_grove.ref.code}` : ''; }
+
+async function groveRefSync(){
+  if(!currentUser || currentUser.isDemo || typeof sb==='undefined') return;
+  const uid=currentUser.id, cacheKey='qs_ref_'+uid;
+  if(!_grove.ref){ try{ _grove.ref=JSON.parse(localStorage.getItem(cacheKey)||'null'); }catch(e){} }
+  _grove.refSyncedAt=Date.now();
+  // 1. a new user who arrived through an invite link claims it (only counts once their email is confirmed)
+  let pending=null; try{ pending=localStorage.getItem('qs_ref'); }catch(e){}
+  if(pending){
+    const { data, error } = await sb.rpc('claim_referral', { p_code: pending });
+    if(!error){
+      if(data!=='not_confirmed'){ try{ localStorage.removeItem('qs_ref'); }catch(e){} }
+      if(data==='ok' && typeof showToast==='function') showToast('<strong>You joined with a friend\'s invite.</strong> Their grove just got an upgrade.');
+    } else console.warn('claim_referral', error.message);
+  }
+  // 2. your own code and how many friends joined
+  const { data, error } = await sb.rpc('my_referrals');
+  if(error){ console.warn('my_referrals', error.message); _grove.refError=true; groveRefRender(); return; }
+  _grove.refError=false;
+  const prev=_grove.ref ? (_grove.ref.joined||0) : null;
+  _grove.ref={ code:data.code, joined:+data.joined||0 };
+  try{ localStorage.setItem(cacheKey, JSON.stringify(_grove.ref)); }catch(e){}
+  if(prev!==null && _grove.ref.joined>prev && typeof showToast==='function'){
+    const got=GROVE_REWARDS.filter(r=>r.n>prev && r.n<=_grove.ref.joined);
+    showToast(`<strong>A friend joined Qualisight!</strong> ${got.length?`You unlocked ${got.map(r=>r.name.toLowerCase()).join(' and ')}.`:`That's ${_grove.ref.joined} so far.`}`);
+  }
+  groveRefRender();
+}
+function groveRefMaybeSync(){
+  if(!currentUser || currentUser.isDemo) return;
+  if(_grove.refUid!==currentUser.id){ _grove.refUid=currentUser.id; _grove.ref=null; groveRefSync(); return; }
+  if(Date.now()-(_grove.refSyncedAt||0) > 5*60*1000) groveRefSync();   // re-check every few minutes while you use it
+}
+
+function groveRefRender(){
+  const el=document.getElementById('grove-ref'); if(!el) return;
+  const demo=!!currentUser?.isDemo, joined=groveRefJoined(), link=groveRefLink();
+  const real=demo ? 0 : joined, next=GROVE_REWARDS.find(r=>r.n>real);
+  let top;
+  if(demo) top=`<div class="grove-ref-row"><span class="grove-ref-note">Create an account to get your own invite link.</span>
+      <button type="button" class="grove-mini" onclick="groveRefPreview()" aria-pressed="${!!_grove.refPreview}">${_grove.refPreview?'Hide upgrades':'Preview upgrades'}</button>
+      <button type="button" class="grove-share-btn" onclick="exitDemo()">Create account</button></div>`;
+  else if(_grove.refError && !link) top=`<div class="grove-ref-row"><span class="grove-ref-note">Your invite link couldn't load right now. Try again in a bit.</span></div>`;
+  else if(!link) top=`<div class="grove-ref-row"><span class="grove-ref-note">Getting your invite link…</span></div>`;
+  else top=`<div class="grove-ref-row">
+      <input class="grove-ref-link" id="grove-ref-link" readonly value="${link}" aria-label="Your invite link" onclick="this.select()">
+      <button type="button" class="grove-mini" id="grove-ref-copy" onclick="groveRefCopy()">Copy link</button>
+      ${navigator.share?`<button type="button" class="grove-share-btn" onclick="groveRefShare()">Invite</button>`:''}</div>`;
+  const tiers=GROVE_REWARDS.map(r=>{ const got=demo ? !!_grove.refPreview : real>=r.n;
+    return `<div class="grove-reward${got?' got':''}"><div class="grove-badge-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${r.ic}</svg></div>
+      <div style="min-width:0"><b>${r.name}</b><span>${r.n} friend${r.n>1?'s':''} · ${r.desc}</span></div></div>`; }).join('');
+  const prog = demo ? '' : next ? `<div class="grove-ref-prog"><div class="grove-next">${real} friend${real===1?'':'s'} joined · ${next.n-real} more for ${next.name.toLowerCase()}</div><div class="grove-bar"><i style="width:${Math.min(100,real/next.n*100).toFixed(0)}%;background:#a78bfa"></i></div></div>`
+                         : `<div class="grove-ref-prog"><div class="grove-next">${real} friends joined · every upgrade unlocked. Thank you.</div></div>`;
+  const html=`<div class="grove-badges-title">Invite friends <span>Upgrades for your grove when friends join. Just for looks, no money involved.</span></div>
+    <div class="grove-ref-card">${top}${prog}<div class="grove-rewards">${tiers}</div>
+    <div class="grove-ref-fine">A friend counts once they sign up with your link and confirm their email.</div></div>`;
+  if(el.dataset.html!==html){ el.innerHTML=html; el.dataset.html=html; }
+}
+function groveRefPreview(){ _grove.refPreview=!_grove.refPreview; groveRefRender(); }
+async function groveRefCopy(){
+  const b=document.getElementById('grove-ref-copy'), link=groveRefLink(); if(!link) return;
+  try{ await navigator.clipboard.writeText(link); b.textContent='Copied'; }catch(e){ document.getElementById('grove-ref-link')?.select(); b.textContent='Press Ctrl+C'; }
+  setTimeout(()=>{ b.textContent='Copy link'; },1800);
+}
+async function groveRefShare(){
+  const link=groveRefLink(); if(!link) return;
+  try{ await navigator.share({ title:'Qualisight', text:"I'm growing my money grove on Qualisight. Try it free:", url:link }); }catch(e){}
+}
+
+// ── drawing the upgrades ──
+// Golden bull statue: stands in the near foreground on the left of every scene (baked into the foreground layer).
+function groveDrawStatue(x,px,ground,pal){
+  const dk=pal?pal.dark:0.3;
+  // plinth
+  const pg=x.createLinearGradient(0,ground-14,0,ground); pg.addColorStop(0,groveMix('#8b93a5','#0a0d16',dk*0.6)); pg.addColorStop(1,groveMix('#4b5263','#0a0d16',dk*0.6));
+  x.fillStyle=pg; x.fillRect(px-12,ground-8,24,8); x.fillRect(px-14,ground-2,28,2);
+  x.fillStyle='rgba(255,255,255,0.08)'; x.fillRect(px-12,ground-8,24,1);
+  // bull, charging right
+  const by=ground-8, g=x.createLinearGradient(0,by-24,0,by); g.addColorStop(0,'#e9c46a'); g.addColorStop(0.5,'#c9971c'); g.addColorStop(1,'#7a5410');
+  x.save(); x.translate(px,by); x.scale(0.8,0.8); x.fillStyle=g;
+  [[-10,0],[-6,0],[5,0],[9,0]].forEach(([lx])=>x.fillRect(lx,-7,2.6,7));
+  x.beginPath(); x.ellipse(-1,-11,12,6,-0.08,0,Math.PI*2); x.fill();
+  x.beginPath(); x.ellipse(7,-13,6.5,6.5,0,0,Math.PI*2); x.fill();
+  x.beginPath(); x.ellipse(14,-9,4.6,3.8,0.5,0,Math.PI*2); x.fill();
+  x.strokeStyle='#fde68a'; x.lineWidth=1.8; x.lineCap='round';
+  x.beginPath(); x.moveTo(12,-12); x.quadraticCurveTo(12,-18,16,-19); x.moveTo(15,-11.5); x.quadraticCurveTo(17,-16,21,-16); x.stroke();
+  x.strokeStyle='#a16207'; x.lineWidth=1.3; x.beginPath(); x.moveTo(-13,-13); x.quadraticCurveTo(-18,-14,-17,-7); x.stroke();
+  x.fillStyle='rgba(255,255,255,0.55)'; x.beginPath(); x.ellipse(-3,-15,6,1.6,-0.1,0,Math.PI*2); x.fill();
+  x.restore();
+}
+// Northern lights: soft green and violet ribbons in the sky, drawn into the slow-refresh backdrop
+function groveAurora(P,ctx,t,ph){
+  const {w,h}=P, base=h-24, a={night:0.6, dusk:0.35, dawn:0.2, day:0}[ph]*(P.def.kind==='coin'?0.6:1);
+  if(!a) return;
+  ctx.save(); ctx.globalCompositeOperation='lighter';
+  [[0.22,'74,222,128',26,0],[0.34,'45,212,191',20,2.1],[0.15,'167,139,250',16,4.2]].forEach(([yf,rgb,th,sd],k)=>{
+    const y0=base*yf+8;
+    ctx.beginPath();
+    for(let x=-10;x<=w+10;x+=8){ const y=y0+Math.sin(x*0.018+t*0.25+sd)*10+Math.sin(x*0.041-t*0.18+sd)*5; x<0?ctx.moveTo(x,y):ctx.lineTo(x,y); }
+    for(let x=w+10;x>=-10;x-=8){ const y=y0+Math.sin(x*0.018+t*0.25+sd)*10+Math.sin(x*0.041-t*0.18+sd)*5 - th - Math.sin(x*0.03+sd+t*0.3)*th*0.5; ctx.lineTo(x,y); }
+    ctx.closePath();
+    const g=ctx.createLinearGradient(0,y0-th*1.6,0,y0+6); g.addColorStop(0,`rgba(${rgb},0)`); g.addColorStop(0.7,`rgba(${rgb},${0.2*a})`); g.addColorStop(1,`rgba(${rgb},${0.04*a})`);
+    ctx.fillStyle=g; ctx.fill();
+  });
+  ctx.restore();
+}
+// String lights: two swags across the top of the card, twinkling, with a glow after dark
+function groveGlowSprite(){
+  if(_grove.glowSpr) return _grove.glowSpr;
+  const c=document.createElement('canvas'); c.width=c.height=32; const x=c.getContext('2d'), g=x.createRadialGradient(16,16,0,16,16,16);
+  g.addColorStop(0,'rgba(255,236,180,0.9)'); g.addColorStop(0.35,'rgba(255,214,140,0.35)'); g.addColorStop(1,'rgba(255,214,140,0)'); x.fillStyle=g; x.fillRect(0,0,32,32);
+  return _grove.glowSpr=c;
+}
+function groveLights(P,t){
+  const {ctx,w}=P, n=groveNight(), spr=groveGlowSprite(), cols=['#fde68a','#fca5a5','#86efac','#fdba74','#c4b5fd'];
+  const pts=[[-6,3],[w/2,4],[w+6,3]], sag=8;
+  ctx.strokeStyle='rgba(15,18,26,0.55)'; ctx.lineWidth=0.8; ctx.beginPath();
+  for(let s=0;s<2;s++){ const [x1,y1]=pts[s],[x2,y2]=pts[s+1]; ctx.moveTo(x1,y1); ctx.quadraticCurveTo((x1+x2)/2,(y1+y2)/2+sag*2,x2,y2); }
+  ctx.stroke();
+  for(let s=0;s<2;s++){ const [x1,y1]=pts[s],[x2,y2]=pts[s+1], cx=(x1+x2)/2, cy=(y1+y2)/2+sag*2, N=Math.max(4,Math.round((x2-x1)/42));
+    for(let i=1;i<N;i++){ const q=i/N, bx=(1-q)*(1-q)*x1+2*(1-q)*q*cx+q*q*x2, byy=(1-q)*(1-q)*y1+2*(1-q)*q*cy+q*q*y2+3.5, id=s*40+i;
+      const tw=groveReduce?1:0.65+0.35*Math.sin(t*2.2+id*1.7);
+      if(n>0.6){ ctx.globalAlpha=0.35*tw; ctx.drawImage(spr,bx-9,byy-9,18,18); ctx.globalAlpha=1; }
+      ctx.fillStyle=id%3?'#fde68a':'#fef3c7'; ctx.globalAlpha=(0.35+0.4*n)*(0.8+0.2*tw); ctx.beginPath(); ctx.ellipse(bx,byy,1.5,1.9,0,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1; } }
+}
+
+// Lily pond: sits in the ground in front of the TFSA tree, reflecting the sky (baked into the mid layer)
+function groveDrawPond(x,px,py,pal,season){
+  const rx=32, ry=6, frozen=season==='winter';
+  x.fillStyle=groveMix('#2b3a2a','#0a0d16',pal.dark*0.6); x.beginPath(); x.ellipse(px,py,rx+3,ry+1.6,0,0,Math.PI*2); x.fill();   // grassy rim
+  const g=x.createLinearGradient(0,py-ry,0,py+ry);
+  g.addColorStop(0,frozen?'rgba(203,213,225,0.6)':groveMix(pal.sky[2],'#ffffff',0.12)); g.addColorStop(1,frozen?'rgba(148,163,184,0.5)':groveMix(pal.sky[1],'#ffffff',0.04));
+  x.fillStyle=g; x.beginPath(); x.ellipse(px,py,rx,ry,0,0,Math.PI*2); x.fill();
+  x.strokeStyle=`rgba(${pal.warm},0.45)`; x.lineWidth=1; x.beginPath(); x.moveTo(px-14,py-1.5); x.lineTo(px+6,py-1.5); x.moveTo(px-4,py+1.5); x.lineTo(px+12,py+1.5); x.stroke();
+  if(!frozen){
+    const pad=groveMix('#3f8f57','#0a0d16',pal.dark*0.7);
+    [[px-15,py+1,4.2],[px+13,py-1,3.4],[px+3,py+2.5,2.6]].forEach(([lx,ly,r],i)=>{ x.fillStyle=pad; x.beginPath(); x.ellipse(lx,ly,r,r*0.42,0,0.35,Math.PI*2-0.1); x.lineTo(lx,ly); x.fill(); });
+    if(season==='spring'||season==='summer'){ x.fillStyle=groveMix('#f9a8d4','#0a0d16',pal.dark*0.5); x.beginPath(); x.arc(px+13,py-2,1.3,0,Math.PI*2); x.fill(); }
+    x.strokeStyle=groveMix('#4d7c3a','#0a0d16',pal.dark*0.6); x.lineWidth=1.1;     // reeds at the back edge
+    [[px+rx-4,9],[px+rx-1,12],[px+rx+2,8]].forEach(([rx2,hh])=>{ x.beginPath(); x.moveTo(rx2,py-1); x.quadraticCurveTo(rx2+1,py-hh*0.6,rx2-1,py-hh); x.stroke(); });
+  }
+}
+// Mailbox and lamp post at the FHSA house (baked into the foreground; the lamp glows live at night)
+function groveDrawMailbox(P,x,px,ground,pal){
+  const post=groveMix('#5d4430','#0a0d16',pal.dark*0.5), box=groveMix('#8a3a34','#0a0d16',pal.dark*0.55);
+  x.fillStyle=post; x.fillRect(px-0.9,ground-15,1.8,15);
+  x.fillStyle=box; x.beginPath(); x.moveTo(px-5,ground-15); x.lineTo(px+5,ground-15); x.lineTo(px+5,ground-20); x.arc(px,ground-20,5,0,Math.PI,true); x.closePath(); x.fill();
+  x.fillStyle=groveMix('#d9a441','#0a0d16',pal.dark*0.5); x.fillRect(px+5,ground-23,1.2,5); x.fillRect(px+5,ground-23,3,2);   // flag up
+  const lx=px+16, lg=groveMix('#2a2f3b','#0a0d16',pal.dark*0.3);
+  x.fillStyle=lg; x.fillRect(lx-0.9,ground-34,1.8,34); x.fillRect(lx-3,ground-2,6,2);
+  x.beginPath(); x.moveTo(lx-3.5,ground-34); x.lineTo(lx+3.5,ground-34); x.lineTo(lx+2.5,ground-39); x.lineTo(lx-2.5,ground-39); x.closePath(); x.fill();
+  x.fillStyle=groveMix('#fde68a','#0a0d16',pal.dark*0.35); x.fillRect(lx-2,ground-33.5,4,3.5);
+  P.lamps.push({x:lx-(GROVE_PAR.fore+2), y:ground-32, small:true});
 }
 
 // Re-render the grove whenever investments change or the page opens
