@@ -4024,6 +4024,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
           <option value="RRSP">RRSP</option>
           <option value="FHSA">FHSA</option>
           <option value="Cash">Taxable (non-registered)</option>
+          <option value="Crypto">Crypto wallet</option>
           <option value="Gold">Precious metals (gold, silver, platinum)</option>
         </select>
       </div>
@@ -4422,18 +4423,22 @@ const DEMO_STATE = {
       id:'acc-5', type:'Gold', name:'Precious metals',
       holdings:[]
     },
+    {
+      id:'acc-6', type:'Crypto', name:'Crypto wallet',
+      holdings:[]
+    },
   ],
   portfolio: [
     {ticker:'XEQT', type:'ETF',    shares:197, cost:25.10, price:28.74, accountId:'acc-1', targetPct:60, live:false, lastRefreshed:null},
     {ticker:'VFV',  type:'ETF',    shares:26,  cost:118.20,price:134.50,accountId:'acc-1', targetPct:25, live:false, lastRefreshed:null},
     {ticker:'AAPL', type:'Stocks', shares:10,  cost:172.40,price:196.20,accountId:'acc-2', targetPct:50, live:false, lastRefreshed:null},
     {ticker:'RY.TO',type:'Stocks', shares:13,  cost:128.60,price:141.30,accountId:'acc-2', targetPct:50, live:false, lastRefreshed:null},
-    {ticker:'BTC',  type:'Crypto', shares:0.08,cost:54000, price:87400, accountId:'acc-2', targetPct:0, live:false, lastRefreshed:null},
+    {ticker:'BTC',  type:'Crypto', shares:0.08,cost:54000, price:87400, accountId:'acc-6', targetPct:0, live:false, lastRefreshed:null},
     {ticker:'VFV',  type:'ETF',    shares:30,  cost:121.40,price:134.50,accountId:'acc-3', targetPct:100, live:false, lastRefreshed:null},
     {ticker:'XEQT', type:'ETF',    shares:340, cost:26.20, price:28.74, accountId:'acc-4', targetPct:100, live:false, lastRefreshed:null},
     {ticker:'1 oz Gold Maple Leaf', type:'Gold', metal:'gold', shares:1, cost:3200, price:3200, qty:1, unit:'oz', accountId:'acc-5', targetPct:0, live:false, lastRefreshed:null},
     {ticker:'10 oz silver bar', type:'Gold', metal:'silver', shares:10, cost:45, price:45, qty:10, unit:'oz', accountId:'acc-5', targetPct:0, live:false, lastRefreshed:null},
-    {ticker:'ETH', type:'Crypto', shares:0.6, cost:2400, price:2650, accountId:'acc-2', targetPct:0, live:false, lastRefreshed:null},
+    {ticker:'ETH', type:'Crypto', shares:0.6, cost:2400, price:2650, accountId:'acc-6', targetPct:0, live:false, lastRefreshed:null},
   ],
   trades: [
     {date:'2026-03-19', sym:'BTC', buy:67000, sell:87400, shares:0.03, profit:612, wl:'W'},
@@ -7026,7 +7031,7 @@ function closeNewsPanel(){
 // ══════════════════════════════════════════
 const ACCOUNT_COLORS = {
   TFSA:'#4ade80', RRSP:'#60a5fa', FHSA:'#a78bfa',
-  Cash:'#fb923c', RESP:'#34d399', Other:'#94a3b8', Gold:'#fbbf24'
+  Cash:'#fb923c', RESP:'#34d399', Other:'#94a3b8', Gold:'#fbbf24', Crypto:'#f7931a'
 };
 
 function acBadgeClass(type){
@@ -8034,7 +8039,7 @@ const GROVE_PLOTS = [
     stages:[[0,'Empty lot'],[0.05,'Foundation poured'],[0.2,'Walls going up'],[0.35,'Front door in'],[0.5,'Windows in'],[0.65,'Roof on'],[0.8,'Chimney built'],[0.9,'Garden planted'],[1,'Down payment ready']] },
   { id:'taxable', accTypes:['Cash','RESP','Other'], desc:'Stocks, ETFs and bonds in taxable accounts', tag:'Taxable', name:'Taxable account', color:'#fb923c', kind:'field', max:1000, defPlan:100, optional:true,
     levels:['Bare soil','Seeded','Sprouts','First rows','Field','Full field','Farm','Big farm','Homestead'] },
-  { id:'crypto', accTypes:[], desc:'Bitcoin, Ethereum, Solana and other crypto in taxable accounts', tag:'Crypto', name:'Crypto', color:'#f7931a', kind:'coin', max:1000, defPlan:50, optional:true,
+  { id:'crypto', accTypes:['Crypto'], desc:'Bitcoin, Ethereum, Solana and other coins in your crypto wallet', tag:'Crypto', name:'Crypto', color:'#f7931a', kind:'coin', max:1000, defPlan:50, optional:true,
     levels:['Spark','Ember','Glow','Rising','Bright','Blazing','Radiant','Brilliant','Full moon'] },
   { id:'metals', accTypes:['Gold'], desc:'Gold, silver and platinum bars and coins you hold', tag:'Metals', name:'Precious metals', color:'#fbbf24', kind:'vault', max:1000, defPlan:0, optional:true,
     levels:['Empty vault','First coin','Small stack','Stack','Tall stack','Wall of gold','Vault room','Treasury','Fort Knox'] },
@@ -8189,10 +8194,26 @@ function groveMigrateGold(){
   if(!currentUser?.isDemo) setTimeout(save, 0);
 }
 
+// Crypto has its own wallet account now. Move any coins still sitting in a taxable (or other) account into it.
+function groveMigrateCrypto(){
+  const coins=(state.portfolio||[]).filter(h=>h && h.type==='Crypto');
+  if(!coins.length) return false;
+  if(!state.accounts) state.accounts=[];
+  const typeOf=id=>((state.accounts.find(a=>a.id===id)||{}).type);
+  const stray=coins.filter(h=>typeOf(h.accountId)!=='Crypto');
+  if(!stray.length) return false;
+  let w=state.accounts.find(a=>a.type==='Crypto');
+  if(!w){ w={id:'acc-crypto-'+Date.now(), type:'Crypto', name:'Crypto wallet', holdings:[]}; state.accounts.push(w); }
+  stray.forEach(h=>{ h.accountId=w.id; });
+  if(!currentUser?.isDemo) setTimeout(save, 0);
+  return true;
+}
+
 function renderGrove(){
   const wrap = document.getElementById('grove');
   if(!wrap) return;
   groveMigrateGold();
+  if(groveMigrateCrypto() && typeof renderAllocator==='function'){ setTimeout(()=>{ renderPortfolio(); renderAllocator(); },0); }
   if(currentUser?.isDemo){ if(_grove.simState!==state){ _grove.sim=null; _grove.simState=state; } groveSimInit(); if(!_grove.liveT) groveSimLive(); }
   else { _grove.sim=null; _grove.simState=null; clearInterval(_grove.liveT); _grove.liveT=null; }
   groveMarkPrices();
@@ -8233,7 +8254,7 @@ function renderGrove(){
       ${groveSectionHtml('Registered accounts', visiblePlots.filter(p=>!p.optional))}
       ${visiblePlots.some(p=>p.optional) ? groveSectionHtml('Taxable, crypto and precious metals', visiblePlots.filter(p=>p.optional))
         : `<div class="grove-more">Have a taxable account, crypto, or gold and silver? Each gets its own spot here.
-             <span><button type="button" class="grove-mini" onclick="groveAddAccount('Cash')">Add taxable account</button><button type="button" class="grove-mini" onclick="groveAddMetal()">Add precious metals</button></span></div>`}
+             <span><button type="button" class="grove-mini" onclick="groveAddAccount('Cash')">Add taxable account</button><button type="button" class="grove-mini" onclick="groveAddCrypto()">Add crypto wallet</button><button type="button" class="grove-mini" onclick="groveAddMetal()">Add precious metals</button></span></div>`}
       <div class="grove-badges-title">Badges <span>Earned for habits, not for what the market does.</span></div>
       <div class="grove-badges">${GROVE_BADGES.map(b=>`
         <div class="grove-badge" id="gb-${b.id}">
@@ -8449,7 +8470,8 @@ function groveSyncTypeOptions(){
   const reg = acc && GROVE_REGISTERED.includes(acc.type);
   const gold = acc && acc.type==='Gold';
   groveGoldFormMode(gold);
-  const opts = gold ? ['Gold'] : reg ? ['Stocks','ETF','Bond'] : ['Stocks','ETF','Bond','Crypto'];
+  const wallet = acc && acc.type==='Crypto';
+  const opts = gold ? ['Gold'] : wallet ? ['Crypto'] : ['Stocks','ETF','Bond'];
   const keep = opts.includes(typeSel.value) ? typeSel.value : 'Stocks';
   typeSel.innerHTML = opts.map(o=>`<option value="${o}">${o==='Crypto'?'Crypto (BTC, ETH, SOL...)':o==='Gold'?'Precious metal':o}</option>`).join('');
   typeSel.value = keep;
@@ -10491,7 +10513,8 @@ const INV_ACCOUNTS = [
   { type:'TFSA', label:'TFSA',            hint:'Tax-free savings',          classes:['Stocks','ETF','Bond'] },
   { type:'RRSP', label:'RRSP',            hint:'Retirement',                classes:['Stocks','ETF','Bond'] },
   { type:'FHSA', label:'FHSA',            hint:'First home savings',        classes:['Stocks','ETF','Bond'] },
-  { type:'Cash', label:'Taxable',         hint:'Regular investing account', classes:['Stocks','ETF','Bond','Crypto'] },
+  { type:'Cash', label:'Taxable',         hint:'Regular investing account', classes:['Stocks','ETF','Bond'] },
+  { type:'Crypto', label:'Crypto wallet',  hint:'Bitcoin, Ethereum and other coins', classes:['Crypto'] },
   { type:'Gold', label:'Precious metals', hint:'Bars and coins you hold',   classes:['Metal'] },
 ];
 const INV_CLASS = {
@@ -10505,7 +10528,7 @@ const INV_METALS = ['gold','silver','platinum','palladium'];
 let _inv = { accType:null, accountId:null, cls:null, metal:'gold', edit:null };
 
 function invAccDef(type){ return INV_ACCOUNTS.find(a=>a.type===type) || INV_ACCOUNTS[3]; }
-function invTypeOf(acc){ return ['TFSA','RRSP','FHSA','Gold'].includes(acc.type) ? acc.type : 'Cash'; }
+function invTypeOf(acc){ return ['TFSA','RRSP','FHSA','Gold','Crypto'].includes(acc.type) ? acc.type : 'Cash'; }
 
 function openInvest(opts={}){
   _inv = { accType:null, accountId:null, cls:null, metal:'gold', edit:null };
@@ -10548,7 +10571,7 @@ function invRender(){
     </div>
     ${accDef && accDef.classes.length>1?`<div class="inv-step"><div class="inv-label"><b>2</b> What is it?</div>
       <div class="inv-chips">${accDef.classes.map(k=>chip(_inv.cls===k, k==='Metal'?'Precious metal':INV_CLASS[k].label, null, `invPickCls('${k}')`)).join('')}</div>
-      ${accDef.type!=='Cash' && accDef.type!=='Gold'?`<div class="inv-note">${accDef.label}s hold stocks, ETFs and bonds. Crypto goes in a taxable account.</div>`:''}
+      ${accDef.type!=='Gold' && accDef.type!=='Crypto'?`<div class="inv-note">${accDef.type==='Cash'?'Taxable accounts':accDef.label+'s'} hold stocks, ETFs and bonds. Crypto goes in a crypto wallet.</div>`:''}
     </div>`:''}
     ${c?`<div class="inv-step"><div class="inv-label"><b>${accDef.classes.length>1?3:2}</b> ${_inv.cls==='Metal'?'Which metal, and the details':'The details'}</div>
       ${_inv.cls==='Metal'?`
@@ -10638,7 +10661,7 @@ async function invSave(){
     if(!px && INV_CLASS[_inv.cls].fetch && typeof fetchLivePrice==='function'){ btn.textContent='Looking up price…'; btn.disabled=true; try{ px=await fetchLivePrice(t)||0; }catch(e){ px=0; } btn.disabled=false; }
     rec={ ticker:t, type:_inv.cls, shares:q, cost, price:px>0?px:cost, live:px>0, lastRefreshed:px>0?new Date().toISOString():null };
   }
-  if(needNew){ acc={ id:'acc-'+Date.now(), type:accDef.type, name:accDef.type==='Cash'?'Taxable account':accDef.type==='Gold'?'Precious metals':accDef.label, holdings:[] }; state.accounts.push(acc); }
+  if(needNew){ acc={ id:'acc-'+Date.now(), type:accDef.type, name:accDef.type==='Cash'?'Taxable account':accDef.type==='Gold'?'Precious metals':accDef.type==='Crypto'?'Crypto wallet':accDef.label, holdings:[] }; state.accounts.push(acc); }
   rec.accountId=acc.id;
   // editing replaces the original row; adding the same ticker to the same account merges it
   let existing=null;
@@ -10664,10 +10687,10 @@ document.addEventListener('keydown', e=>{ if(e.key==='Escape' && document.getEle
 addPortfolioEntry   = function(){ openInvest({}); };
 addHoldingToAccount = function(accountId){ openInvest({ accountId }); };
 editHolding         = function(accountId, ticker){ const h=state.portfolio.find(x=>x.accountId===accountId && x.ticker===ticker); if(h) openInvest({ edit:h }); };
-groveAddCrypto      = function(){ openInvest({ accType:'Cash', cls:'Crypto' }); };
+groveAddCrypto      = function(){ openInvest({ accType:'Crypto', cls:'Crypto' }); };
 groveAddMetal       = function(){ openInvest({ accType:'Gold', cls:'Metal' }); };
 
-groveAddAccount     = function(type){ openInvest({ accType: ['TFSA','RRSP','FHSA','Gold'].includes(type)?type:'Cash' }); };
+groveAddAccount     = function(type){ openInvest({ accType: ['TFSA','RRSP','FHSA','Gold','Crypto'].includes(type)?type:'Cash' }); };
 
 
 // ── Hide amounts: blurs every dollar figure in the app, remembered on this device ──
