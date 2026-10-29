@@ -1903,6 +1903,15 @@ input[type=number]{-moz-appearance:textfield}
 .badge-gold{background:rgba(251,191,36,0.14)!important;color:#fbbf24!important}
 #p-unit{margin-top:0.35rem}
 @media(max-width:600px){.grove-stage{height:250px}}
+.grove-mood{position:absolute;left:10px;top:10px;z-index:1;display:inline-flex;align-items:center;gap:0.35rem;font-size:0.72rem;font-weight:600;color:var(--text);background:rgba(10,13,20,0.72);border:1px solid rgba(255,255,255,0.1);border-radius:999px;padding:0.22rem 0.6rem 0.22rem 0.5rem;white-space:nowrap;max-width:calc(100% - 20px);overflow:hidden;text-overflow:ellipsis}
+.grove-mood i{width:7px;height:7px;border-radius:50%;background:#97a2b8;flex-shrink:0}
+.grove-mood b{font-weight:700;font-variant-numeric:tabular-nums}
+.grove-mood span{font-weight:400;color:var(--muted)}
+.grove-mood.bull{border-color:rgba(74,222,128,0.35)}.grove-mood.bull i{background:#4ade80}.grove-mood.bull b{color:#4ade80}
+.grove-mood.bear{border-color:rgba(248,113,113,0.35)}.grove-mood.bear i{background:#f87171}.grove-mood.bear b{color:#f87171}
+.grove-mood[hidden]{display:none}
+.grove-mood em{font-style:normal;font-weight:700;color:#67e8f9;margin-left:0.15rem}
+.grove-mood.mecha{border-color:rgba(103,232,249,0.5)}
 
 /* ── ADD AN INVESTMENT SHEET ── */
 .inv-overlay{position:fixed;inset:0;background:rgba(5,7,10,0.72);z-index:650;display:none;align-items:center;justify-content:center;padding:1rem}
@@ -8028,7 +8037,7 @@ function groveCardHtml(p){ return `
             <div class="grove-lvl" id="gp-${p.id}-lvl"></div>
           </div>
           <div class="grove-desc" id="gp-${p.id}-desc">${p.desc}</div>
-          <div class="grove-stage" id="gp-${p.id}-stage" role="img"><canvas></canvas></div>
+          <div class="grove-stage" id="gp-${p.id}-stage" role="img"><canvas></canvas><span class="grove-mood" id="gp-${p.id}-mood" hidden></span></div>
           <div class="grove-body">
             <div class="grove-nums">
               <div><div class="grove-k">Put in</div><div class="grove-v" id="gp-${p.id}-c"></div></div>
@@ -8065,6 +8074,9 @@ function renderGrove(){
   const wrap = document.getElementById('grove');
   if(!wrap) return;
   groveMigrateGold();
+  if(currentUser?.isDemo){ if(_grove.simState!==state){ _grove.sim=null; _grove.simState=state; } groveSimInit(); if(!_grove.liveT) groveSimLive(); }
+  else { _grove.sim=null; _grove.simState=null; clearInterval(_grove.liveT); _grove.liveT=null; }
+  groveMarkPrices();
   const tot = groveTotals();
   const track = groveTrack(tot);
   const g = state.grove;
@@ -8096,7 +8108,7 @@ function renderGrove(){
         <button type="button" class="grove-tbtn primary" onclick="groveDemoAdvance(1)">Next month</button>
         <button type="button" class="grove-tbtn" onclick="groveDemoAdvance(12)">Jump a year</button>
         <button type="button" class="grove-tbtn" id="grove-auto" aria-pressed="false" onclick="groveDemoAuto()">Autopilot</button>
-        <div class="grove-time-msg" id="grove-time-msg">Move time forward to watch the grove grow. Each month adds the amounts on the sliders and a random market month.</div>
+        <div class="grove-time-msg" id="grove-time-msg">Move time forward to watch the grove grow. Each month adds the amounts on the sliders and a month of simulated trading. The market also moves one trading day every few seconds while you watch, so bulls and bears come and go.</div>
       </div>` : ''}
       ${groveSectionHtml('Registered accounts', visiblePlots.filter(p=>!p.optional))}
       ${visiblePlots.some(p=>p.optional) ? groveSectionHtml('Taxable, crypto and precious metals', visiblePlots.filter(p=>p.optional))
@@ -8184,6 +8196,7 @@ function renderGrove(){
 
 function groveUpdateText(tot){
   const g=state.grove;
+  groveRefreshMoods();
   Object.values(_grove.plots).forEach(P=>{
     const p=P.def, t=tot[p.id], gain=t.value-t.contrib, plan=g.plan[p.id] ?? p.defPlan;
     document.getElementById(`gp-${p.id}-c`).textContent = groveFmt(t.contrib);
@@ -8233,17 +8246,19 @@ function groveDemoAdvance(months){
   if(!currentUser?.isDemo) return;
   const g=state.grove, accounts=state.accounts||[];
   let added=0, downs=0, lastR=0;
+  groveSimInit();
+  const mv=()=>state.portfolio.reduce((x,h)=>x+h.price*h.shares,0);
   for(let m=0;m<months;m++){
-    let u=0,v=0; while(!u)u=Math.random(); while(!v)v=Math.random();
-    const r=Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)*0.035+0.006; lastR=r; if(r<0) downs++;
-    _grove.past.push({ offset:_grove.offset, port:state.portfolio.map(h=>({...h})), grove:JSON.parse(JSON.stringify(state.grove)) });
+    _grove.past.push({ offset:_grove.offset, simDay:_grove.simDay, reg:{..._grove.sim.reg}, port:state.portfolio.map(h=>({...h, marks:(h.marks||[]).map(k=>k.slice())})), grove:JSON.parse(JSON.stringify(state.grove)) });
     if(_grove.past.length>120) _grove.past.shift();
     _grove.offset++;
+    const before=mv();
+    for(let d=0; d<21; d++) groveSimDay();         // a month of trading, each asset at its own volatility
+    const r=before>0 ? mv()/before-1 : 0; lastR=r; if(r<0) downs++;
     GROVE_PLOTS.forEach(p=>{
       const amt = g.plan[p.id] ?? p.defPlan;
       const hs = state.portfolio.filter(h=>groveHoldingPlot(h)===p.id); if(!hs.length) return;
-      hs.forEach(h=>{ h.price = Math.max(0.01, h.price*(1+r)); });
-      if(amt>0 && hs.length){
+      if(amt>0){
         const h=hs[0], newShares=amt/h.price;
         h.cost=(h.cost*h.shares+amt)/(h.shares+newShares); h.shares+=newShares; added+=amt;
       }
@@ -8254,9 +8269,9 @@ function groveDemoAdvance(months){
   if(msg){
     const pct=(lastR*100).toFixed(1);
     msg.innerHTML = months>1
-      ? `<b>One year later.</b> You added ${groveFmt(added)}. The market had ${downs} down month${downs===1?'':'s'} out of 12, and your grove kept growing through every one.`
-      : lastR>=0 ? `<span class="grove-chip up">Market +${pct}%</span> Good month. You added <b>${groveFmt(added)}</b> and the gold grew on top.`
-                 : `<span class="grove-chip down">Market ${pct}%</span> Down month. The gold faded a little, but everything you built is still standing${added?` and your ${groveFmt(added)} still went in`:''}.`;
+      ? `<b>One year later.</b> You added ${groveFmt(added)}. Your holdings had ${downs} down month${downs===1?'':'s'} out of 12, and your grove kept growing through every one.`
+      : lastR>=0 ? `<span class="grove-chip up">Holdings +${pct}%</span> Good month. You added <b>${groveFmt(added)}</b> and the gold grew on top.`
+                 : `<span class="grove-chip down">Holdings ${pct}%</span> Down month. The gold faded a little, but everything you built is still standing${added?` and your ${groveFmt(added)} still went in`:''}.`;
   }
   renderPortfolio(); renderAllocator();
 }
@@ -8266,6 +8281,7 @@ function groveDemoRewind(months){
   for(let i=0;i<months && _grove.past.length;i++) snap=_grove.past.pop();
   if(!snap) return;
   _grove.offset=snap.offset; state.portfolio=snap.port; state.grove=snap.grove;
+  if(snap.simDay!=null && _grove.sim){ _grove.simDay=snap.simDay; _grove.sim.reg={...snap.reg}; }
   const d=groveNow();
   const msg=document.getElementById('grove-time-msg');
   if(msg) msg.innerHTML=`<b>Rewound to ${GROVE_MONTHS[d.getMonth()]} ${d.getFullYear()}.</b> Everything is back the way it was then. Move forward again to see a different market play out.`;
@@ -8342,7 +8358,7 @@ function groveStart(){ if(!_grove.raf) _grove.raf=requestAnimationFrame(groveFra
 function groveFrame(ms){
   _grove.raf=null;
   const page=document.getElementById('page-investments');
-  if(!page || page.offsetParent===null) return; // stop while the page is hidden; renderGrove restarts it
+  if(!page || page.offsetParent===null){ _grove.prevCrypto=null; return; } // stop while the page is hidden; renderGrove restarts it (and a new visit gets a new mecha roll)
   _grove.raf=requestAnimationFrame(groveFrame);
   const scrolling = _grove.scrollHold && ms < _grove.scrollHold;
   if(document.hidden || ms-(_grove.last||0) < (scrolling ? 66 : 33)) return; // 30fps normally, a lighter 15fps while scrolling
@@ -9044,13 +9060,6 @@ function groveComposeFront(P,ctx,t){
 // ── Bulls and bears ──
 // An account worth more than you put in gets bulls roaming its ground; one worth less gets bears.
 // Flat accounts get neither. A bigger gain or loss brings a bigger herd (up to 3).
-function groveMarketMood(P){
-  if(_grove.moodOverride) return _grove.moodOverride;
-  const d=(_grove.tot||{})[P.def.id]; if(!d || d.contrib<1) return null;
-  const r=(d.value-d.contrib)/d.contrib;
-  if(Math.abs(r)<0.005) return null;
-  return {kind: r>0?'bull':'bear', n: Math.abs(r)>=0.15 ? 3 : Math.abs(r)>=0.05 ? 2 : 1};
-}
 function groveDrawBull(ctx,x,y,s,dir,step,t,i){
   ctx.save(); ctx.translate(x,y); ctx.scale(dir*s,s);
   const leg=(lx,ph)=>{ const a=Math.sin(step+ph)*0.45; ctx.save(); ctx.translate(lx,-9); ctx.rotate(a); ctx.fillStyle='#4a2a17'; ctx.fillRect(-1.6,0,3.2,9); ctx.fillStyle='#1c120b'; ctx.fillRect(-1.8,8,3.6,1.6); ctx.restore(); };
@@ -9093,20 +9102,257 @@ function groveDrawBear(ctx,x,y,s,dir,step,t,i){
   ctx.restore();
   ctx.restore();
 }
+// Herds visit instead of living there: every minute or so they wander in one by one, roam for a while, then head off.
+// Each card keeps its own timing so they don't all arrive together.
+const GROVE_VISIT = {len:26, walk:6, stagger:1.8};
+function groveVisitClock(P,t){
+  const id=P.def.id, seed=[...id].reduce((s,c)=>s+c.charCodeAt(0),0);
+  const cycle=70+groveRand(seed+3)*50, first=2+groveRand(seed+4)*10;     // 70 to 120 s apart, first visit within 12 s
+  if(t<first) return null;
+  const k=Math.floor((t-first)/cycle);
+  return {phase:(t-first)-k*cycle, visit:k, seed};
+}
+// where animal i is during a visit: walks in from an edge, roams, walks out the far side
+function groveVisitPos(P,t,clk,i,sp,range,cx){
+  const {w}=P, V=GROVE_VISIT, p=clk.phase-i*V.stagger;
+  if(p<0 || p>V.len) return null;
+  const roam=tt=>cx+Math.sin(tt*sp+groveRand(i+2101+clk.seed)*6.28)*range;
+  const side=groveRand(clk.visit*7+clk.seed)<0.5?-1:1, inX=side<0?-60:w+60, outX=-inX+w;
+  const ease=q=>q*q*(3-2*q);
+  if(p<V.walk){ const tgt=roam(t-p+V.walk), x=inX+(tgt-inX)*ease(p/V.walk); return {x, dir:tgt>=inX?1:-1, v:1}; }
+  if(p>V.len-V.walk){ const t0=t-(p-(V.len-V.walk)), st=roam(t0), q=(p-(V.len-V.walk))/V.walk, x=st+(outX-st)*ease(q); return {x, dir:outX>=st?1:-1, v:1}; }
+  const ph=t*sp+groveRand(i+2101+clk.seed)*6.28, v=Math.cos(ph);
+  return {x:roam(t), dir:v>=0?1:-1, v:Math.abs(v)};
+}
 function groveHerd(P,t){
   const mood=groveMarketMood(P); if(!mood) return;
   const {ctx,w,h}=P, base=h-24, bull=mood.kind==='bull';
+  const clk = groveReduce ? {phase:GROVE_VISIT.walk+1, visit:0, seed:1} : groveVisitClock(P,t); if(!clk) return;
   for(let i=0;i<mood.n;i++){
-    const sp=(bull?0.16:0.09)*(0.8+groveRand(i+2100)*0.4), seed=groveRand(i+2101)*6.28 + P.def.id.length;
-    const range=w*0.4, cx=w*(0.5+(groveRand(i+2102)-0.5)*0.2);
-    const ph=groveReduce?seed:t*sp+seed, x=cx+Math.sin(ph)*range, v=Math.cos(ph), dir=v>=0?1:-1;
-    const s=(bull?1.12:1.18)*(0.88+i*0.07), y=base+8+i*4.5;
-    const step=groveReduce?0:t*(bull?9:6)*Math.min(1,Math.abs(v)*2.5)+i;
-    if(bull && !groveReduce && Math.abs(v)>0.5){                           // dust kicked up behind a bull at full trot
+    const sp=(bull?0.16:0.09)*(0.8+groveRand(i+2100)*0.4), range=w*0.36, cx=w*(0.5+(groveRand(i+2102)-0.5)*0.2);
+    const pos=groveVisitPos(P,t,clk,i,sp,range,cx); if(!pos) continue;
+    const {x,dir,v}=pos, s=(bull?1.12:1.18)*(0.88+i*0.07), y=base+8+i*4.5;
+    const step=groveReduce?0:t*(bull?9:6)*Math.min(1,v*2.5)+i;
+    if(bull && !groveReduce && v>0.5){                                       // dust kicked up behind a bull at full trot
       for(let k=0;k<3;k++){ const q=((t*1.6+k/3+i)%1); ctx.fillStyle=`rgba(200,170,130,${0.22*(1-q)})`; ctx.beginPath(); ctx.arc(x-dir*(16+q*14)*s,y-2-q*5,1.5+q*3,0,Math.PI*2); ctx.fill(); }
     }
     (bull?groveDrawBull:groveDrawBear)(ctx,x,y,s,dir,step,t,i);
   }
+  if(bull && P.def.id==='crypto' && _grove.mecha) groveMechaHerd(P,t,clk,mood.n);
+}
+
+// ── Mecha bull: a 1 in 1,000 visitor in a crypto bull market ──
+function groveDrawMecha(ctx,x,y,s,dir,step,t){
+  ctx.save(); ctx.translate(x,y); ctx.scale(dir*s,s);
+  const steel=(y0,y1)=>{ const g=ctx.createLinearGradient(0,y0,0,y1); g.addColorStop(0,'#e2e8f0'); g.addColorStop(0.45,'#94a3b8'); g.addColorStop(1,'#475569'); return g; };
+  // hover glow on the ground
+  const hg=ctx.createRadialGradient(0,0,2,0,0,26); hg.addColorStop(0,'rgba(34,211,238,0.35)'); hg.addColorStop(1,'rgba(34,211,238,0)'); ctx.fillStyle=hg; ctx.fillRect(-28,-8,56,14);
+  // piston legs: thigh, knee joint, shin, hoof
+  const leg=(lx,ph,far)=>{ const a=Math.sin(step+ph)*0.4, lift=Math.max(0,Math.sin(step+ph))*2.5;
+    ctx.save(); ctx.translate(lx,-12); ctx.rotate(a*0.6);
+    ctx.fillStyle=far?'#475569':'#64748b'; ctx.fillRect(-2.2,0,4.4,6);
+    ctx.fillStyle='#22d3ee'; ctx.beginPath(); ctx.arc(0,6,1.6,0,Math.PI*2); ctx.fill();
+    ctx.translate(0,6); ctx.rotate(-a*0.9);
+    ctx.fillStyle=far?'#334155':'#94a3b8'; ctx.fillRect(-1.5,0,3,6-lift*0.3);
+    ctx.fillStyle='#1e293b'; ctx.fillRect(-2.6,5.4-lift*0.3,5.2,2.2);
+    ctx.restore(); };
+  leg(-10,Math.PI,true); leg(8,0,true);
+  // thruster on the rump
+  const fl=0.6+0.4*Math.sin(t*30);
+  ctx.fillStyle=`rgba(251,146,60,${0.7*fl})`; ctx.beginPath(); ctx.moveTo(-18,-17); ctx.lineTo(-27-fl*6,-15); ctx.lineTo(-18,-13); ctx.closePath(); ctx.fill();
+  ctx.fillStyle=`rgba(103,232,249,${0.9*fl})`; ctx.beginPath(); ctx.moveTo(-18,-16.2); ctx.lineTo(-23-fl*3,-15); ctx.lineTo(-18,-13.8); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#334155'; ctx.fillRect(-19,-18,3,6);
+  // armoured body
+  ctx.fillStyle=steel(-24,-7); ctx.beginPath();
+  ctx.moveTo(-17,-10); ctx.lineTo(-18,-19); ctx.lineTo(-10,-24); ctx.lineTo(6,-25); ctx.lineTo(15,-22); ctx.lineTo(17,-12); ctx.lineTo(10,-8); ctx.lineTo(-12,-8); ctx.closePath(); ctx.fill();
+  ctx.strokeStyle='rgba(15,23,42,0.55)'; ctx.lineWidth=0.8;
+  ctx.beginPath(); ctx.moveTo(-6,-24); ctx.lineTo(-7,-8); ctx.moveTo(6,-25); ctx.lineTo(5,-8); ctx.moveTo(-17,-15); ctx.lineTo(16,-16); ctx.stroke();
+  for(const rx of [-12,-1,10]){ ctx.fillStyle='#1e293b'; ctx.beginPath(); ctx.arc(rx,-11,0.8,0,Math.PI*2); ctx.fill(); }
+  // glowing coin emblem on the flank
+  ctx.fillStyle='#f7931a'; ctx.beginPath(); ctx.arc(-1,-19,3.6,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#fff7ed'; ctx.font='800 5px Geist, Inter, sans-serif'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText('₿',-1,-18.7); ctx.textBaseline='alphabetic';
+  // light strip along the spine
+  ctx.strokeStyle=`rgba(34,211,238,${0.55+0.45*Math.sin(t*4)})`; ctx.lineWidth=1.2; ctx.beginPath(); ctx.moveTo(-10,-23.3); ctx.lineTo(6,-24.2); ctx.stroke();
+  leg(-7,0,false); leg(11,Math.PI,false);
+  // head
+  ctx.save(); ctx.translate(19,-19+Math.sin(step*2)*0.5);
+  ctx.fillStyle=steel(-6,6); ctx.beginPath(); ctx.moveTo(-5,-5); ctx.lineTo(4,-5); ctx.lineTo(9,0); ctx.lineTo(8,5); ctx.lineTo(-3,5); ctx.lineTo(-6,1); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#1e293b'; ctx.fillRect(4,2.2,4.5,2.4);                                  // grille
+  ctx.fillStyle='rgba(34,211,238,0.35)'; ctx.beginPath(); ctx.arc(2.2,-1.5,4,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#67e8f9'; ctx.fillRect(0.6,-2.6,3.4,1.8);                               // visor eye
+  ctx.strokeStyle='#e2e8f0'; ctx.lineWidth=2; ctx.lineCap='round';                       // chrome horns
+  ctx.beginPath(); ctx.moveTo(-3,-5); ctx.lineTo(-6,-10); ctx.lineTo(-2,-12.5); ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(1.5,-5); ctx.lineTo(1,-10); ctx.lineTo(5.5,-11.5); ctx.stroke();
+  ctx.strokeStyle='#94a3b8'; ctx.lineWidth=0.8; ctx.beginPath(); ctx.moveTo(-4,-5); ctx.lineTo(-5,-8.5); ctx.stroke();
+  ctx.restore();
+  ctx.restore();
+}
+function groveMechaHerd(P,t,clk,n){
+  const {ctx,w,h}=P, base=h-24, s=1.75, y=base+15;
+  const pos=groveVisitPos(P,t,clk,n,0.17,w*0.3,w*0.5); if(!pos) return;   // arrives last, behind its herd
+  const x=pos.x, dir=pos.dir, v=pos.dir*pos.v;
+  const step=groveReduce?0:t*6*Math.min(1,Math.abs(v)*2.5);
+  if(!groveReduce && Math.abs(v)>0.3){ // stomp dust and sparks
+    for(let k=0;k<4;k++){ const q=((t*1.3+k/4)%1); ctx.fillStyle=`rgba(148,163,184,${0.3*(1-q)})`; ctx.beginPath(); ctx.arc(x-dir*(22+q*18),y-2-q*7,2+q*4,0,Math.PI*2); ctx.fill(); }
+    if(Math.sin(step)>0.95){ ctx.fillStyle='rgba(103,232,249,0.9)'; for(let k=0;k<3;k++) ctx.fillRect(x+(groveRand(k+Math.floor(t*4))-0.5)*30,y-1-groveRand(k+7)*4,1.4,1.4); }
+  }
+  groveDrawMecha(ctx,x,y,s,dir,step,t);
+}
+
+// ── Bull and bear markets ──
+// Every holding keeps a short price history (one mark per day). An account's market mood is the price-only return of
+// what it holds now over the last 30 days, so new contributions never count as gains.
+// Real accounts use the prices you refresh or enter. Without 30 days of history yet, it falls back to how the
+// account is doing since you bought. The demo runs a market simulation with realistic volatility for each asset.
+const GROVE_WINDOW = 30;
+const GROVE_ASSET = { // annual drift, annual volatility, how hard bull/bear regimes push it
+  equity:   {mu:0.08, vol:0.16, amp:0.18},
+  bond:     {mu:0.03, vol:0.05, amp:0.04},
+  crypto:   {mu:0.15, vol:0.65, amp:0.70},
+  gold:     {mu:0.05, vol:0.15, amp:0.12},
+  silver:   {mu:0.05, vol:0.28, amp:0.22},
+  platinum: {mu:0.03, vol:0.25, amp:0.20},
+  palladium:{mu:0.03, vol:0.35, amp:0.28},
+};
+function groveAssetOf(h){
+  const a=(state.accounts||[]).find(x=>x.id===h.accountId);
+  if(a && a.type==='Gold') return groveMetalOf(h);
+  if(groveIsCrypto(h)) return 'crypto';
+  if(h.type==='Bond') return 'bond';
+  return 'equity';
+}
+function groveMarketDay(){ return currentUser?.isDemo ? (_grove.simDay||0) : Math.floor(Date.now()/864e5); }
+
+// record today's price for every holding (one mark per day, about four months kept)
+function groveMarkPrices(){
+  const day=groveMarketDay(); let changed=false;
+  (state.portfolio||[]).forEach(h=>{
+    const p=+h.price; if(!(p>0)) return;
+    const m=h.marks||(h.marks=[]), last=m[m.length-1];
+    if(last && last[0]===day){ if(last[1]!==p){ last[1]=p; changed=true; } }
+    else if(!last || last[0]<day){ m.push([day,p]); changed=true; }
+    let cut=0; while(cut<m.length-1 && m[cut+1][0]<=day-120) cut++;
+    if(cut){ m.splice(0,cut); changed=true; }
+  });
+  if(changed && !currentUser?.isDemo){ clearTimeout(_grove.markSaveT); _grove.markSaveT=setTimeout(()=>{ if(typeof save==='function') save(); },3000); }
+}
+// price as of a given day: the last mark on or before it
+function grovePriceOn(h,day){
+  const m=h.marks||[]; let p=null;
+  for(let i=0;i<m.length;i++){ if(m[i][0]<=day) p=m[i][1]; else break; }
+  return p;
+}
+function groveMoodFor(pid){
+  const day=groveMarketDay(), hs=(state.portfolio||[]).filter(h=>groveHoldingPlot(h)===pid && h.shares>0 && h.price>0);
+  if(!hs.length) return null;
+  let now=0, then=0, covered=0, start=day;
+  hs.forEach(h=>{ const m=h.marks||[]; if(!m.length) return;
+    let ref=grovePriceOn(h,day-GROVE_WINDOW), from=day-GROVE_WINDOW;
+    if(ref==null && m[0][0]<=day-3){ ref=m[0][1]; from=m[0][0]; }
+    if(ref==null) return;
+    now+=h.shares*h.price; then+=h.shares*ref; covered++; start=Math.min(start,from); });
+  let r, basis;
+  if(covered && then>0){ r=now/then-1; basis = start<=day-GROVE_WINDOW ? (currentUser?.isDemo?'over the past month':'in the last 30 days') : `in the last ${day-start} days`; }
+  else { const c=hs.reduce((s,h)=>s+h.shares*h.cost,0), v=hs.reduce((s,h)=>s+h.shares*h.price,0); if(!(c>0)) return null; r=v/c-1; basis='since you bought'; }
+  const a=Math.abs(r);
+  const kind = a<0.01 ? 'calm' : r>0 ? 'bull' : 'bear';
+  return {r, kind, basis, n: kind==='calm' ? 0 : a>=0.10 ? 3 : a>=0.04 ? 2 : 1};
+}
+function groveRefreshMoods(){
+  _grove.moods={};
+  GROVE_PLOTS.forEach(p=>{ _grove.moods[p.id]=groveMoodFor(p.id); });
+  // Mecha bull: each time crypto turns bull (or you open the page during one) there's a 1 in 1,000 roll.
+  // If it hits, the mecha bull stays for the rest of that bull market.
+  const ck=(_grove.moods.crypto||{}).kind||null;
+  const pg=document.getElementById('page-investments'), seen=!!(pg && pg.offsetParent!==null);
+  if(seen){
+    if(ck==='bull' && _grove.prevCrypto!=='bull' && !_grove.mecha){
+      if(_grove.mechaForce || Math.random()<1/1000){ _grove.mecha=true; if(typeof showToast==='function') showToast('<strong>A mecha bull appeared.</strong> It shows up in about 1 in 1,000 crypto bull markets.'); }
+    }
+    _grove.prevCrypto=ck;
+  }
+  if(ck!=='bull') _grove.mecha=false;
+  Object.values(_grove.plots||{}).forEach(P=>{
+    const el=document.getElementById(`gp-${P.def.id}-mood`); if(!el) return;
+    const m=_grove.moods[P.def.id];
+    if(!m){ el.hidden=true; return; }
+    el.hidden=false; el.className='grove-mood '+m.kind;
+    const rr=Math.round(m.r*1000)/10, pct=(rr>0?'+':rr<0?'':'')+(rr===0?'0.0':rr.toFixed(1))+'%';
+    el.innerHTML = `<i></i>${m.kind==='bull'?'Bull market':m.kind==='bear'?'Bear market':'Steady'} <b>${pct}</b> <span>${m.basis}</span>`;
+    if(P.def.id==='crypto' && _grove.mecha && m.kind==='bull'){ el.innerHTML=`<i></i>Bull market <b>${pct}</b> <em>Mecha bull spotted</em>`; el.classList.add('mecha'); }
+    el.title = m.kind==='calm' ? 'Less than 1% either way, so no bulls or bears are out.' : `Price moves only. Money you add doesn't count.`;
+  });
+}
+// The herd reads the mood (scene code calls this)
+function groveMarketMood(P){
+  if(_grove.moodOverride) return _grove.moodOverride;
+  const m=(_grove.moods||{})[P.def.id]; if(!m || !m.n) return null;
+  return {kind:m.kind, n:m.n};
+}
+
+// ── demo market simulation ──
+function groveGauss(){ let u=0,v=0; while(!u)u=Math.random(); while(!v)v=Math.random(); return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v); }
+function groveSimInit(){
+  if(_grove.sim) return;
+  _grove.simDay=0;
+  // Backfill 60 days of history that ends exactly at today's demo prices. Retry until the opening view
+  // shows both a bull and a bear market somewhere, so the demo starts mixed.
+  const port=state.portfolio||[], N=60;
+  for(let tries=0; tries<15; tries++){
+    _grove.sim={ reg:{eq:'bull', cr:'bear', mt:Math.random()<0.5?'bull':'bear'}, lock:false };
+    const paths=port.map(()=>[1]);
+    for(let d=1; d<=N; d++){
+      _grove.sim.lock = d>N-30;                                  // the last month keeps its regimes
+      if(d===N-29){ _grove.sim.reg.eq='bull'; _grove.sim.reg.cr='bear'; }
+      const z=groveSimFactors();
+      port.forEach((h,i)=>{ paths[i].push(paths[i][d-1]*(1+groveSimReturn(h,z))); });
+    }
+    _grove.sim.lock=false;
+    port.forEach((h,i)=>{ const p=paths[i], end=p[N]; h.marks=[]; for(let d=0; d<=N; d++) h.marks.push([d-N, +(h.price*p[d]/end).toFixed(6)]); });
+    const kinds=GROVE_PLOTS.map(p=>(groveMoodFor(p.id)||{}).kind);
+    if(kinds.includes('bull') && kinds.includes('bear')) break;
+  }
+}
+function groveSimFactors(){
+  const s=_grove.sim;
+  if(!s.lock) for(const k of ['eq','cr','mt']) if(Math.random()<1/40) s.reg[k]=s.reg[k]==='bull'?'bear':'bull'; // regimes last about 40 trading days
+  return {eq:groveGauss(), cr:groveGauss(), mt:groveGauss()};
+}
+function groveSimReturn(h,z){
+  const a=groveAssetOf(h), A=GROVE_ASSET[a], s=_grove.sim, dt=1/252;
+  const reg = a==='crypto' ? s.reg.cr : (a==='equity'||a==='bond') ? s.reg.eq : s.reg.mt;
+  const drift=(A.mu + A.amp*(reg==='bull'?1:-1))*dt, sd=A.vol*Math.sqrt(dt);
+  const shock = a==='crypto' ? 0.35*z.eq+0.85*z.cr : a==='equity' ? 0.85*z.eq : a==='bond' ? 0.2*z.eq : 0.9*z.mt;
+  const idio = Math.sqrt(Math.max(0,1-(a==='crypto'?0.845:a==='equity'?0.7225:a==='bond'?0.04:0.81)))*groveGauss();
+  return Math.max(-0.5, drift + sd*(shock+idio));
+}
+// one simulated trading day
+function groveSimDay(){
+  groveSimInit();
+  const z=groveSimFactors(); _grove.simDay++;
+  const metalMove={};
+  (state.portfolio||[]).forEach(h=>{
+    const a=groveAssetOf(h);
+    // every holding of the same metal moves together, since it's one spot price
+    const r = (a in metalMove) ? metalMove[a] : groveSimReturn(h,z);
+    if(GROVE_ASSET[a] && ['gold','silver','platinum','palladium'].includes(a)) metalMove[a]=r;
+    h.price=Math.max(0.01, +(h.price*(1+r)).toFixed(6));
+  });
+  groveMarkPrices();
+}
+// live ticker: while you watch the demo, a trading day passes every 3 seconds
+function groveSimLive(){
+  clearInterval(_grove.liveT);
+  if(!currentUser?.isDemo) return;
+  _grove.liveT=setInterval(()=>{
+    const page=document.getElementById('page-investments');
+    if(!currentUser?.isDemo){ clearInterval(_grove.liveT); return; }
+    if(document.hidden || !page || page.offsetParent===null) return;
+    if(_grove.scrollHold && performance.now()<_grove.scrollHold) return;
+    if(document.getElementById('inv-overlay')?.classList.contains('open')) return;
+    groveSimDay();
+    renderPortfolio(); renderAllocator();
+  },3000);
 }
 
 // Re-render the grove whenever investments change or the page opens
