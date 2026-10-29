@@ -10205,15 +10205,31 @@ async function qsReadPrices(keys){
   const map={}, hist={}, since=new Date(Date.now()-45*864e5).toISOString().slice(0,10);
   for(let i=0;i<keys.length;i+=25){
     const ch=keys.slice(i,i+25);
-    const [a,b]=await Promise.all([
-      sb.from('prices').select('key,symbol,price,currency,day,status,updated_at').in('key',ch),
-      sb.from('price_history').select('key,day,close').in('key',ch).gte('day',since).order('day').limit(2000),
-    ]);
+    let a=await sb.from('prices').select('key,symbol,name,price,currency,day,status,alts,updated_at').in('key',ch);
+    if(a.error && /column/i.test(a.error.message||'')) a=await sb.from('prices').select('key,symbol,price,currency,day,status,updated_at').in('key',ch); // before the Oct 29 columns
     if(a.error) throw a.error;
     (a.data||[]).forEach(r=>{ map[r.key]=r; });
+  }
+  // history for each ticker, plus for its other listings (stored as KEY|SYMBOL)
+  const hkeys=[...keys]; Object.values(map).forEach(r=>(r.alts||[]).forEach(x=>hkeys.push(r.key+'|'+x.symbol)));
+  for(let i=0;i<hkeys.length;i+=25){
+    const b=await sb.from('price_history').select('key,day,close').in('key',hkeys.slice(i,i+25)).gte('day',since).order('day').limit(2000);
     if(!b.error) (b.data||[]).forEach(r=>{ (hist[r.key]=hist[r.key]||[]).push([qsDayIdx(r.day), +r.close]); });
   }
   return {map,hist};
+}
+
+// Some tickers trade in two places, e.g. Apple on NASDAQ and a much cheaper CDR in Toronto. The server picks
+// the usual one; if your own cost clearly matches the other listing (more than 2.5x apart, so it's a different
+// product, not just US vs Canadian dollars), use that one for you instead.
+function qsPickListing(h,r){
+  const opts=[{symbol:r.symbol, price:+r.price, currency:r.currency, hkey:r.key}]
+    .concat((r.alts||[]).filter(x=>+x.price>0).map(x=>({symbol:x.symbol, price:+x.price, currency:x.currency, hkey:r.key+'|'+x.symbol})));
+  if(h.listing){ const pin=opts.find(o=>o.symbol===h.listing); if(pin) return pin; }
+  const cost=+h.cost; if(!(cost>0) || opts.length<2) return opts[0];
+  const off=o=>Math.abs(Math.log(o.price/cost)), p=opts[0];
+  const other=opts.slice(1).filter(o=>Math.abs(Math.log(o.price/p.price))>Math.log(2.5)).sort((a,b)=>off(a)-off(b))[0];
+  return other && off(other)<off(p) ? other : p;
 }
 
 async function groveSyncPrices(opts){
@@ -10245,10 +10261,11 @@ async function groveSyncPrices(opts){
       if(!h || !(+h.shares>0)) return;
       const k=qsHoldingKey(h), r=k&&rows.map[k];
       if(!r || r.status!=='ok' || !(+r.price>0)) return;
-      const p=+r.price;
+      const pick=qsPickListing(h,r), p=pick.price;
       if(Math.abs((+h.price||0)-p)>1e-9){ h.price=p; updated++; changed=true; }
-      if(!h.live || h.lastRefreshed!==r.updated_at || h.priceSymbol!==r.symbol){ h.live=true; h.lastRefreshed=r.updated_at; h.priceSymbol=r.symbol; h.priceCurrency=r.currency; changed=true; }
-      const hist=rows.hist[k];
+      if(h.priceSymbol && h.priceSymbol!==pick.symbol){ h.marks=[]; changed=true; } // switched listing: old history was a different product
+      if(!h.live || h.lastRefreshed!==r.updated_at || h.priceSymbol!==pick.symbol){ h.live=true; h.lastRefreshed=r.updated_at; h.priceSymbol=pick.symbol; h.priceCurrency=pick.currency; changed=true; }
+      const hist=rows.hist[pick.hkey];
       if(hist && hist.length){
         const m=new Map((h.marks||[]).map(x=>[x[0],x[1]])); let diff=false;
         hist.forEach(([d,c])=>{ if(m.get(d)!==c){ m.set(d,c); diff=true; } });
