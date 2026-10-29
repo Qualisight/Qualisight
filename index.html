@@ -8986,6 +8986,7 @@ function groveFore(P,t){
   ctx.restore();
   const ph=_grove.ph||'day', pal=GROVE_PHASE[ph], fm=GROVE_PAR.fore+2, n=groveNight();
   groveAmbient(P,t);
+  groveHerd(P,t);
   if(P.front) ctx.drawImage(P.front,0,0,w,h);
 }
 
@@ -9038,6 +9039,74 @@ function groveComposeFront(P,ctx,t){
     ctx.fillStyle=`rgba(254,243,199,${0.6+0.4*n})`; ctx.beginPath(); ctx.arc(x,y,2.2,0,Math.PI*2); ctx.fill(); });
   if(P.def.kind!=='coin' && pal.tint!=='rgba(0,0,0,0)'){ ctx.fillStyle=pal.tint; ctx.fillRect(0,0,w,h); }
   ctx.drawImage(groveVignette(w,h),0,0,w,h);
+}
+
+// ── Bulls and bears ──
+// An account worth more than you put in gets bulls roaming its ground; one worth less gets bears.
+// Flat accounts get neither. A bigger gain or loss brings a bigger herd (up to 3).
+function groveMarketMood(P){
+  if(_grove.moodOverride) return _grove.moodOverride;
+  const d=(_grove.tot||{})[P.def.id]; if(!d || d.contrib<1) return null;
+  const r=(d.value-d.contrib)/d.contrib;
+  if(Math.abs(r)<0.005) return null;
+  return {kind: r>0?'bull':'bear', n: Math.abs(r)>=0.15 ? 3 : Math.abs(r)>=0.05 ? 2 : 1};
+}
+function groveDrawBull(ctx,x,y,s,dir,step,t,i){
+  ctx.save(); ctx.translate(x,y); ctx.scale(dir*s,s);
+  const leg=(lx,ph)=>{ const a=Math.sin(step+ph)*0.45; ctx.save(); ctx.translate(lx,-9); ctx.rotate(a); ctx.fillStyle='#4a2a17'; ctx.fillRect(-1.6,0,3.2,9); ctx.fillStyle='#1c120b'; ctx.fillRect(-1.8,8,3.6,1.6); ctx.restore(); };
+  leg(-9,Math.PI); leg(7,0);                                              // far legs
+  ctx.fillStyle='rgba(0,0,0,0.25)'; ctx.beginPath(); ctx.ellipse(0,0.5,16,2.6,0,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#4a2a17'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.moveTo(-14,-14); ctx.quadraticCurveTo(-19,-10+Math.sin(t*4+i)*2,-18,-5); ctx.stroke();
+  ctx.fillStyle='#1c120b'; ctx.beginPath(); ctx.arc(-18,-5,1.6,0,Math.PI*2); ctx.fill();
+  const g=ctx.createLinearGradient(0,-20,0,-6); g.addColorStop(0,'#9a5a32'); g.addColorStop(1,'#5e341c');
+  ctx.fillStyle=g; ctx.beginPath(); ctx.ellipse(-1,-13,15,7.5,0,0,Math.PI*2); ctx.fill();          // body
+  ctx.beginPath(); ctx.ellipse(8,-15,8,8.5,0,0,Math.PI*2); ctx.fill();                              // shoulders
+  leg(-6,0); leg(10,Math.PI);                                             // near legs
+  ctx.save(); ctx.translate(16,-15+Math.sin(step*2)*0.6);                 // head
+  ctx.fillStyle='#7a4526'; ctx.beginPath(); ctx.ellipse(0,0,6,5.2,0.35,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#c98f6b'; ctx.beginPath(); ctx.ellipse(4.2,2.6,3.4,2.6,0.3,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#3b2112'; ctx.beginPath(); ctx.arc(5.4,2.4,0.6,0,Math.PI*2); ctx.arc(3.6,3.2,0.6,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#fbbf24'; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(4.6,4.6,1.5,0,Math.PI); ctx.stroke();   // nose ring
+  ctx.strokeStyle='#f5ead7'; ctx.lineWidth=2; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(-2,-3.5); ctx.quadraticCurveTo(-4,-9,1,-10.5); ctx.stroke();           // horns
+  ctx.beginPath(); ctx.moveTo(2,-4); ctx.quadraticCurveTo(3,-9,7,-9.5); ctx.stroke();
+  ctx.fillStyle='#120a05'; ctx.beginPath(); ctx.arc(1.6,-1.4,1,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+  ctx.restore();
+}
+function groveDrawBear(ctx,x,y,s,dir,step,t,i){
+  ctx.save(); ctx.translate(x,y); ctx.scale(dir*s,s);
+  const leg=(lx,ph)=>{ const a=Math.sin(step+ph)*0.35; ctx.save(); ctx.translate(lx,-8); ctx.rotate(a); ctx.fillStyle='#3d2c21'; ctx.beginPath(); ctx.roundRect(-2.6,0,5.2,8.5,2); ctx.fill(); ctx.restore(); };
+  leg(-8,Math.PI); leg(8,0);
+  ctx.fillStyle='rgba(0,0,0,0.25)'; ctx.beginPath(); ctx.ellipse(0,0.5,17,2.8,0,0,Math.PI*2); ctx.fill();
+  const g=ctx.createLinearGradient(0,-24,0,-6); g.addColorStop(0,'#8a6247'); g.addColorStop(1,'#4a3324');
+  ctx.fillStyle=g; ctx.beginPath(); ctx.ellipse(-1,-14,16,9,0,0,Math.PI*2); ctx.fill();              // body
+  ctx.beginPath(); ctx.ellipse(4,-17,8,7,0,0,Math.PI*2); ctx.fill();                                 // shoulder hump
+  ctx.beginPath(); ctx.arc(-16,-15,2.2,0,Math.PI*2); ctx.fill();                                     // tail
+  leg(-5,0); leg(11,Math.PI);
+  ctx.save(); ctx.translate(17,-13+Math.sin(step)*0.8);                    // head hangs low
+  ctx.fillStyle='#74503a'; ctx.beginPath(); ctx.arc(0,0,6.2,0,Math.PI*2); ctx.fill();
+  ctx.beginPath(); ctx.arc(-3.4,-5,2.4,0,Math.PI*2); ctx.arc(2.4,-5.4,2.4,0,Math.PI*2); ctx.fill();  // ears
+  ctx.fillStyle='#8a6a52'; ctx.beginPath(); ctx.arc(-3.4,-5,1.1,0,Math.PI*2); ctx.arc(2.4,-5.4,1.1,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#b08a6c'; ctx.beginPath(); ctx.ellipse(5,1.8,3.6,2.8,0,0,Math.PI*2); ctx.fill();    // snout
+  ctx.fillStyle='#120a05'; ctx.beginPath(); ctx.arc(7.6,1,1.2,0,Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(1.8,-1.6,0.95,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+  ctx.restore();
+}
+function groveHerd(P,t){
+  const mood=groveMarketMood(P); if(!mood) return;
+  const {ctx,w,h}=P, base=h-24, bull=mood.kind==='bull';
+  for(let i=0;i<mood.n;i++){
+    const sp=(bull?0.16:0.09)*(0.8+groveRand(i+2100)*0.4), seed=groveRand(i+2101)*6.28 + P.def.id.length;
+    const range=w*0.4, cx=w*(0.5+(groveRand(i+2102)-0.5)*0.2);
+    const ph=groveReduce?seed:t*sp+seed, x=cx+Math.sin(ph)*range, v=Math.cos(ph), dir=v>=0?1:-1;
+    const s=(bull?1.12:1.18)*(0.88+i*0.07), y=base+8+i*4.5;
+    const step=groveReduce?0:t*(bull?9:6)*Math.min(1,Math.abs(v)*2.5)+i;
+    if(bull && !groveReduce && Math.abs(v)>0.5){                           // dust kicked up behind a bull at full trot
+      for(let k=0;k<3;k++){ const q=((t*1.6+k/3+i)%1); ctx.fillStyle=`rgba(200,170,130,${0.22*(1-q)})`; ctx.beginPath(); ctx.arc(x-dir*(16+q*14)*s,y-2-q*5,1.5+q*3,0,Math.PI*2); ctx.fill(); }
+    }
+    (bull?groveDrawBull:groveDrawBear)(ctx,x,y,s,dir,step,t,i);
+  }
 }
 
 // Re-render the grove whenever investments change or the page opens
