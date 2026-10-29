@@ -1951,6 +1951,21 @@ input[type=number]{-moz-appearance:textfield}
 .grove-reward.got b{color:var(--text)}.grove-reward.got span{opacity:1}
 .grove-ref-fine{font-size:0.72rem;color:var(--muted);opacity:0.8}
 .grove-mini[aria-pressed="true"]{border-color:rgba(167,139,250,0.55);color:#c4b5fd}
+.grove-expand{position:absolute;top:8px;right:8px;z-index:1;width:30px;height:30px;border-radius:9px;border:1px solid rgba(255,255,255,0.14);background:rgba(10,13,20,0.6);color:#e8edf8;display:flex;align-items:center;justify-content:center;cursor:pointer;opacity:0.75;transition:opacity .15s}
+.grove-expand:hover,.grove-expand:focus-visible{opacity:1;border-color:rgba(255,255,255,0.3)}
+.gf-overlay{position:fixed;inset:0;z-index:655;background:rgba(5,7,11,0.88);display:none;align-items:center;justify-content:center;padding:16px}
+.gf-overlay.open{display:flex}
+.gf-sheet{width:100%;max-width:1080px;background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;display:flex;flex-direction:column}
+.gf-head{display:flex;justify-content:space-between;align-items:center;padding:0.75rem 1rem}
+.gf-name{display:flex;align-items:center;gap:0.5rem;font-family:var(--font-display,var(--font-display));font-weight:700;font-size:1.05rem;letter-spacing:-0.02em;color:var(--text)}
+.gf-stage{position:relative;width:100%;height:min(62vh,600px);cursor:pointer;-webkit-tap-highlight-color:transparent;background:#0b0f18}
+.gf-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.gf-info{padding:0.75rem 1rem 1rem;display:flex;flex-direction:column;gap:0.45rem}
+.gf-stats{display:flex;gap:0.5rem 1.1rem;flex-wrap:wrap;font-size:0.85rem;color:var(--muted)}
+.gf-stats b{color:var(--text);font-variant-numeric:tabular-nums}
+.gf-mood.bull{color:#4ade80}.gf-mood.bear{color:#f87171}
+.gf-hint{font-size:0.8rem;color:var(--muted)}
+@media(max-width:600px){.gf-overlay{padding:12px}.gf-sheet{border-radius:16px}.gf-stage{height:auto;aspect-ratio:1/1}}
 
 /* ── ADD AN INVESTMENT SHEET ── */
 .inv-overlay{position:fixed;inset:0;background:rgba(5,7,10,0.72);z-index:650;display:none;align-items:center;justify-content:center;padding:1rem}
@@ -8076,7 +8091,7 @@ function groveCardHtml(p){ return `
             <div class="grove-lvl" id="gp-${p.id}-lvl"></div>
           </div>
           <div class="grove-desc" id="gp-${p.id}-desc">${p.desc}</div>
-          <div class="grove-stage" id="gp-${p.id}-stage" role="img"><canvas></canvas><span class="grove-mood" id="gp-${p.id}-mood" hidden></span></div>
+          <div class="grove-stage" id="gp-${p.id}-stage" role="img" title="Tap to interact"><canvas></canvas><span class="grove-mood" id="gp-${p.id}-mood" hidden></span><button type="button" class="grove-expand" onclick="groveFocus('${p.id}')" aria-label="Open ${p.name} full screen"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg></button></div>
           <div class="grove-body">
             <div class="grove-nums">
               <div><div class="grove-k">Put in</div><div class="grove-v" id="gp-${p.id}-c"></div></div>
@@ -8168,13 +8183,9 @@ function renderGrove(){
       P.cv = document.querySelector(`#gp-${p.id}-stage canvas`); P.ctx = P.cv.getContext('2d');
       P.disp = tot[p.id].contrib; P.dispGain = Math.max(0, tot[p.id].value - tot[p.id].contrib);
       const stage = document.getElementById(`gp-${p.id}-stage`);
-      stage.addEventListener('click', e=>{
-        const r=stage.getBoundingClientRect(); P.pulse=1;
-        const gold = (tot[p.id].value-tot[p.id].contrib)>0;
-        for(let i=0;i<10;i++) P.parts.push({x:e.clientX-r.left,y:e.clientY-r.top,vx:(Math.random()-0.5)*3,vy:-Math.random()*3-1,life:1,r:2+Math.random()*2,col:gold?'#fbbf24':p.color});
-      });
-      stage.addEventListener('pointermove', e=>{ if(e.pointerType!=='mouse') return; const r=stage.getBoundingClientRect(); P.camT=Math.max(-1,Math.min(1,((e.clientX-r.left)/r.width-0.5)*2.2)); });
-      stage.addEventListener('pointerleave', ()=>{ P.camT=0; });
+      stage.addEventListener('click', e=>{ if(e.target.closest('.grove-expand')) return; const r=stage.getBoundingClientRect(); groveTap(P, e.clientX-r.left, e.clientY-r.top); });
+      stage.addEventListener('pointermove', e=>{ if(e.pointerType!=='mouse') return; const r=stage.getBoundingClientRect(); P.camT=Math.max(-1,Math.min(1,((e.clientX-r.left)/r.width-0.5)*2.2)); P.mx=e.clientX-r.left; P.my=e.clientY-r.top; P.hover=true; });
+      stage.addEventListener('pointerleave', ()=>{ P.camT=0; P.hover=false; });
       const sl = document.getElementById(`gp-${p.id}-slider`);
       sl.value = g.plan[p.id] ?? p.defPlan;
       sl.addEventListener('input', ()=>{ g.plan[p.id]=+sl.value; groveUpdateText(groveTotals()); clearTimeout(_grove.saveT); _grove.saveT=setTimeout(save, 600); });
@@ -8231,6 +8242,7 @@ function renderGrove(){
   _grove.tot = tot;
   groveUpdateText(tot);
   groveRefMaybeSync(); groveRefRender();
+  if(_grove.focusP) groveFocusStats();
   groveTimeButtons();
   if(track.changed && !currentUser?.isDemo){ clearTimeout(_grove.saveT); _grove.saveT=setTimeout(save, 800); }
   groveStart();
@@ -8414,6 +8426,13 @@ function groveFrame(ms){
   _grove.last=ms;
   const t=ms/1000, tot=_grove.tot||{};
   _grove.ph = grovePhase(); _grove.composed = false; _grove.warmed = false;
+  if(_grove.focusP){ // focus mode: only the big scene draws
+    const F=_grove.focusP, d=tot[F.def.id]||{contrib:0,value:0};
+    if(F.w){ F.disp+=(d.contrib-F.disp)*(groveReduce?1:0.07); F.dispGain+=(Math.max(0,d.value-d.contrib)-F.dispGain)*(groveReduce?1:0.07);
+      F.pulse*=0.94; F.flash*=0.96; F.cam=(F.cam||0)+(((F.camT||0)+(groveReduce?0:Math.sin(t*0.12)*0.35))-(F.cam||0))*0.06;
+      groveDrawPlot(F,t); }
+    _grove.drawnOnce=true; return;
+  }
   Object.values(_grove.plots).forEach(P=>{
     if(P.visible===false){ if(P.back || _grove.warmed) return; _grove.warmed=true; } // skip plots scrolled off screen (but build each one's scenery once, one per frame)
     if(!P.w){ groveSize(); if(!P.w) return; }
@@ -8422,9 +8441,7 @@ function groveFrame(ms){
     P.dispGain += (Math.max(0,d.value-d.contrib)-P.dispGain)*(groveReduce?1:0.07);
     P.pulse*=0.94; P.flash*=0.96;
     P.cam = (P.cam||0) + (((P.camT||0) + (groveReduce?0:Math.sin(t*0.12+P.def.id.length)*0.35)) - (P.cam||0))*0.06;
-    if(P.def.kind==='tree') groveTree(P,t); else if(P.def.kind==='tower') groveTower(P,t); else if(P.def.kind==='field') groveField(P,t); else if(P.def.kind==='coin') groveCoin(P,t); else if(P.def.kind==='vault') groveVault(P,t); else groveHouse(P,t);
-    groveFore(P,t);
-    groveParticles(P);
+    groveDrawPlot(P,t);
   });
   _grove.drawnOnce = true;
 }
@@ -8444,8 +8461,9 @@ function groveTree(P,t){
   const gainRatio=Math.min(1,P.dispGain/Math.max(500,c*0.25));
   const season=groveScene(P,gainRatio,t);
   if(c<1 && !(_grove.tot||{})[P.def.id]?.has){ groveEmpty(P,'Plant your first dollar'); return; }
-  const base=h-24, li=groveLevel(c), cx=w/2;
+  const base=h-24, li=groveLevel(c), cx=w/2, L=groveLight(P);
   const isOther = P.def.id!=='tfsa';
+  const shake=Math.max(0,1-groveSince(P,t,'tapT')/1.4), gust=groveReduce?0:Math.max(0,Math.sin(t*0.23))*0.6;
 
   // distant hills and, at the top levels, a forest growing in behind
   ctx.fillStyle='rgba(74,222,128,0.05)';
@@ -8458,14 +8476,14 @@ function groveTree(P,t){
 
   // soft shadow under the canopy
   const spread = 20 + s*w*0.28;
-  ctx.fillStyle='rgba(0,0,0,0.28)'; ctx.beginPath(); ctx.ellipse(cx,base+2,spread,6,0,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='rgba(0,0,0,0.28)'; ctx.beginPath(); ctx.ellipse(cx-L*spread*0.18,base+2,spread,6,0,0,Math.PI*2); ctx.fill();
 
   // branches: tapered, curved, darker at the trunk
   const depth=Math.max(1,Math.min(8,1+Math.floor(s*8.4)));
   const trunk=Math.min(16+s*h*0.25, (h-50)/3.6), tips=[], nodes=[], segs=[];
   const bounce=1+P.pulse*0.04;
   (function br(x,y,len,ang,d,id){
-    const sway=groveReduce?0:Math.sin(t*1.2+id*0.9)*0.016*(depth-d+1);
+    const sway=groveReduce?0:Math.sin(t*1.2+id*0.9)*0.016*(depth-d+1)*(1+gust) + Math.sin(t*24+id)*0.05*shake*(depth-d+1)/Math.max(1,depth)*2.4;
     const a=ang+sway, x2=x+Math.cos(a)*len*bounce, y2=y+Math.sin(a)*len*bounce;
     const bend=(groveRand(id+500)-0.5)*len*0.25;
     segs.push({x,y,x2,y2,mx:(x+x2)/2+Math.cos(a+Math.PI/2)*bend,my:(y+y2)/2+Math.sin(a+Math.PI/2)*bend,d});
@@ -8483,6 +8501,9 @@ function groveTree(P,t){
     ctx.strokeStyle = k>0.75 ? '#4a3626' : k>0.45 ? '#5d4430' : '#76573d';
     ctx.lineCap='round'; ctx.lineWidth=Math.max(1.1, sg.d*(1.05+s*1.7));
     ctx.beginPath(); ctx.moveTo(sg.x,sg.y); ctx.quadraticCurveTo(sg.mx,sg.my,sg.x2,sg.y2); ctx.stroke();
+    if(sg.d>=depth-1 && depth>=3){ const lw=ctx.lineWidth*0.28; // bark: a shadow line away from the light, a highlight toward it
+      ctx.lineWidth=Math.max(0.7,lw); ctx.strokeStyle='rgba(20,12,6,0.35)'; ctx.beginPath(); ctx.moveTo(sg.x-L*lw*1.4,sg.y); ctx.quadraticCurveTo(sg.mx-L*lw*1.4,sg.my,sg.x2-L*lw*1.4,sg.y2); ctx.stroke();
+      ctx.strokeStyle='rgba(255,226,180,0.16)'; ctx.beginPath(); ctx.moveTo(sg.x+L*lw*1.4,sg.y); ctx.quadraticCurveTo(sg.mx+L*lw*1.4,sg.my,sg.x2+L*lw*1.4,sg.y2); ctx.stroke(); }
     if(season==='winter' && sg.d<=Math.ceil(depth/2)){ ctx.strokeStyle='rgba(232,237,248,0.75)'; ctx.lineWidth=Math.max(0.8,sg.d*0.6); ctx.beginPath(); ctx.moveTo(sg.x,sg.y-1.2); ctx.quadraticCurveTo(sg.mx,sg.my-1.2,sg.x2,sg.y2-1.2); ctx.stroke(); }
   });
 
@@ -8494,9 +8515,9 @@ function groveTree(P,t){
   const clumps = tips.concat(depth>=4 ? nodes : []);
   if(pal){
     const bob=(id)=>groveReduce?0:Math.sin(t*1.5+id)*1.1;
-    clumps.forEach(([x,y,id])=>{ ctx.fillStyle=pal[0]; ctx.beginPath(); ctx.arc(x+leafR*0.25,y+leafR*0.3+bob(id),leafR*(0.95+groveRand(id)*0.4),0,Math.PI*2); ctx.fill(); });
+    clumps.forEach(([x,y,id])=>{ ctx.fillStyle=pal[0]; ctx.beginPath(); ctx.arc(x-L*leafR*0.25,y+leafR*0.3+bob(id),leafR*(0.95+groveRand(id)*0.4),0,Math.PI*2); ctx.fill(); });
     clumps.forEach(([x,y,id])=>{ ctx.fillStyle=pal[1]; ctx.beginPath(); ctx.arc(x,y+bob(id),leafR*(0.8+groveRand(id+1)*0.35),0,Math.PI*2); ctx.fill(); });
-    clumps.forEach(([x,y,id])=>{ if(groveRand(id+2)<0.7){ ctx.fillStyle=pal[2]; ctx.globalAlpha=0.85; ctx.beginPath(); ctx.arc(x-leafR*0.3,y-leafR*0.3+bob(id),leafR*(0.38+groveRand(id+3)*0.2),0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1; } });
+    clumps.forEach(([x,y,id])=>{ if(groveRand(id+2)<0.7){ ctx.fillStyle=pal[2]; ctx.globalAlpha=0.85; ctx.beginPath(); ctx.arc(x+L*leafR*0.3,y-leafR*0.3+bob(id),leafR*(0.38+groveRand(id+3)*0.2),0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1; } });
     if(season==='spring'){ tips.forEach(([x,y,id])=>{ if(groveRand(id+40)<0.6){ ctx.fillStyle=groveRand(id+41)<0.5?'#f9a8d4':'#fce7f3'; ctx.beginPath(); ctx.arc(x+(groveRand(id+42)-0.5)*leafR*1.4,y+(groveRand(id+43)-0.5)*leafR*1.2,1.8+s*1.2,0,Math.PI*2); ctx.fill(); } }); }
   } else {
     // winter: a few hardy leaves and snow resting in the crown
@@ -8509,6 +8530,7 @@ function groveTree(P,t){
 
   // gold fruit for market gains, each with a stem and a highlight
   const fruit=Math.min(tips.length,Math.round(gainRatio*tips.length*0.6));
+  P.geo={tips:tips.map(q=>[q[0],q[1]]), leaf:pal?pal[1]:'#cbd5e1', leaf2:pal?pal[2]:'#e2e8f0', fruit:fruit>0};
   for(let i=0;i<fruit;i++){
     const tp=tips[Math.floor(groveRand(i*13+5)*tips.length)], bob=groveReduce?0:Math.sin(t*2+i)*1.4;
     const fx=tp[0]+(groveRand(i)-0.5)*leafR, fy=tp[1]+leafR*0.6+bob, fr=2.6+s*1.8;
@@ -8550,94 +8572,6 @@ function groveTree(P,t){
   groveSnow(P,t);
 }
 
-function groveTower(P,t){
-  const {ctx,w,h}=P, c=P.disp, s=groveGrowth(c);
-  const gainRatio=Math.min(1,P.dispGain/Math.max(500,c*0.25));
-  groveScene(P,gainRatio,t);
-  if(c<1 && !(_grove.tot||{})[P.def.id]?.has){ groveEmpty(P,'Break ground here'); return; }
-  const night=Math.min(1,groveNight()*0.85+0.1*(Math.sin(t*0.15)+1)/2), floors=Math.max(0,Math.round(s*42));
-  const bw=Math.min(w*0.5,46+s*70), x0=w/2-bw/2, base=h-24, avail=h-62, fh=floors?Math.min(14,avail/floors):0;
-  const cols=bw>100?5:bw>76?4:3, li=groveLevel(c);
-  const small=(x,bh,seed)=>{ ctx.fillStyle='#1f2738'; ctx.fillRect(x,base-bh,30,bh); for(let r=0;r<Math.floor(bh/10);r++) for(let k=0;k<2;k++){ ctx.fillStyle=groveRand(seed*100+r*3+k)<0.5?'rgba(96,165,250,0.45)':'rgba(255,255,255,0.05)'; ctx.fillRect(x+5+k*13,base-bh+5+r*10,8,5); } };
-  if(li>=3) small(x0-42,40+li*6,1); if(li>=5) small(x0+bw+12,54+li*7,2);
-  ctx.fillStyle='#2a3142'; ctx.fillRect(x0-6,base-6,bw+12,6);
-  for(let f=0;f<floors;f++){ const y=base-6-(f+1)*fh; ctx.fillStyle=f%2?'#26324a':'#2b3852'; ctx.fillRect(x0,y,bw,fh-0.5);
-    const ww=(bw-(cols+1)*4)/cols, wh=Math.max(1.5,fh-5);
-    for(let k=0;k<cols;k++){ const id=f*7+k, lit=groveRand(id)<0.35+night*0.35, gold=groveRand(id*3+1)<gainRatio*0.55, fl=groveReduce?1:(0.8+0.2*Math.sin(t*2+id));
-      ctx.fillStyle=gold?`rgba(251,191,36,${0.9*fl})`:lit?'rgba(96,165,250,0.75)':'rgba(255,255,255,0.06)'; ctx.fillRect(x0+4+k*(ww+4),y+2.5,ww,wh); } }
-  const top=base-6-floors*fh;
-  if((Math.abs(P.disp-c)>5||P.pulse>0.05)&&floors>0){ ctx.strokeStyle='#fbbf24'; ctx.lineWidth=2; ctx.beginPath(); ctx.moveTo(x0+bw*0.75,top); ctx.lineTo(x0+bw*0.75,top-34); ctx.lineTo(x0+bw*0.75-50,top-34); ctx.lineTo(x0+bw*0.75+18,top-34); ctx.stroke(); }
-  else if(floors>8){ ctx.strokeStyle='#97a2b8'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(w/2,top); ctx.lineTo(w/2,top-18); ctx.stroke(); ctx.fillStyle=(groveReduce||Math.sin(t*3)>0)?'#f87171':'#5a2a2a'; ctx.beginPath(); ctx.arc(w/2,top-19,2.5,0,Math.PI*2); ctx.fill(); }
-  if(li>=5&&!groveReduce){ const x=((t*40)%(w+200))-100; ctx.fillStyle='rgba(232,237,248,0.6)'; ctx.fillRect(x,38,14,2.5); ctx.fillRect(x+4,35,4,8); }
-  groveSnow(P,t);
-}
-function groveHouse(P,t){
-  const {ctx,w,h}=P, p=Math.min(1,P.disp/GROVE_FHSA_GOAL);
-  const gainRatio=Math.min(1,P.dispGain/Math.max(500,P.disp*0.25));
-  const season=groveScene(P,gainRatio,t);
-  if(P.disp<1 && !(_grove.tot||{})[P.def.id]?.has){ groveEmpty(P,'Your future home'); return; }
-  const base=h-24, hw=Math.min(160,w*0.55), hx=w/2-hw/2, wallH=82, seg=(lo,hi)=>Math.max(0,Math.min(1,(p-lo)/(hi-lo)));
-  const sF=seg(0,0.05), sW=seg(0.05,0.2), sD=seg(0.2,0.35), sWi=seg(0.35,0.5), sR=seg(0.5,0.65), sC=seg(0.65,0.8), sG=seg(0.8,0.9), sDn=seg(0.9,1);
-  ctx.setLineDash([4,5]); ctx.strokeStyle='rgba(167,139,250,0.35)'; ctx.lineWidth=1; ctx.strokeRect(hx-14,base-wallH-58,hw+28,wallH+58); ctx.setLineDash([]);
-  if(p<1&&sW>0&&sR<1){ ctx.strokeStyle='rgba(251,191,36,0.35)'; ctx.lineWidth=1.2; const sh=wallH*sW+10; for(const sx of [hx-10,hx+hw+4]){ ctx.strokeRect(sx,base-7-sh,6,sh); for(let y=base-7;y>base-7-sh;y-=14){ ctx.beginPath(); ctx.moveTo(sx,y); ctx.lineTo(sx+6,y-14); ctx.stroke(); } } }
-  if(sF>0){ ctx.fillStyle='#3a3f4f'; ctx.fillRect(hx-6,base-7,(hw+12)*sF,7); }
-  if(sW>0){ const wh=wallH*sW; ctx.fillStyle='#3b3357'; ctx.fillRect(hx,base-7-wh,hw,wh); ctx.strokeStyle='rgba(255,255,255,0.05)'; for(let y=base-7;y>base-7-wh;y-=8){ ctx.beginPath(); ctx.moveTo(hx,y); ctx.lineTo(hx+hw,y); ctx.stroke(); } }
-  const warm=Math.min(1,0.3+gainRatio*0.5+groveNight()*0.45);
-  if(sD>0){ ctx.fillStyle='#a78bfa'; const dh=38*sD; ctx.fillRect(hx+hw/2-12,base-7-dh,24,dh); }
-  if(sWi>0){ [[hx+16,base-7-58],[hx+hw-46,base-7-58]].forEach(([x,y])=>{ ctx.fillStyle=`rgba(251,191,36,${(0.25+0.75*warm)*sWi})`; ctx.fillRect(x,y,30,24); ctx.strokeStyle='#2a2440'; ctx.lineWidth=2; ctx.strokeRect(x,y,30,24); ctx.beginPath(); ctx.moveTo(x+15,y); ctx.lineTo(x+15,y+24); ctx.moveTo(x,y+12); ctx.lineTo(x+30,y+12); ctx.stroke(); }); }
-  if(sC>0){ ctx.fillStyle='#4a3f6b'; const ch=32*sC; ctx.fillRect(hx+hw*0.72,base-7-wallH-ch+6,16,ch); }
-  if(sR>0){ const peak=base-7-wallH-50*sR; ctx.fillStyle='#6d4fc2'; ctx.beginPath(); ctx.moveTo(hx-12,base-7-wallH); ctx.lineTo(w/2,peak); ctx.lineTo(hx+hw+12,base-7-wallH); ctx.closePath(); ctx.fill();
-    if(season==='winter'){ ctx.fillStyle='rgba(232,237,248,0.85)'; ctx.beginPath(); ctx.moveTo(hx-12,base-7-wallH); ctx.lineTo(w/2,peak); ctx.lineTo(hx+hw+12,base-7-wallH); ctx.lineTo(hx+hw+4,base-7-wallH-4); ctx.lineTo(w/2,peak+6); ctx.lineTo(hx-4,base-7-wallH-4); ctx.closePath(); ctx.fill(); } }
-  if(sC>=1&&gainRatio>0.05&&!groveReduce){ for(let i=0;i<4;i++){ const k=(t*0.4+i/4)%1; ctx.fillStyle=`rgba(232,237,248,${0.25*(1-k)*Math.min(1,gainRatio*2)})`; ctx.beginPath(); ctx.arc(hx+hw*0.72+8+Math.sin(t+i)*4,base-7-wallH-32-k*40,4+k*7,0,Math.PI*2); ctx.fill(); } }
-  if(sG>0){ ctx.fillStyle=season==='winter'?'#cbd5e1':season==='autumn'?'#ea580c':season==='spring'?'#f9a8d4':'#3cc472'; for(let i=0;i<Math.round(8*sG);i++){ const x=hx-10+i*((hw+20)/7); ctx.beginPath(); ctx.arc(x,base-4,5,0,Math.PI*2); ctx.fill(); } }
-  if(sDn>0){ ctx.strokeStyle='rgba(232,237,248,0.55)'; ctx.lineWidth=1.5; const fx=hx-24, fw=(hw+48)*sDn; ctx.beginPath(); ctx.moveTo(fx,base-12); ctx.lineTo(fx+fw,base-12); ctx.stroke(); for(let x=fx;x<fx+fw;x+=10){ ctx.beginPath(); ctx.moveTo(x,base-1); ctx.lineTo(x,base-17); ctx.stroke(); } }
-  if(p>=1){ ctx.fillStyle='#4ade80'; ctx.font='600 12px Geist, Inter, sans-serif'; ctx.textAlign='center'; ctx.fillText('Down payment ready',w/2,18); }
-  groveSnow(P,t);
-}
-function groveField(P,t){
-  const {ctx,w,h}=P, c=P.disp, s=groveGrowth(c);
-  const gainRatio=Math.min(1,P.dispGain/Math.max(500,c*0.25));
-  const season=groveScene(P,gainRatio,t);
-  if(c<1 && !(_grove.tot||{})[P.def.id]?.has){ groveEmpty(P,'Till the soil'); return; }
-  const li=groveLevel(c), base=h-24;
-  // barn and silo appear as the farm grows
-  if(li>=5){ const bx=w-92, by=base-58; ctx.fillStyle='#8a2f2a'; ctx.fillRect(bx,by,52,40); ctx.beginPath(); ctx.moveTo(bx-4,by); ctx.lineTo(bx+26,by-20); ctx.lineTo(bx+56,by); ctx.closePath(); ctx.fill();
-    ctx.strokeStyle='rgba(232,237,248,0.7)'; ctx.lineWidth=1.5; ctx.strokeRect(bx+16,by+14,20,26); ctx.beginPath(); ctx.moveTo(bx+16,by+14); ctx.lineTo(bx+36,by+40); ctx.moveTo(bx+36,by+14); ctx.lineTo(bx+16,by+40); ctx.stroke();
-    if(season==='winter'){ ctx.fillStyle='rgba(232,237,248,0.85)'; ctx.beginPath(); ctx.moveTo(bx-4,by); ctx.lineTo(bx+26,by-20); ctx.lineTo(bx+56,by); ctx.lineTo(bx+50,by-3); ctx.lineTo(bx+26,by-15); ctx.lineTo(bx+2,by-3); ctx.closePath(); ctx.fill(); } }
-  if(li>=7){ const sx=w-34; ctx.fillStyle='#7c8597'; ctx.fillRect(sx,base-78,20,60); ctx.beginPath(); ctx.arc(sx+10,base-78,10,Math.PI,0); ctx.fill(); }
-  // soil and rows recede toward the horizon
-  const rows = 2 + Math.floor(s*4);
-  const horizon = base - 22 - rows*16;
-  const fieldR = li>=5 ? w-108 : w;
-  const soil=ctx.createLinearGradient(0,horizon-6,0,base); const sc0=season==='winter'?'232,237,248':'107,79,54';
-  soil.addColorStop(0,`rgba(${sc0},0)`); soil.addColorStop(0.25,`rgba(${sc0},${season==='winter'?0.08:0.22})`); soil.addColorStop(1,`rgba(${sc0},${season==='winter'?0.14:0.42})`); ctx.fillStyle=soil;
-  ctx.beginPath(); ctx.moveTo(0,base); ctx.lineTo(0,horizon-6); ctx.lineTo(fieldR,horizon-6); ctx.lineTo(fieldR,base); ctx.closePath(); ctx.fill();
-  const stalkH = 8 + s*22;
-  const blade = {spring:'#86efac', summer:'#2fa760', autumn:'#9a7b45', winter:'#94a3b8'}[season];
-  const head  = {spring:null, summer:'#5fd68f', autumn:'#c9a25e', winter:null}[season];
-  for(let r=0;r<rows;r++){
-    const k=(r+1)/rows, y=horizon + (base-horizon)*k, sc=0.5+0.5*k;
-    ctx.fillStyle = season==='winter'?'rgba(232,237,248,0.18)':'rgba(70,50,34,0.55)'; ctx.fillRect(0,y-1,fieldR,2.5*sc);
-    const gap=19*sc, n=Math.floor((fieldR-8)/gap), off=(r%2)*gap/2;
-    for(let i=0;i<n;i++){
-      const x=8+off+i*gap;
-      const sway=groveReduce?0:Math.sin(t*1.4+i*0.35+r*0.8)*2.2*sc;
-      const hh=(season==='winter'?0.35:1)*stalkH*sc*(0.85+groveRand(r*100+i)*0.3);
-      ctx.strokeStyle=blade; ctx.lineCap='round'; ctx.lineWidth=1.8*sc;
-      for(const dx of [-3,0,3]){ ctx.beginPath(); ctx.moveTo(x+dx*sc*0.4,y); ctx.quadraticCurveTo(x+dx*sc+sway*0.4,y-hh*0.55,x+dx*sc*1.2+sway,y-hh*(dx?0.75:1)); ctx.stroke(); }
-      const isGold = season!=='winter' && groveRand(r*31+i*7) < gainRatio*0.6;
-      if(isGold || head){
-        ctx.fillStyle = isGold ? '#fbbf24' : head;
-        if(isGold){ }
-        ctx.beginPath(); ctx.ellipse(x+sway,y-hh-3*sc,2.2*sc,4.2*sc,0,0,Math.PI*2); ctx.fill();
-      }
-      if(season==='winter'){ ctx.fillStyle='rgba(232,237,248,0.8)'; ctx.beginPath(); ctx.arc(x+sway,y-hh,1.6*sc,0,Math.PI*2); ctx.fill(); }
-    }
-  }
-  // a scarecrow keeps watch once there's a real field
-  if(li>=4){ const x=Math.min(fieldR-24, w*0.42), y=base-4; ctx.strokeStyle='#6b4f36'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x,y-46); ctx.moveTo(x-16,y-34); ctx.lineTo(x+16,y-34); ctx.stroke(); ctx.fillStyle='#d6b46b'; ctx.beginPath(); ctx.arc(x,y-50,6,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#8a2f2a'; ctx.fillRect(x-9,y-58,18,4); ctx.fillRect(x-5,y-64,10,6); }
-  groveSnow(P,t);
-}
 // Crypto: your biggest coin rises like a moon, with your other coins orbiting it. Gains add a brighter halo and shooting stars.
 const GROVE_COIN_STYLE = {
   BTC:{sym:'₿', c:['#fdba74','#f7931a','#c2410c'], ink:'#fff7ed', halo:'247,147,26'},
@@ -8648,83 +8582,7 @@ const GROVE_COIN_STYLE = {
   DOGE:{sym:'Ð', c:['#fde68a','#eab308','#a16207'], ink:'#422006', halo:'234,179,8'},
 };
 function groveCoinKey(t){ return String(t||'').toUpperCase().replace(/\.(TO|NE|V|CN|B|U)$/,'').replace(/-?(USD|CAD)$/,''); }
-function groveDrawCoin(ctx,cx,cy,r,key,halo){
-  const st = GROVE_COIN_STYLE[key] || {sym:key.slice(0,3), c:['#cbd5e1','#64748b','#334155'], ink:'#f8fafc', halo:'148,163,184'};
-  if(halo>0){ const hg=ctx.createRadialGradient(cx,cy,r*0.6,cx,cy,r*(1.6+halo)); hg.addColorStop(0,`rgba(${st.halo},${0.25+halo*0.25})`); hg.addColorStop(1,`rgba(${st.halo},0)`); ctx.fillStyle=hg; ctx.beginPath(); ctx.arc(cx,cy,r*(1.6+halo),0,Math.PI*2); ctx.fill(); }
-  const g=ctx.createLinearGradient(cx-r,cy-r,cx+r,cy+r); g.addColorStop(0,st.c[0]); g.addColorStop(0.5,st.c[1]); g.addColorStop(1,st.c[2]);
-  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(cx,cy,r,0,Math.PI*2); ctx.fill();
-  ctx.strokeStyle='rgba(255,255,255,0.45)'; ctx.lineWidth=Math.max(1,r*0.08); ctx.beginPath(); ctx.arc(cx,cy,r*0.86,0,Math.PI*2); ctx.stroke();
-  const fs = st.sym.length>1 ? r*0.62 : r*1.05;
-  ctx.fillStyle=st.ink; ctx.font=`800 ${Math.max(7,Math.round(fs))}px Geist, Inter, sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
-  ctx.fillText(st.sym,cx,cy+r*0.04); ctx.textBaseline='alphabetic';
-  ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.beginPath(); ctx.ellipse(cx-r*0.35,cy-r*0.4,r*0.32,r*0.14,-0.6,0,Math.PI*2); ctx.fill();
-}
-function groveCoin(P,t){
-  const {ctx,w,h}=P, c=P.disp, s=groveGrowth(c);
-  const gainRatio=Math.min(1,P.dispGain/Math.max(500,c*0.25));
-  groveScene(P,gainRatio,t);
-  const base=h-24;
-  if(c<1){ groveEmpty(P,'Add crypto to light it up'); return; }
-  const coins = Object.entries(((_grove.tot||{}).crypto||{}).coins||{}).sort((a,b)=>b[1]-a[1]);
-  const li=groveLevel(c);
-  const r = 14 + s*44, cx=w/2, cy = base-30-s*(h*0.3) + (groveReduce?0:Math.sin(t*0.9)*3);
-  const total = coins.reduce((x,[,v])=>x+v,0) || 1;
-  // smaller coins orbit behind and in front of the main one
-  const others = coins.slice(1,6);
-  const orbit = others.map(([k,v],i)=>{ const ang=(groveReduce?0:t*0.35)+i*Math.PI*2/Math.max(1,others.length); return {k, ang, rr: Math.max(9, r*0.5*Math.sqrt(v/total)+7)}; });
-  const draw = o=>{ const ox=cx+Math.cos(o.ang)*(r+o.rr+26), oy=cy+Math.sin(o.ang)*(r*0.55+o.rr+6); groveDrawCoin(ctx,ox,oy,o.rr,o.k,0); };
-  orbit.filter(o=>Math.sin(o.ang)<0).forEach(draw);
-  groveDrawCoin(ctx,cx,cy,r,coins[0]?coins[0][0]:'BTC',0.5+gainRatio*0.8);
-  orbit.filter(o=>Math.sin(o.ang)>=0).forEach(draw);
-  if(!groveReduce && gainRatio>0.05){ for(let i=0;i<1+Math.floor(gainRatio*3);i++){ const k=((t*0.35+i*0.37)%1); if(k>0.35) continue; const sx=w*(0.1+groveRand(i+90)*0.5)+k*w*0.9, sy=18+groveRand(i+91)*40+k*30;
-    ctx.strokeStyle=`rgba(253,186,116,${0.8*(1-k/0.35)})`; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(sx,sy); ctx.lineTo(sx-22,sy-8); ctx.stroke(); } }
-  ctx.fillStyle='rgba(10,8,22,0.85)'; ctx.beginPath(); ctx.moveTo(0,base); ctx.quadraticCurveTo(w*0.3,base-34,w*0.6,base-14); ctx.quadraticCurveTo(w*0.82,base-30,w,base-12); ctx.lineTo(w,base); ctx.closePath(); ctx.fill();
-  if(li>=5){ const ox=w*0.15, oy=base-18; ctx.fillStyle='#2a3142'; ctx.fillRect(ox-12,oy-10,24,14); ctx.beginPath(); ctx.arc(ox,oy-10,12,Math.PI,0); ctx.fill(); ctx.strokeStyle='#97a2b8'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(ox,oy-14); ctx.lineTo(ox+14,oy-24); ctx.stroke(); }
-  groveSnow(P,t);
-}
-
 // Precious metals: an open vault where bars stack up, coloured by metal. The flying gold pig lives here and upgrades with your gold.
-function groveVault(P,t){
-  const {ctx,w,h}=P, c=P.disp, s=groveGrowth(c);
-  const gainRatio=Math.min(1,P.dispGain/Math.max(500,c*0.25));
-  groveScene(P,gainRatio,t);
-  const base=h-24;
-  if(c<1){ groveEmpty(P,'Your vault is ready'); return; }
-  // vault room: back wall and an open round door
-  const roomW=Math.min(w*0.62,230), rx=w/2-roomW/2+18, roomH=110;
-  ctx.fillStyle='#1d2330'; ctx.fillRect(rx,base-roomH,roomW,roomH);
-  const il=ctx.createRadialGradient(rx+roomW/2,base-10,4,rx+roomW/2,base-10,roomW*0.75); il.addColorStop(0,`rgba(251,191,36,${0.16+gainRatio*0.12})`); il.addColorStop(1,'rgba(251,191,36,0)');
-  ctx.fillStyle=il; ctx.fillRect(rx,base-roomH,roomW,roomH);
-  ctx.strokeStyle='rgba(251,191,36,0.35)'; ctx.lineWidth=2; ctx.strokeRect(rx+1,base-roomH+1,roomW-2,roomH-1);
-  ctx.strokeStyle='rgba(251,191,36,0.18)'; ctx.lineWidth=1; for(let y=base-roomH+12;y<base;y+=14){ ctx.beginPath(); ctx.moveTo(rx,y); ctx.lineTo(rx+roomW,y); ctx.stroke(); }
-  const dx=rx-6, dy=base-roomH/2-4, dr=Math.min(52,roomH*0.46);
-  ctx.fillStyle='#3a4252'; ctx.beginPath(); ctx.arc(dx,dy,dr,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#4b5466'; ctx.beginPath(); ctx.arc(dx,dy,dr*0.82,0,Math.PI*2); ctx.fill();
-  ctx.strokeStyle='#97a2b8'; ctx.lineWidth=3; const spin=groveReduce?0:t*0.15;
-  for(let i=0;i<3;i++){ const a=spin+i*Math.PI*2/3; ctx.beginPath(); ctx.moveTo(dx,dy); ctx.lineTo(dx+Math.cos(a)*dr*0.55,dy+Math.sin(a)*dr*0.55); ctx.stroke(); }
-  ctx.fillStyle='#cbd5e1'; ctx.beginPath(); ctx.arc(dx,dy,5,0,Math.PI*2); ctx.fill();
-  // stacked bars: count grows with what you've put in
-  const bars = Math.max(1, Math.round(1 + s*34)), bw=26, bh=9, perRow=Math.max(3,Math.floor((roomW-30)/(bw+3)));
-  const bm=((_grove.tot||{}).metals||{}).byMetal||{gold:{value:1}};
-  const mixTotal=Object.values(bm).reduce((x,m)=>x+m.value,0)||1;
-  const METAL_RGB={gold:[232,170,30], silver:[205,210,218], platinum:[170,190,222], palladium:[214,196,170]};
-  const order=['gold','platinum','palladium','silver']; const barMetal=[]; order.forEach(m=>{ const n=Math.round(bars*((bm[m]||{}).value||0)/mixTotal); for(let k=0;k<n;k++) barMetal.push(m); });
-  while(barMetal.length<bars) barMetal.push(order.find(m=>(bm[m]||{}).value>0)||'gold');
-  for(let i=0;i<bars;i++){
-    const row=Math.floor(i/perRow), col=i%perRow, offset=(row%2)*bw/2;
-    const x=rx+20+col*(bw+3)+offset, y=base-4-bh-row*(bh+1);
-    if(x+bw>rx+roomW-6 || y<base-roomH+8) continue;
-    const shine = groveReduce?0:Math.max(0,Math.sin(t*1.5 - i*0.35))*gainRatio;
-    const rgb=METAL_RGB[barMetal[i]]||METAL_RGB.gold;
-    ctx.fillStyle = `rgb(${Math.min(255,rgb[0]+shine*20)|0},${Math.min(255,rgb[1]+shine*30)|0},${Math.min(255,rgb[2]+shine*40)|0})`;
-    ctx.beginPath(); ctx.moveTo(x+3,y); ctx.lineTo(x+bw-3,y); ctx.lineTo(x+bw,y+bh); ctx.lineTo(x,y+bh); ctx.closePath(); ctx.fill();
-    ctx.fillStyle='rgba(255,255,255,0.35)'; ctx.fillRect(x+4,y+1.5,bw-8,1.5);
-  }
-  // the pig
-  const gold=(((_grove.tot||{}).metals||{}).byMetal||{}).gold?.value||0;
-  groveGoldPig(P,t,gold);
-}
-
 function groveDrawPig(ctx,x,y,sc,flap,lvl){
   ctx.save(); ctx.translate(x,y); ctx.scale(sc,sc);
   if(lvl>=4){ // royal cape
@@ -8749,31 +8607,6 @@ function groveDrawPig(ctx,x,y,sc,flap,lvl){
   ctx.fillStyle='rgba(255,251,235,0.95)'; ctx.beginPath(); ctx.moveTo(1,-7); ctx.quadraticCurveTo(-6,-22-flap*9,10,-17-flap*11); ctx.quadraticCurveTo(9,-10,1,-7); ctx.fill();
   ctx.strokeStyle='rgba(217,119,6,0.5)'; ctx.lineWidth=0.8; ctx.stroke();
   ctx.restore();
-}
-// A golden pig flies over the farm when you hold physical gold. It upgrades as your gold grows.
-function groveGoldPig(P,t,gold){
-  const {ctx,w}=P, lvl=grovePigLevel(gold);
-  if(lvl<0) return;
-  const period = lvl>=1 ? 9 : 11, phase=(t%period)/period;
-  if(groveReduce && phase>0.02) return;
-  const sc = [0.7,0.95,1.1,1.25,1.4][lvl];
-  const x = groveReduce ? w*0.5 : -70 + phase*(w+140);
-  const y = 46 + Math.sin(t*2.2)*7 + Math.sin(phase*Math.PI)*-10;
-  const flap = groveReduce ? 0.5 : (Math.sin(t*14)+1)/2;
-  if(!groveReduce && lvl>=1){ const n=4+lvl*2; for(let i=1;i<n;i++){ const tx=x-i*9*sc, ty=y+Math.sin(t*2.2-i*0.4)*5+4*sc;
-    ctx.fillStyle=`rgba(251,191,36,${Math.max(0,0.55-i*(0.5/n))})`; ctx.beginPath(); ctx.arc(tx,ty,Math.max(0.6,(2.4-i*0.18)*sc),0,Math.PI*2); ctx.fill(); } }
-  if(!groveReduce && lvl>=3){ // coins drop from the treasure pig
-    for(let i=0;i<3;i++){ const k=((t*0.9+i/3)%1), cx=x-10*sc-i*14, cy=y+12*sc+k*60;
-      ctx.globalAlpha=1-k; ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.ellipse(cx,cy,2.6,2.6*Math.abs(Math.cos(t*6+i)),0,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1; } }
-  groveDrawPig(ctx,x,y,sc,flap,lvl);
-  if(lvl>=4){ // two piglets follow the king
-    groveDrawPig(ctx,x-46*sc,y+10+Math.sin(t*3)*4,sc*0.5,(Math.sin(t*16+1)+1)/2,0);
-    groveDrawPig(ctx,x-70*sc,y-4+Math.sin(t*3+1)*4,sc*0.45,(Math.sin(t*16+2)+1)/2,0);
-  }
-}
-function groveParticles(P){
-  const {ctx}=P; P.parts=P.parts.filter(pt=>pt.life>0);
-  P.parts.forEach(pt=>{ pt.vy+=0.12; pt.x+=pt.vx; pt.y+=pt.vy; pt.life-=0.025; ctx.globalAlpha=Math.max(0,pt.life); ctx.fillStyle=pt.col; ctx.beginPath(); ctx.arc(pt.x,pt.y,pt.r,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1; });
 }
 
 // ── Immersive scenery ──
@@ -8800,8 +8633,8 @@ function grovePhase(){
   return (hr>=21||hr<5) ? 'night' : hr<8 ? 'dawn' : hr<17 ? 'day' : 'dusk';
 }
 function groveNight(){ return {night:1, dusk:0.65, dawn:0.45, day:0.1}[_grove.ph||'day']; }
-function groveCanvas(w,h){
-  const dpr=Math.min(1.5,window.devicePixelRatio||1), c=document.createElement('canvas');
+function groveCanvas(w,h,scale){
+  const dpr=scale||Math.min(1.5,window.devicePixelRatio||1), c=document.createElement('canvas');
   c.width=Math.ceil(w*dpr); c.height=Math.ceil(h*dpr); const x=c.getContext('2d'); x.setTransform(dpr,0,0,dpr,0,0); return [c,x];
 }
 // smooth deterministic ridge line
@@ -8823,7 +8656,7 @@ function groveSunPos(P,ph){
 // ── far layer: sky, stars, nebula, horizon glow, distant mountains, mist ──
 function groveBuildFar(P,ph,season,kind){
   const {w,h}=P, m=GROVE_PAR.far+2, W=w+m*2, base=h-24, pal=GROVE_PHASE[ph];
-  const [c,x]=groveCanvas(W,h);
+  const [c,x]=groveCanvas(W,h,P.rs);
   let sky=pal.sky.slice();
   if(kind==='coin') sky=['#03040a','#0a0a1e','#1c1438'];
   if(season==='winter' && kind!=='coin') sky[2]=groveMix(sky[2],'#93a8c8',0.2);
@@ -8872,7 +8705,7 @@ function groveBuildFar(P,ph,season,kind){
 // ── mid layer: the place each plot lives in, plus the ground ──
 function groveBuildMid(P,ph,season,kind){
   const {w,h}=P, m=GROVE_PAR.mid+2, W=w+m*2, base=h-24, pal=GROVE_PHASE[ph], n=groveNight();
-  const [c,x]=groveCanvas(W,h);
+  const [c,x]=groveCanvas(W,h,P.rs);
   const mid=groveMix(GROVE_SEASON_MID[season],'#0a0d16',pal.dark);
   const darker=groveMix(mid,'#05070b',0.35);
   const hill=(amp,seed,col,jag)=>{ const hg=x.createLinearGradient(0,base-amp-10,0,base); hg.addColorStop(0,groveMix(col,'#ffffff',0.05)); hg.addColorStop(1,groveMix(col,'#000000',0.25)); x.fillStyle=hg; groveRidgePath(x,W,h,base+4,amp,seed,jag); x.fill(); };
@@ -8954,7 +8787,7 @@ function groveBuildMid(P,ph,season,kind){
 // ── foreground: silhouettes nearest the viewer, kept to the edges so they frame the plot ──
 function groveBuildFore(P,ph,season,kind){
   const {w,h}=P, m=GROVE_PAR.fore+2, W=w+m*2, pal=GROVE_PHASE[ph];
-  const [c,x]=groveCanvas(W,h);
+  const [c,x]=groveCanvas(W,h,P.rs);
   const ink = kind==='coin' ? '#07050f' : '#05070b';
   const edgeH = px=>{ const f=(px-m)/w; const d=f<0.5?f:1-f; return d<0.2 ? 1-d/0.2 : 0; };
   P.lamps=[];
@@ -8986,9 +8819,9 @@ function groveBuildFore(P,ph,season,kind){
   return c;
 }
 
-function groveVignette(w,h){
-  const k=w+'x'+h; if(_grove.vig && _grove.vig.k===k) return _grove.vig.c;
-  const [c,x]=groveCanvas(w,h);
+function groveVignette(w,h,rs){
+  const k=w+'x'+h+'x'+(rs||0); if(_grove.vig && _grove.vig.k===k) return _grove.vig.c;
+  const [c,x]=groveCanvas(w,h,rs);
   const vg=x.createRadialGradient(w/2,h*0.52,Math.min(w,h)*0.32,w/2,h*0.52,Math.max(w,h)*0.78);
   vg.addColorStop(0,'rgba(0,0,0,0)'); vg.addColorStop(1,'rgba(0,0,0,0.5)'); x.fillStyle=vg; x.fillRect(0,0,w,h);
   const bg=x.createLinearGradient(0,h-36,0,h); bg.addColorStop(0,'rgba(0,0,0,0)'); bg.addColorStop(1,'rgba(0,0,0,0.3)'); x.fillStyle=bg; x.fillRect(0,h-36,w,36);
@@ -9004,14 +8837,14 @@ function groveCloudSprite(rgb){
 
 function groveScene(P,glow,t){
   const {ctx,w,h}=P, season=groveSeason(groveNow().getMonth()), ph=_grove.ph||grovePhase(), kind=P.def.kind, pal=GROVE_PHASE[ph];
-  const dpr=Math.min(1.5,window.devicePixelRatio||1), key=[w,h,ph,season,kind,dpr,(typeof groveRewardKey==='function'?groveRewardKey():'')].join('|');
+  const dpr=Math.min(1.5,window.devicePixelRatio||1), key=[w,h,ph,season,kind,P.rs||dpr,(typeof groveRewardKey==='function'?groveRewardKey():'')].join('|');
   if(P.sceneKey!==key){ P.sceneKey=key; P.far=groveBuildFar(P,ph,season,kind); P.mid=groveBuildMid(P,ph,season,kind); P.fore=groveBuildFore(P,ph,season,kind); }
   const cam=P.cam||0, base=h-24;
   P.off={far:-cam*GROVE_PAR.far, mid:-cam*GROVE_PAR.mid, content:-cam*GROVE_PAR.content, fore:-cam*GROVE_PAR.fore};
   const fm=GROVE_PAR.far+2, mm=GROVE_PAR.mid+2;
   const now=performance.now(), scrolling=_grove.scrollHold && now<_grove.scrollHold;
   if(!P.back || P.backKey!==key || (!scrolling && !_grove.composed && (now-(P.backT||0)>120 || Math.abs(cam-(P.backCam||0))>0.03))){
-    if(!P.back || P.backKey!==key){ [P.back,P.backCtx]=groveCanvas(w,h); [P.front,P.frontCtx]=groveCanvas(w,h); P.backKey=key; }
+    if(!P.back || P.backKey!==key){ [P.back,P.backCtx]=groveCanvas(w,h,P.rs); [P.front,P.frontCtx]=groveCanvas(w,h,P.rs); P.backKey=key; }
     P.backT=now; P.backCam=cam; _grove.composed=true;
     P.backCtx.clearRect(0,0,w,h); groveComposeBack(P,P.backCtx,t,ph,pal,kind,base,fm,mm);
     P.frontCtx.clearRect(0,0,w,h); groveComposeFront(P,P.frontCtx,t);
@@ -9056,12 +8889,15 @@ function groveFore(P,t){
   const ph=_grove.ph||'day', pal=GROVE_PHASE[ph], fm=GROVE_PAR.fore+2, n=groveNight();
   groveAmbient(P,t);
   groveHerd(P,t);
+  if(typeof groveWeather==='function') groveWeather(P,t);
   if(P.front) ctx.drawImage(P.front,0,0,w,h);
+  if(typeof groveCursorLight==='function') groveCursorLight(P);
 }
 
 function groveComposeBack(P,ctx,t,ph,pal,kind,base,fm,mm){
   const {w,h}=P;
   ctx.drawImage(P.far, P.off.far-fm, 0, w+fm*2, h);
+  if(typeof groveOvercast==='function') groveOvercast(P,ctx,ph,kind);
 
   // sun or moon, with light rays
   if(kind!=='coin'){
@@ -9075,7 +8911,7 @@ function groveComposeBack(P,ctx,t,ph,pal,kind,base,fm,mm){
       ctx.fillStyle = ph==='day' ? 'rgba(255,230,160,0.35)' : 'rgba(255,170,110,0.3)'; ctx.beginPath(); ctx.arc(sx,sy,ph==='day'?20:21,0,Math.PI*2); ctx.fill();
       ctx.fillStyle = ph==='day' ? '#ffe9a8' : '#ffb27a'; ctx.beginPath(); ctx.arc(sx,sy,ph==='day'?12:13,0,Math.PI*2); ctx.fill();
       ctx.fillStyle = ph==='day' ? '#fffaf0' : '#ffd2a8'; ctx.beginPath(); ctx.arc(sx,sy,ph==='day'?7:8,0,Math.PI*2); ctx.fill();
-      if(!groveReduce && (kind==='tree'||kind==='field'||kind==='house')){
+      if(!groveReduce && (kind==='tree'||kind==='field'||kind==='house') && !(typeof groveIsBear==='function' && groveIsBear(P))){
         const len=h*1.5, rg=ctx.createRadialGradient(sx,sy,0,sx,sy,len); rg.addColorStop(0,`rgba(${rgb},${ph==='day'?0.05:0.07})`); rg.addColorStop(1,`rgba(${rgb},0)`);
         ctx.fillStyle=rg; const toward=Math.atan2(base-sy, w/2-sx);
         for(let i=0;i<4;i++){ const a=toward+(i-1.5)*0.24+Math.sin(t*0.15+i*1.7)*0.04, sp=0.07+0.025*Math.sin(t*0.3+i);
@@ -9108,7 +8944,7 @@ function groveComposeFront(P,ctx,t){
     const R=L.small?22:40, g=ctx.createRadialGradient(x,y,0,x,y,R); g.addColorStop(0,`rgba(253,224,150,${(L.small?0.3:0.4)*n*fl})`); g.addColorStop(1,'rgba(253,224,150,0)'); ctx.fillStyle=g; ctx.fillRect(x-R,y-R,R*2,R*2);
     if(!L.small){ ctx.fillStyle=`rgba(254,243,199,${0.6+0.4*n})`; ctx.beginPath(); ctx.arc(x,y,2.2,0,Math.PI*2); ctx.fill(); } });
   if(P.def.kind!=='coin' && pal.tint!=='rgba(0,0,0,0)'){ ctx.fillStyle=pal.tint; ctx.fillRect(0,0,w,h); }
-  ctx.drawImage(groveVignette(w,h),0,0,w,h);
+  ctx.drawImage(groveVignette(w,h,P.rs),0,0,w,h);
 }
 
 // ── Bulls and bears ──
@@ -9179,6 +9015,7 @@ function groveVisitPos(P,t,clk,i,sp,range,cx){
   return {x:roam(t), dir:v>=0?1:-1, v:Math.abs(v)};
 }
 function groveHerd(P,t){
+  P.hits=[];
   const mood=groveMarketMood(P); if(!mood) return;
   const {ctx,w,h}=P, base=h-24, bull=mood.kind==='bull';
   const clk = groveReduce ? {phase:GROVE_VISIT.walk+1, visit:0, seed:1} : groveVisitClock(P,t); if(!clk) return;
@@ -9190,7 +9027,13 @@ function groveHerd(P,t){
     if(bull && !groveReduce && v>0.5){                                       // dust kicked up behind a bull at full trot
       for(let k=0;k<3;k++){ const q=((t*1.6+k/3+i)%1); ctx.fillStyle=`rgba(200,170,130,${0.22*(1-q)})`; ctx.beginPath(); ctx.arc(x-dir*(16+q*14)*s,y-2-q*5,1.5+q*3,0,Math.PI*2); ctx.fill(); }
     }
-    (bull?groveDrawBull:groveDrawBear)(ctx,x,y,s,dir,step,t,i);
+    P.hits.push({x,y:y-12*s,r:18*s,i,kind:mood.kind});
+    const at=P.animalTap, ak=(at&&at.i===i&&at.kind===mood.kind)?(t-at.t):9;
+    if(ak<1.3){ ctx.save();
+      if(bull){ const hop=Math.abs(Math.sin(Math.min(1,ak/1.2)*Math.PI*2))*13*(1-ak/1.3); ctx.translate(0,-hop); }
+      else { const up=Math.sin(Math.min(1,ak/1.3)*Math.PI)*0.5, px=x-dir*14*s; ctx.translate(px,y); ctx.rotate(-dir*up); ctx.translate(-px,-y); }
+      (bull?groveDrawBull:groveDrawBear)(ctx,x,y,s,dir,step,t,i); ctx.restore(); }
+    else (bull?groveDrawBull:groveDrawBear)(ctx,x,y,s,dir,step,t,i);
   }
   if(bull && P.def.id==='crypto' && _grove.mecha) groveMechaHerd(P,t,clk,mood.n);
 }
@@ -9250,7 +9093,12 @@ function groveMechaHerd(P,t,clk,n){
     for(let k=0;k<4;k++){ const q=((t*1.3+k/4)%1); ctx.fillStyle=`rgba(148,163,184,${0.3*(1-q)})`; ctx.beginPath(); ctx.arc(x-dir*(22+q*18),y-2-q*7,2+q*4,0,Math.PI*2); ctx.fill(); }
     if(Math.sin(step)>0.95){ ctx.fillStyle='rgba(103,232,249,0.9)'; for(let k=0;k<3;k++) ctx.fillRect(x+(groveRand(k+Math.floor(t*4))-0.5)*30,y-1-groveRand(k+7)*4,1.4,1.4); }
   }
-  groveDrawMecha(ctx,x,y,s,dir,step,t);
+  P.hits.push({x,y:y-20*s,r:28*s,i:'m',kind:'mecha'});
+  const at=P.animalTap, ak=(at&&at.kind==='mecha')?(t-at.t):9;
+  if(ak<1.4){ const jump=Math.sin(Math.min(1,ak/1.4)*Math.PI)*26; ctx.save(); ctx.translate(0,-jump);
+    if(jump>3){ ctx.fillStyle='rgba(103,232,249,0.5)'; ctx.beginPath(); ctx.moveTo(x-10,y); ctx.lineTo(x,y+jump*0.8); ctx.lineTo(x+10,y); ctx.closePath(); ctx.fill(); }
+    groveDrawMecha(ctx,x,y,s,dir,step,t); ctx.restore(); }
+  else groveDrawMecha(ctx,x,y,s,dir,step,t);
 }
 
 // ── Bull and bear markets ──
@@ -9706,26 +9554,6 @@ function groveAurora(P,ctx,t,ph){
   });
   ctx.restore();
 }
-// String lights: two swags across the top of the card, twinkling, with a glow after dark
-function groveGlowSprite(){
-  if(_grove.glowSpr) return _grove.glowSpr;
-  const c=document.createElement('canvas'); c.width=c.height=32; const x=c.getContext('2d'), g=x.createRadialGradient(16,16,0,16,16,16);
-  g.addColorStop(0,'rgba(255,236,180,0.9)'); g.addColorStop(0.35,'rgba(255,214,140,0.35)'); g.addColorStop(1,'rgba(255,214,140,0)'); x.fillStyle=g; x.fillRect(0,0,32,32);
-  return _grove.glowSpr=c;
-}
-function groveLights(P,t){
-  const {ctx,w}=P, n=groveNight(), spr=groveGlowSprite(), cols=['#fde68a','#fca5a5','#86efac','#fdba74','#c4b5fd'];
-  const pts=[[-6,3],[w/2,4],[w+6,3]], sag=8;
-  ctx.strokeStyle='rgba(15,18,26,0.55)'; ctx.lineWidth=0.8; ctx.beginPath();
-  for(let s=0;s<2;s++){ const [x1,y1]=pts[s],[x2,y2]=pts[s+1]; ctx.moveTo(x1,y1); ctx.quadraticCurveTo((x1+x2)/2,(y1+y2)/2+sag*2,x2,y2); }
-  ctx.stroke();
-  for(let s=0;s<2;s++){ const [x1,y1]=pts[s],[x2,y2]=pts[s+1], cx=(x1+x2)/2, cy=(y1+y2)/2+sag*2, N=Math.max(4,Math.round((x2-x1)/42));
-    for(let i=1;i<N;i++){ const q=i/N, bx=(1-q)*(1-q)*x1+2*(1-q)*q*cx+q*q*x2, byy=(1-q)*(1-q)*y1+2*(1-q)*q*cy+q*q*y2+3.5, id=s*40+i;
-      const tw=groveReduce?1:0.65+0.35*Math.sin(t*2.2+id*1.7);
-      if(n>0.6){ ctx.globalAlpha=0.35*tw; ctx.drawImage(spr,bx-9,byy-9,18,18); ctx.globalAlpha=1; }
-      ctx.fillStyle=id%3?'#fde68a':'#fef3c7'; ctx.globalAlpha=(0.35+0.4*n)*(0.8+0.2*tw); ctx.beginPath(); ctx.ellipse(bx,byy,1.5,1.9,0,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1; } }
-}
-
 // Lily pond: sits in the ground in front of the TFSA tree, reflecting the sky (baked into the mid layer)
 function groveDrawPond(x,px,py,pal,season){
   const rx=32, ry=6, frozen=season==='winter';
@@ -9753,6 +9581,603 @@ function groveDrawMailbox(P,x,px,ground,pal){
   x.beginPath(); x.moveTo(lx-3.5,ground-34); x.lineTo(lx+3.5,ground-34); x.lineTo(lx+2.5,ground-39); x.lineTo(lx-2.5,ground-39); x.closePath(); x.fill();
   x.fillStyle=groveMix('#fde68a','#0a0d16',pal.dark*0.35); x.fillRect(lx-2,ground-33.5,4,3.5);
   P.lamps.push({x:lx-(GROVE_PAR.fore+2), y:ground-32, small:true});
+}
+
+// ── Detailed scenes ──
+// Each scene is lit from the side the sun (or moon) is on, has a little depth, and reacts to taps.
+// Coordinates: base = h-24 is ground level. Everything here draws in "content" space (groveScene translates it).
+function groveLight(P){ const [sx]=groveSunPos(P,_grove.ph||'day'); return sx < P.w/2 ? -1 : 1; } // -1 light from the left, 1 from the right
+function groveSince(P,t,key){ const v=P[key]; return v==null ? 99 : t-v; }
+function groveEaseOut(k){ return 1-Math.pow(1-Math.max(0,Math.min(1,k)),3); }
+function groveRR(ctx,x,y,w,h,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+w,y,x+w,y+h,r); ctx.arcTo(x+w,y+h,x,y+h,r); ctx.arcTo(x,y+h,x,y,r); ctx.arcTo(x,y,x+w,y,r); ctx.closePath(); }
+function groveQuad(ctx,a,b,c,d){ ctx.beginPath(); ctx.moveTo(a[0],a[1]); ctx.lineTo(b[0],b[1]); ctx.lineTo(c[0],c[1]); ctx.lineTo(d[0],d[1]); ctx.closePath(); }
+
+// ═════════════ RRSP: a glass tower that rises floor by floor ═════════════
+function groveTower(P,t){
+  const {ctx,w,h}=P, c=P.disp, s=groveGrowth(c);
+  const gainRatio=Math.min(1,P.dispGain/Math.max(500,c*0.25));
+  groveScene(P,gainRatio,t);
+  if(c<1 && !(_grove.tot||{})[P.def.id]?.has){ groveEmpty(P,'Break ground here'); return; }
+  const n=groveNight(), L=groveLight(P), base=h-24, li=groveLevel(c);
+  const floors=Math.max(0,Math.round(s*42)), bw=Math.min(w*0.4,40+s*60), depth=Math.max(9,bw*0.24), dy=depth*0.5;
+  const x0=w/2-(bw+depth)/2, pod=8, avail=h-78, fh=floors?Math.min(13,avail/floors):0, top=base-pod-floors*fh;
+
+  // neighbouring blocks appear as you level up
+  const block=(bx,bwid,bh,seed)=>{
+    const d=bwid*0.28, ty=base-bh;
+    ctx.fillStyle=L>0?'#2c3650':'#1a2131'; groveQuad(ctx,[bx+bwid,base],[bx+bwid+d,base-d*0.5],[bx+bwid+d,ty-d*0.5],[bx+bwid,ty]); ctx.fill();
+    ctx.fillStyle='#252e44'; ctx.fillRect(bx,ty,bwid,bh);
+    ctx.fillStyle='#323d58'; groveQuad(ctx,[bx,ty],[bx+d,ty-d*0.5],[bx+bwid+d,ty-d*0.5],[bx+bwid,ty]); ctx.fill();
+    for(let r=0;r<Math.floor((bh-6)/8);r++) for(let k=0;k<3;k++){ const on=groveRand(seed*131+r*7+k)<0.2+n*0.45;
+      ctx.fillStyle=on?(groveRand(seed+r+k*3)<0.7?'rgba(252,217,160,0.85)':'rgba(156,195,245,0.8)'):'rgba(150,180,230,0.08)'; ctx.fillRect(bx+3+k*(bwid-6)/3,ty+4+r*8,(bwid-6)/3-2,4); }
+  };
+  if(li>=3) block(x0-40,28,38+li*6,1);
+  if(li>=5) block(x0+bw+depth+8,32,50+li*7,2);
+
+  // shadow falls away from the light
+  ctx.fillStyle='rgba(0,0,0,0.28)'; ctx.beginPath(); ctx.ellipse(w/2-L*14,base+2,(bw+depth)/2+16,4.5,0,0,Math.PI*2); ctx.fill();
+  // podium with a lit lobby
+  ctx.fillStyle='#2b3243'; ctx.fillRect(x0-6,base-pod,bw+12,pod);
+  ctx.fillStyle='#232938'; groveQuad(ctx,[x0+bw+6,base],[x0+bw+6+depth,base-dy],[x0+bw+6+depth,base-pod-dy],[x0+bw+6,base-pod]); ctx.fill();
+  ctx.fillStyle=n>0.3?`rgba(253,224,150,${0.55+n*0.35})`:'rgba(190,215,255,0.35)'; ctx.fillRect(x0+bw*0.32,base-pod+1.5,bw*0.36,pod-1.5);
+  ctx.fillStyle='#1b2030'; ctx.fillRect(x0+bw*0.28,base-pod-1.5,bw*0.44,2);
+
+  if(floors){
+    const fy=base-pod;
+    // side face: catches the light when the sun is on the right
+    const sg=ctx.createLinearGradient(x0+bw,0,x0+bw+depth,0); sg.addColorStop(0,L>0?'#3b4b6c':'#1e2639'); sg.addColorStop(1,L>0?'#2f3c58':'#171d2c');
+    ctx.fillStyle=sg; groveQuad(ctx,[x0+bw,fy],[x0+bw+depth,fy-dy],[x0+bw+depth,top-dy],[x0+bw,top]); ctx.fill();
+    // front glass face with a sky reflection
+    const fg=ctx.createLinearGradient(0,top,0,fy); fg.addColorStop(0,L<0?'#4a5d82':'#3b4c6e'); fg.addColorStop(1,L<0?'#2b3754':'#222c44');
+    ctx.fillStyle=fg; ctx.fillRect(x0,top,bw,fy-top);
+    // roof
+    ctx.fillStyle='#55658a'; groveQuad(ctx,[x0,top],[x0+depth,top-dy],[x0+bw+depth,top-dy],[x0+bw,top]); ctx.fill();
+    // windows: tap sends a wave of light up the building
+    const cols=bw>90?5:bw>66?4:3, ww=(bw-(cols+1)*3)/cols, wh=Math.max(1.4,fh-3.5), wk=groveSince(P,t,'waveT'), wave=wk*30;
+    for(let f=0;f<floors;f++){
+      const y=fy-(f+1)*fh+1.6;
+      if(f%6===5){ ctx.fillStyle='rgba(255,255,255,0.07)'; ctx.fillRect(x0,y-1.4,bw,1.2); }
+      for(let k=0;k<cols;k++){
+        const id=f*7+k, lit=groveRand(id)<0.18+n*0.48, gold=groveRand(id*3+1)<gainRatio*0.5, waveOn=wk<2.4 && Math.abs(f-wave)<1.8;
+        const wx=x0+3+k*(ww+3);
+        let col;
+        if(waveOn) col='#fff6d5';
+        else if(gold) col=`rgba(251,191,36,${groveReduce?0.9:0.78+0.2*Math.sin(t*2+id)})`;
+        else if(lit) col=groveRand(id+7)<0.72?'rgba(252,217,160,0.9)':'rgba(156,195,245,0.85)';
+        else col=n<0.4?'rgba(185,210,245,0.16)':'rgba(120,150,200,0.08)';
+        if((lit||gold||waveOn) && n>0.5){ ctx.fillStyle='rgba(253,224,150,0.12)'; ctx.fillRect(wx-1,y-1,ww+2,wh+2); }
+        ctx.fillStyle=col; ctx.fillRect(wx,y,ww,wh);
+      }
+      // side windows: two narrow panes per floor, a few lit after dark
+      for(let k=0;k<2;k++){ const a=0.18+k*0.42, b=a+0.3, on=groveRand(f*11+k+300)<0.12+n*0.4;
+        ctx.fillStyle=on?`rgba(252,217,160,${0.35+0.4*n})`:(L>0?'rgba(190,210,240,0.14)':'rgba(120,150,200,0.07)');
+        groveQuad(ctx,[x0+bw+depth*a,y-dy*a],[x0+bw+depth*b,y-dy*b],[x0+bw+depth*b,y-dy*b+wh],[x0+bw+depth*a,y-dy*a+wh]); ctx.fill(); }
+    }
+    // a slow glint slides across the glass in daylight
+    if(!groveReduce && n<0.7){ ctx.save(); ctx.beginPath(); ctx.rect(x0,top,bw,fy-top); ctx.clip();
+      const gx=x0-bw+((t*10)%(bw*3)); ctx.fillStyle=`rgba(255,255,255,${0.06*(1-n)})`; groveQuad(ctx,[gx,fy],[gx+bw*0.25,fy],[gx+bw*0.25+90,top],[gx+90,top]); ctx.fill(); ctx.restore(); }
+    // lit edge
+    ctx.fillStyle='rgba(255,255,255,0.16)'; if(L<0) ctx.fillRect(x0,top,1.2,fy-top); else { ctx.strokeStyle='rgba(255,255,255,0.16)'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(x0+bw+depth,fy-dy); ctx.lineTo(x0+bw+depth,top-dy); ctx.stroke(); }
+    // glass elevator riding the corner
+    if(floors>10){ const k=(Math.sin(t*0.28)+1)/2, ey=fy-6-k*(fy-top-14); ctx.fillStyle='rgba(253,230,170,0.95)'; ctx.fillRect(x0+bw+1,ey-dy*0.08,3.2,5.5); ctx.fillStyle='rgba(253,230,170,0.18)'; ctx.fillRect(x0+bw-1,ey-3,7,11); }
+  }
+
+  // roof: a crane while it's growing, then antenna, water tank, helipad and spire as you level up
+  const rx=x0+depth*0.5, ry=top-dy*0.5;
+  if((Math.abs(P.disp-c)>5||P.pulse>0.05) && floors>0){
+    const mx=x0+bw*0.7; ctx.strokeStyle='#fbbf24'; ctx.lineWidth=1.6;
+    ctx.beginPath(); ctx.moveTo(mx,top); ctx.lineTo(mx,top-38); ctx.moveTo(mx-52,top-38); ctx.lineTo(mx+20,top-38); ctx.stroke();
+    ctx.lineWidth=0.7; for(let yy=top;yy>top-38;yy-=5){ ctx.beginPath(); ctx.moveTo(mx-2,yy); ctx.lineTo(mx+2,yy-5); ctx.stroke(); }
+    const sw=groveReduce?0:Math.sin(t*1.6)*3; ctx.strokeStyle='rgba(232,237,248,0.6)'; ctx.beginPath(); ctx.moveTo(mx-38,top-38); ctx.lineTo(mx-38+sw,top-20); ctx.stroke();
+    ctx.fillStyle='#fbbf24'; ctx.fillRect(mx-41+sw,top-20,6,4);
+  } else if(floors>8){
+    ctx.strokeStyle='#8a94a8'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.moveTo(rx+bw*0.6,ry); ctx.lineTo(rx+bw*0.6,ry-(li>=9?30:18)); ctx.stroke();
+    ctx.fillStyle=(groveReduce||Math.sin(t*3)>0)?'#f87171':'#5a2a2a'; ctx.beginPath(); ctx.arc(rx+bw*0.6,ry-(li>=9?31:19),2.3,0,Math.PI*2); ctx.fill();
+    if(li>=6){ const tx=rx+bw*0.2; ctx.fillStyle='#4b5466'; ctx.fillRect(tx,ry-12,10,9); ctx.fillStyle='#5b6478'; ctx.beginPath(); ctx.ellipse(tx+5,ry-12,5,1.8,0,0,Math.PI*2); ctx.fill(); ctx.fillRect(tx+1,ry-3,1.2,3); ctx.fillRect(tx+8,ry-3,1.2,3); }
+    if(li>=8){ ctx.strokeStyle='rgba(253,224,150,0.7)'; ctx.lineWidth=1; ctx.beginPath(); ctx.ellipse(rx+bw*0.45,ry,8,3,0,0,Math.PI*2); ctx.stroke(); ctx.fillStyle='rgba(253,224,150,0.8)'; ctx.font='700 5px Geist, Inter, sans-serif'; ctx.textAlign='center'; ctx.fillText('H',rx+bw*0.45,ry+1.8); }
+  }
+
+  // street traffic, with headlights after dark
+  if(!groveReduce) for(let i=0;i<2;i++){
+    const dir=i?-1:1, sp=34+i*12, span=w+90, q=((t*sp+i*170)%span), x=dir>0?q-45:w+45-q, y=base+(dir>0?9:15);
+    ctx.fillStyle=['#475569','#9a3412'][i]; groveRR(ctx,x-8,y-4,16,5,2); ctx.fill(); groveRR(ctx,x-4-dir,y-7,8,3.5,1.5); ctx.fill();
+    ctx.fillStyle='rgba(180,210,240,0.5)'; ctx.fillRect(x-3-dir,y-6.5,6,2.2);
+    ctx.fillStyle='#0b0d12'; ctx.beginPath(); ctx.arc(x-5,y+1,1.6,0,Math.PI*2); ctx.arc(x+5,y+1,1.6,0,Math.PI*2); ctx.fill();
+    if(n>0.3){ ctx.fillStyle='rgba(254,249,195,0.95)'; ctx.fillRect(x+dir*7.5-0.8,y-3,1.6,1.6); ctx.fillStyle='rgba(248,113,113,0.9)'; ctx.fillRect(x-dir*7.5-0.8,y-3,1.6,1.6);
+      ctx.fillStyle=`rgba(254,249,195,${0.12*n})`; ctx.beginPath(); ctx.moveTo(x+dir*8,y-2.5); ctx.lineTo(x+dir*34,y-7); ctx.lineTo(x+dir*34,y+3); ctx.closePath(); ctx.fill(); }
+  }
+  if(li>=5&&!groveReduce){ const x=((t*36)%(w+200))-100, y=38; ctx.fillStyle='rgba(232,237,248,0.55)'; ctx.fillRect(x,y,14,2.4); ctx.fillRect(x+4,y-3,4,8.5);
+    if(Math.sin(t*5)>0.6){ ctx.fillStyle='#f87171'; ctx.fillRect(x+13,y,1.6,1.6); } }
+  groveSnow(P,t);
+}
+
+// ═════════════ FHSA: your house goes up stage by stage ═════════════
+function groveHouse(P,t){
+  const {ctx,w,h}=P, p=Math.min(1,P.disp/GROVE_FHSA_GOAL);
+  const gainRatio=Math.min(1,P.dispGain/Math.max(500,P.disp*0.25));
+  const season=groveScene(P,gainRatio,t);
+  if(P.disp<1 && !(_grove.tot||{})[P.def.id]?.has){ groveEmpty(P,'Your future home'); return; }
+  const n=groveNight(), L=groveLight(P), base=h-24, g0=base-6;
+  const hw=Math.min(146,w*0.46), depth=24, dy=11, hx=w/2-(hw+depth)/2, wallH=74;
+  const seg=(lo,hi)=>Math.max(0,Math.min(1,(p-lo)/(hi-lo)));
+  const sF=seg(0,0.05), sW=seg(0.05,0.2), sD=seg(0.2,0.35), sWi=seg(0.35,0.5), sR=seg(0.5,0.65), sC=seg(0.65,0.8), sG=seg(0.8,0.9), sDn=seg(0.9,1);
+  const lightsOn = !P.lightsOff, warm=lightsOn ? Math.min(1,0.25+gainRatio*0.4+n*0.6) : 0;
+  P.geo={};
+
+  if(p<1){ ctx.setLineDash([3,5]); ctx.strokeStyle='rgba(167,139,250,0.3)'; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(hx-10,g0); ctx.lineTo(hx-10,g0-wallH); ctx.lineTo(hx+hw/2,g0-wallH-46); ctx.lineTo(hx+hw+10,g0-wallH); ctx.lineTo(hx+hw+10,g0); ctx.stroke(); ctx.setLineDash([]); }
+  // building materials while it's going up
+  if(p>0.02 && p<0.9){ const mx=hx+hw+depth+14;
+    ctx.fillStyle='#8b6a45'; for(let i=0;i<4;i++) ctx.fillRect(mx-i*1.5,g0+4-i*3,28,2.6);
+    ctx.fillStyle='#9a4a3a'; for(let r=0;r<3;r++) for(let k=0;k<3-r;k++) ctx.fillRect(mx+2+k*7+r*3.5,g0-10-r*4,6,3.4); }
+  // shadow
+  if(sF>0){ ctx.fillStyle='rgba(0,0,0,0.26)'; ctx.beginPath(); ctx.ellipse(w/2-L*12,base+1,(hw+depth)/2+18,5,0,0,Math.PI*2); ctx.fill(); }
+  // foundation
+  if(sF>0){ ctx.fillStyle='#4b5163'; ctx.fillRect(hx-4,g0,(hw+8)*sF,6);
+    if(sF>=1){ ctx.fillStyle='#3a3f4f'; groveQuad(ctx,[hx+hw+4,g0+6],[hx+hw+4+depth,g0+6-dy],[hx+hw+4+depth,g0-dy],[hx+hw+4,g0]); ctx.fill(); } }
+  // walls with siding
+  if(sW>0){ const wh=wallH*sW, wy=g0-wh;
+    ctx.fillStyle=L>0?'#4c4374':'#2d2747'; groveQuad(ctx,[hx+hw,g0],[hx+hw+depth,g0-dy],[hx+hw+depth,wy-dy],[hx+hw,wy]); ctx.fill();
+    const wg=ctx.createLinearGradient(0,wy,0,g0); wg.addColorStop(0,L<0?'#4d4475':'#433a68'); wg.addColorStop(1,L<0?'#3f3763':'#352e57');
+    ctx.fillStyle=wg; ctx.fillRect(hx,wy,hw,wh);
+    ctx.strokeStyle='rgba(255,255,255,0.05)'; ctx.lineWidth=1;
+    for(let y=g0-5;y>wy;y-=5){ ctx.beginPath(); ctx.moveTo(hx,y); ctx.lineTo(hx+hw,y); ctx.moveTo(hx+hw,y); ctx.lineTo(hx+hw+depth,y-dy); ctx.stroke(); }
+    ctx.fillStyle='rgba(226,220,245,0.3)'; ctx.fillRect(hx,wy,2.5,wh); ctx.fillRect(hx+hw-2.5,wy,2.5,wh);
+  }
+  // scaffolding while the walls go up
+  if(p<1&&sW>0&&sR<1){ ctx.strokeStyle='rgba(251,191,36,0.45)'; ctx.lineWidth=1.1; const sh=wallH*sW+10, sx=hx-12;
+    ctx.beginPath(); ctx.moveTo(sx,g0); ctx.lineTo(sx,g0-sh); ctx.moveTo(sx+7,g0); ctx.lineTo(sx+7,g0-sh); ctx.stroke();
+    for(let y=g0-12;y>g0-sh;y-=16){ ctx.fillStyle='#8b6a45'; ctx.fillRect(sx-3,y,14,2); ctx.beginPath(); ctx.moveTo(sx,y+16); ctx.lineTo(sx+7,y); ctx.stroke(); } }
+  // windows with frames, curtains and warm light
+  const win=(x,y,ww,wh2,a)=>{
+    ctx.fillStyle=`rgba(226,220,245,${0.6*a})`; ctx.fillRect(x-2,y-2,ww+4,wh2+4);
+    if(warm>0.05){ const lg=ctx.createLinearGradient(0,y,0,y+wh2); lg.addColorStop(0,`rgba(253,214,140,${(0.35+0.6*warm)*a})`); lg.addColorStop(1,`rgba(251,176,96,${(0.3+0.6*warm)*a})`); ctx.fillStyle=lg; }
+    else ctx.fillStyle=`rgba(${n<0.4?'165,195,235':'40,46,70'},${0.75*a})`;
+    ctx.fillRect(x,y,ww,wh2);
+    ctx.fillStyle=`rgba(167,139,250,${0.65*a})`; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x+ww*0.3,y); ctx.lineTo(x,y+wh2*0.8); ctx.closePath(); ctx.moveTo(x+ww,y); ctx.lineTo(x+ww*0.7,y); ctx.lineTo(x+ww,y+wh2*0.8); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle=`rgba(42,36,64,${a})`; ctx.lineWidth=1.6; ctx.beginPath(); ctx.moveTo(x+ww/2,y); ctx.lineTo(x+ww/2,y+wh2); ctx.moveTo(x,y+wh2/2); ctx.lineTo(x+ww,y+wh2/2); ctx.stroke();
+    ctx.fillStyle=`rgba(226,220,245,${0.7*a})`; ctx.fillRect(x-3,y+wh2+1,ww+6,2.4);
+    if(warm>0.3 && n>0.4){ const pg=ctx.createRadialGradient(x+ww/2,base+3,1,x+ww/2,base+3,26); pg.addColorStop(0,`rgba(253,214,140,${0.12*warm*a})`); pg.addColorStop(1,'rgba(253,214,140,0)'); ctx.fillStyle=pg; ctx.fillRect(x+ww/2-26,base-8,52,20); }
+  };
+  if(sWi>0){ win(hx+14,g0-56,28,22,sWi); win(hx+hw-42,g0-56,28,22,sWi);
+    // a small window on the side wall
+    ctx.fillStyle=warm>0.05?`rgba(253,214,140,${(0.3+0.5*warm)*sWi})`:`rgba(120,140,190,${0.4*sWi})`;
+    groveQuad(ctx,[hx+hw+7,g0-50-dy*0.3],[hx+hw+17,g0-50-dy*0.7],[hx+hw+17,g0-36-dy*0.7],[hx+hw+7,g0-36-dy*0.3]); ctx.fill(); }
+  // front door, step and porch light
+  if(sD>0){ const dw=20, dh=36*sD, dx=hx+hw/2-dw/2, dyy=g0-dh;
+    ctx.fillStyle='rgba(226,220,245,0.55)'; ctx.fillRect(dx-2.5,dyy-2.5,dw+5,dh+2.5);
+    const dg=ctx.createLinearGradient(dx,0,dx+dw,0); dg.addColorStop(0,'#8b5cf6'); dg.addColorStop(1,'#6d28d9'); ctx.fillStyle=dg; ctx.fillRect(dx,dyy,dw,dh);
+    if(sD>=1){ ctx.strokeStyle='rgba(0,0,0,0.25)'; ctx.lineWidth=1; ctx.strokeRect(dx+3,dyy+4,dw-6,dh*0.38); ctx.strokeRect(dx+3,dyy+dh*0.52,dw-6,dh*0.38);
+      ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.arc(dx+dw-4,dyy+dh*0.55,1.4,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='#5b6275'; ctx.fillRect(dx-6,g0,dw+12,3); ctx.fillRect(dx-9,g0+3,dw+18,3);
+      const lx=dx-7, ly=dyy+6; ctx.fillStyle='#2a2440'; ctx.fillRect(lx-2,ly,4,6); ctx.fillStyle=lightsOn&&n>0.3?'#fde68a':'#6b5f8f'; ctx.fillRect(lx-1.3,ly+1,2.6,4);
+      if(lightsOn && n>0.3){ const lg=ctx.createRadialGradient(lx,ly+3,0,lx,ly+3,30); lg.addColorStop(0,`rgba(253,224,150,${0.3*n})`); lg.addColorStop(1,'rgba(253,224,150,0)'); ctx.fillStyle=lg; ctx.fillRect(lx-30,ly-27,60,60); } } }
+  // roof with shingles and a gable window
+  if(sR>0){ const eave=g0-wallH, peak=eave-46*sR;
+    ctx.fillStyle=L>0?'#6a4cc4':'#4b3496'; groveQuad(ctx,[hx+hw/2,peak],[hx+hw/2+depth,peak-dy],[hx+hw+12+depth,eave-dy],[hx+hw+12,eave]); ctx.fill();
+    const rg=ctx.createLinearGradient(0,peak,0,eave); rg.addColorStop(0,L<0?'#7c5ce0':'#6d4fc2'); rg.addColorStop(1,L<0?'#6748c4':'#5a3faa');
+    ctx.fillStyle=rg; ctx.beginPath(); ctx.moveTo(hx-12,eave); ctx.lineTo(hx+hw/2,peak); ctx.lineTo(hx+hw+12,eave); ctx.closePath(); ctx.fill();
+    ctx.strokeStyle='rgba(0,0,0,0.18)'; ctx.lineWidth=0.8;
+    for(let k=1;k<6;k++){ const q=k/6; ctx.beginPath(); ctx.moveTo(hx+hw/2+(hx+hw+12-(hx+hw/2))*q, peak+(eave-peak)*q); ctx.lineTo(hx+hw/2+depth+(hx+hw+12-(hx+hw/2))*q, peak-dy+(eave-peak)*q); ctx.stroke(); }
+    ctx.strokeStyle='rgba(255,255,255,0.22)'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.moveTo(hx-12,eave); ctx.lineTo(hx+hw/2,peak); ctx.lineTo(hx+hw+12,eave); ctx.stroke();
+    if(sR>=1){ ctx.fillStyle=warm>0.05?`rgba(253,214,140,${0.4+0.4*warm})`:'rgba(120,140,190,0.5)'; ctx.beginPath(); ctx.arc(hx+hw/2,eave-16,5,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='rgba(226,220,245,0.6)'; ctx.lineWidth=1.2; ctx.stroke(); }
+    if(season==='winter'){ ctx.fillStyle='rgba(232,237,248,0.85)'; ctx.beginPath(); ctx.moveTo(hx-12,eave); ctx.lineTo(hx+hw/2,peak); ctx.lineTo(hx+hw+12,eave); ctx.lineTo(hx+hw+4,eave-3); ctx.lineTo(hx+hw/2,peak+6); ctx.lineTo(hx-4,eave-3); ctx.closePath(); ctx.fill();
+      groveQuad(ctx,[hx+hw/2,peak],[hx+hw/2+depth,peak-dy],[hx+hw/2+depth+6,peak-dy+4],[hx+hw/2+4,peak+4]); ctx.fill(); }
+  }
+  // brick chimney
+  if(sC>0){ const cx=hx+hw*0.74+depth*0.45, ch=30*sC, cb=g0-wallH-dy*0.45-10, ct=cb-ch+8;
+    ctx.fillStyle='#7a3b35'; ctx.fillRect(cx,ct,13,cb-ct); ctx.fillStyle='#5f2c28'; ctx.fillRect(cx+13,ct-2,4,cb-ct);
+    ctx.strokeStyle='rgba(0,0,0,0.22)'; ctx.lineWidth=0.7; for(let y=ct+4;y<cb;y+=4){ ctx.beginPath(); ctx.moveTo(cx,y); ctx.lineTo(cx+13,y); ctx.stroke(); }
+    ctx.fillStyle='#4b5163'; ctx.fillRect(cx-1.5,ct-3,17,3);
+    P.geo.chimney=[cx+7,ct-4];
+    if(sC>=1&&gainRatio>0.05&&!groveReduce){ for(let i=0;i<4;i++){ const k=(t*0.4+i/4)%1; ctx.fillStyle=`rgba(232,237,248,${0.22*(1-k)*Math.min(1,gainRatio*2)})`; ctx.beginPath(); ctx.arc(cx+7+Math.sin(t+i)*4,ct-6-k*40,4+k*7,0,Math.PI*2); ctx.fill(); } }
+  }
+  // garden: shaped bushes, flowers and a young tree
+  if(sG>0){ const bush=season==='winter'?'#9aa6b8':season==='autumn'?'#9a4a1e':'#2f8a4f', hi=season==='winter'?'#e2e8f0':season==='autumn'?'#d9772f':'#5fd68f';
+    const nb=Math.round(6*sG); for(let i=0;i<nb;i++){ const x=hx-6+i*((hw+12)/5); if(Math.abs(x-(hx+hw/2))<16) continue;
+      ctx.fillStyle=bush; ctx.beginPath(); ctx.arc(x,g0+1,6,Math.PI,0); ctx.fill(); ctx.fillStyle=hi; ctx.globalAlpha=0.6; ctx.beginPath(); ctx.arc(x+L*2,g0-2,3,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1;
+      if(season==='spring'||season==='summer'){ ctx.fillStyle=['#f9a8d4','#fde68a','#c4b5fd'][i%3]; ctx.beginPath(); ctx.arc(x-2,g0-3,1.3,0,Math.PI*2); ctx.arc(x+3,g0-1,1.2,0,Math.PI*2); ctx.fill(); } }
+    if(sG>=1){ const tx=hx-30; ctx.fillStyle='#5d4430'; ctx.fillRect(tx-1.5,g0-24,3,26);
+      ctx.fillStyle=season==='winter'?'rgba(226,232,240,0.8)':season==='autumn'?'#c2410c':'#2f8a4f'; ctx.beginPath(); ctx.arc(tx,g0-30,11,0,Math.PI*2); ctx.arc(tx-6,g0-24,8,0,Math.PI*2); ctx.arc(tx+6,g0-25,8,0,Math.PI*2); ctx.fill();
+      ctx.fillStyle='rgba(255,255,255,0.12)'; ctx.beginPath(); ctx.arc(tx+L*4,g0-33,5,0,Math.PI*2); ctx.fill(); } }
+  // picket fence with a gate at the path
+  if(sDn>0){ const fx=hx-34, fw=(hw+depth+68)*sDn, gate=hx+hw/2;
+    ctx.fillStyle='rgba(232,237,248,0.75)';
+    for(let x=fx;x<fx+fw;x+=7){ if(Math.abs(x-gate)<13) continue; ctx.beginPath(); ctx.moveTo(x,base+1); ctx.lineTo(x,base-11); ctx.lineTo(x+1.6,base-14); ctx.lineTo(x+3.2,base-11); ctx.lineTo(x+3.2,base+1); ctx.closePath(); ctx.fill(); }
+    ctx.fillRect(fx,base-9,Math.min(fw,gate-13-fx),1.6); ctx.fillRect(fx,base-4,Math.min(fw,gate-13-fx),1.6);
+    if(fx+fw>gate+13){ ctx.fillRect(gate+13,base-9,fx+fw-gate-13,1.6); ctx.fillRect(gate+13,base-4,fx+fw-gate-13,1.6); } }
+  // move-in ready: a sign in the yard
+  if(p>=1){ const sx=hx+hw+depth+24; ctx.fillStyle='#5d4430'; ctx.fillRect(sx,g0-22,2,24); ctx.fillStyle='#f8fafc'; groveRR(ctx,sx-12,g0-30,26,13,2); ctx.fill();
+    ctx.fillStyle='#16a34a'; ctx.font='800 7px Geist, Inter, sans-serif'; ctx.textAlign='center'; ctx.fillText('READY',sx+1,g0-21); }
+  groveSnow(P,t);
+}
+
+// ═════════════ Taxable: a farm whose fields fill in ═════════════
+function groveField(P,t){
+  const {ctx,w,h}=P, c=P.disp, s=groveGrowth(c);
+  const gainRatio=Math.min(1,P.dispGain/Math.max(500,c*0.25));
+  const season=groveScene(P,gainRatio,t);
+  if(c<1 && !(_grove.tot||{})[P.def.id]?.has){ groveEmpty(P,'Till the soil'); return; }
+  const n=groveNight(), L=groveLight(P), li=groveLevel(c), base=h-24;
+  // barn with a gambrel roof, white trim and a weathervane
+  if(li>=5){ const bx=w-98, bw=46, bh=32, by=base-bh, d=15, dd=7;
+    ctx.fillStyle=L>0?'#8f3530':'#5e211e'; groveQuad(ctx,[bx+bw,base],[bx+bw+d,base-dd],[bx+bw+d,by-dd],[bx+bw,by]); ctx.fill();
+    ctx.fillStyle='#8a2f2a'; ctx.fillRect(bx,by,bw,bh);
+    ctx.beginPath(); ctx.moveTo(bx-3,by); ctx.lineTo(bx+7,by-13); ctx.lineTo(bx+bw/2,by-22); ctx.lineTo(bx+bw-7,by-13); ctx.lineTo(bx+bw+3,by); ctx.closePath(); ctx.fillStyle='#7a2925'; ctx.fill();
+    ctx.fillStyle=L>0?'#5a5f6e':'#3c404c'; groveQuad(ctx,[bx+bw/2,by-22],[bx+bw/2+d,by-22-dd],[bx+bw+3+d,by-dd],[bx+bw+3,by]); ctx.fill();
+    ctx.strokeStyle='rgba(240,236,228,0.8)'; ctx.lineWidth=1.4; ctx.strokeRect(bx+13,by+12,20,bh-12); ctx.beginPath(); ctx.moveTo(bx+13,by+12); ctx.lineTo(bx+33,base); ctx.moveTo(bx+33,by+12); ctx.lineTo(bx+13,base); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(bx-3,by); ctx.lineTo(bx+7,by-13); ctx.lineTo(bx+bw/2,by-22); ctx.lineTo(bx+bw-7,by-13); ctx.lineTo(bx+bw+3,by); ctx.stroke();
+    ctx.fillStyle=n>0.4?'rgba(253,214,140,0.85)':'#3b1513'; ctx.fillRect(bx+bw/2-4,by-12,8,7);
+    const vx=bx+bw/2, vy=by-22, va=groveReduce?0:Math.sin(t*0.4)*0.6; ctx.strokeStyle='#2a2f3b'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(vx,vy); ctx.lineTo(vx,vy-9); ctx.moveTo(vx-Math.cos(va)*5,vy-8); ctx.lineTo(vx+Math.cos(va)*5,vy-8); ctx.stroke();
+    if(season==='winter'){ ctx.fillStyle='rgba(232,237,248,0.85)'; ctx.beginPath(); ctx.moveTo(bx-3,by); ctx.lineTo(bx+7,by-13); ctx.lineTo(bx+bw/2,by-22); ctx.lineTo(bx+bw-7,by-13); ctx.lineTo(bx+bw+3,by); ctx.lineTo(bx+bw-3,by-3); ctx.lineTo(bx+bw/2,by-18); ctx.lineTo(bx+3,by-3); ctx.closePath(); ctx.fill(); } }
+  // silo
+  if(li>=7){ const sx=w-34, sw=18, st=base-74;
+    const sg=ctx.createLinearGradient(sx,0,sx+sw,0); sg.addColorStop(0,L<0?'#a3abba':'#6b7385'); sg.addColorStop(1,L<0?'#6b7385':'#a3abba');
+    ctx.fillStyle=sg; ctx.fillRect(sx,st,sw,base-st); ctx.beginPath(); ctx.arc(sx+sw/2,st,sw/2,Math.PI,0); ctx.fill();
+    ctx.strokeStyle='rgba(0,0,0,0.2)'; ctx.lineWidth=0.8; for(let y=st+10;y<base;y+=11){ ctx.beginPath(); ctx.moveTo(sx,y); ctx.lineTo(sx+sw,y); ctx.stroke(); }
+    ctx.strokeStyle='rgba(30,34,44,0.6)'; ctx.beginPath(); ctx.moveTo(sx+3,st+2); ctx.lineTo(sx+3,base); ctx.stroke(); }
+  // hay bales
+  if(li>=8){ [[w-112,base-1],[w-102,base+1],[w-120,base+3]].forEach(([x,y])=>{ ctx.fillStyle='#b8913f'; ctx.fillRect(x-5,y-9,10,9); ctx.fillStyle='#d6b261'; ctx.beginPath(); ctx.ellipse(x+5,y-4.5,3,4.5,0,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='rgba(120,80,30,0.6)'; ctx.lineWidth=0.6; ctx.beginPath(); ctx.ellipse(x+5,y-4.5,1.6,2.6,0,0,Math.PI*2); ctx.stroke(); }); }
+
+  // soil and rows, hazier toward the back
+  const rows=2+Math.floor(s*4), horizon=base-22-rows*16, fieldR=li>=5?w-112:w;
+  const soil=ctx.createLinearGradient(0,horizon-6,0,base), sc0=season==='winter'?'232,237,248':'107,79,54';
+  soil.addColorStop(0,`rgba(${sc0},0)`); soil.addColorStop(0.25,`rgba(${sc0},${season==='winter'?0.08:0.22})`); soil.addColorStop(1,`rgba(${sc0},${season==='winter'?0.14:0.42})`);
+  ctx.fillStyle=soil; ctx.beginPath(); ctx.moveTo(0,base); ctx.lineTo(0,horizon-6); ctx.lineTo(fieldR,horizon-6); ctx.lineTo(fieldR,base); ctx.closePath(); ctx.fill();
+  const stalkH=8+s*22, blade={spring:'#86efac', summer:'#2fa760', autumn:'#9a7b45', winter:'#94a3b8'}[season], head={spring:null, summer:'#5fd68f', autumn:'#c9a25e', winter:null}[season];
+  const gk=groveSince(P,t,'gustT'), gx=P.gustX||0;
+  for(let r=0;r<rows;r++){
+    const k=(r+1)/rows, y=horizon+(base-horizon)*k, sc=0.5+0.5*k;
+    ctx.globalAlpha=0.55+0.45*k;
+    ctx.fillStyle=season==='winter'?'rgba(232,237,248,0.18)':'rgba(70,50,34,0.55)'; ctx.fillRect(0,y-1,fieldR,2.5*sc);
+    const gap=19*sc, cnt=Math.floor((fieldR-8)/gap), off=(r%2)*gap/2;
+    for(let i=0;i<cnt;i++){
+      const x=8+off+i*gap;
+      // rolling wind across the field, plus a gust from where you tapped
+      let sway=groveReduce?0:Math.sin(t*1.4+i*0.35+r*0.8)*2.2*sc*(0.6+0.5*Math.max(0,Math.sin(t*0.5-x*0.02)));
+      if(gk<2.2){ const dist=x-gx, front=gk*170, wv=Math.exp(-Math.pow(Math.abs(dist)-front,2)/(2*20*20)); sway+=Math.sign(dist||1)*wv*8*sc*(1-gk/2.2); }
+      const hh=(season==='winter'?0.35:1)*stalkH*sc*(0.85+groveRand(r*100+i)*0.3);
+      ctx.strokeStyle=blade; ctx.lineCap='round'; ctx.lineWidth=1.8*sc;
+      for(const dx of [-3,0,3]){ ctx.beginPath(); ctx.moveTo(x+dx*sc*0.4,y); ctx.quadraticCurveTo(x+dx*sc+sway*0.4,y-hh*0.55,x+dx*sc*1.2+sway,y-hh*(dx?0.75:1)); ctx.stroke(); }
+      const isGold=season!=='winter' && groveRand(r*31+i*7)<gainRatio*0.6;
+      if(isGold||head){ ctx.fillStyle=isGold?'#fbbf24':head; ctx.beginPath(); ctx.ellipse(x+sway,y-hh-3*sc,2.2*sc,4.2*sc,sway*0.04,0,Math.PI*2); ctx.fill();
+        if(isGold){ ctx.fillStyle='rgba(255,255,255,0.45)'; ctx.beginPath(); ctx.arc(x+sway+L*0.8*sc,y-hh-4.5*sc,0.9*sc,0,Math.PI*2); ctx.fill(); } }
+      if(season==='winter'){ ctx.fillStyle='rgba(232,237,248,0.8)'; ctx.beginPath(); ctx.arc(x+sway,y-hh,1.6*sc,0,Math.PI*2); ctx.fill(); }
+    }
+  }
+  ctx.globalAlpha=1;
+  // split-rail fence along the front
+  if(li>=3){ ctx.fillStyle='#6b4f36'; for(let x=6;x<fieldR;x+=24){ ctx.fillRect(x,base-4,2.2,9); } ctx.fillRect(0,base-2,fieldR,1.6); ctx.fillRect(0,base+2,fieldR,1.6); }
+  // scarecrow, with a crow on its arm until you startle it
+  if(li>=4){ const x=Math.min(fieldR-24,w*0.42), y=base-4;
+    ctx.strokeStyle='#6b4f36'; ctx.lineWidth=2.5; ctx.beginPath(); ctx.moveTo(x,y); ctx.lineTo(x,y-46); ctx.moveTo(x-16,y-34); ctx.lineTo(x+16,y-34); ctx.stroke();
+    ctx.fillStyle='#3f6e8c'; ctx.beginPath(); ctx.moveTo(x-9,y-36); ctx.lineTo(x+9,y-36); ctx.lineTo(x+7,y-20); ctx.lineTo(x-7,y-20); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#b45309'; ctx.fillRect(x+1,y-31,4,4);
+    ctx.fillStyle='#d6b46b'; ctx.beginPath(); ctx.arc(x,y-50,6,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#1c120b'; ctx.fillRect(x-3,y-51,1.4,1.4); ctx.fillRect(x+1.6,y-51,1.4,1.4);
+    ctx.fillStyle='#8a2f2a'; ctx.fillRect(x-10,y-57,20,3.5); ctx.fillRect(x-5,y-64,10,7);
+    if(li>=6 && groveSince(P,t,'gustT')>6){ const cx2=x+13, cy2=y-36; ctx.fillStyle='#14161d'; ctx.beginPath(); ctx.ellipse(cx2,cy2,3.6,2.4,0,0,Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(cx2+3,cy2-2,1.8,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#f59e0b'; ctx.fillRect(cx2+4.4,cy2-2.3,1.8,0.9); }
+    P.geo={crow:[x+13,y-38]}; }
+  // tractor working the front path
+  if(li>=6){ const span=fieldR-60, ph=groveReduce?0.4:t*0.07, k=(Math.sin(ph)+1)/2, dir=Math.cos(ph)>=0?1:-1, tx=30+k*span, ty=base+6;
+    ctx.save(); ctx.translate(tx,ty); ctx.scale(dir,1);
+    ctx.fillStyle='#16803c'; ctx.fillRect(-10,-9,16,6); ctx.fillRect(-4,-17,8,9);
+    ctx.fillStyle='rgba(190,220,255,0.55)'; ctx.fillRect(-2.5,-15.5,5,4.5);
+    ctx.fillStyle='#fbbf24'; ctx.fillRect(5,-8,5,4);
+    ctx.fillStyle='#14161d'; ctx.beginPath(); ctx.arc(-6,-2,5.5,0,Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(8,-1.5,3.2,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.arc(-6,-2,2,0,Math.PI*2); ctx.arc(8,-1.5,1.2,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#2a2f3b'; ctx.fillRect(1,-21,1.6,5);
+    if(n>0.35){ ctx.fillStyle=`rgba(254,249,195,${0.15*n})`; ctx.beginPath(); ctx.moveTo(10,-7); ctx.lineTo(40,-13); ctx.lineTo(40,1); ctx.closePath(); ctx.fill(); ctx.fillStyle='#fef9c3'; ctx.fillRect(9.5,-7.5,1.6,1.6); }
+    ctx.restore();
+    if(!groveReduce) for(let i=0;i<3;i++){ const q=((t*0.8+i/3)%1); ctx.fillStyle=`rgba(200,206,216,${0.28*(1-q)})`; ctx.beginPath(); ctx.arc(tx+dir*1.8-dir*q*10,ty-22-q*12,1.5+q*3,0,Math.PI*2); ctx.fill(); } }
+  groveSnow(P,t);
+}
+
+// ═════════════ Crypto: 3D coins in orbit ═════════════
+function groveDrawCoin(ctx,cx,cy,r,key,halo,spin,t,glint){
+  const st=GROVE_COIN_STYLE[key] || {sym:key.slice(0,3), c:['#cbd5e1','#64748b','#334155'], ink:'#f8fafc', halo:'148,163,184'};
+  spin=spin||0;
+  if(halo>0){ const hg=ctx.createRadialGradient(cx,cy,r*0.6,cx,cy,r*(1.6+halo)); hg.addColorStop(0,`rgba(${st.halo},${0.25+halo*0.25})`); hg.addColorStop(1,`rgba(${st.halo},0)`); ctx.fillStyle=hg; ctx.beginPath(); ctx.arc(cx,cy,r*(1.6+halo),0,Math.PI*2); ctx.fill(); }
+  const sx=Math.max(0.06,Math.abs(Math.cos(spin))), edge=r*0.07+r*0.18*Math.abs(Math.sin(spin)), side=Math.sin(spin)>=0?1:-1;
+  // the rim: a thick reeded edge you see more of as it turns
+  ctx.fillStyle=st.c[2]; ctx.beginPath(); ctx.ellipse(cx+edge*side,cy+r*0.03,r*sx,r,0,0,Math.PI*2); ctx.fill();
+  ctx.fillRect(Math.min(cx,cx+edge*side),cy-r+r*0.03,Math.abs(edge),r*2);
+  if(edge>2.5){ ctx.strokeStyle='rgba(0,0,0,0.25)'; ctx.lineWidth=0.7; for(let yy=cy-r*0.9;yy<cy+r*0.9;yy+=2.2){ ctx.beginPath(); ctx.moveTo(cx+edge*side*0.2,yy); ctx.lineTo(cx+edge*side,yy); ctx.stroke(); } }
+  ctx.save(); ctx.translate(cx,cy); ctx.scale(sx,1);
+  const g=ctx.createLinearGradient(-r,-r,r,r); g.addColorStop(0,st.c[0]); g.addColorStop(0.5,st.c[1]); g.addColorStop(1,st.c[2]);
+  ctx.fillStyle=g; ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='rgba(255,255,255,0.45)'; ctx.lineWidth=Math.max(1,r*0.07); ctx.beginPath(); ctx.arc(0,0,r*0.86,0,Math.PI*2); ctx.stroke();
+  ctx.strokeStyle='rgba(0,0,0,0.18)'; ctx.lineWidth=Math.max(0.6,r*0.03); ctx.beginPath(); ctx.arc(0,0,r*0.78,0,Math.PI*2); ctx.stroke();
+  if(sx>0.3){ const fs=st.sym.length>1?r*0.62:r*1.05; ctx.font=`800 ${Math.max(7,Math.round(fs))}px Geist, Inter, sans-serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
+    ctx.fillStyle='rgba(0,0,0,0.28)'; ctx.fillText(st.sym,r*0.05,r*0.09); ctx.fillStyle=st.ink; ctx.fillText(st.sym,0,r*0.04); ctx.textBaseline='alphabetic'; }
+  ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.beginPath(); ctx.ellipse(-r*0.35,-r*0.4,r*0.32,r*0.14,-0.6,0,Math.PI*2); ctx.fill();
+  if(glint && !groveReduce){ ctx.save(); ctx.beginPath(); ctx.arc(0,0,r,0,Math.PI*2); ctx.clip(); const q=((t*0.22)%1)*3-1;
+    ctx.fillStyle='rgba(255,255,255,0.16)'; groveQuad(ctx,[q*r*2-r*0.4,-r],[q*r*2,-r],[q*r*2-r*0.8,r],[q*r*2-r*1.2,r]); ctx.fill(); ctx.restore(); }
+  ctx.restore();
+  if(glint && !groveReduce){ const a=t*0.7, gx=cx+Math.cos(a)*r*0.82*sx, gy=cy+Math.sin(a)*r*0.82, k=Math.max(0,Math.sin(t*2.3)); if(k>0.2){ const z=k*r*0.22;
+    ctx.strokeStyle=`rgba(255,255,255,${k})`; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(gx-z,gy); ctx.lineTo(gx+z,gy); ctx.moveTo(gx,gy-z); ctx.lineTo(gx,gy+z); ctx.stroke(); } }
+}
+function groveCoin(P,t){
+  const {ctx,w,h}=P, c=P.disp, s=groveGrowth(c);
+  const gainRatio=Math.min(1,P.dispGain/Math.max(500,c*0.25));
+  groveScene(P,gainRatio,t);
+  const base=h-24;
+  if(c<1){ groveEmpty(P,'Add crypto to light it up'); return; }
+  const coins=Object.entries(((_grove.tot||{}).crypto||{}).coins||{}).sort((a,b)=>b[1]-a[1]);
+  const li=groveLevel(c), r=14+s*44, cx=w/2, cy=base-30-s*(h*0.3)+(groveReduce?0:Math.sin(t*0.9)*3);
+  const total=coins.reduce((x,[,v])=>x+v,0)||1, others=coins.slice(1,6);
+  const sk=groveSince(P,t,'spinT'), spin=sk<1.8 ? groveEaseOut(sk/1.8)*Math.PI*4 : (groveReduce?0:Math.sin(t*0.6)*0.22);
+  const orbit=others.map(([k,v],i)=>{ const ang=(groveReduce?0:t*0.35)+i*Math.PI*2/Math.max(1,others.length); return {k,i,ang,rr:Math.max(9,r*0.5*Math.sqrt(v/total)+7)}; });
+  if(orbit.length){ ctx.strokeStyle='rgba(232,237,248,0.07)'; ctx.lineWidth=1; const o=orbit[0]; ctx.beginPath(); ctx.ellipse(cx,cy,r+o.rr+26,r*0.55+o.rr+6,0,0,Math.PI*2); ctx.stroke(); }
+  const draw=o=>{ const ox=cx+Math.cos(o.ang)*(r+o.rr+26), oy=cy+Math.sin(o.ang)*(r*0.55+o.rr+6); groveDrawCoin(ctx,ox,oy,o.rr,o.k,0,groveReduce?0:t*1.1+o.i*1.3,t,false); };
+  orbit.filter(o=>Math.sin(o.ang)<0).forEach(draw);
+  groveDrawCoin(ctx,cx,cy,r,coins[0]?coins[0][0]:'BTC',0.5+gainRatio*0.8,spin,t,true);
+  orbit.filter(o=>Math.sin(o.ang)>=0).forEach(draw);
+  P.geo={coin:[cx,cy,r]};
+  if(!groveReduce && gainRatio>0.05){ for(let i=0;i<1+Math.floor(gainRatio*3);i++){ const k=((t*0.35+i*0.37)%1); if(k>0.35) continue; const sx=w*(0.1+groveRand(i+90)*0.5)+k*w*0.9, sy=18+groveRand(i+91)*40+k*30;
+    ctx.strokeStyle=`rgba(253,186,116,${0.8*(1-k/0.35)})`; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(sx,sy); ctx.lineTo(sx-22,sy-8); ctx.stroke(); } }
+  ctx.fillStyle='rgba(10,8,22,0.85)'; ctx.beginPath(); ctx.moveTo(0,base); ctx.quadraticCurveTo(w*0.3,base-34,w*0.6,base-14); ctx.quadraticCurveTo(w*0.82,base-30,w,base-12); ctx.lineTo(w,base); ctx.closePath(); ctx.fill();
+  // observatory with a turning telescope
+  if(li>=5){ const ox=w*0.15, oy=base-18, ta=groveReduce?-0.7:-0.7+Math.sin(t*0.15)*0.35;
+    ctx.fillStyle='#2a3142'; ctx.fillRect(ox-12,oy-10,24,14); ctx.beginPath(); ctx.arc(ox,oy-10,12,Math.PI,0); ctx.fill();
+    ctx.fillStyle='#3a4357'; ctx.beginPath(); ctx.arc(ox,oy-10,12,Math.PI,Math.PI*1.35); ctx.lineTo(ox,oy-10); ctx.fill();
+    ctx.strokeStyle='#b8c2d6'; ctx.lineWidth=3; ctx.beginPath(); ctx.moveTo(ox,oy-14); ctx.lineTo(ox+Math.cos(ta)*17,oy-14+Math.sin(ta)*17); ctx.stroke();
+    ctx.fillStyle='rgba(253,224,150,0.85)'; ctx.fillRect(ox-3,oy-3,6,5); }
+  // a rocket that launches now and then ("to the moon")
+  if(li>=7){ const px=w*0.84, py=base-14, cyc=34, q=groveReduce?0:(t%cyc), launch=q>26, lk=launch?(q-26)/8:0, ry=py-(launch?Math.pow(lk,2)*(py+40):0);
+    ctx.fillStyle='#2a3142'; ctx.fillRect(px-11,py,22,3); ctx.fillRect(px-9,py-18,2,18);
+    if(!launch || lk<1){ ctx.save(); ctx.translate(px,ry);
+      if(launch){ const fl=0.7+0.3*Math.sin(t*40); ctx.fillStyle=`rgba(251,146,60,${0.9*fl})`; ctx.beginPath(); ctx.moveTo(-3.5,0); ctx.lineTo(0,10+fl*10); ctx.lineTo(3.5,0); ctx.closePath(); ctx.fill(); ctx.fillStyle='rgba(254,240,138,0.95)'; ctx.beginPath(); ctx.moveTo(-1.8,0); ctx.lineTo(0,5+fl*4); ctx.lineTo(1.8,0); ctx.closePath(); ctx.fill(); }
+      ctx.fillStyle='#e2e8f0'; ctx.beginPath(); ctx.moveTo(-4,0); ctx.lineTo(-4,-14); ctx.quadraticCurveTo(0,-24,4,-14); ctx.lineTo(4,0); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#ef4444'; ctx.beginPath(); ctx.moveTo(-4,-1); ctx.lineTo(-8,2); ctx.lineTo(-4,-6); ctx.closePath(); ctx.moveTo(4,-1); ctx.lineTo(8,2); ctx.lineTo(4,-6); ctx.closePath(); ctx.fill();
+      ctx.fillStyle='#38bdf8'; ctx.beginPath(); ctx.arc(0,-11,1.8,0,Math.PI*2); ctx.fill();
+      ctx.restore(); }
+    if(launch && lk<0.5){ for(let i=0;i<5;i++){ const a=(i/5)*Math.PI; ctx.fillStyle=`rgba(200,206,216,${0.3*(1-lk*2)})`; ctx.beginPath(); ctx.arc(px+Math.cos(a)*(8+lk*30),py+2-Math.sin(a)*4,3+lk*8,0,Math.PI*2); ctx.fill(); } }
+    else if(!launch && !groveReduce && q%4<1){ ctx.fillStyle='rgba(220,226,236,0.2)'; ctx.beginPath(); ctx.arc(px+6,py-2-(q%1)*6,2+(q%1)*3,0,Math.PI*2); ctx.fill(); } }
+  groveSnow(P,t);
+}
+
+// ═════════════ Precious metals: a vault ═════════════
+function groveVault(P,t){
+  const {ctx,w,h}=P, c=P.disp, s=groveGrowth(c);
+  const gainRatio=Math.min(1,P.dispGain/Math.max(500,c*0.25));
+  groveScene(P,gainRatio,t);
+  const base=h-24;
+  if(c<1){ groveEmpty(P,'Your vault is ready'); return; }
+  const n=groveNight(), li=groveLevel(c);
+  const roomW=Math.min(w*0.6,226), rx=w/2-roomW/2+22, roomH=112, top=base-roomH;
+  // thick steel frame with rivets
+  const fg=ctx.createLinearGradient(0,top-9,0,base); fg.addColorStop(0,'#4a5262'); fg.addColorStop(1,'#2a303c');
+  ctx.fillStyle=fg; ctx.fillRect(rx-7,top-9,roomW+14,roomH+9);
+  ctx.fillStyle='rgba(200,210,225,0.35)'; for(let x=rx-3;x<rx+roomW+5;x+=12){ ctx.beginPath(); ctx.arc(x,top-5,1,0,Math.PI*2); ctx.fill(); }
+  // interior: panelled back wall and safe-deposit boxes
+  ctx.fillStyle='#1a1f2b'; ctx.fillRect(rx,top,roomW,roomH);
+  const bx0=rx+roomW*0.42, bcols=Math.floor((roomW*0.55)/13);
+  for(let r=0;r<3;r++) for(let k=0;k<bcols;k++){ const x=bx0+k*13, y=top+8+r*11; ctx.fillStyle='#2b3241'; ctx.fillRect(x,y,11,9); ctx.fillStyle='rgba(212,175,55,0.7)'; ctx.fillRect(x+4.5,y+3.5,2,2); }
+  ctx.strokeStyle='rgba(255,255,255,0.04)'; ctx.lineWidth=1; for(let x=rx+18;x<bx0-4;x+=18){ ctx.beginPath(); ctx.moveTo(x,top+4); ctx.lineTo(x,base-24); ctx.stroke(); }
+  // swinging ceiling lamp with a cone of light
+  const sw=groveReduce?0:Math.sin(t*0.9)*0.06, lx=rx+roomW*0.36, ly=top+20, lpx=lx+Math.sin(sw)*18;
+  ctx.strokeStyle='#4b5466'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(lx,top); ctx.lineTo(lpx,ly); ctx.stroke();
+  const cone=ctx.createLinearGradient(0,ly,0,base); cone.addColorStop(0,`rgba(253,224,150,${0.2+gainRatio*0.1})`); cone.addColorStop(1,'rgba(253,224,150,0.03)');
+  ctx.fillStyle=cone; ctx.beginPath(); ctx.moveTo(lpx-5,ly+3); ctx.lineTo(lpx+5,ly+3); ctx.lineTo(lpx+46+sw*80,base-2); ctx.lineTo(lpx-46+sw*80,base-2); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#5b6478'; ctx.beginPath(); ctx.moveTo(lpx-7,ly+4); ctx.lineTo(lpx-3,ly-1); ctx.lineTo(lpx+3,ly-1); ctx.lineTo(lpx+7,ly+4); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#fef3c7'; ctx.beginPath(); ctx.arc(lpx,ly+4,2,0,Math.PI); ctx.fill();
+  // tiled floor
+  ctx.fillStyle='#232a37'; ctx.fillRect(rx,base-8,roomW,8); ctx.strokeStyle='rgba(255,255,255,0.05)'; for(let x=rx;x<rx+roomW;x+=14){ ctx.beginPath(); ctx.moveTo(x,base-8); ctx.lineTo(x-4,base); ctx.stroke(); }
+  // security lasers at higher levels, after dark
+  if(li>=6 && n>0.4 && !groveReduce){ ctx.strokeStyle=`rgba(248,113,113,${0.25+0.15*Math.sin(t*6)})`; ctx.lineWidth=0.8; ctx.beginPath(); ctx.moveTo(rx+4,base-30); ctx.lineTo(rx+roomW-4,base-12); ctx.moveTo(rx+4,base-12); ctx.lineTo(rx+roomW-4,base-34); ctx.stroke(); }
+  // bars in 3D, coloured by metal. Tap sends a glint across them.
+  const bars=Math.max(1,Math.round(1+s*34)), bw=24, bh=8, td=3.5, perRow=Math.max(3,Math.floor((roomW*0.62)/(bw+3)));
+  const bm=((_grove.tot||{}).metals||{}).byMetal||{gold:{value:1}}, mixTotal=Object.values(bm).reduce((x,m)=>x+m.value,0)||1;
+  const METAL_RGB={gold:[232,170,30], silver:[205,210,218], platinum:[170,190,222], palladium:[214,196,170]};
+  const order=['gold','platinum','palladium','silver'], barMetal=[]; order.forEach(m=>{ const k=Math.round(bars*((bm[m]||{}).value||0)/mixTotal); for(let i=0;i<k;i++) barMetal.push(m); });
+  while(barMetal.length<bars) barMetal.push(order.find(m=>(bm[m]||{}).value>0)||'gold');
+  const sk=groveSince(P,t,'spinT'), sweep=rx+sk*240;
+  for(let i=0;i<bars;i++){
+    const row=Math.floor(i/perRow), col=i%perRow, off=(row%2)*bw/2, x=rx+16+col*(bw+3)+off, y=base-8-bh-row*(bh+td-0.5);
+    if(x+bw>rx+roomW*0.72 || y<top+18) continue;
+    const idle=groveReduce?0:Math.max(0,Math.sin(t*1.5-i*0.35))*gainRatio*0.6, tap=sk<1.6?Math.max(0,1-Math.abs(x+bw/2-sweep)/28):0, sh=Math.min(1,idle+tap);
+    const rgb=METAL_RGB[barMetal[i]]||METAL_RGB.gold, lit=(k,a)=>`rgb(${Math.min(255,rgb[0]*k+a*40)|0},${Math.min(255,rgb[1]*k+a*45)|0},${Math.min(255,rgb[2]*k+a*55)|0})`;
+    ctx.fillStyle=lit(1.12,sh); groveQuad(ctx,[x+3,y],[x+bw-3,y],[x+bw-3+td*0.4,y-td],[x+3+td*0.4,y-td]); ctx.fill();
+    ctx.fillStyle=lit(0.92,sh); ctx.beginPath(); ctx.moveTo(x+3,y); ctx.lineTo(x+bw-3,y); ctx.lineTo(x+bw,y+bh); ctx.lineTo(x,y+bh); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='rgba(0,0,0,0.18)'; ctx.fillRect(x+6,y+3.5,bw-12,1);
+    ctx.fillStyle=`rgba(255,255,255,${0.3+sh*0.5})`; ctx.fillRect(x+4,y+1,bw-8,1.2);
+  }
+  // coin stacks once there's gold
+  const goldV=(bm.gold||{}).value||0;
+  if(goldV>0){ const cx0=rx+roomW*0.72+8; for(let k=0;k<3;k++){ const hgt=Math.min(10,2+Math.round(s*10)-k*2); for(let j=0;j<hgt;j++){ ctx.fillStyle=j%2?'#d4a017':'#f2c12e'; ctx.beginPath(); ctx.ellipse(cx0+k*11,base-9-j*2.2,4.6,1.6,0,0,Math.PI*2); ctx.fill(); } } }
+  // the great round door, hanging open on its hinge
+  const dx=rx-16, dyy=base-roomH/2-6, dr=Math.min(52,roomH*0.47);
+  ctx.fillStyle='#2a303c'; ctx.beginPath(); ctx.ellipse(dx+6,dyy+2,dr,dr,0,0,Math.PI*2); ctx.fill();
+  const dg=ctx.createRadialGradient(dx-dr*0.3,dyy-dr*0.3,4,dx,dyy,dr); dg.addColorStop(0,'#6b7488'); dg.addColorStop(1,'#3a4252');
+  ctx.fillStyle=dg; ctx.beginPath(); ctx.arc(dx,dyy,dr,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='rgba(0,0,0,0.3)'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(dx,dyy,dr*0.78,0,Math.PI*2); ctx.stroke();
+  ctx.fillStyle='rgba(210,218,230,0.55)'; for(let i=0;i<14;i++){ const a=i/14*Math.PI*2; ctx.beginPath(); ctx.arc(dx+Math.cos(a)*dr*0.89,dyy+Math.sin(a)*dr*0.89,1.5,0,Math.PI*2); ctx.fill(); }
+  ctx.fillStyle='#3a4252'; ctx.fillRect(dx+dr-4,dyy-dr*0.5,12,7); ctx.fillRect(dx+dr-4,dyy+dr*0.35,12,7);
+  // wheel: spins fast when you tap
+  const now=t, dt=Math.min(0.1,now-(P.lastT||now)); P.lastT=now;
+  P.wheelA=(P.wheelA||0)+(groveReduce?0:(0.15+(sk<1.5?7*(1-sk/1.5):0))*dt);
+  ctx.strokeStyle='#aab4c6'; ctx.lineWidth=2; ctx.beginPath(); ctx.arc(dx,dyy,dr*0.48,0,Math.PI*2); ctx.stroke();
+  ctx.lineWidth=3; for(let i=0;i<3;i++){ const a=P.wheelA+i*Math.PI*2/3; ctx.beginPath(); ctx.moveTo(dx,dyy); ctx.lineTo(dx+Math.cos(a)*dr*0.48,dyy+Math.sin(a)*dr*0.48); ctx.stroke(); ctx.fillStyle='#cbd5e1'; ctx.beginPath(); ctx.arc(dx+Math.cos(a)*dr*0.48,dyy+Math.sin(a)*dr*0.48,2.6,0,Math.PI*2); ctx.fill(); }
+  ctx.fillStyle='#e2e8f0'; ctx.beginPath(); ctx.arc(dx,dyy,5,0,Math.PI*2); ctx.fill();
+  P.geo={bars:[rx+16,base-30,roomW*0.6,30], door:[dx,dyy,dr]};
+  const gold=(((_grove.tot||{}).metals||{}).byMetal||{}).gold?.value||0;
+  groveGoldPig(P,t,gold);
+}
+
+// The golden pig: flies over the vault when you hold gold. Tap it and it does a loop.
+function groveGoldPig(P,t,gold){
+  const {ctx,w}=P, lvl=grovePigLevel(gold);
+  if(lvl<0){ P.pigHit=null; return; }
+  const period=lvl>=1?9:11, phase=(t%period)/period;
+  if(groveReduce && phase>0.02){ P.pigHit=null; return; }
+  const sc=[0.7,0.95,1.1,1.25,1.4][lvl];
+  const x=groveReduce?w*0.5:-70+phase*(w+140);
+  let y=46+Math.sin(t*2.2)*7+Math.sin(phase*Math.PI)*-10;
+  const flap=groveReduce?0.5:(Math.sin(t*14)+1)/2, lk=groveSince(P,t,'pigTapT'), loop=lk<1.2?groveEaseOut(lk/1.2):0;
+  if(loop) y-=Math.sin(loop*Math.PI)*22;
+  if(!groveReduce && lvl>=1){ const k=4+lvl*2; for(let i=1;i<k;i++){ const tx=x-i*9*sc, ty=y+Math.sin(t*2.2-i*0.4)*5+4*sc;
+    ctx.fillStyle=`rgba(251,191,36,${Math.max(0,0.55-i*(0.5/k))})`; ctx.beginPath(); ctx.arc(tx,ty,Math.max(0.6,(2.4-i*0.18)*sc),0,Math.PI*2); ctx.fill(); } }
+  if(!groveReduce && lvl>=3){ for(let i=0;i<3;i++){ const q=((t*0.9+i/3)%1), cx=x-10*sc-i*14, cy=y+12*sc+q*60;
+    ctx.globalAlpha=1-q; ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.ellipse(cx,cy,2.6,2.6*Math.abs(Math.cos(t*6+i)),0,0,Math.PI*2); ctx.fill(); ctx.globalAlpha=1; } }
+  ctx.save(); ctx.translate(x,y); if(loop) ctx.rotate(-loop*Math.PI*2); groveDrawPig(ctx,0,0,sc,flap,lvl); ctx.restore();
+  if(lvl>=4){ groveDrawPig(ctx,x-46*sc,y+10+Math.sin(t*3)*4,sc*0.5,(Math.sin(t*16+1)+1)/2,0); groveDrawPig(ctx,x-70*sc,y-4+Math.sin(t*3+1)*4,sc*0.45,(Math.sin(t*16+2)+1)/2,0); }
+  P.pigHit={x:x+((P.off&&P.off.content)||0), y, r:24*sc};
+}
+
+// ── Interaction, weather and focus mode ──
+
+function groveDrawPlot(P,t){
+  const k=P.def.kind;
+  if(k==='tree') groveTree(P,t); else if(k==='tower') groveTower(P,t); else if(k==='field') groveField(P,t);
+  else if(k==='coin') groveCoin(P,t); else if(k==='vault') groveVault(P,t); else groveHouse(P,t);
+  groveFore(P,t);
+  groveParticles(P);
+}
+
+// particles come in a few kinds: falling leaves, birds that fly off, sparks, smoke and tap ripples
+function groveSpawn(P,o){ if(P.parts.length<140) P.parts.push(Object.assign({life:1,vx:0,vy:0,r:2,age:0},o)); }
+function groveParticles(P){
+  const {ctx}=P; P.parts=P.parts.filter(pt=>pt.life>0);
+  for(const pt of P.parts){
+    const ty=pt.type||'dot'; pt.age++;
+    if(ty==='leaf'){ pt.vy=Math.min(pt.vy+0.035,1.1); pt.vx+=Math.sin(pt.age*0.15+pt.seed)*0.06; pt.rot=(pt.rot||0)+0.12; pt.life-=0.011; }
+    else if(ty==='bird'){ pt.vy-=0.025; pt.vx*=1.01; pt.life-=0.009; }
+    else if(ty==='spark'){ pt.vx*=0.93; pt.vy*=0.93; pt.life-=0.032; }
+    else if(ty==='smoke'){ pt.vy*=0.985; pt.r+=0.22; pt.life-=0.014; }
+    else if(ty==='ring'){ pt.r+=1.6; pt.life-=0.05; }
+    else if(ty==='coin'){ pt.vy+=0.18; pt.life-=0.016; if(pt.floor && pt.y>pt.floor){ pt.y=pt.floor; pt.vy*=-0.45; pt.vx*=0.7; } }
+    else { pt.vy+=0.12; pt.life-=0.025; }
+    pt.x+=pt.vx; pt.y+=pt.vy;
+    ctx.globalAlpha=Math.max(0,Math.min(1,pt.life));
+    if(ty==='leaf'){ ctx.fillStyle=pt.col; ctx.save(); ctx.translate(pt.x,pt.y); ctx.rotate(pt.rot); ctx.beginPath(); ctx.ellipse(0,0,3.4,1.7,0,0,Math.PI*2); ctx.fill(); ctx.restore(); }
+    else if(ty==='bird'){ const f=Math.sin(pt.age*0.55)*3; ctx.strokeStyle=pt.col||'#14161d'; ctx.lineWidth=1.3; ctx.beginPath(); ctx.moveTo(pt.x-5,pt.y-f); ctx.quadraticCurveTo(pt.x-2,pt.y-1,pt.x,pt.y); ctx.quadraticCurveTo(pt.x+2,pt.y-1,pt.x+5,pt.y-f); ctx.stroke(); }
+    else if(ty==='spark'){ const z=pt.r*(0.6+pt.life*0.6); ctx.strokeStyle=pt.col; ctx.lineWidth=1.1; ctx.beginPath(); ctx.moveTo(pt.x-z,pt.y); ctx.lineTo(pt.x+z,pt.y); ctx.moveTo(pt.x,pt.y-z); ctx.lineTo(pt.x,pt.y+z); ctx.stroke(); }
+    else if(ty==='smoke'){ ctx.fillStyle=pt.col||'rgba(226,232,240,0.35)'; ctx.beginPath(); ctx.arc(pt.x,pt.y,pt.r,0,Math.PI*2); ctx.fill(); }
+    else if(ty==='ring'){ ctx.strokeStyle=pt.col||'rgba(255,255,255,0.6)'; ctx.lineWidth=1.2; ctx.beginPath(); ctx.ellipse(pt.x,pt.y,pt.r,pt.r*0.55,0,0,Math.PI*2); ctx.stroke(); }
+    else if(ty==='coin'){ ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.ellipse(pt.x,pt.y,2.6,2.6*Math.abs(Math.cos(pt.age*0.3)),0,0,Math.PI*2); ctx.fill(); }
+    else { ctx.fillStyle=pt.col; ctx.beginPath(); ctx.arc(pt.x,pt.y,pt.r,0,Math.PI*2); ctx.fill(); }
+  }
+  ctx.globalAlpha=1;
+}
+
+// What a tap does, scene by scene
+function groveTap(P,x,y){
+  const t=performance.now()/1000, off=(P.off&&P.off.content)||0, base=P.h-24, geo=P.geo||{};
+  P.pulse=1;
+  // animals and the pig answer first
+  const hit=(P.hits||[]).find(hh=>Math.hypot(hh.x-x,(hh.y-y)*1.2)<hh.r);
+  if(hit){ P.animalTap={i:hit.i,t,kind:hit.kind};
+    const col=hit.kind==='bear'?'#f87171':hit.kind==='mecha'?'#67e8f9':'#4ade80';
+    for(let i=0;i<6;i++) groveSpawn(P,{type:'spark',x:hit.x+(Math.random()-0.5)*16,y:hit.y-10,vx:(Math.random()-0.5)*2,vy:-1-Math.random()*1.5,r:3,col});
+    return; }
+  if(P.pigHit && Math.hypot(P.pigHit.x-x,P.pigHit.y-y)<P.pigHit.r){ P.pigTapT=t;
+    for(let i=0;i<10;i++) groveSpawn(P,{type:'spark',x:P.pigHit.x,y:P.pigHit.y,vx:(Math.random()-0.5)*4,vy:(Math.random()-0.5)*4,r:3,col:'#fde68a'}); return; }
+  P.tapT=t; P.tapX=x; P.tapY=y;
+  groveSpawn(P,{type:'ring',x,y,r:3,col:groveHexA(P.def.color,0.7)});
+  const k=P.def.kind;
+  if(k==='tree'){
+    const tips=(geo.tips||[]).slice(0,40), col=geo.leaf||'#3cc472';
+    for(let i=0;i<14 && tips.length;i++){ const tp=tips[Math.floor(Math.random()*tips.length)]; groveSpawn(P,{type:'leaf',x:tp[0]+off,y:tp[1],vx:(Math.random()-0.5)*1.4,vy:Math.random()*0.5,col:Math.random()<0.5?col:(geo.leaf2||col),seed:Math.random()*6}); }
+    if(geo.fruit) for(let i=0;i<2;i++){ const tp=tips[Math.floor(Math.random()*tips.length)]; if(tp) groveSpawn(P,{type:'coin',x:tp[0]+off,y:tp[1]+6,vx:(Math.random()-0.5)*1.6,vy:0,floor:base+4}); }
+  } else if(k==='tower'){
+    P.waveT=t;
+  } else if(k==='house'){
+    P.lightsOff=!P.lightsOff;
+    if(geo.chimney) for(let i=0;i<6;i++) groveSpawn(P,{type:'smoke',x:geo.chimney[0]+off+(Math.random()-0.5)*4,y:geo.chimney[1],vx:(Math.random()-0.3)*0.5,vy:-0.8-Math.random()*0.6,r:3});
+  } else if(k==='field'){
+    P.gustT=t; P.gustX=x-off;
+    const night=groveNight()>0.6, from=geo.crow;
+    for(let i=0;i<5;i++) groveSpawn(P,{type:'bird',x:(i===0&&from?from[0]+off:x+(Math.random()-0.5)*50),y:(i===0&&from?from[1]:base-14-Math.random()*20),vx:(Math.random()<0.5?-1:1)*(1.2+Math.random()),vy:-1.2-Math.random(),col:night?'#cbd5e1':'#14161d'});
+  } else if(k==='coin'){
+    P.spinT=t; const g=geo.coin;
+    if(g) for(let i=0;i<12;i++){ const a=i/12*Math.PI*2; groveSpawn(P,{type:'spark',x:g[0]+off+Math.cos(a)*g[2],y:g[1]+Math.sin(a)*g[2],vx:Math.cos(a)*2.2,vy:Math.sin(a)*2.2,r:3,col:'#fde68a'}); }
+  } else if(k==='vault'){
+    P.spinT=t;
+  }
+}
+
+// ── market weather: overcast and drizzle in a bear market ──
+function groveIsBear(P){ const m=(_grove.moods||{})[P.def.id]; return !!m && m.kind==='bear'; }
+function groveOvercast(P,ctx,ph,kind){
+  if(kind==='coin' || !groveIsBear(P)) return;
+  const {w,h}=P, g=ctx.createLinearGradient(0,0,0,h-24);
+  g.addColorStop(0,'rgba(38,44,58,0.5)'); g.addColorStop(1,'rgba(38,44,58,0.12)'); ctx.fillStyle=g; ctx.fillRect(0,0,w,h);
+}
+function groveWeather(P,t){
+  if(groveReduce || P.def.kind==='coin' || !groveIsBear(P)) return;
+  if(groveSeason(groveNow().getMonth())==='winter') return;  // winter already has snow
+  const {ctx,w,h}=P; ctx.strokeStyle='rgba(176,196,226,0.3)'; ctx.lineWidth=1; ctx.beginPath();
+  for(let i=0;i<34;i++){ const sp=230+groveRand(i+4000)*90, x=(groveRand(i+4001)*w*1.2 - t*30)%(w*1.2), y=(t*sp+groveRand(i+4002)*h)%h; const xx=x<0?x+w*1.2:x;
+    ctx.moveTo(xx,y); ctx.lineTo(xx-2.5,y+9); }
+  ctx.stroke();
+  // splashes along the ground
+  ctx.fillStyle='rgba(176,196,226,0.25)'; for(let i=0;i<6;i++){ const q=((t*1.7+groveRand(i+4100))%1); if(q>0.3) continue; const sx=groveRand(i*7+Math.floor(t*1.7+groveRand(i+4100)))*w; ctx.beginPath(); ctx.ellipse(sx,h-24+4,2+q*8,1+q*2,0,0,Math.PI*2); ctx.fill(); }
+}
+
+// ── a soft light follows your cursor ──
+function groveCursorLight(P){
+  if(!P.hover || groveReduce) return;
+  const {ctx}=P, n=groveNight(), r=74, g=ctx.createRadialGradient(P.mx,P.my,0,P.mx,P.my,r);
+  g.addColorStop(0,`rgba(255,240,210,${0.05+n*0.09})`); g.addColorStop(1,'rgba(255,240,210,0)'); ctx.fillStyle=g; ctx.fillRect(P.mx-r,P.my-r,r*2,r*2);
+}
+
+// ── Focus mode: open any scene big ──
+const GROVE_FOCUS_HINT = {
+  tree:'Tap the tree to shake loose some leaves. Gold fruit drops as coins.',
+  tower:'Tap the tower to send a wave of light up every floor.',
+  house:'Tap the house to switch the lights on or off.',
+  field:'Tap the field to send a gust through the crops and startle the birds.',
+  coin:'Tap anywhere to flip your biggest coin.',
+  vault:'Tap the vault to spin the wheel. Tap the pig if it flies by.',
+};
+function groveFocusEnsure(){
+  if(document.getElementById('gf-overlay')) return;
+  const el=document.createElement('div'); el.id='gf-overlay'; el.className='gf-overlay';
+  el.innerHTML=`<div class="gf-sheet" role="dialog" aria-modal="true" aria-labelledby="gf-title">
+    <div class="gf-head"><div class="gf-name" id="gf-title"></div><button type="button" class="gs-x" onclick="groveFocusClose()" aria-label="Close">×</button></div>
+    <div class="gf-stage" id="gf-stage"><canvas></canvas></div>
+    <div class="gf-info"><div class="gf-stats" id="gf-stats"></div><div class="gf-hint" id="gf-hint"></div></div></div>`;
+  el.addEventListener('click',e=>{ if(e.target===el) groveFocusClose(); });
+  document.body.appendChild(el);
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape' && el.classList.contains('open')) groveFocusClose(); });
+  const stage=el.querySelector('#gf-stage'), toLocal=e=>{ const F=_grove.focusP, r=stage.getBoundingClientRect(); return F ? [(e.clientX-r.left)*F.w/r.width,(e.clientY-r.top)*F.h/r.height] : [0,0]; };
+  stage.addEventListener('click',e=>{ const F=_grove.focusP; if(!F) return; const [x,y]=toLocal(e); groveTap(F,x,y); });
+  stage.addEventListener('pointermove',e=>{ const F=_grove.focusP; if(!F) return; const [x,y]=toLocal(e); if(e.pointerType==='mouse'){ F.camT=Math.max(-1,Math.min(1,(x/F.w-0.5)*2.2)); F.mx=x; F.my=y; F.hover=true; } });
+  stage.addEventListener('pointerleave',()=>{ const F=_grove.focusP; if(F){ F.camT=0; F.hover=false; } });
+  window.addEventListener('resize',()=>{ if(_grove.focusP) groveFocusSize(_grove.focusP); });
+}
+function groveFocusSize(F){
+  const stage=document.getElementById('gf-stage'), r=stage.getBoundingClientRect(); if(!r.width) return;
+  const dpr=window.devicePixelRatio||1;
+  // keep the scene's own proportions (about 280 tall) and render it sharper rather than bigger
+  F.h=300; F.w=Math.round(300*r.width/r.height);
+  if(F.w<340){ F.w=340; F.h=Math.round(340*r.height/r.width); }  // tall phone screens: keep the full width of the scene and show more sky
+  F.rs=Math.min(2.6, r.width/F.w*dpr);
+  if(F.w*F.rs*F.h*F.rs>3.2e6) F.rs=Math.sqrt(3.2e6/(F.w*F.h));
+  F.cv.width=Math.round(F.w*F.rs); F.cv.height=Math.round(F.h*F.rs); F.ctx.setTransform(F.rs,0,0,F.rs,0,0);
+  F.sceneKey=null; F.back=null;
+}
+function groveFocus(id){
+  const live=(_grove.plots||{})[id]; if(!live) return;
+  groveFocusEnsure();
+  const el=document.getElementById('gf-overlay'), cv=el.querySelector('canvas'), def=live.def;
+  const F={def, cv, ctx:cv.getContext('2d'), parts:[], pulse:0, flash:0, cam:0, visible:true, focus:true, disp:live.disp, dispGain:live.dispGain, lightsOff:live.lightsOff};
+  document.getElementById('gf-title').innerHTML=`<span class="grove-tag" style="background:${def.color}">${def.tag}</span>${def.name}`;
+  document.getElementById('gf-hint').textContent=(GROVE_FOCUS_HINT[def.kind]||'')+' Tap a bull or bear to say hi.';
+  el.classList.add('open'); document.body.style.overflow='hidden';
+  _grove.focusP=F; groveFocusStats();
+  requestAnimationFrame(()=>{ groveFocusSize(F); groveStart(); });
+}
+function groveFocusStats(){
+  const F=_grove.focusP; if(!F) return; const t=(_grove.tot||{})[F.def.id]||{contrib:0,value:0}, m=(_grove.moods||{})[F.def.id];
+  const lvl=document.getElementById(`gp-${F.def.id}-lvl`)?.innerHTML||'';
+  document.getElementById('gf-stats').innerHTML=`<span>${lvl}</span><span>Put in <b>${groveFmt(t.contrib)}</b></span><span>Worth <b>${groveFmt(t.value)}</b></span>${m?`<span class="gf-mood ${m.kind}">${m.kind==='bull'?'Bull market':m.kind==='bear'?'Bear market':'Steady'} ${(m.r>=0?'+':'')+(m.r*100).toFixed(1)}%</span>`:''}`;
+}
+function groveFocusClose(){
+  const el=document.getElementById('gf-overlay'); if(el) el.classList.remove('open');
+  const F=_grove.focusP; if(F){ const live=(_grove.plots||{})[F.def.id]; if(live) live.lightsOff=F.lightsOff; }
+  _grove.focusP=null; document.body.style.overflow='';
 }
 
 // Re-render the grove whenever investments change or the page opens
