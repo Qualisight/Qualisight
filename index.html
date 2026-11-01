@@ -942,6 +942,26 @@ select option{background:var(--card2)}
 .headline-time  {font-size:0.75rem;color:var(--muted)}
 
 /* ── TERMS OF SERVICE MODAL ── */
+.auth-pass-wrap{position:relative}
+.auth-pass-wrap .auth-input{padding-right:4.2rem}
+.auth-eye{position:absolute;right:0.5rem;top:50%;transform:translateY(-50%);background:transparent;border:none;color:var(--muted);font-size:0.78rem;font-weight:600;cursor:pointer;padding:0.4rem 0.5rem}
+.auth-eye:hover{color:var(--text)}
+.auth-terms{font-size:0.72rem;color:var(--muted);line-height:1.5;margin-top:0.75rem;text-align:center}
+.tour-inline{position:relative}
+.tour-inline video{width:100%;display:block;border-radius:10px;background:#0b0f18;cursor:pointer}
+.tour-expand{position:absolute;right:10px;bottom:12px;display:inline-flex;align-items:center;gap:0.4rem;background:rgba(8,10,15,0.72);color:#e8edf8;border:1px solid rgba(255,255,255,0.18);border-radius:999px;padding:0.4rem 0.75rem;font-size:0.78rem;font-weight:600;cursor:pointer;backdrop-filter:blur(6px)}
+.tour-expand:hover{background:rgba(8,10,15,0.9)}
+.tour-open-btn{display:inline-flex;align-items:center;gap:0.5rem;background:transparent;color:#e8edf8;border:1px solid rgba(255,255,255,0.18);border-radius:999px;padding:0.55rem 1rem;font-size:0.9rem;font-weight:600;cursor:pointer;margin:0.2rem auto 0.8rem;position:relative}
+.tour-overlay{position:fixed;inset:0;z-index:3000;background:rgba(5,6,10,0.93);display:none;align-items:center;justify-content:center;padding:16px}
+.tour-overlay.open{display:flex}
+.tour-box{width:min(1120px,100%);display:flex;flex-direction:column;gap:12px}
+.tour-head{display:flex;align-items:center;justify-content:space-between;color:#e8edf8;font-weight:600;font-size:0.95rem}
+.tour-x{background:rgba(255,255,255,0.08);border:none;color:#e8edf8;font-size:1.5rem;line-height:1;width:38px;height:38px;border-radius:50%;cursor:pointer}
+.tour-box video{width:100%;max-height:calc(100vh - 160px);border-radius:14px;background:#000;display:block}
+.tour-cta{display:flex;align-items:center;justify-content:center;gap:0.9rem;flex-wrap:wrap}
+.tour-cta span{color:#97a2b8;font-size:0.85rem}
+.tour-cta button{background:#4ade80;color:#0b0d12;font-weight:700;font-family:inherit;border:none;border-radius:12px;padding:0.75rem 1.5rem;font-size:1rem;cursor:pointer}
+.tour-cta button:hover{filter:brightness(1.06)}
 .tos-overlay{
   position:fixed;inset:0;background:rgba(0,0,0,0.82);z-index:600;
   display:none;align-items:center;justify-content:center;
@@ -1346,6 +1366,33 @@ select option{background:var(--card2)}
 @media(max-width:760px){#landing-page .lp-nav-links{display:none;}}
 
 /* hero */
+#landing-page .lp-sticky{display:none}
+@media (max-width:760px){
+  #landing-page .lp-sticky{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:60;align-items:center;justify-content:space-between;gap:0.8rem;padding:0.7rem 1rem calc(0.7rem + env(safe-area-inset-bottom));background:rgba(11,13,18,0.96);border-top:1px solid rgba(255,255,255,0.08);transform:translateY(110%);transition:transform .25s ease;backdrop-filter:blur(8px)}
+  #landing-page .lp-sticky.show{transform:none}
+  #landing-page .lp-sticky span{color:#e8edf8;font-weight:600;font-size:0.9rem;line-height:1.25;text-align:left}
+  #landing-page .lp-sticky small{color:#97a2b8;font-weight:500;font-size:0.75rem}
+  #landing-page .lp-sticky .lp-btn-primary{padding:0.7rem 1.2rem;font-size:0.95rem;white-space:nowrap}
+  #landing-page .lp-preview-early{margin:0.4rem 0 1rem}
+  /* grove ad visitors on phones: the tree and the button both fit on the first screen */
+  #landing-page .lp-hero.lp-hero--grove{padding-top:1.5rem}
+  #landing-page .lp-hero--grove .lp-badge{display:none}
+  #landing-page .lp-hero--grove h1{font-size:2.3rem;margin-bottom:0.5rem}
+  #landing-page .lp-hero--grove .lp-preview-early .lp-preview-bar{display:none}
+  #landing-page .lp-hero--grove .lp-preview-early .lp-preview{padding:0}
+  #landing-page .lp-hero--grove .lp-preview-early .lp-preview-body{padding:0}
+  #landing-page .lp-hero--grove .lp-preview-early video{max-height:30vh;object-fit:cover;border-radius:14px}
+  #landing-page .lp-hero--grove .lp-hero-sub{font-size:0.98rem;margin-bottom:1rem}
+}
+#landing-page.hidden .lp-sticky{display:none}
+.demo-nudge{position:fixed;left:50%;bottom:calc(84px + env(safe-area-inset-bottom));transform:translate(-50%,140%);z-index:900;display:flex;align-items:center;gap:0.8rem;width:min(520px,calc(100% - 24px));padding:0.85rem 0.9rem 0.85rem 1.1rem;background:#14171f;border:1px solid rgba(74,222,128,0.35);border-radius:14px;box-shadow:0 12px 40px rgba(0,0,0,0.45);opacity:0;transition:transform .35s ease,opacity .35s ease;pointer-events:none}
+.demo-nudge.show{transform:translate(-50%,0);opacity:1;pointer-events:auto}
+.demo-nudge div{flex:1;min-width:0}
+.demo-nudge b{display:block;color:#e8edf8;font-size:0.9rem}
+.demo-nudge span{display:block;color:#97a2b8;font-size:0.78rem;margin-top:0.15rem}
+.demo-nudge .demo-btn{white-space:nowrap}
+.demo-nudge-x{background:transparent;border:none;color:#97a2b8;font-size:1.2rem;cursor:pointer;padding:0.2rem 0.3rem}
+@media (min-width:900px){ .demo-nudge{bottom:24px} }
 #landing-page .lp-hero{
   position:relative;overflow:hidden;
   padding:5.5rem 1.5rem 4rem;
@@ -3613,21 +3660,22 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
     <!-- CREATE ACCOUNT -->
     <div id="auth-create" style="display:none">
       <div class="auth-logo">Qualisight</div>
-      <div class="auth-tagline" style="margin-bottom:1.4rem">Create your account, data synced across all your devices.</div>
-      <label class="auth-label">Your name</label>
+      <div class="auth-tagline" style="margin-bottom:1.4rem">Free to start. No credit card needed.</div>
+      <label class="auth-label">First name</label>
       <input class="auth-input" id="cr-name" type="text" placeholder="e.g. Alex" maxlength="32" autocomplete="name"
         onkeydown="if(event.key==='Enter')document.getElementById('cr-email').focus()">
       <label class="auth-label">Email</label>
       <input class="auth-input" id="cr-email" type="email" placeholder="you@example.com" autocomplete="email"
         onkeydown="if(event.key==='Enter')document.getElementById('cr-pass').focus()">
       <label class="auth-label">Password</label>
-      <input class="auth-input" id="cr-pass" type="password" placeholder="Min. 6 characters" autocomplete="new-password"
-        onkeydown="if(event.key==='Enter')document.getElementById('cr-pass2').focus()">
-      <label class="auth-label">Confirm password</label>
-      <input class="auth-input" id="cr-pass2" type="password" placeholder="Re-enter password" autocomplete="new-password"
-        onkeydown="if(event.key==='Enter')submitCreate()">
+      <div class="auth-pass-wrap">
+        <input class="auth-input" id="cr-pass" type="password" placeholder="At least 6 characters" autocomplete="new-password"
+          onkeydown="if(event.key==='Enter')validateAndShowTos()">
+        <button type="button" class="auth-eye" aria-label="Show password" onclick="const i=document.getElementById('cr-pass');const show=i.type==='password';i.type=show?'text':'password';this.setAttribute('aria-label',show?'Hide password':'Show password');this.textContent=show?'Hide':'Show'">Show</button>
+      </div>
       <div class="auth-error" id="cr-error"></div>
-      <button class="auth-btn" onclick="validateAndShowTos()">Review Terms &amp; Create Account</button>
+      <button class="auth-btn" id="cr-btn" onclick="validateAndShowTos()">Create my free account</button>
+      <div class="auth-terms">By creating an account you agree to the <span class="auth-link" onclick="showTerms()">Terms of Service</span> and <span class="auth-link" onclick="showPrivacy()">Privacy Policy</span>. Qualisight is a tracking tool, not financial advice.</div>
       <div class="auth-footer">Already have an account? <span class="auth-link" onclick="showSignIn()">Sign in</span></div>
     </div>
 
@@ -4609,7 +4657,7 @@ function showSignIn(){
 }
 function showCreate(){
   showPanel('auth-create');
-  ['cr-name','cr-email','cr-pass','cr-pass2'].forEach(id=>document.getElementById(id).value='');
+  ['cr-name','cr-email','cr-pass'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('cr-error').textContent='';
   setTimeout(()=>document.getElementById('cr-name').focus(),50);
 }
@@ -4687,17 +4735,14 @@ function validateAndShowTos(){
   const name  = document.getElementById('cr-name').value.trim();
   const email = document.getElementById('cr-email').value.trim().toLowerCase();
   const pass  = document.getElementById('cr-pass').value;
-  const pass2 = document.getElementById('cr-pass2').value;
   const err   = document.getElementById('cr-error');
-  if(!name)                        { err.textContent='Enter your name.'; return; }
+  if(!name)                        { err.textContent='Enter your first name.'; return; }
   if(!email||!email.includes('@')) { err.textContent='Enter a valid email address.'; return; }
   if(pass.length<6)                { err.textContent='Password must be at least 6 characters.'; return; }
-  if(pass!==pass2)                 { err.textContent='Passwords do not match.'; return; }
   err.textContent='';
-  // Show ToS modal
-  document.getElementById('tos-checkbox').checked=false;
-  document.getElementById('tos-accept-btn').disabled=true;
-  document.getElementById('tos-overlay').classList.add('open');
+  // The button itself is the agreement (the terms line sits right under it), so create the account now
+  const btn=document.getElementById('cr-btn'); if(btn){ if(btn.disabled) return; btn.disabled=true; btn.textContent='Creating your account...'; }
+  Promise.resolve(acceptTermsAndCreate()).finally(()=>{ if(btn){ btn.disabled=false; btn.textContent='Create my free account'; } });
 }
 
 function tosCheckChanged(){
@@ -11611,6 +11656,122 @@ function lpToggleFaq(btn){
   if(!wasOpen) item.classList.add('open');
 }
 function lpFmt(n){return '$'+Math.round(n).toLocaleString('en-CA');}
+
+// ── Phones: a "Start for free" bar sticks to the bottom once you've scrolled past the main button ──
+(function(){
+  const lp=document.getElementById('landing-page'); if(!lp) return;
+  const bar=document.createElement('div'); bar.className='lp-sticky'; bar.id='lp-sticky';
+  bar.innerHTML='<span>Free to start<br><small>No credit card needed</small></span><button class="lp-btn-primary" onclick="lpShowSignup()">Start for free</button>';
+  lp.appendChild(bar);
+  const target=lp.querySelector('.lp-hero-actions'); if(!target || !('IntersectionObserver' in window)) return;
+  new IntersectionObserver(es=>es.forEach(e=>{ bar.classList.toggle('show', !e.isIntersecting && e.boundingClientRect.top<0); })).observe(target);
+})();
+
+// ── In the demo: after a little while, a friendly nudge to start your own ──
+(function(){
+  const _start=startDemo;
+  startDemo=function(){
+    const r=_start.apply(this,arguments);
+    clearTimeout(window._qsNudgeT);
+    window._qsNudgeT=setTimeout(()=>{
+      if(!currentUser || !currentUser.isDemo) return;
+      try{ if(sessionStorage.getItem('qs_nudged')) return; sessionStorage.setItem('qs_nudged','1'); }catch(e){}
+      let n=document.getElementById('demo-nudge');
+      if(!n){ n=document.createElement('div'); n.id='demo-nudge'; n.className='demo-nudge'; n.setAttribute('role','status');
+        n.innerHTML='<div><b>Like it? Set up your own in 2 minutes.</b><span>Free to start, no credit card.</span></div><button class="demo-btn" onclick="document.getElementById(\'demo-nudge\').classList.remove(\'show\');if(typeof qsEvent===\'function\')qsEvent(\'signup_open\');exitDemo()">Start for free</button><button class="demo-nudge-x" aria-label="Dismiss" onclick="document.getElementById(\'demo-nudge\').classList.remove(\'show\')">×</button>';
+        document.body.appendChild(n); }
+      n.classList.add('show');
+    },25000);
+    return r;
+  };
+  const _exit=exitDemo; exitDemo=function(){ clearTimeout(window._qsNudgeT); const n=document.getElementById('demo-nudge'); if(n) n.classList.remove('show'); return _exit.apply(this,arguments); };
+})();
+
+
+// ── Ad visitors: the page matches the ad they tapped, and we count (anonymously) what they do ──
+// Only visits that arrive with a utm_campaign are counted: no names, emails or devices, just
+// "someone from test1-grove landed / opened the demo / opened signup", once per visit.
+(function(){
+  let camp='', sid='';
+  try{
+    camp=(new URLSearchParams(location.search).get('utm_campaign')||'').replace(/[^a-z0-9_-]/gi,'').slice(0,60);
+    if(camp) sessionStorage.setItem('qs_camp',camp); else camp=sessionStorage.getItem('qs_camp')||'';
+    sid=sessionStorage.getItem('qs_sid')||''; if(!sid){ sid=Math.random().toString(36).slice(2,12); sessionStorage.setItem('qs_sid',sid); }
+  }catch(e){}
+  const sent={};
+  window.qsEvent=function(ev){
+    if(!camp || sent[ev]) return; sent[ev]=1;
+    try{ if(typeof sb!=='undefined') sb.from('lp_events').insert({campaign:camp, event:ev, sid}).then(()=>{},()=>{}); }catch(e){}
+  };
+  // count demo and signup opens
+  const _demo=lpTryDemo, _signup=lpShowSignup;
+  lpTryDemo=function(){ qsEvent('demo'); return _demo.apply(this,arguments); };
+  lpShowSignup=function(){ qsEvent('signup_open'); return _signup.apply(this,arguments); };
+  if(camp) setTimeout(()=>qsEvent('land'),400);
+
+  // grove ad: lead with the grove instead of the dashboard
+  if(!/grove/i.test(camp)) return;
+  const hero=document.querySelector('#landing-page .lp-hero'); if(!hero) return;
+  const badge=hero.querySelector('.lp-badge'); if(badge) badge.innerHTML='<span class="lp-badge-dot"></span>Built in Canada. Budgeting is free forever.';
+  const h1=hero.querySelector('h1'); if(h1) h1.innerHTML='Watch your TFSA<br><span class="grad">grow.</span>';
+  const sub=hero.querySelector('.lp-hero-sub'); if(sub) sub.textContent='Every dollar you put in grows your tree. Your RRSP builds a skyline and your FHSA builds your first home. Plus budgeting and debt payoff, free forever.';
+  const btn2=hero.querySelector('.lp-hero-actions .lp-btn-secondary');
+  if(btn2){ btn2.textContent='See the grove in the demo'; btn2.onclick=function(){ lpTryDemo(); setTimeout(()=>{ showPage('investments'); const g=document.getElementById('grove'); window.scrollTo({top:g?Math.max(0,g.getBoundingClientRect().top+window.scrollY-72):0,behavior:'instant'}); },450); }; }
+  const note=hero.querySelector('.lp-hero-note'); if(note) note.textContent='No credit card needed. The grove and investing tools are free for 14 days, then $12 a month.';
+  const url=hero.querySelector('.lp-preview-url'); if(url) url.textContent='qualisight.ca/investments';
+  // on phones, show the tree right under the headline so the first screen has the tree and the button
+  hero.classList.add('lp-hero--grove');
+  if(window.innerWidth<760){
+    if(h1) h1.innerHTML='Watch your TFSA <span class="grad">grow.</span>';
+    const wrap=hero.querySelector('.lp-preview-wrap'); if(wrap && h1){ h1.after(wrap); wrap.classList.add('lp-preview-early'); }
+    if(sub) sub.textContent='Every dollar you put in grows your tree. Budgeting and debt payoff are free forever.';
+  }
+  const body=hero.querySelector('.lp-preview-body');
+  if(body){
+    const poster=(document.querySelector('#lp-grove img')||{}).src||'';
+    body.innerHTML='<video src="grove-loop.mp4"'+(poster?' poster="'+poster+'"':'')+' autoplay muted loop playsinline preload="auto" style="width:100%;display:block;border-radius:10px;background:#0b0f18" aria-label="A money grove tree growing as money is added"></video>';
+  }
+})();
+
+// ── The money grove tour: plays on desktop where the dashboard preview was, and opens full screen with sound ──
+// Phones get a button instead, so a 5 MB video never slows the first screen down.
+(function(){
+  const hero=document.querySelector('#landing-page .lp-hero'); if(!hero) return;
+  const EXPAND='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7"/></svg>';
+  function closeTour(){ const ov=document.getElementById('tour-overlay'); if(!ov) return; ov.classList.remove('open'); const v=ov.querySelector('video'); try{ v.pause(); }catch(e){} }
+  function openTour(){
+    let ov=document.getElementById('tour-overlay');
+    if(!ov){
+      ov=document.createElement('div'); ov.id='tour-overlay'; ov.className='tour-overlay';
+      ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true'); ov.setAttribute('aria-label','Money grove tour');
+      ov.innerHTML='<div class="tour-box"><div class="tour-head"><span>The money grove, in 50 seconds</span><button type="button" class="tour-x" aria-label="Close">×</button></div>'
+        +'<video controls playsinline preload="auto" poster="grove-tour-poster.jpg" src="grove-tour.mp4"></video>'
+        +'<div class="tour-cta"><button type="button" class="lp-btn-primary">Start for free</button><span>No credit card needed</span></div></div>';
+      ov.querySelector('.tour-x').onclick=closeTour;
+      ov.addEventListener('click',e=>{ if(e.target===ov) closeTour(); });
+      ov.querySelector('.tour-cta button').onclick=()=>{ closeTour(); lpShowSignup(); };
+      document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeTour(); });
+      document.body.appendChild(ov);
+    }
+    ov.classList.add('open'); const v=ov.querySelector('video'); v.currentTime=0; v.muted=false; v.play().catch(()=>{});
+  }
+  window.qsOpenTour=openTour;
+  if(window.innerWidth>=760){
+    const body=hero.querySelector('.lp-preview-body'), url=hero.querySelector('.lp-preview-url');
+    if(body){
+      body.innerHTML='<div class="tour-inline"><video src="grove-tour.mp4" poster="grove-tour-poster.jpg" autoplay muted loop playsinline preload="auto" aria-label="A tour of the money grove: a TFSA tree, an RRSP tower, an FHSA house, a farm, crypto and a gold vault"></video>'
+        +'<button type="button" class="tour-expand">'+EXPAND+'Full screen with sound</button></div>';
+      body.querySelector('video').onclick=openTour; body.querySelector('.tour-expand').onclick=openTour;
+      if(url) url.textContent='qualisight.ca/investments';
+    }
+  } else {
+    const btn=document.createElement('button'); btn.type='button'; btn.className='tour-open-btn';
+    btn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>Watch the 50-second tour';
+    btn.onclick=openTour;
+    const early=hero.querySelector('.lp-preview-early'), note=hero.querySelector('.lp-hero-note');
+    if(early) early.after(btn); else if(note) note.after(btn);
+  }
+})();
 
 // Slider fill visual
 function lpFill(el){
