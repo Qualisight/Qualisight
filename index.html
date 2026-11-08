@@ -367,6 +367,26 @@ header{
   .dt-hero-stat{border-left:none;padding-left:0;}
 }
 
+/* Debt pit: dig yourself out */
+.pit{background:var(--card);border:1px solid var(--border);border-radius:20px;overflow:hidden;margin-bottom:1rem}
+.pit-head{display:flex;justify-content:space-between;align-items:flex-start;gap:0.6rem 1rem;flex-wrap:wrap;padding:1rem 1.1rem 0.75rem}
+.pit-title{font-family:var(--font-display);font-weight:800;font-size:1.15rem;letter-spacing:-0.03em;color:var(--text)}
+.pit-sub{font-size:0.82rem;color:var(--muted);max-width:60ch;margin-top:0.2rem;line-height:1.45}
+.pit-pill{font-size:0.76rem;font-weight:600;color:#4ade80;border:1px solid rgba(74,222,128,0.35);border-radius:999px;padding:0.25rem 0.7rem;white-space:nowrap}
+.pit-stage{position:relative;height:320px;background:#0b0f18;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pit-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.pit-body{padding:0.85rem 1.1rem 1.05rem;display:flex;flex-direction:column;gap:0.8rem}
+.pit-nums{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.6rem}
+.pit-k{font-size:0.72rem;color:var(--muted)}
+.pit-v{font-family:var(--font-display);font-size:1.15rem;font-weight:700;letter-spacing:-0.02em;color:var(--text);font-variant-numeric:tabular-nums}
+.pit-v.neg{color:var(--red)} .pit-v.pos{color:var(--accent)}
+.pit-slider-top{display:flex;justify-content:space-between;font-size:0.8rem;color:var(--muted);margin-bottom:0.3rem}
+.pit-slider-top b{color:var(--accent);font-variant-numeric:tabular-nums}
+.pit-slider input{width:100%;accent-color:#4ade80}
+.pit-next{font-size:0.82rem;color:var(--muted);line-height:1.5}
+.pit-next b{color:var(--text)}
+@media(max-width:520px){.pit-stage{height:290px}.pit-v{font-size:1rem}}
+
 /* Attack-first callout */
 .dt-attack{
   display:flex;align-items:center;gap:1rem;
@@ -3997,6 +4017,9 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
   <!-- Debt-free hero -->
   <div class="dt-hero" id="dt-hero"></div>
 
+  <!-- Dig yourself out: debt hole visual -->
+  <div id="dt-pit-mount"></div>
+
   <!-- Attack-first callout -->
   <div id="dt-attack-mount"></div>
 
@@ -6519,6 +6542,344 @@ function toggleDebtCard(el){
   window._dtOpen[key]=card.classList.contains('open');
 }
 
+// ══════════════════════════════════════════
+// DEBT PIT: dig yourself out of the hole
+// Each remaining debt is a layer of dirt between you and the surface,
+// stacked in payoff order. Every payment raises the floor you stand on.
+// ══════════════════════════════════════════
+const _pit = { built:false, extra:0, r:1, rT:1, parts:[], phase:0, burst:0, visible:true, raf:null, last:0, crumbleT:0, W:0, H:320 };
+const pitReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const PIT_SOIL = ['#5c4433','#4a382b','#6a4e37','#3e3026','#574030','#664a35'];
+function pitRand(n){ let t=(n*2654435761)>>>0; t^=t>>>15; t=Math.imul(t,2246822519)>>>0; t^=t>>>13; return (t>>>0)/4294967296; }
+
+// Same rules as simulateAllDebts, but also records the total owed each month
+function pitSim(extra){
+  const debts = orderedDebts().map(({d})=>({bal:d.balance, rate:d.rate/100/12, min:d.min||0}));
+  const series=[debts.reduce((s,x)=>s+x.bal,0)];
+  if(!debts.length) return {months:0, interest:0, canFinish:true, series};
+  let months=0, interest=0;
+  while(debts.some(x=>x.bal>0.01) && months<600){
+    let pool=extra, progress=false;
+    debts.forEach(x=>{
+      if(x.bal<=0.01){ pool+=x.min; return; }
+      const i=x.bal*x.rate; interest+=i; x.bal+=i;
+      x.bal-=Math.min(x.min,x.bal);
+      if(x.min>=i) progress=true;
+    });
+    for(let k=0;k<debts.length && pool>0.01;k++){
+      if(debts[k].bal>0.01){ const p=Math.min(pool,debts[k].bal); debts[k].bal-=p; pool-=p; progress=true; }
+    }
+    months++;
+    if(months<=12) series.push(Math.max(0,debts.reduce((s,x)=>s+x.bal,0)));
+    if(!progress) return {months:Infinity, interest:Infinity, canFinish:false, series};
+  }
+  while(series.length<13) series.push(Math.max(0,debts.reduce((s,x)=>s+x.bal,0)));
+  const done = months<600;
+  return {months:done?months:Infinity, interest:done?interest:Infinity, canFinish:done, series};
+}
+
+function pitData(){
+  const order = orderedDebts();
+  const all = state.debts||[];
+  const bal = all.reduce((s,d)=>s+Math.max(0,d.balance||0),0);
+  const orig = all.reduce((s,d)=>s+Math.max(d.origBalance||0,d.balance||0),0);
+  const denom = Math.max(orig, bal, 1);
+  const base = pitSim(0), plan = pitSim(_pit.extra);
+  return { order, all, bal, orig, denom, base, plan };
+}
+
+function renderDebtPit(){
+  const mount = document.getElementById('dt-pit-mount');
+  if(!mount) return;
+  if(!(state.debts||[]).length){ mount.innerHTML=''; _pit.built=false; pitStop(); return; }
+  if(!_pit.built || !mount.querySelector('.pit')){
+    mount.innerHTML = `
+    <div class="pit">
+      <div class="pit-head">
+        <div>
+          <div class="pit-title">Dig yourself out</div>
+          <div class="pit-sub">Each layer of dirt is one of your debts, stacked in the order you're paying them off. Every payment lifts you closer to the surface.</div>
+        </div>
+        <span class="pit-pill" id="pit-pill"></span>
+      </div>
+      <div class="pit-stage" id="pit-stage" role="img" aria-label="Debt hole illustration"><canvas></canvas></div>
+      <div class="pit-body">
+        <div class="pit-nums">
+          <div><div class="pit-k">Dirt left to dig</div><div class="pit-v neg" id="pit-left"></div></div>
+          <div><div class="pit-k">Already dug out</div><div class="pit-v pos" id="pit-dug"></div></div>
+          <div><div class="pit-k">Back on the surface</div><div class="pit-v" id="pit-date"></div></div>
+        </div>
+        <div class="pit-slider">
+          <div class="pit-slider-top"><span>Dig harder: extra per month</span><b id="pit-extra-val">+$0</b></div>
+          <input type="range" id="pit-extra" min="0" max="1000" step="25" value="${_pit.extra}" aria-label="Extra payment per month">
+        </div>
+        <div class="pit-next" id="pit-next"></div>
+      </div>
+    </div>`;
+    _pit.built = true;
+    _pit.cv = mount.querySelector('canvas'); _pit.ctx = _pit.cv.getContext('2d');
+    const stage = document.getElementById('pit-stage');
+    stage.addEventListener('click', ()=>{ _pit.burst = 1; if(pitReduce) pitDraw(0); });
+    document.getElementById('pit-extra').addEventListener('input', e=>{ _pit.extra = +e.target.value; pitText(); if(pitReduce) pitDraw(0); });
+    if('ResizeObserver' in window){ _pit.ro && _pit.ro.disconnect(); _pit.ro = new ResizeObserver(()=>{ pitSize(); pitDraw(0); }); _pit.ro.observe(stage); }
+    if('IntersectionObserver' in window){ _pit.io && _pit.io.disconnect(); _pit.io = new IntersectionObserver(en=>{ _pit.visible = en[0].isIntersecting; if(_pit.visible) pitStart(); }); _pit.io.observe(stage); }
+    pitSize();
+    const d0 = pitData(); _pit.r = _pit.rT = d0.bal/d0.denom; // first paint: no animation
+  }
+  pitText();
+  pitStart();
+}
+
+function pitText(){
+  const D = pitData(); _pit.D = D;
+  _pit.rT = D.bal / D.denom;
+  const out = D.bal<=0 ? 100 : Math.max(0, Math.min(99, Math.floor((1-D.bal/D.denom)*100)));
+  const set=(id,h)=>{ const e=document.getElementById(id); if(e) e.innerHTML=h; };
+  set('pit-pill', D.bal<=0 ? 'You made it out' : `${out}% of the way out`);
+  set('pit-left', fmtW(D.bal)); document.getElementById('pit-left')?.classList.toggle('neg', D.bal>0);
+  set('pit-dug', fmtW(Math.max(0, D.denom - D.bal)));
+  set('pit-extra-val', `+${fmtW(_pit.extra)}`);
+  const p = D.plan, b = D.base;
+  set('pit-date', D.bal<=0 ? 'Now' : p.canFinish ? pitShortDate(p.months) : 'Not yet');
+  let msg;
+  if(D.bal<=0) msg = `Hole filled in. That ${fmtW(D.denom)} you used to owe can now go toward your TFSA instead.`;
+  else if(!p.canFinish) msg = _pit.extra>0
+    ? `Still not enough. Interest is refilling the hole as fast as you dig. Slide a little further.`
+    : `Right now interest refills the hole faster than your payments dig it out. Slide to find the extra that gets you climbing.`;
+  else if(_pit.extra<=0) msg = `At your current payments you climb out in ${monthsToDuration(b.months)}. Slide to see how much faster a little extra gets you there.`;
+  else if(!b.canFinish) msg = `An extra ${fmtW(_pit.extra)} a month is enough to start climbing. You'd be out in ${monthsToDuration(p.months)}.`;
+  else {
+    const sooner = b.months - p.months, saved = Math.max(0, b.interest - p.interest);
+    msg = sooner>0
+      ? `An extra ${fmtW(_pit.extra)} a month gets you out <b>${sooner} month${sooner===1?'':'s'} sooner</b> and skips <b>${fmtW(saved)}</b> in interest. The dashed line shows where you'd be standing a year from now.`
+      : `An extra ${fmtW(_pit.extra)} a month saves you ${fmtW(saved)} in interest.`;
+  }
+  set('pit-next', msg);
+}
+
+function pitSize(){
+  if(!_pit.cv) return;
+  const st=_pit.cv.parentElement, dpr=Math.min(2, window.devicePixelRatio||1);
+  _pit.W = st.clientWidth; _pit.H = st.clientHeight;
+  _pit.cv.width = Math.round(_pit.W*dpr); _pit.cv.height = Math.round(_pit.H*dpr);
+  _pit.ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+
+function pitStart(){
+  if(pitReduce){ pitDraw(0); return; }
+  if(_pit.raf) return;
+  _pit.last = performance.now();
+  const loop = now=>{
+    const page=document.getElementById('page-debt');
+    if(!_pit.visible || !_pit.cv || !_pit.cv.isConnected || (page && !page.classList.contains('active'))){ _pit.raf=null; return; }
+    const dt = Math.min(0.05, (now-_pit.last)/1000); _pit.last = now;
+    pitDraw(dt);
+    _pit.raf = requestAnimationFrame(loop);
+  };
+  _pit.raf = requestAnimationFrame(loop);
+}
+function pitStop(){ if(_pit.raf) cancelAnimationFrame(_pit.raf); _pit.raf=null; }
+
+function pitLayout(){
+  const W=_pit.W, H=_pit.H;
+  const surf = 82, bottom = H-14;
+  const holeW = Math.max(88, Math.min(170, W*0.28));
+  const rightNeed = Math.min(175, W*0.42);
+  const cx = Math.max(holeW/2+64, W - rightNeed - holeW/2 - 10);
+  return { W, H, surf, bottom, holeW, hx:cx-holeW/2, cx };
+}
+
+function pitDraw(dt){
+  const ctx=_pit.ctx, D=_pit.D; if(!ctx || !D || !_pit.W) return;
+  const L=pitLayout(), {W,H,surf,bottom,holeW,hx,cx}=L;
+  const t = performance.now()/1000;
+  // ease toward the real depth so a logged payment visibly lifts you
+  _pit.r += (_pit.rT-_pit.r)*(pitReduce?1:Math.min(1,dt*2.2));
+  const r=_pit.r, prog=1-r, depth=bottom-surf;
+  const floorY = surf + r*depth;
+  const free = D.bal<=0;
+  const stuck = !free && !D.base.canFinish;
+  ctx.clearRect(0,0,W,H);
+
+  // ── Sky: brightens as you climb ──
+  const sky=ctx.createLinearGradient(0,0,0,surf);
+  sky.addColorStop(0,'#070a10'); sky.addColorStop(1,`rgba(${Math.round(20+40*prog)},${Math.round(40+70*prog)},${Math.round(36+40*prog)},1)`);
+  ctx.fillStyle=sky; ctx.fillRect(0,0,W,surf);
+  for(let i=0;i<26;i++){ const a=(1-prog)*0.6*(0.5+0.5*Math.sin(t*1.3+i)); ctx.fillStyle=`rgba(232,237,248,${a*pitRand(i+7)})`; ctx.fillRect(pitRand(i)*W, pitRand(i+40)*(surf-20), 1.4, 1.4); }
+  ctx.save(); ctx.beginPath(); ctx.rect(0,0,W,surf); ctx.clip();
+  const sunY = surf + 22 - prog*58, sunX = Math.min(W*0.14, hx-30);
+  const glow=ctx.createRadialGradient(sunX,sunY,4,sunX,sunY,70); glow.addColorStop(0,`rgba(251,191,36,${0.25+0.35*prog})`); glow.addColorStop(1,'rgba(251,191,36,0)');
+  ctx.fillStyle=glow; ctx.fillRect(sunX-70,sunY-70,140,140);
+  ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.arc(sunX,sunY,15,0,Math.PI*2); ctx.fill();
+  ctx.restore();
+
+  // ── Ground: paid zone (deep) and debt layers (between you and the surface) ──
+  ctx.fillStyle='#211a14'; ctx.fillRect(0,surf,W,H-surf);
+  for(let y=floorY+10;y<H;y+=14){ ctx.fillStyle='rgba(255,255,255,0.025)'; ctx.fillRect(0,y,W,1); }
+  const bands=[]; let yb=floorY;
+  D.order.forEach(({d,idx},k)=>{
+    const h = d.balance/D.denom*depth; if(h<=0) return;
+    bands.push({d,idx,k,y0:yb-h,y1:yb}); yb-=h;
+  });
+  bands.forEach(b=>{
+    ctx.fillStyle=PIT_SOIL[b.idx%PIT_SOIL.length]; ctx.fillRect(0,b.y0,W,b.y1-b.y0);
+    for(let i=0;i<Math.max(2,(b.y1-b.y0)*W/900);i++){ const px=pitRand(b.idx*97+i)*W, py=b.y0+pitRand(b.idx*31+i*3)*(b.y1-b.y0); ctx.fillStyle='rgba(0,0,0,0.18)'; ctx.fillRect(px,py,2,1.5); }
+    ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.fillRect(0,b.y0,W,1);
+  });
+
+  // Grass and the dirt piles you've thrown up (they grow with what you've paid)
+  ctx.fillStyle='#22c55e'; ctx.fillRect(0,surf-1,hx,4); ctx.fillRect(hx+holeW,surf-1,W-hx-holeW,4); if(floorY<=surf+0.5) ctx.fillRect(hx,surf-1,holeW,4);
+  ctx.fillStyle='#4ade80'; for(let x=2;x<W;x+=6){ if(x>hx-2&&x<hx+holeW+2) continue; const h=3+pitRand(x)*4; ctx.fillRect(x,surf-h,1.5,h); }
+  const mound=(x0,x1,h)=>{ ctx.fillStyle='#6b5037'; ctx.beginPath(); ctx.moveTo(x0,surf+1); ctx.quadraticCurveTo((x0+x1)/2,surf-h*2,x1,surf+1); ctx.fill(); ctx.fillStyle='rgba(0,0,0,0.15)'; ctx.fillRect(x0,surf,x1-x0,2); };
+  mound(hx-14-60*Math.max(0.35,prog), hx-2, 2+prog*20);
+  mound(hx+holeW+2, hx+holeW+12+30*Math.max(0.35,prog), 1+prog*9);
+
+  // ── The hole ──
+  if(floorY>surf+0.5){
+    const edge=(side,y)=>side*(pitRand(Math.round(y/6)+(side>0?500:0))*5);
+    ctx.beginPath(); ctx.moveTo(hx,surf);
+    for(let y=surf;y<=floorY;y+=6) ctx.lineTo(hx+edge(1,y),y);
+    ctx.lineTo(hx+holeW,floorY);
+    for(let y=floorY;y>=surf;y-=6) ctx.lineTo(hx+holeW-edge(1,y+3),y);
+    ctx.closePath();
+    const sh=ctx.createLinearGradient(0,surf,0,floorY); sh.addColorStop(0,'#1a1511'); sh.addColorStop(1,'#0b0908');
+    ctx.fillStyle=sh; ctx.fill();
+    // inner wall shading
+    const wl=ctx.createLinearGradient(hx,0,hx+holeW,0); wl.addColorStop(0,'rgba(0,0,0,0.45)'); wl.addColorStop(0.2,'rgba(0,0,0,0)'); wl.addColorStop(0.8,'rgba(0,0,0,0)'); wl.addColorStop(1,'rgba(0,0,0,0.45)');
+    ctx.fillStyle=wl; ctx.fill();
+    // focus layer: pulse along the walls where you're digging
+    if(bands[0] && !stuck){
+      const a=0.35+0.25*Math.sin(t*3);
+      ctx.fillStyle=`rgba(251,191,36,${a})`;
+      ctx.fillRect(hx+2,bands[0].y0,2.5,bands[0].y1-bands[0].y0); ctx.fillRect(hx+holeW-4.5,bands[0].y0,2.5,bands[0].y1-bands[0].y0);
+    }
+  }
+  // packed dirt under your feet = debt already paid
+  if(floorY<bottom){
+    ctx.fillStyle='#3a2d22'; ctx.fillRect(hx,floorY,holeW,bottom-floorY+14);
+    for(let i=0;i<40;i++){ const py=floorY+pitRand(i*13)*(H-floorY); ctx.fillStyle='rgba(255,255,255,0.05)'; ctx.fillRect(hx+pitRand(i*7)*holeW,py,2,2); }
+    ctx.fillStyle='rgba(74,222,128,0.5)'; ctx.fillRect(hx,floorY,holeW,1.5);
+    if(free){ ctx.font='600 10px Geist,system-ui,sans-serif'; ctx.textAlign='center'; ctx.fillStyle='rgba(74,222,128,0.8)'; ctx.fillText(`Hole filled in: ${fmtW(D.denom)} paid off`, cx, surf+(bottom-surf)/2); }
+    if(bottom-floorY>30 && !free){ ctx.font='600 10px Geist,system-ui,sans-serif'; ctx.textAlign='center'; ctx.fillStyle='rgba(74,222,128,0.8)'; ctx.fillText(`${fmtW(D.denom-D.bal)} paid off`, cx, Math.min(H-8, floorY+(bottom-floorY)/2+14)); }
+  }
+
+  // ── Layer labels (right of the hole) ──
+  const lx=hx+holeW+12, maxW=W-lx-8;
+  ctx.textAlign='left';
+  bands.forEach((b,k)=>{
+    const h=b.y1-b.y0; if(h<12 || maxW<40) return;
+    const mid=(b.y0+b.y1)/2, focus=k===0;
+    const fit=(s,f)=>{ ctx.font=f; if(ctx.measureText(s).width<=maxW) return s; while(s.length>1 && ctx.measureText(s+'…').width>maxW) s=s.slice(0,-1); return s+'…'; };
+    ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.fillRect(lx-12,mid,8,1);
+    const nameF='600 11px Geist,system-ui,sans-serif', amtF='500 10px Geist,system-ui,sans-serif';
+    const name=(focus?'Dig here: ':'')+b.d.name;
+    if(h>=28){
+      ctx.font=nameF; ctx.fillStyle=focus?'#fbbf24':'rgba(232,237,248,0.92)'; ctx.fillText(fit(name,nameF),lx,mid-2);
+      ctx.font=amtF; ctx.fillStyle='rgba(232,237,248,0.6)'; ctx.fillText(fit(`${fmtW(b.d.balance)} at ${b.d.rate}%`,amtF),lx,mid+11);
+    } else {
+      ctx.font=nameF; ctx.fillStyle=focus?'#fbbf24':'rgba(232,237,248,0.85)'; const full=`${name} ${fmtW(b.d.balance)}`; ctx.fillText(ctx.measureText(full).width<=maxW?full:fit(name,nameF),lx,mid+4);
+    }
+  });
+
+  // ── Flag at the surface ──
+  const fx=hx+holeW+24+(free?0:6);
+  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(fx,surf-1); ctx.lineTo(fx,surf-30); ctx.stroke();
+  const wave=Math.sin(t*4)*2;
+  ctx.fillStyle='#4ade80'; ctx.beginPath(); ctx.moveTo(fx,surf-30); ctx.quadraticCurveTo(fx+10,surf-30+wave,fx+20,surf-26); ctx.lineTo(fx,surf-21); ctx.fill();
+  if(W-fx>70){
+    ctx.font='600 10px Geist,system-ui,sans-serif'; ctx.textAlign='left'; ctx.fillStyle='rgba(232,237,248,0.85)';
+    let lbl = free ? 'Debt-free' : D.plan.canFinish ? `Out by ${pitShortDate(D.plan.months)}` : 'Surface';
+    if(ctx.measureText(lbl).width > W-fx-30) lbl = free ? 'Free' : D.plan.canFinish ? pitShortDate(D.plan.months) : '';
+    ctx.fillText(lbl, fx+24, surf-24);
+  }
+
+  // ── 12-month ghost line (with the slider's extra) ──
+  if(!free && D.plan.canFinish && floorY>surf+4){
+    const gy = surf + Math.max(0,D.plan.series[12]??0)/D.denom*depth;
+    if(floorY-gy>4){
+      ctx.setLineDash([4,4]); ctx.strokeStyle='rgba(74,222,128,0.85)'; ctx.lineWidth=1.2;
+      ctx.beginPath(); ctx.moveTo(hx-6,gy); ctx.lineTo(hx+holeW+4,gy); ctx.stroke(); ctx.setLineDash([]);
+      ctx.font='600 10px Geist,system-ui,sans-serif'; ctx.textAlign='right'; ctx.fillStyle='#4ade80';
+      ctx.fillText(D.plan.months<=12?`Out in ${D.plan.months} mo`:'In 12 months', hx-10, gy+3.5);
+    }
+  }
+
+  // ── Stuck: interest crumbles the walls back in ──
+  if(stuck && !pitReduce){
+    _pit.crumbleT-=dt;
+    if(_pit.crumbleT<=0){ _pit.crumbleT=0.18+Math.random()*0.3; const side=Math.random()<0.5; _pit.parts.push({x:side?hx+3:hx+holeW-3,y:surf+Math.random()*Math.max(4,floorY-surf)*0.6,vx:(side?1:-1)*(10+Math.random()*25),vy:0,life:3,c:'#6b5037'}); }
+    ctx.font='600 11px Geist,system-ui,sans-serif'; ctx.textAlign='left'; ctx.fillStyle='#fbbf24';
+    ctx.fillText('Interest is filling the hole back in', 12, 20);
+  }
+
+  // ── The digger ──
+  const speed = stuck?0.55:(1+_pit.extra/400) + _pit.burst*2;
+  if(!pitReduce) _pit.phase = (_pit.phase + dt*speed*0.75)%1;
+  _pit.burst = Math.max(0,_pit.burst-dt*0.8);
+  const ph=_pit.phase;
+  let a;
+  if(free) a=-1.45;
+  else if(ph<0.45) a=-1.4+(2.5*(ph/0.45)**2);
+  else if(ph<0.6) a=1.1;
+  else if(ph<0.78) a=1.1-2.5*((ph-0.6)/0.18);
+  else a=-1.4;
+  const footY = free? surf-1 : floorY-0.5;
+  const dx = free ? hx-34 : cx-6;
+  // throw dirt on the upswing
+  if(!free && !pitReduce && _pit.prevPh!==undefined && _pit.prevPh<0.74 && ph>=0.74){
+    const sc=_pit.W<520?1.15:1.4, tipX=dx+Math.cos(a)*18*sc, tipY=footY-17*sc+Math.sin(a)*18*sc;
+    const hgt=Math.max(30,tipY-surf+26), v=Math.sqrt(2*900*hgt), T=v/900;
+    const n=stuck?2:4+Math.round(_pit.burst*6);
+    for(let i=0;i<n;i++){ const side=Math.random()<0.62?-1:1; _pit.parts.push({x:tipX,y:tipY,vx:side*(holeW/2+18+Math.random()*40)/(T*1.25),vy:-v*(0.92+Math.random()*0.12),life:3,c:Math.random()<0.5?'#6b5037':'#8a6a4a'}); }
+  }
+  _pit.prevPh=ph;
+  pitDigger(ctx,dx,footY,a,free,t);
+
+  // ── Particles ──
+  _pit.parts = _pit.parts.filter(p=>{
+    p.vy+=900*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; p.life-=dt;
+    const inHole = p.x>hx && p.x<hx+holeW;
+    if(p.vy>0 && !inHole && p.y>=surf-1) return false;
+    if(inHole && p.y>=floorY) return false;
+    if(p.life<=0 || p.y>H) return false;
+    ctx.fillStyle=p.c; ctx.fillRect(p.x-1.5,p.y-1.5,3,3); return true;
+  });
+  if(free && !pitReduce && Math.random()<0.08) _pit.parts.push({x:dx+(Math.random()-0.5)*30,y:surf-30,vx:(Math.random()-0.5)*60,vy:-120-Math.random()*120,life:2,c:['#4ade80','#fbbf24','#60a5fa'][Math.floor(Math.random()*3)]});
+}
+
+function pitShortDate(m){ const d=new Date(); d.setMonth(d.getMonth()+m); return d.toLocaleDateString('en-CA',{month:'short',year:'numeric'}); }
+function pitDigger(ctx,x,y,a,free,t){
+  ctx.save(); ctx.lineCap='round'; ctx.lineJoin='round';
+  const sc=_pit.W<520?1.15:1.4; ctx.translate(x,y); ctx.scale(sc,sc); ctx.translate(-x,-y);
+  const hipY=y-9, shY=y-18;
+  // legs
+  ctx.strokeStyle='#334155'; ctx.lineWidth=2.6;
+  ctx.beginPath(); ctx.moveTo(x-3.5,y); ctx.lineTo(x,hipY); ctx.lineTo(x+3.5,y); ctx.stroke();
+  // body
+  ctx.fillStyle='#4ade80'; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x-4,shY-1,8,hipY-shY+2,3) : ctx.rect(x-4,shY-1,8,hipY-shY+2); ctx.fill();
+  // head + hard hat
+  ctx.fillStyle='#e8c39e'; ctx.beginPath(); ctx.arc(x,shY-5,4,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.arc(x,shY-6,4.6,Math.PI,0); ctx.fill(); ctx.fillRect(x-6,shY-6.4,12,1.6);
+  if(free){
+    // arms up, shovel planted
+    ctx.strokeStyle='#4ade80'; ctx.lineWidth=2.2;
+    const w=Math.sin(t*6)*2;
+    ctx.beginPath(); ctx.moveTo(x-3,shY+1); ctx.lineTo(x-8,shY-9+w); ctx.moveTo(x+3,shY+1); ctx.lineTo(x+8,shY-9-w); ctx.stroke();
+    ctx.strokeStyle='#a3825f'; ctx.lineWidth=1.8; ctx.beginPath(); ctx.moveTo(x+14,y-20); ctx.lineTo(x+14,y-3); ctx.stroke();
+    ctx.fillStyle='#94a3b8'; ctx.fillRect(x+11,y-4,6,5);
+  } else {
+    const cs=Math.cos(a), sn=Math.sin(a), hx=x+cs*6, hy=shY+1+sn*6;
+    ctx.strokeStyle='#4ade80'; ctx.lineWidth=2.2;
+    ctx.beginPath(); ctx.moveTo(x,shY+1); ctx.lineTo(hx,hy); ctx.stroke();
+    ctx.strokeStyle='#a3825f'; ctx.lineWidth=1.8;
+    ctx.beginPath(); ctx.moveTo(hx-cs*6,hy-sn*6); ctx.lineTo(hx+cs*12,hy+sn*12); ctx.stroke();
+    const bx=hx+cs*14, by=hy+sn*14;
+    ctx.fillStyle='#94a3b8'; ctx.beginPath();
+    ctx.moveTo(bx-sn*3.2-cs*2,by+cs*3.2-sn*2); ctx.lineTo(bx+sn*3.2-cs*2,by-cs*3.2-sn*2); ctx.lineTo(bx+sn*2.4+cs*4,by-cs*2.4+sn*4); ctx.lineTo(bx-sn*2.4+cs*4,by+cs*2.4+sn*4); ctx.closePath(); ctx.fill();
+  }
+  ctx.restore();
+}
+
 function renderDebt(){
   const strat = state.debtStrategy || 'snowball';
   const order = orderedDebts(); // [{d, idx}] in priority order, balance>0 only
@@ -6570,6 +6931,9 @@ function renderDebt(){
         </div>`;
     }
   }
+
+  // ── DIG-OUT PIT ──
+  try{ renderDebtPit(); }catch(e){ console.warn('pit', e); }
 
   // ── ATTACK-FIRST CALLOUT ──
   const attackEl=document.getElementById('dt-attack-mount');
