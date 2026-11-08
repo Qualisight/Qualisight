@@ -368,6 +368,9 @@ header{
 }
 
 /* Site insights (owner only) */
+.qi-head-btn{display:inline-flex;align-items:center;gap:0.35rem;width:auto!important;padding:0 0.65rem;border-radius:999px!important;color:var(--accent)!important;border:1px solid var(--border2)!important}
+.qi-head-btn span{font-size:0.8rem;font-weight:600}
+@media(max-width:520px){.qi-head-btn{width:28px!important;padding:0}.qi-head-btn span{display:none}}
 .qi-overlay{position:fixed;inset:0;z-index:9999;background:rgba(5,7,10,0.8);display:none;overflow-y:auto;padding:2rem 1rem}
 .qi-overlay.open{display:block}
 .qi-sheet{max-width:980px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1.4rem 1.5rem 2rem}
@@ -3777,8 +3780,10 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
   <div class="user-pill" style="position:relative">
     <div class="user-pill-dot"></div>
     <div class="user-pill-name" id="user-label">—</div>
+    <button class="logout-btn qi-head-btn" id="qi-head-btn" onclick="qiOpen()" title="Site insights" aria-label="Site insights" style="display:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg><span>Insights</span></button>
     <button class="logout-btn" onclick="toggleSettingsMenu()" title="Settings" aria-label="Settings" id="settings-gear-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
     <div id="settings-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--border2);border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,0.5);min-width:190px;z-index:400;overflow:hidden">
+      <button id="qi-menu-btn" onclick="toggleSettingsMenu();qiOpen()" style="display:none;align-items:center;gap:0.6rem;width:100%;background:transparent;border:none;color:var(--accent);font-family:var(--font-body);font-size:0.82rem;font-weight:600;padding:0.7rem 1rem;cursor:pointer;text-align:left">Site insights</button>
       <button onclick="settingsChangePassword()" style="display:flex;align-items:center;gap:0.6rem;width:100%;background:transparent;border:none;color:var(--text);font-family:var(--font-body);font-size:0.82rem;padding:0.7rem 1rem;cursor:pointer;text-align:left;transition:background 0.12s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
          Change Password
       </button>
@@ -10174,7 +10179,7 @@ const GROVE_REF_RE = /^[A-Z0-9]{6}$/;
 })();
 
 function groveRefJoined(){ return currentUser?.isDemo ? (_grove.refPreview?99:0) : ((_grove.ref&&_grove.ref.joined)||0); }
-function groveHasReward(id){ const r=GROVE_REWARDS.find(x=>x.id===id); return !!r && groveRefJoined()>=r.n; }
+function groveHasReward(id){ const r=GROVE_REWARDS.find(x=>x.id===id); return !!r && (!!window._qsOwner || groveRefJoined()>=r.n); }
 function groveRewardKey(){ return GROVE_REWARDS.filter(r=>groveHasReward(r.id)).map(r=>r.id[0]).join(''); }
 function groveRefLink(){ return _grove.ref&&_grove.ref.code ? `https://qualisight.ca/?ref=${_grove.ref.code}` : ''; }
 
@@ -10225,10 +10230,11 @@ function groveRefRender(){
       <input class="grove-ref-link" id="grove-ref-link" readonly value="${link}" aria-label="Your invite link" onclick="this.select()">
       <button type="button" class="grove-mini" id="grove-ref-copy" onclick="groveRefCopy()">Copy link</button>
       ${navigator.share?`<button type="button" class="grove-share-btn" onclick="groveRefShare()">Invite</button>`:''}</div>`;
-  const tiers=GROVE_REWARDS.map(r=>{ const got=demo ? !!_grove.refPreview : real>=r.n;
+  const owner=!demo && !!window._qsOwner;
+  const tiers=GROVE_REWARDS.map(r=>{ const got=demo ? !!_grove.refPreview : (owner || real>=r.n);
     return `<div class="grove-reward${got?' got':''}"><div class="grove-badge-ic"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${r.ic}</svg></div>
       <div style="min-width:0"><b>${r.name}</b><span>${r.n} friend${r.n>1?'s':''} · ${r.desc}</span></div></div>`; }).join('');
-  const prog = demo ? '' : next ? `<div class="grove-ref-prog"><div class="grove-next">${real} friend${real===1?'':'s'} joined · ${next.n-real} more for ${next.name.toLowerCase()}</div><div class="grove-bar"><i style="width:${Math.min(100,real/next.n*100).toFixed(0)}%;background:#a78bfa"></i></div></div>`
+  const prog = demo ? '' : owner ? `<div class="grove-ref-prog"><div class="grove-next">Owner account · every upgrade unlocked</div></div>` : next ? `<div class="grove-ref-prog"><div class="grove-next">${real} friend${real===1?'':'s'} joined · ${next.n-real} more for ${next.name.toLowerCase()}</div><div class="grove-bar"><i style="width:${Math.min(100,real/next.n*100).toFixed(0)}%;background:#a78bfa"></i></div></div>`
                          : `<div class="grove-ref-prog"><div class="grove-next">${real} friends joined · every upgrade unlocked. Thank you.</div></div>`;
   const html=`<div class="grove-badges-title">Invite friends <span>Upgrades for your grove when friends join. Just for looks, no money involved.</span></div>
     <div class="grove-ref-card">${top}${prog}<div class="grove-rewards">${tiers}</div>
@@ -12699,6 +12705,25 @@ const QA = (function(){
   document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden') bye(); else left=false; });
   window.addEventListener('pagehide', bye);
 })();
+
+// ── Owner account: Insights button, all grove invite upgrades, never tracked ──
+const QS_OWNER_HASH='43fa04184cca01f1be098a24745eba0e4f229cb763d78691efecf73d02ad608c';
+window._qsOwner=false; let _qsOwnerFor=null;
+async function qsCheckOwner(){
+  const u=QA_user(), key=u ? (u.isDemo?'demo':u.id) : 'none';
+  if(key===_qsOwnerFor) return; _qsOwnerFor=key;
+  let owner=false;
+  if(u && !u.isDemo && u.email && window.crypto && crypto.subtle){
+    try{ const buf=await crypto.subtle.digest('SHA-256', new TextEncoder().encode(String(u.email).trim().toLowerCase()));
+      owner=[...new Uint8Array(buf)].map(b=>b.toString(16).padStart(2,'0')).join('')===QS_OWNER_HASH; }catch(e){}
+  }
+  window._qsOwner=owner;
+  const hb=document.getElementById('qi-head-btn'), mb=document.getElementById('qi-menu-btn');
+  if(hb) hb.style.display=owner?'inline-flex':'none'; if(mb) mb.style.display=owner?'flex':'none';
+  if(owner){ try{ localStorage.setItem('qs_notrack','1'); }catch(e){} }
+  try{ if(typeof groveRefRender==='function') groveRefRender(); }catch(e){}
+}
+setInterval(qsCheckOwner, 1200); setTimeout(qsCheckOwner, 300);
 
 // ══════════════════════════════════════════
 // INSIGHTS (owner only): qualisight.ca/?insights=1
