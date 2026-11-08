@@ -418,26 +418,26 @@ header{
 .qi-t td{padding:0.4rem;border-bottom:1px solid var(--border);word-break:break-word}
 @media(max-width:700px){.qi-kpis{grid-template-columns:1fr 1fr}.qi-grid{grid-template-columns:1fr}.qi-sheet{padding:1.1rem}}
 
-/* Debt pit: dig yourself out */
-.pit{background:var(--card);border:1px solid var(--border2);border-radius:20px;overflow:hidden;margin-bottom:1rem}
-.pit-head{display:flex;justify-content:space-between;align-items:center;gap:0.8rem;padding:1.1rem 1.2rem 0.9rem}
-.pit-big{font-family:var(--font-display);font-weight:800;font-size:2.6rem;line-height:1;letter-spacing:-0.04em;color:var(--accent);font-variant-numeric:tabular-nums}
-.pit-big-sub{font-size:0.9rem;color:var(--text);margin-top:0.3rem;font-weight:500}
-.pit-share{display:inline-flex;align-items:center;gap:0.4rem;background:#4ade80;color:#08140c;border:none;border-radius:999px;padding:0.5rem 1rem;font-weight:700;font-size:0.82rem;cursor:pointer;font-family:inherit;white-space:nowrap}
-.pit-share:hover{background:#22c55e}
-.pit-stage{position:relative;height:380px;background:#0b0f18;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.pit-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.pit-body{padding:1rem 1.2rem 1.15rem;display:flex;flex-direction:column;gap:0.9rem}
-.pit-nums{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.8rem}
-.pit-k{font-size:0.74rem;color:var(--muted)}
-.pit-v{font-family:var(--font-display);font-size:1.35rem;font-weight:800;letter-spacing:-0.02em;color:var(--text);font-variant-numeric:tabular-nums}
-.pit-v.neg{color:var(--red)}
-.pit-slider-top{display:flex;justify-content:space-between;font-size:0.85rem;color:var(--text);font-weight:500;margin-bottom:0.35rem}
-.pit-slider-top b{color:var(--accent);font-variant-numeric:tabular-nums}
-.pit-slider input{width:100%;accent-color:#4ade80}
-.pit-next{font-size:0.88rem;color:var(--muted);line-height:1.45;min-height:1.3em}
-.pit-next b{color:var(--accent)}
-@media(max-width:520px){.pit-stage{height:320px}.pit-big{font-size:2.2rem}.pit-share{padding:0.45rem 0.8rem}}
+/* Debt hole: dig yourself out */
+.dh{background:var(--card);border:1px solid var(--border2);border-radius:22px;overflow:hidden;margin-bottom:1rem}
+.dh-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.15rem 1.25rem 1rem}
+.dh-big{font-family:var(--font-display);font-weight:800;font-size:3rem;line-height:0.95;letter-spacing:-0.045em;color:var(--accent);font-variant-numeric:tabular-nums}
+.dh-big-sub{font-size:0.95rem;color:var(--text);margin-top:0.35rem;font-weight:600;letter-spacing:-0.01em}
+.dh-share{display:inline-flex;align-items:center;gap:0.45rem;background:#4ade80;color:#06140b;border:none;border-radius:999px;padding:0.6rem 1.1rem;font:700 0.85rem var(--font-body);cursor:pointer;white-space:nowrap;flex-shrink:0}
+.dh-share:hover{background:#22c55e}
+.dh-stage{position:relative;height:380px;background:#0b0f18;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.dh-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.dh-foot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:1.25rem;padding:1.1rem 1.25rem 1.2rem;align-items:start}
+.dh-stats{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
+.dh-stats span{display:block;font-size:0.75rem;color:var(--muted);margin-bottom:0.15rem}
+.dh-stats b{font-family:var(--font-display);font-size:1.45rem;font-weight:800;letter-spacing:-0.02em;color:var(--text);font-variant-numeric:tabular-nums}
+.dh-slider label{display:flex;justify-content:space-between;gap:0.6rem;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:0.4rem}
+.dh-slider label b{color:var(--accent);font-variant-numeric:tabular-nums}
+.dh-slider input{width:100%;accent-color:#4ade80;margin:0}
+.dh-msg{font-size:0.86rem;color:var(--muted);line-height:1.45;margin-top:0.45rem;min-height:1.3em}
+.dh-msg b{color:var(--accent)}
+@media(max-width:720px){.dh-foot{grid-template-columns:1fr;gap:1rem}}
+@media(max-width:520px){.dh-stage{height:330px}.dh-big{font-size:2.5rem}.dh-head{padding:1rem 1rem 0.85rem}.dh-foot{padding:1rem}.dh-stats b{font-size:1.25rem}}
 
 /* Attack-first callout */
 .dt-attack{
@@ -6597,17 +6597,20 @@ function toggleDebtCard(el){
 }
 
 // ══════════════════════════════════════════
-// DEBT PIT: dig yourself out of the hole
-// Each remaining debt is a layer of dirt between you and the surface,
-// stacked in payoff order. Every payment raises the floor you stand on.
+// DEBT HOLE: dig yourself out
+// The hole is your debt. Each remaining debt is a layer of dirt, stacked in payoff order,
+// with the one you're paying first right above your head. Every payment makes the hole shallower,
+// and the dirt you've dug out piles up beside it. The sky turns from night to sunrise as you climb.
 // ══════════════════════════════════════════
-const _pit = { built:false, extra:0, r:1, rT:1, parts:[], phase:0, burst:0, visible:true, raf:null, last:0, crumbleT:0, W:0, H:360 };
+const _pit = { built:false, extra:0, r:1, rT:1, parts:[], floats:[], phase:0, burst:0, visible:true, raf:null, last:0, crumbleT:0, W:0, H:360, prevBal:null, banner:null, share:false };
 const pitReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const PIT_SOIL = ['#6a4e37','#5a4130','#74563c','#4d3a2c','#634733','#7a5a3f'];
-const PIT_FONT = 'Geist,system-ui,sans-serif';
+const DH_SOIL = ['#b07a47','#8f5d39','#c4915a','#7a4e30','#a36a3e','#d1a06a'];
+const DH_FONT = 'Geist,Inter,system-ui,sans-serif';
 function pitRand(n){ let t=(n*2654435761)>>>0; t^=t>>>15; t=Math.imul(t,2246822519)>>>0; t^=t>>>13; return (t>>>0)/4294967296; }
 function pitShortDate(m){ const d=new Date(); d.setMonth(d.getMonth()+m); return d.toLocaleDateString('en-CA',{month:'short',year:'numeric'}); }
-function pitShade(hex,f){ const n=parseInt(hex.slice(1,7),16); const c=v=>Math.max(0,Math.min(255,Math.round(v*f))); return `rgb(${c(n>>16)},${c((n>>8)&255)},${c(n&255)})`; }
+function dhMix(a,b,t){ const pa=parseInt(a.slice(1),16), pb=parseInt(b.slice(1),16); const c=(s)=>Math.round(((pa>>s)&255)+(((pb>>s)&255)-((pa>>s)&255))*t); return `rgb(${c(16)},${c(8)},${c(0)})`; }
+function dhShade(hex,f){ const n=parseInt(hex.slice(1,7),16); const c=v=>Math.max(0,Math.min(255,Math.round(v*f))); return `rgb(${c(n>>16)},${c((n>>8)&255)},${c(n&255)})`; }
+function dhRR(ctx,x,y,w,h,r){ ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(x,y,w,h,r); else ctx.rect(x,y,w,h); }
 
 // Same rules as simulateAllDebts, but also records the total owed each month
 // and the month each debt is cleared (keyed by its index in state.debts)
@@ -6643,38 +6646,34 @@ function pitData(){
   const bal = all.reduce((s,d)=>s+Math.max(0,d.balance||0),0);
   const orig = all.reduce((s,d)=>s+Math.max(d.origBalance||0,d.balance||0),0);
   const denom = Math.max(orig, bal, 1);
-  const base = pitSim(0), plan = pitSim(_pit.extra);
-  // paid-off dirt under your feet: cleared debts at the bottom, then partial payments
-  const paid = all.map((d,idx)=>({d,idx,amt:Math.max(0,Math.max(d.origBalance||0,d.balance||0)-Math.max(0,d.balance||0)),cleared:(d.balance||0)<=0}))
-                  .filter(x=>x.amt>0).sort((a,b)=>(b.cleared-a.cleared)||(b.amt-a.amt));
-  return { order, all, bal, orig, denom, base, plan, paid };
+  return { order, all, bal, orig, denom, base:pitSim(0), plan:pitSim(_pit.extra) };
 }
 
 function renderDebtPit(){
   const mount = document.getElementById('dt-pit-mount');
   if(!mount) return;
-  if(!(state.debts||[]).length){ mount.innerHTML=''; _pit.built=false; pitStop(); return; }
-  if(!_pit.built || !mount.querySelector('.pit')){
+  if(!(state.debts||[]).length){ mount.innerHTML=''; _pit.built=false; _pit.prevBal=null; pitStop(); return; }
+  if(!_pit.built || !mount.querySelector('.dh')){
     mount.innerHTML = `
-    <div class="pit">
-      <div class="pit-head">
-        <div class="pit-hero">
-          <div class="pit-big" id="pit-big">0%</div>
-          <div class="pit-big-sub" id="pit-big-sub">of the way out of debt</div>
+    <div class="dh">
+      <div class="dh-head">
+        <div>
+          <div class="dh-big"><span id="dh-big">0%</span></div>
+          <div class="dh-big-sub" id="dh-big-sub">of the way out of debt</div>
         </div>
-        <button type="button" class="pit-share" onclick="pitShare()"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>Share my climb</button>
+        <button type="button" class="dh-share" onclick="pitShare()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>Share</button>
       </div>
-      <div class="pit-stage" id="pit-stage" role="img" aria-label="You digging out of a hole of debt"><canvas></canvas></div>
-      <div class="pit-body">
-        <div class="pit-nums">
-          <div><div class="pit-k">Out by</div><div class="pit-v" id="pit-date"></div></div>
-          <div><div class="pit-k">Left to dig</div><div class="pit-v neg" id="pit-left"></div></div>
+      <div class="dh-stage" id="pit-stage" role="img" aria-label="You, digging out of a hole made of your debts"><canvas></canvas></div>
+      <div class="dh-foot">
+        <div class="dh-stats">
+          <div><span>Out of the hole</span><b id="dh-date"></b></div>
+          <div><span>Left to dig</span><b id="dh-left"></b></div>
         </div>
-        <div class="pit-slider">
-          <div class="pit-slider-top"><span>Pay extra each month</span><b id="pit-extra-val">+$0</b></div>
-          <input type="range" id="pit-extra" min="0" max="1000" step="25" value="${_pit.extra}" aria-label="Extra payment per month">
+        <div class="dh-slider">
+          <label for="pit-extra"><span>Dig faster: pay extra each month</span><b id="dh-extra">+$0</b></label>
+          <input type="range" id="pit-extra" min="0" max="1000" step="25" value="${_pit.extra}">
+          <div class="dh-msg" id="dh-msg"></div>
         </div>
-        <div class="pit-next" id="pit-next"></div>
       </div>
     </div>`;
     _pit.built = true;
@@ -6694,25 +6693,37 @@ function renderDebtPit(){
 function pitText(){
   const D = pitData(); _pit.D = D;
   _pit.rT = D.bal / D.denom;
+  // payoff moments: a payment floats up, a cleared layer gets a celebration
+  const now = {}; D.all.forEach(d=>{ const key=(d.id||d.name||'')+''; now[key]=(now[key]||0)+Math.max(0,d.balance||0); });
+  if(_pit.prevBal){
+    let paid=0; const cleared=[];
+    Object.keys(now).forEach(key=>{ const was=_pit.prevBal[key]; if(was===undefined) return; if(now[key]<was-0.5) paid+=was-now[key]; if(was>0.5 && now[key]<=0.5){ const d=D.all.find(x=>((x.id||x.name||'')+'')===key); cleared.push(d?d.name:key); } });
+    if(Object.keys(_pit.prevBal).length!==Object.keys(now).length && !cleared.length && paid>Math.max(...Object.values(_pit.prevBal),0)) paid=0;
+    if(paid>0) _pit.floats.push({txt:`−${fmtW(paid)}`, life:2.2, max:2.2});
+    if(cleared.length){ _pit.banner={txt: D.bal<=0 ? 'You made it out!' : `${cleared[0]} cleared!`, life:3}; _pit.confetti=2.2; }
+  }
+  _pit.prevBal = now;
   const outPct = D.bal<=0 ? 100 : Math.max(0, Math.min(99, Math.floor((1-D.bal/D.denom)*100)));
   _pit.outPct = outPct;
   const set=(id,h)=>{ const e=document.getElementById(id); if(e) e.innerHTML=h; };
   const p = D.plan, b = D.base;
-  set('pit-big', D.bal<=0 ? 'Debt-free' : `${outPct}%`);
-  set('pit-big-sub', D.bal<=0 ? `You dug your way out of ${fmtW(D.denom)}` : 'of the way out of debt');
-  set('pit-left', fmtW(D.bal)); document.getElementById('pit-left')?.classList.toggle('neg', D.bal>0);
-  set('pit-extra-val', `+${fmtW(_pit.extra)}`);
-  set('pit-date', D.bal<=0 ? 'Done' : p.canFinish ? pitShortDate(p.months) : 'Not yet');
+  set('dh-big', D.bal<=0 ? 'Debt-free' : `${outPct}%`);
+  set('dh-big-sub', D.bal<=0 ? `You dug your way out of ${fmtW(D.denom)}` : 'of the way out of debt');
+  set('dh-left', fmtW(D.bal));
+  set('dh-extra', `+${fmtW(_pit.extra)}`);
+  set('dh-date', D.bal<=0 ? 'Done' : p.canFinish ? pitShortDate(p.months) : 'Not yet');
   let msg;
-  if(D.bal<=0) msg = `Nice work. Point that money at your TFSA now.`;
-  else if(!p.canFinish) msg = `Interest is filling the hole faster than you dig. Slide until you start climbing.`;
-  else if(_pit.extra<=0) msg = `Slide to see how much faster you get out.`;
+  if(D.bal<=0) msg = `Point that money at your TFSA now.`;
+  else if(!p.canFinish) msg = `Interest is refilling the hole as fast as you dig. Slide right until you start climbing.`;
+  else if(_pit.extra<=0) msg = `Slide to see how much sooner you get out.`;
   else if(!b.canFinish) msg = `That's enough to start climbing. Out in <b>${monthsToDuration(p.months)}</b>.`;
   else {
     const sooner = b.months - p.months, saved = Math.max(0, b.interest - p.interest);
-    msg = sooner>0 ? `<b>${sooner} month${sooner===1?'':'s'} sooner</b>, and <b>${fmtW(saved)}</b> less interest.` : `<b>${fmtW(saved)}</b> less interest.`;
+    msg = sooner>0 ? `Out <b>${sooner} month${sooner===1?'':'s'} sooner</b>, and <b>${fmtW(saved)}</b> less interest.` : `<b>${fmtW(saved)}</b> less interest.`;
   }
-  set('pit-next', msg);
+  set('dh-msg', msg);
+  const st=document.getElementById('pit-stage');
+  if(st) st.setAttribute('aria-label', D.bal<=0 ? 'You climbed all the way out of debt' : `You are ${outPct}% of the way out of a hole made of your debts`);
 }
 
 function pitSize(){
@@ -6738,288 +6749,333 @@ function pitStart(){
 }
 function pitStop(){ if(_pit.raf) cancelAnimationFrame(_pit.raf); _pit.raf=null; }
 
-function pitLayout(){
-  const W=_pit.W, H=_pit.H;
-  const surf = Math.round(H*0.25), bottom = H-12;
-  const holeW = Math.max(96, Math.min(180, W*0.28));
-  const rightNeed = Math.min(185, W*0.42);
-  const cx = Math.max(holeW/2+72, W - rightNeed - holeW/2 - 10);
-  return { W, H, surf, bottom, holeW, hx:cx-holeW/2, cx };
-}
-
-function pitFit(ctx,s,f,maxW){ ctx.font=f; if(ctx.measureText(s).width<=maxW) return s; while(s.length>1 && ctx.measureText(s+'…').width>maxW) s=s.slice(0,-1); return s+'…'; }
-function pitChip(ctx,x,y,text,col,bg){
-  ctx.font=`600 10.5px ${PIT_FONT}`; const w=ctx.measureText(text).width+16;
-  ctx.fillStyle=bg; ctx.beginPath(); ctx.roundRect?ctx.roundRect(x,y,w,20,10):ctx.rect(x,y,w,20); ctx.fill();
-  ctx.fillStyle=col; ctx.textAlign='left'; ctx.fillText(text,x+8,y+13.5);
-}
-
-function pitTree(ctx,x,base,s,seed,t){
-  const sway=Math.sin(t*0.9+seed)*1.2*s;
-  ctx.fillStyle='#4a3626'; ctx.fillRect(x-2*s,base-18*s,4*s,18*s);
-  const blobs=[[0,-30,13],[-9,-24,10],[9,-23,10],[-4,-38,9],[6,-35,9]];
-  blobs.forEach(([bx,by,br],i)=>{ ctx.fillStyle=i%2?'#1f7a43':'#15803d'; ctx.beginPath(); ctx.arc(x+bx*s+sway*(1+by/-40),base+by*s,br*s,0,Math.PI*2); ctx.fill(); });
-  ctx.fillStyle='rgba(74,222,128,0.25)'; ctx.beginPath(); ctx.arc(x-4*s+sway,base-36*s,5*s,0,Math.PI*2); ctx.fill();
-}
-function pitCloud(ctx,x,y,s,a){
-  ctx.fillStyle=`rgba(203,213,225,${a})`;
-  ctx.beginPath(); [[0,0,10],[11,-4,12],[24,0,9],[12,4,9]].forEach(([dx,dy,r])=>{ ctx.moveTo(x+dx*s+r*s,y+dy*s); ctx.arc(x+dx*s,y+dy*s,r*s,0,Math.PI*2); }); ctx.fill();
-}
-function pitRock(ctx,x,y,r,seed,base){
-  ctx.fillStyle=pitShade(base,0.7+pitRand(seed)*0.25);
-  ctx.beginPath(); ctx.ellipse(x,y,r*1.3,r*(0.7+pitRand(seed+1)*0.3),pitRand(seed+2)*3,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='rgba(255,255,255,0.10)'; ctx.beginPath(); ctx.ellipse(x-r*0.35,y-r*0.3,r*0.5,r*0.25,0,0,Math.PI*2); ctx.fill();
+function dhLayout(W,H,free){
+  const k = Math.max(0.8, Math.min(1.35, H/360));
+  const surf = Math.round(H*(free?0.66:0.31)), bottom = H-16*k, depth = bottom-surf;
+  const topW = Math.max(120, Math.min(280, W*0.36));
+  const labelW = Math.min(210, W*0.42);
+  let cx = Math.min(W*0.44, W - labelW - topW/2 - 6);
+  cx = Math.max(cx, topW/2 + 16);
+  const botW = topW*0.82;
+  const half = y => (topW/2) + ((botW-topW)/2) * Math.max(0,Math.min(1,(y-surf)/depth));
+  return { k, surf, bottom, depth, topW, botW, cx, half, labelW };
 }
 
 function pitDraw(dt){
   const ctx=_pit.ctx, D=_pit.D; if(!ctx || !D || !_pit.W) return;
-  const L=pitLayout(), {W,H,surf,bottom,holeW,hx,cx}=L;
-  const t = performance.now()/1000;
-  _pit.r += (_pit.rT-_pit.r)*(pitReduce?1:Math.min(1,dt*2.2));
-  const r=_pit.r, prog=1-r, depth=bottom-surf;
-  const floorY = surf + r*depth;
-  const free = D.bal<=0;
-  const stuck = !free && !D.base.canFinish;
-  const small = W<520;
+  const W=_pit.W, H=_pit.H, L=dhLayout(W,H,D.bal<=0), {k,surf,bottom,depth,topW,cx,half}=L;
+  const t = performance.now()/1000, share=_pit.share;
+  _pit.r += (_pit.rT-_pit.r)*(pitReduce||share?1:Math.min(1,dt*2.4));
+  const r=_pit.r, prog=Math.max(0,Math.min(1,1-r));
+  const dep = rr=>Math.pow(Math.max(0,Math.min(1,rr)),0.62);
+  const floorY = surf + dep(r)*depth;
+  const free = D.bal<=0, stuck = !free && !D.plan.canFinish;
+  const hx0 = cx-topW/2, hx1 = cx+topW/2;
   ctx.clearRect(0,0,W,H);
 
-  // ── Sky: brightens from night to morning as you climb ──
+  // ── Sky: night to sunrise as you climb ──
   const sky=ctx.createLinearGradient(0,0,0,surf);
-  sky.addColorStop(0,`rgb(${Math.round(7+20*prog)},${Math.round(10+40*prog)},${Math.round(16+46*prog)})`);
-  sky.addColorStop(1,`rgb(${Math.round(20+60*prog)},${Math.round(40+90*prog)},${Math.round(36+60*prog)})`);
-  ctx.fillStyle=sky; ctx.fillRect(0,0,W,surf);
-  for(let i=0;i<24;i++){ const a=(1-prog)*0.6*(0.5+0.5*Math.sin(t*1.3+i*1.7)); ctx.fillStyle=`rgba(232,237,248,${a*pitRand(i+7)})`; ctx.fillRect(pitRand(i)*W, pitRand(i+40)*(surf-24), 1.4, 1.4); }
+  sky.addColorStop(0, dhMix('#060a14','#3b6ea5',prog));
+  sky.addColorStop(0.7, dhMix('#0d1626','#9fc7d9',prog));
+  sky.addColorStop(1, dhMix('#16213a','#ffd39a',prog));
+  ctx.fillStyle=sky; ctx.fillRect(0,0,W,surf+2);
+  if(prog<0.85) for(let i=0;i<30;i++){ const a=(1-prog/0.85)*0.75*(0.55+0.45*Math.sin(t*1.4+i*2.1)); ctx.fillStyle=`rgba(255,255,255,${a*(0.4+pitRand(i+7)*0.6)})`; const s=pitRand(i+3)<0.15?2:1.3; ctx.fillRect(pitRand(i)*W, pitRand(i+40)*(surf*0.75), s, s); }
+  const sunX = Math.min(W-40*k, hx1 + (W-hx1)*0.62), sunY = surf + 30*k - prog*(surf*0.72);
   ctx.save(); ctx.beginPath(); ctx.rect(0,0,W,surf); ctx.clip();
-  const sunY = surf + 22 - prog*(surf*0.62), sunX = Math.min(W*0.14, hx-40);
-  const glow=ctx.createRadialGradient(sunX,sunY,4,sunX,sunY,90); glow.addColorStop(0,`rgba(251,191,36,${0.25+0.35*prog})`); glow.addColorStop(1,'rgba(251,191,36,0)');
-  ctx.fillStyle=glow; ctx.fillRect(sunX-90,sunY-90,180,180);
-  ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.arc(sunX,sunY,15,0,Math.PI*2); ctx.fill();
-  if(prog>0.3){ ctx.strokeStyle=`rgba(251,191,36,${(prog-0.3)*0.6})`; ctx.lineWidth=1.5; for(let i=0;i<10;i++){ const a=i/10*Math.PI*2+t*0.15; ctx.beginPath(); ctx.moveTo(sunX+Math.cos(a)*20,sunY+Math.sin(a)*20); ctx.lineTo(sunX+Math.cos(a)*27,sunY+Math.sin(a)*27); ctx.stroke(); } }
-  // distant hills
-  ctx.fillStyle=`rgba(21,61,39,${0.55+0.3*prog})`; ctx.beginPath(); ctx.moveTo(0,surf);
-  for(let x=0;x<=W;x+=20) ctx.lineTo(x, surf-10-Math.sin(x*0.012+1)*7-Math.sin(x*0.031)*4);
+  const glow=ctx.createRadialGradient(sunX,sunY,6,sunX,sunY,120*k); glow.addColorStop(0,`rgba(255,196,92,${0.35+0.4*prog})`); glow.addColorStop(1,'rgba(255,196,92,0)');
+  ctx.fillStyle=glow; ctx.fillRect(0,0,W,surf);
+  ctx.fillStyle=dhMix('#f59e0b','#ffd36b',prog); ctx.beginPath(); ctx.arc(sunX,sunY,19*k,0,Math.PI*2); ctx.fill();
+  // clouds
+  for(let i=0;i<3;i++){ const span=W+200*k, x=((pitRand(i+90)*span + (share?0:t)*(5+i*2.5)*k)%span)-100*k, y=surf*(0.18+0.22*i)+pitRand(i)*10;
+    const ca=Math.max(0,(prog-0.35)/0.65)*0.7*(1-i*0.2); if(ca<0.02) continue; ctx.fillStyle=`rgba(255,255,255,${ca})`; const s=k*(0.8+0.3*pitRand(i+5));
+    ctx.beginPath(); [[0,0,13],[15,-6,16],[33,0,12],[17,4,12]].forEach(([dx,dy,rr])=>{ ctx.moveTo(x+dx*s+rr*s,y+dy*s); ctx.arc(x+dx*s,y+dy*s,rr*s,0,Math.PI*2); }); ctx.fill(); }
+  // hills
+  ctx.fillStyle=dhMix('#0c1a1b','#4c8a5d',prog); ctx.beginPath(); ctx.moveTo(0,surf);
+  for(let x=0;x<=W+10;x+=10) ctx.lineTo(x, surf-12*k-Math.sin(x*0.011+0.6)*9*k-Math.sin(x*0.027)*5*k);
   ctx.lineTo(W,surf); ctx.fill();
-  // clouds drift
-  for(let i=0;i<3;i++){ const span=W+140, x=((pitRand(i+90)*span + t*(6+i*3))%span)-70; pitCloud(ctx,x,14+pitRand(i+3)*surf*0.4,small?0.7:0.9,0.06+0.3*prog); }
-  if(prog>0.45){ ctx.strokeStyle='rgba(15,23,42,0.75)'; ctx.lineWidth=1.3; for(let i=0;i<3;i++){ const bx=((t*22+i*40)%(W+80))-40, by=surf*0.35+i*7+Math.sin(t*2+i)*3, f=Math.sin(t*9+i)*3; ctx.beginPath(); ctx.moveTo(bx-5,by-f); ctx.lineTo(bx,by); ctx.lineTo(bx+5,by-f); ctx.stroke(); } }
+  ctx.fillStyle=dhMix('#0f2220','#5fa36d',prog); ctx.beginPath(); ctx.moveTo(0,surf);
+  for(let x=0;x<=W+10;x+=10) ctx.lineTo(x, surf-5*k-Math.sin(x*0.018+2)*5*k);
+  ctx.lineTo(W,surf); ctx.fill();
   ctx.restore();
 
-  // ── Ground: deep rock, debt layers, roots ──
-  const deep=ctx.createLinearGradient(0,surf,0,H); deep.addColorStop(0,'#2a2119'); deep.addColorStop(1,'#16110d');
-  ctx.fillStyle=deep; ctx.fillRect(0,surf,W,H-surf);
-  for(let y=floorY+8;y<H;y+=11){ ctx.fillStyle='rgba(255,255,255,0.022)'; ctx.fillRect(0,y+Math.sin(y)*2,W,1); }
+  // ── Ground ──
+  if(free){ const gg=ctx.createLinearGradient(0,surf,0,H); gg.addColorStop(0,'#8f5d39'); gg.addColorStop(1,'#4a2e1b'); ctx.fillStyle=gg; } else ctx.fillStyle='#2a1a10';
+  ctx.fillRect(0,surf,W,H-surf);
+  // bedrock below the floor (what you've already dug through)
+  for(let i=0;i<4;i++){ const y=floorY+14*k+i*16*k; if(y<H){ ctx.fillStyle='rgba(0,0,0,0.18)'; ctx.fillRect(0,y,W,2*k); } }
+  for(let i=0;i<Math.round(W/40);i++){ const py=floorY+8*k+pitRand(i+70)*(H-floorY); if(py<H-3){ ctx.fillStyle=pitRand(i+71)<0.5?'#3a2618':'#22150c'; ctx.beginPath(); ctx.ellipse(pitRand(i+72)*W,py,(3+pitRand(i)*5)*k,(2+pitRand(i+1)*3)*k,0,0,Math.PI*2); ctx.fill(); } }
+  // debt layers between you and the surface
   const bands=[]; let yb=floorY;
-  D.order.forEach(({d,idx},k)=>{
-    const h = d.balance/D.denom*depth; if(h<=0) return;
-    bands.push({d,idx,k,y0:yb-h,y1:yb}); yb-=h;
-  });
+  D.order.forEach(({d,idx},kk)=>{ const h=D.bal>0 ? d.balance/D.bal*(floorY-surf) : 0; if(h<=0.3) return; bands.push({d,idx,k:kk,y0:yb-h,y1:yb,col:DH_SOIL[idx%DH_SOIL.length]}); yb-=h; });
   bands.forEach(b=>{
-    const col=PIT_SOIL[b.idx%PIT_SOIL.length], h=b.y1-b.y0;
-    const g=ctx.createLinearGradient(0,b.y0,0,b.y1); g.addColorStop(0,pitShade(col,1.06)); g.addColorStop(1,pitShade(col,0.88));
-    ctx.fillStyle=g; ctx.fillRect(0,b.y0,W,h);
-    // wavy seam on top of each layer
-    ctx.fillStyle='rgba(0,0,0,0.28)'; ctx.beginPath(); ctx.moveTo(0,b.y0);
-    for(let x=0;x<=W;x+=14) ctx.lineTo(x,b.y0+Math.sin(x*0.05+b.idx)*1.4);
-    ctx.lineTo(W,b.y0+3); ctx.lineTo(0,b.y0+3); ctx.fill();
-    // grain, pebbles and rocks that belong to this layer
-    const n=Math.max(3,Math.round(h*W/700));
-    for(let i=0;i<n;i++){ const px=pitRand(b.idx*97+i)*W, py=b.y0+3+pitRand(b.idx*31+i*3)*(h-5); ctx.fillStyle=i%3?'rgba(0,0,0,0.20)':'rgba(255,255,255,0.07)'; ctx.fillRect(px,py,1.8,1.4); }
-    const rocks=Math.round(h*W/16000);
-    for(let i=0;i<rocks;i++){ const rr=2+pitRand(b.idx*7+i)*(Math.min(7,h/4)); const py=b.y0+rr+2+pitRand(b.idx*13+i)*Math.max(0,h-rr*2-4); pitRock(ctx,pitRand(b.idx*19+i*7)*W,py,rr,b.idx*50+i,col); }
+    ctx.fillStyle=b.col; ctx.fillRect(0,b.y0,W,b.y1-b.y0);
+    ctx.fillStyle='rgba(255,255,255,0.10)'; ctx.fillRect(0,b.y0,W,Math.min(2*k,b.y1-b.y0));
+    ctx.fillStyle='rgba(0,0,0,0.12)'; ctx.fillRect(0,b.y1-Math.min(2*k,b.y1-b.y0),W,Math.min(2*k,b.y1-b.y0));
+    const n=Math.round((b.y1-b.y0)*W/2600);
+    for(let i=0;i<n;i++){ const px=pitRand(b.idx*97+i)*W, py=b.y0+3*k+pitRand(b.idx*31+i*3)*Math.max(0,b.y1-b.y0-6*k); const rr=(1.4+pitRand(i*5+b.idx)*2.2)*k;
+      ctx.fillStyle=pitRand(i+b.idx*7)<0.5?dhShade(b.col,0.82):dhShade(b.col,1.12); ctx.beginPath(); ctx.ellipse(px,py,rr*1.4,rr,0,0,Math.PI*2); ctx.fill(); }
   });
-  // ── Surface: grass, flowers, trees, dirt piles ──
-  ctx.fillStyle='#22c55e'; ctx.fillRect(0,surf-1,hx,4); ctx.fillRect(hx+holeW,surf-1,W-hx-holeW,4); if(floorY<=surf+0.5) ctx.fillRect(hx,surf-1,holeW,4);
-  for(let x=2;x<W;x+=5){ if(x>hx-2&&x<hx+holeW+2) continue; const h=3+pitRand(x)*5, sw=Math.sin(t*1.5+x*0.1)*0.8; ctx.fillStyle=pitRand(x+1)<0.5?'#4ade80':'#22c55e'; ctx.beginPath(); ctx.moveTo(x-1,surf); ctx.lineTo(x+sw,surf-h); ctx.lineTo(x+1,surf); ctx.fill(); }
-  for(let i=0;i<Math.round(W/60);i++){ const fx=pitRand(i+200)*W; if(fx>hx-20&&fx<hx+holeW+50) continue; ctx.fillStyle=['#fbbf24','#f9a8d4','#e2e8f0'][i%3]; ctx.beginPath(); ctx.arc(fx,surf-5,1.8,0,Math.PI*2); ctx.fill(); }
-  pitTree(ctx,W*0.04,surf,small?0.75:1,1,t);
-  if(W*0.24 < hx-40) pitTree(ctx,W*0.24,surf,small?0.6:0.85,2,t);
-  if(!small) pitTree(ctx,W-24,surf,0.9,3,t);
-  const mound=(x0,x1,h,seed)=>{ if(h<1) return; ctx.fillStyle='#7a5a3f'; ctx.beginPath(); ctx.moveTo(x0,surf+1); ctx.quadraticCurveTo((x0+x1)/2,surf-h*2,x1,surf+1); ctx.fill();
-    ctx.fillStyle='rgba(0,0,0,0.18)'; ctx.beginPath(); ctx.moveTo((x0+x1)/2,surf+1); ctx.quadraticCurveTo(x1-(x1-x0)*0.15,surf-h*1.1,x1,surf+1); ctx.fill();
-    for(let i=0;i<Math.round(h);i++){ const px=x0+(x1-x0)*(0.2+pitRand(seed+i)*0.6); pitRock(ctx,px,surf-pitRand(seed+i*2)*h*0.9,1.2+pitRand(i)*1.4,seed+i,'#7a5a3f'); } };
-  const pileL = 2+prog*24;
-  mound(hx-14-70*Math.max(0.3,prog), hx-2, pileL, 700);
-  mound(hx+holeW+2, hx+holeW+12+34*Math.max(0.3,prog), 1+prog*10, 800);
+
+  // ── Surface: grass, dirt pile, tree ──
+  const grassY=surf-1;
+  ctx.fillStyle=dhMix('#1f6b3c','#4fc46d',prog);
+  const holeOpen = floorY>surf+0.5;
+  const gL=holeOpen?hx0:W, gR=holeOpen?hx1:W;
+  ctx.fillRect(0,grassY,gL,6*k); if(gR<W) ctx.fillRect(gR,grassY,W-gR,6*k);
+  ctx.fillStyle=dhMix('#2a8a4c','#7be08f',prog);
+  for(let x=4;x<W;x+=9*k){ if(holeOpen && x>hx0-4 && x<hx1+4) continue; const h=(4+pitRand(Math.round(x))*5)*k; ctx.beginPath(); ctx.moveTo(x-2*k,grassY+1); ctx.lineTo(x,grassY-h); ctx.lineTo(x+2*k,grassY+1); ctx.fill(); }
+  // tree on the far right
+  if(W>620 && W-hx1>150*k){ const tx=W-30*k, s=k*(W<520?0.8:1);
+    ctx.fillStyle='#5b3a24'; dhRR(ctx,tx-3.5*s,surf-30*s,7*s,30*s,3*s); ctx.fill();
+    const leaf=dhMix('#15532f','#3fae5d',prog), leaf2=dhMix('#1d6b3b','#5cc977',prog);
+    [[0,-46,20,leaf],[-14,-36,14,leaf],[14,-35,15,leaf],[-4,-56,13,leaf2],[8,-50,11,leaf2]].forEach(([dx,dy,rr,c])=>{ ctx.fillStyle=c; ctx.beginPath(); ctx.arc(tx+dx*s,surf+dy*s,rr*s,0,Math.PI*2); ctx.fill(); }); }
+  // the pile you've dug out grows with what you've paid
+  const pileX = Math.max(34*k, hx0 - 62*k), pileW = (46+120*Math.sqrt(prog))*k, pileH=(5+44*Math.sqrt(prog))*k;
+  if(!free || true){
+    const px0=pileX-pileW/2, px1=pileX+pileW/2;
+    ctx.fillStyle='#b98249'; ctx.beginPath(); ctx.moveTo(px0,surf+2); ctx.bezierCurveTo(px0+pileW*0.25,surf-pileH*1.05,px1-pileW*0.25,surf-pileH*1.05,px1,surf+2); ctx.fill();
+    ctx.fillStyle='#9a6a3b'; ctx.beginPath(); ctx.moveTo(pileX+pileW*0.05,surf+2); ctx.bezierCurveTo(pileX+pileW*0.2,surf-pileH*0.85,px1-pileW*0.18,surf-pileH*0.6,px1,surf+2); ctx.fill();
+    for(let i=0;i<Math.round(3+prog*10);i++){ const a=pitRand(i+400), x=px0+pileW*(0.15+a*0.7), y=surf-pileH*(0.2+0.6*pitRand(i+401))*(1-Math.abs(a-0.5)*1.2); ctx.fillStyle=pitRand(i+402)<0.5?'#d39a5d':'#8a5c33'; ctx.beginPath(); ctx.arc(x,y,(1.5+pitRand(i)*2)*k,0,Math.PI*2); ctx.fill(); }
+  }
+  _pit.pileTarget = {x:pileX, y:surf-pileH*0.7};
 
   // ── The hole ──
-  const open = floorY>surf+0.5;
-  if(open){
-    const edgeL=y=>pitRand(Math.round(y/6))*5, edgeR=y=>pitRand(Math.round(y/6)+500)*5;
-    ctx.beginPath(); ctx.moveTo(hx,surf);
-    for(let y=surf;y<=floorY;y+=6) ctx.lineTo(hx+edgeL(y),y);
-    ctx.lineTo(hx,floorY); ctx.lineTo(hx+holeW,floorY);
-    for(let y=floorY;y>=surf;y-=6) ctx.lineTo(hx+holeW-edgeR(y),y);
-    ctx.closePath();
-    const sh=ctx.createLinearGradient(0,surf,0,floorY); sh.addColorStop(0,'#1f1813'); sh.addColorStop(1,'#0c0a08');
-    ctx.save(); ctx.fillStyle=sh; ctx.fill(); ctx.clip();
-    // back wall shows the faint layers you're cutting through
-    bands.forEach(b=>{ ctx.fillStyle=pitShade(PIT_SOIL[b.idx%PIT_SOIL.length],0.32); ctx.fillRect(hx,b.y0,holeW,b.y1-b.y0); ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.fillRect(hx,b.y0,holeW,1); });
-    // lantern light
-    const lx=hx+16, ly=floorY-8, fl=0.9+Math.sin(t*11)*0.04+Math.sin(t*7.3)*0.04;
-    const lg=ctx.createRadialGradient(lx,ly,2,lx,ly,Math.min(120,holeW*0.9)*fl); lg.addColorStop(0,'rgba(251,191,36,0.38)'); lg.addColorStop(1,'rgba(251,191,36,0)');
-    ctx.fillStyle=lg; ctx.fillRect(hx,surf,holeW,floorY-surf);
-    // side wall shading
-    const wl=ctx.createLinearGradient(hx,0,hx+holeW,0); wl.addColorStop(0,'rgba(0,0,0,0.5)'); wl.addColorStop(0.18,'rgba(0,0,0,0)'); wl.addColorStop(0.82,'rgba(0,0,0,0)'); wl.addColorStop(1,'rgba(0,0,0,0.5)');
-    ctx.fillStyle=wl; ctx.fillRect(hx,surf,holeW,floorY-surf);
-    // light from the sky at the top of the hole
-    const tl=ctx.createLinearGradient(0,surf,0,surf+40); tl.addColorStop(0,`rgba(148,163,184,${0.10+0.15*prog})`); tl.addColorStop(1,'rgba(148,163,184,0)');
-    ctx.fillStyle=tl; ctx.fillRect(hx,surf,holeW,40);
+  if(holeOpen){
+    const rad=Math.min(14*k,(floorY-surf)/2);
+    const hb=half(floorY);
+    ctx.save();
+    ctx.beginPath(); ctx.moveTo(cx-half(surf),surf);
+    ctx.lineTo(cx-hb,floorY-rad); ctx.quadraticCurveTo(cx-hb,floorY,cx-hb+rad,floorY);
+    ctx.lineTo(cx+hb-rad,floorY); ctx.quadraticCurveTo(cx+hb,floorY,cx+hb,floorY-rad);
+    ctx.lineTo(cx+half(surf),surf); ctx.closePath();
+    ctx.fillStyle='#140c07'; ctx.fill(); ctx.clip();
+    // you can see the layers on the back wall
+    bands.forEach(b=>{ ctx.fillStyle=dhShade(b.col,0.42); ctx.fillRect(hx0-20,b.y0,topW+40,b.y1-b.y0); ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.fillRect(hx0-20,b.y0,topW+40,1.2*k); });
+    // the layer you're digging now glows
+    if(bands[0] && !stuck){ const a=0.18+0.12*Math.sin(t*3); ctx.fillStyle=`rgba(251,191,36,${share?0.2:a})`; ctx.fillRect(hx0-20,bands[0].y0,topW+40,bands[0].y1-bands[0].y0); }
+    // light falls in from the top, wall shadows on the sides
+    const lt=ctx.createLinearGradient(0,surf,0,surf+70*k); lt.addColorStop(0,`rgba(255,220,160,${0.10+0.22*prog})`); lt.addColorStop(1,'rgba(255,220,160,0)'); ctx.fillStyle=lt; ctx.fillRect(hx0-20,surf,topW+40,70*k);
+    const sh=ctx.createLinearGradient(cx-half(surf),0,cx+half(surf),0); sh.addColorStop(0,'rgba(0,0,0,0.55)'); sh.addColorStop(0.16,'rgba(0,0,0,0)'); sh.addColorStop(0.84,'rgba(0,0,0,0)'); sh.addColorStop(1,'rgba(0,0,0,0.55)'); ctx.fillStyle=sh; ctx.fillRect(hx0-20,surf,topW+40,floorY-surf);
+    // floor
+    ctx.fillStyle='#3a2516'; ctx.fillRect(hx0-20,floorY-4*k,topW+40,4*k);
     ctx.restore();
-    // wooden ladder on the right wall, from the floor to the surface
-    if(floorY-surf>18){
-      const r1=hx+holeW-22, r2=hx+holeW-10;
-      ctx.strokeStyle='#8b6b47'; ctx.lineWidth=2.2;
-      ctx.beginPath(); ctx.moveTo(r1,floorY); ctx.lineTo(r1,surf-10); ctx.moveTo(r2,floorY); ctx.lineTo(r2,surf-10); ctx.stroke();
-      ctx.lineWidth=1.6; ctx.strokeStyle='#a3825f';
-      for(let y=floorY-6;y>surf-8;y-=9){ ctx.beginPath(); ctx.moveTo(r1,y); ctx.lineTo(r2,y); ctx.stroke(); }
+    // ladder up the right wall
+    if(floorY-surf>26*k){
+      const lx2=cx+half(floorY)-12*k, lx1=lx2-15*k;
+      ctx.strokeStyle='#c8955c'; ctx.lineWidth=3*k; ctx.lineCap='round';
+      ctx.beginPath(); ctx.moveTo(lx1,floorY-2); ctx.lineTo(lx1+3*k,surf-16*k); ctx.moveTo(lx2,floorY-2); ctx.lineTo(lx2+3*k,surf-16*k); ctx.stroke();
+      ctx.lineWidth=2.2*k; ctx.strokeStyle='#e0b07a';
+      for(let y=floorY-9*k;y>surf-12*k;y-=11*k){ const f=(floorY-y)/(floorY-surf+16*k)*3*k; ctx.beginPath(); ctx.moveTo(lx1+f,y); ctx.lineTo(lx2+f,y); ctx.stroke(); }
     }
-    // focus layer: pulse along the walls where you're digging
-    if(bands[0] && !stuck){
-      const a=0.35+0.25*Math.sin(t*3);
-      ctx.fillStyle=`rgba(251,191,36,${a})`;
-      ctx.fillRect(hx+2,bands[0].y0,2.5,bands[0].y1-bands[0].y0); ctx.fillRect(hx+holeW-4.5,bands[0].y0,2.5,bands[0].y1-bands[0].y0);
-    }
-    // lantern
-    ctx.fillStyle='#334155'; ctx.fillRect(lx-3.5,ly-2,7,10); ctx.fillStyle=`rgba(251,191,36,${0.8*fl})`; ctx.fillRect(lx-2.5,ly,5,6); ctx.strokeStyle='#334155'; ctx.lineWidth=1; ctx.beginPath(); ctx.arc(lx,ly-3,3,Math.PI,0); ctx.stroke();
+    // lip of the hole
+    ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.fillRect(cx-half(surf)-2,surf+4*k,topW+4,2*k);
+  } else {
+    // filled in: a fresh patch of dirt where the hole was
+    ctx.fillStyle='#5a3a22'; dhRR(ctx,cx-topW*0.42,surf-1,topW*0.84,7*k,4*k); ctx.fill();
   }
 
-  // packed dirt under your feet = debt already paid, one compacted band per debt
-  if(floorY<bottom){
-    let py=bottom+12; const paidPx=bottom-floorY, totPaid=Math.max(1,D.denom-D.bal);
-    ctx.fillStyle='#3a2d22'; ctx.fillRect(hx,floorY,holeW,H-floorY);
-    D.paid.forEach((p,i)=>{
-      const h=p.amt/totPaid*paidPx; const y0=(i===0?H:py)-(i===0?h+(H-bottom):h);
-      const top=Math.max(floorY,y0), bot=i===0?H:py;
-      ctx.fillStyle=pitShade(PIT_SOIL[p.idx%PIT_SOIL.length],0.6); ctx.fillRect(hx,top,holeW,bot-top);
-      ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.fillRect(hx,top,holeW,1);
-      for(let k=0;k<Math.round((bot-top)*holeW/300);k++){ ctx.fillStyle='rgba(255,255,255,0.05)'; ctx.fillRect(hx+pitRand(p.idx*41+k)*holeW,top+pitRand(p.idx*43+k)*(bot-top),2,1.5); }
-      py=top;
+  // ── 1 year from now (with the slider's extra) ──
+  if(!free && !share && D.plan.canFinish && holeOpen){
+    const gy = surf + dep(Math.max(0,D.plan.series[12]??0)/D.denom)*depth;
+    if(floorY-gy>6*k){
+      ctx.setLineDash([6*k,5*k]); ctx.strokeStyle='rgba(255,255,255,0.85)'; ctx.lineWidth=1.6*k;
+      ctx.beginPath(); ctx.moveTo(cx-half(gy)+4,gy); ctx.lineTo(cx+half(gy)-4,gy); ctx.stroke(); ctx.setLineDash([]);
+      const narrow = cx-half(gy) < 150*k;
+      const txt = D.plan.months<=12 ? `Out in ${D.plan.months} mo` : narrow ? 'In 1 year' : 'You, 1 year from now';
+      ctx.font=`600 ${11*k}px ${DH_FONT}`; const tw=ctx.measureText(txt).width+14*k;
+      const tx = cx-half(gy)-tw-8*k >= 4 ? cx-half(gy)-tw-8*k : Math.max(4, cx-half(gy)-tw+tw*0.35);
+      ctx.fillStyle='rgba(255,255,255,0.92)'; dhRR(ctx,tx,gy-10*k,tw,20*k,10*k); ctx.fill();
+      ctx.fillStyle='#0b0f18'; ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillText(txt,tx+7*k,gy+0.5); ctx.textBaseline='alphabetic';
+    }
+  }
+
+  // ── Layer tags on the right ──
+  if(!share){
+    const lx = hx1 + 16*k, maxW = W - lx - 8;
+    const fs=11.5*k, fsA=11*k, hTag=22*k;
+    const tags=[];
+    bands.forEach((b,i)=>{ if(maxW<70) return; tags.push({b, focus:i===0, y:(b.y0+b.y1)/2}); });
+    // keep tags from overlapping: stack them, nearest to the floor first
+    const gap=hTag+5*k; let maxTags=Math.max(1,Math.floor((floorY-surf-8*k)/gap)+1);
+    let shown=tags.slice(0,maxTags), hidden=tags.length-shown.length;
+    for(let i=0;i<shown.length;i++){ if(i>0 && shown[i].y>shown[i-1].y-gap) shown[i].y=shown[i-1].y-gap; }
+    const topLimit=surf+hTag/2+10*k; if(shown.length && shown[shown.length-1].y<topLimit){ const shift=topLimit-shown[shown.length-1].y; shown.forEach(s=>s.y+=shift); }
+    shown.forEach(s=>{
+      const {b,focus}=s, y=s.y, mid=(b.y0+b.y1)/2;
+      const name=b.d.name, amt=fmtW(b.d.balance);
+      ctx.font=`700 ${fs}px ${DH_FONT}`; const amtW=ctx.measureText(amt).width;
+      ctx.font=`600 ${fs}px ${DH_FONT}`;
+      let nm=name; const room=maxW-amtW-30*k;
+      while(nm.length>2 && ctx.measureText(nm).width>room) nm=nm.slice(0,-1);
+      if(nm!==name) nm=nm.replace(/\s+$/,'')+'…';
+      const nmW=ctx.measureText(nm).width, tagW=Math.min(maxW, 22*k+nmW+8*k+amtW+(focus?0:0));
+      // connector
+      ctx.strokeStyle='rgba(0,0,0,0.35)'; ctx.lineWidth=1.2*k; ctx.beginPath(); ctx.moveTo(cx+half(mid)+2,mid); ctx.lineTo(lx,y); ctx.stroke();
+      ctx.fillStyle=focus?'#fbbf24':'rgba(12,10,8,0.72)'; dhRR(ctx,lx,y-hTag/2,tagW,hTag,hTag/2); ctx.fill();
+      ctx.fillStyle=focus?'#1a1206':b.col; ctx.beginPath(); ctx.arc(lx+11*k,y,4.2*k,0,Math.PI*2); ctx.fill();
+      if(!focus){ ctx.strokeStyle='rgba(255,255,255,0.25)'; ctx.lineWidth=1; ctx.stroke(); }
+      ctx.textBaseline='middle'; ctx.textAlign='left';
+      ctx.fillStyle=focus?'#1a1206':'#f3f4f6'; ctx.font=`600 ${fs}px ${DH_FONT}`; ctx.fillText(nm,lx+20*k,y+0.5);
+      ctx.fillStyle=focus?'rgba(26,18,6,0.8)':'rgba(243,244,246,0.65)'; ctx.font=`700 ${fsA}px ${DH_FONT}`; ctx.fillText(amt,lx+20*k+nmW+7*k,y+0.5);
+      ctx.textBaseline='alphabetic';
     });
-    ctx.fillStyle='rgba(74,222,128,0.6)'; ctx.fillRect(hx,floorY,holeW,1.5);
-    if(!free) for(let i=0;i<4;i++){ ctx.fillStyle='rgba(0,0,0,0.25)'; ctx.beginPath(); ctx.ellipse(hx+30+i*13+(i%2)*3,floorY+2.5,3,1.2,0,0,Math.PI*2); ctx.fill(); }
-    if(paidPx>34 && !free && !_pit.share){ ctx.font=`700 11px ${PIT_FONT}`; ctx.textAlign='center'; ctx.fillStyle='rgba(232,237,248,0.85)'; ctx.fillText(`${fmtW(D.denom-D.bal)} paid off`, cx, Math.min(H-10, floorY+paidPx/2+4)); }
-    if(free && !_pit.share){ ctx.font=`700 11px ${PIT_FONT}`; ctx.textAlign='center'; ctx.fillStyle='rgba(232,237,248,0.9)'; ctx.fillText(`Hole filled in: ${fmtW(D.denom)} paid off`, cx, surf+(bottom-surf)/2); }
-  }
-
-  // ── Layer labels (right of the hole): name and amount, nothing else ──
-  const lbx=hx+holeW+12, maxW=W-lbx-8;
-  ctx.textAlign='left';
-  if(!_pit.share) bands.forEach((b,k)=>{
-    const h=b.y1-b.y0; if(h<13 || maxW<40) return;
-    const mid=(b.y0+b.y1)/2, focus=k===0;
-    const nameF=`600 11px ${PIT_FONT}`, amtF=`500 10px ${PIT_FONT}`;
-    if(h>=26){
-      ctx.font=nameF; ctx.fillStyle=focus?'#fbbf24':'rgba(232,237,248,0.95)'; ctx.fillText(pitFit(ctx,b.d.name,nameF,maxW),lbx,mid-2);
-      ctx.font=amtF; ctx.fillStyle='rgba(232,237,248,0.6)'; ctx.fillText(fmtW(b.d.balance),lbx,mid+11);
-    } else {
-      ctx.font=nameF; ctx.fillStyle=focus?'#fbbf24':'rgba(232,237,248,0.85)'; const full=`${b.d.name} ${fmtW(b.d.balance)}`; ctx.fillText(ctx.measureText(full).width<=maxW?full:pitFit(ctx,b.d.name,nameF,maxW),lbx,mid+4);
+    if(shown.length && bands[0] && !stuck){
+      const y0=shown[0].y+hTag/2+4*k;
+      if(y0+12*k<H){ ctx.font=`700 ${9.5*k}px ${DH_FONT}`; ctx.fillStyle='#fbbf24'; ctx.textAlign='left'; ctx.fillText('DIGGING THIS ONE FIRST', lx+6*k, y0+8*k); }
     }
-  });
-
-  // ── Flag at the surface ──
-  const fx=hx+holeW+(free?24:34)+(small?0:12);
-  ctx.strokeStyle='#cbd5e1'; ctx.lineWidth=1.5; ctx.beginPath(); ctx.moveTo(fx,surf-1); ctx.lineTo(fx,surf-32); ctx.stroke();
-  const wave=Math.sin(t*4)*2;
-  ctx.fillStyle='#4ade80'; ctx.beginPath(); ctx.moveTo(fx,surf-32); ctx.quadraticCurveTo(fx+10,surf-32+wave,fx+20,surf-28); ctx.quadraticCurveTo(fx+10,surf-24-wave,fx,surf-23); ctx.fill();
-  ctx.font=`600 10px ${PIT_FONT}`; ctx.textAlign='left';
-  let lbl = free ? 'Debt-free' : D.plan.canFinish ? `Out by ${pitShortDate(D.plan.months)}` : 'Surface';
-  if(ctx.measureText(lbl).width > W-fx-30) lbl = free ? 'Free' : D.plan.canFinish ? pitShortDate(D.plan.months) : '';
-  if(lbl){ const lw=ctx.measureText(lbl).width+12; ctx.fillStyle='rgba(8,20,12,0.6)'; ctx.beginPath(); ctx.roundRect?ctx.roundRect(fx+22,surf-38,lw,16,8):ctx.rect(fx+22,surf-38,lw,16); ctx.fill(); ctx.fillStyle='#e8edf8'; ctx.fillText(lbl, fx+28, surf-26.5); }
-
-  // ── 12-month ghost line (with the slider's extra) ──
-  if(!free && D.plan.canFinish && open && !_pit.share){
-    const gy = surf + Math.max(0,D.plan.series[12]??0)/D.denom*depth;
-    if(floorY-gy>4){
-      ctx.setLineDash([4,4]); ctx.strokeStyle='rgba(74,222,128,0.9)'; ctx.lineWidth=1.3;
-      ctx.beginPath(); ctx.moveTo(hx-6,gy); ctx.lineTo(hx+holeW+4,gy); ctx.stroke(); ctx.setLineDash([]);
-      ctx.fillStyle='rgba(74,222,128,0.18)'; ctx.fillRect(hx,gy,holeW,Math.min(floorY-gy,3));
-      ctx.font=`600 10px ${PIT_FONT}`; ctx.textAlign='right'; ctx.fillStyle='#4ade80';
-      ctx.fillText(D.plan.months<=12?`Out in ${D.plan.months} mo`:'In a year', hx-10, gy+3.5);
-    }
+    if(hidden>0){ ctx.font=`600 ${10.5*k}px ${DH_FONT}`; ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.textAlign='left'; ctx.fillText(`+${hidden} more layer${hidden>1?'s':''}`, lx+4*k, surf+12*k); }
   }
 
-  // ── Stuck: interest crumbles the walls back in ──
-  if(stuck){
-    if(!pitReduce && !_pit.share){ _pit.crumbleT-=dt;
-      if(_pit.crumbleT<=0){ _pit.crumbleT=0.15+Math.random()*0.25; const side=Math.random()<0.5; _pit.parts.push({x:side?hx+3:hx+holeW-3,y:surf+Math.random()*Math.max(4,floorY-surf)*0.6,vx:(side?1:-1)*(10+Math.random()*25),vy:0,life:3,c:'#7a5a3f',s:2+Math.random()*2}); } }
-    if(!_pit.share) pitChip(ctx,10,10,'Interest is filling the hole back in','#fbbf24','rgba(40,24,4,0.75)');
+  // ── Flag + date at the top ──
+  const fx = holeOpen ? hx1 + 22*k : cx + topW*0.5;
+  ctx.strokeStyle='#e5e7eb'; ctx.lineWidth=2*k; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(fx,surf+1); ctx.lineTo(fx,surf-40*k); ctx.stroke();
+  const wv=share?0:Math.sin(t*3.5)*2.5*k;
+  ctx.fillStyle='#4ade80'; ctx.beginPath(); ctx.moveTo(fx,surf-40*k); ctx.quadraticCurveTo(fx+12*k,surf-40*k+wv,fx+24*k,surf-35*k); ctx.quadraticCurveTo(fx+12*k,surf-29*k-wv,fx,surf-28*k); ctx.fill();
+  {
+    const lbl = free ? 'Debt-free!' : D.plan.canFinish ? `Out by ${pitShortDate(D.plan.months)}` : 'Interest is winning';
+    ctx.font=`700 ${11.5*k}px ${DH_FONT}`; const tw=ctx.measureText(lbl).width+16*k;
+    let tx=fx+30*k; if(tx+tw>W-6) tx=Math.max(6,fx-tw-8*k);
+    ctx.fillStyle=stuck?'rgba(120,53,15,0.9)':'rgba(8,20,12,0.78)'; dhRR(ctx,tx,surf-46*k,tw,22*k,11*k); ctx.fill();
+    ctx.fillStyle=stuck?'#fde68a':'#bbf7d0'; ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillText(lbl,tx+8*k,surf-35*k); ctx.textBaseline='alphabetic';
   }
+
+  // ── Interest refilling the hole ──
+  if(stuck && !pitReduce && !share){ _pit.crumbleT-=dt;
+    if(_pit.crumbleT<=0){ _pit.crumbleT=0.14+Math.random()*0.22; const side=Math.random()<0.5?-1:1; _pit.parts.push({x:cx+side*(half(surf)-6*k),y:surf+2,vx:-side*(20+Math.random()*30)*k,vy:10,life:3,c:DH_SOIL[(bands[bands.length-1]||{idx:0}).idx%DH_SOIL.length],s:(3+Math.random()*3)*k,fall:1}); } }
 
   // ── The digger ──
-  const speed = stuck?0.55:(1+_pit.extra/400) + _pit.burst*2;
-  if(!pitReduce) _pit.phase = (_pit.phase + dt*speed*0.75)%1;
-  _pit.burst = Math.max(0,_pit.burst-dt*0.8);
-  const ph=_pit.phase;
+  const speed = stuck?0.6:(1+_pit.extra/350) + _pit.burst*2.2;
+  if(!pitReduce && !share) _pit.phase = (_pit.phase + dt*speed*0.8)%1;
+  _pit.burst = Math.max(0,_pit.burst-dt*0.7);
+  const ph = share?0.88:_pit.phase;
   let a;
-  if(free) a=-1.45;
-  else if(ph<0.45) a=-1.4+(2.5*(ph/0.45)**2);
-  else if(ph<0.6) a=1.1;
-  else if(ph<0.78) a=1.1-2.5*((ph-0.6)/0.18);
-  else a=-1.4;
-  const sc=small?1.2:1.5;
-  const footY = free? surf-1 : floorY-0.5;
-  const dx = free ? hx-36 : cx-4;
-  if(!free && !pitReduce && _pit.prevPh!==undefined){
-    // dust puff when the shovel bites into the floor
-    if(_pit.prevPh<0.45 && ph>=0.45){ const tx=dx+Math.cos(1.1)*18*sc; for(let i=0;i<4;i++) _pit.parts.push({x:tx,y:footY-2,vx:(Math.random()-0.5)*30,vy:-10-Math.random()*15,life:0.7,dust:1,s:2}); }
-    // throw dirt on the upswing
+  if(free) a=-1.5;
+  else if(ph<0.42) a=-1.35+2.45*((ph/0.42)**2);
+  else if(ph<0.58) a=1.1;
+  else if(ph<0.76) a=1.1-2.45*((ph-0.58)/0.18);
+  else a=-1.35;
+  const sc = 1.65*k;
+  const footY = free? surf : floorY-3*k;
+  const dx = free ? pileX+pileW*0.55+14*k : cx - topW*0.12;
+  if(!free && !pitReduce && !share && _pit.prevPh!==undefined){
+    if(_pit.prevPh<0.42 && ph>=0.42){ for(let i=0;i<5;i++) _pit.parts.push({x:dx+Math.cos(1.1)*20*sc,y:footY,vx:(Math.random()-0.5)*50*k,vy:-(20+Math.random()*30)*k,life:0.6,dust:1,s:2.5*k}); }
     if(_pit.prevPh<0.74 && ph>=0.74){
-      const tipX=dx+Math.cos(a)*18*sc, tipY=footY-17*sc+Math.sin(a)*18*sc;
-      const hgt=Math.max(30,tipY-surf+30), v=Math.sqrt(2*900*hgt), T=v/900;
-      const n=stuck?2:5+Math.round(_pit.burst*7);
-      for(let i=0;i<n;i++){ const side=Math.random()<0.65?-1:1; _pit.parts.push({x:tipX,y:tipY,vx:side*(holeW/2+18+Math.random()*50)/(T*1.25),vy:-v*(0.92+Math.random()*0.12),life:3,c:Math.random()<0.5?'#7a5a3f':'#9a7752',s:2+Math.random()*2.2,spin:Math.random()*6}); }
+      const tipX=dx+Math.cos(a)*20*sc, tipY=footY-17*sc+Math.sin(a)*20*sc;
+      const T=0.75+Math.min(0.45,(tipY-surf)/600), g=1300*k, tgt=_pit.pileTarget;
+      const n=stuck?1:2+Math.round(_pit.burst*4), col=bands[0]?bands[0].col:'#b07a47';
+      for(let i=0;i<n;i++){ const ex=tgt.x+(Math.random()-0.5)*30*k, ey=tgt.y+(Math.random()-0.5)*8*k; _pit.parts.push({x:tipX,y:tipY,vx:(ex-tipX)/T,vy:(ey-tipY-0.5*g*T*T)/T,g,life:T,c:i?dhShade(col,1.1):col,s:(4+Math.random()*3)*k,spin:Math.random()*6}); }
     }
   }
   _pit.prevPh=ph;
-  pitDigger(ctx,dx,footY,a,free,t,sc,stuck);
+  dhDigger(ctx,dx,footY,a,free,t,sc,stuck,share);
 
   // ── Particles ──
   _pit.parts = _pit.parts.filter(p=>{
     p.life-=dt;
-    if(p.dust){ p.x+=p.vx*dt; p.y+=p.vy*dt; p.s+=dt*10; if(p.life<=0) return false; ctx.fillStyle=`rgba(154,119,82,${p.life*0.5})`; ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,Math.PI*2); ctx.fill(); return true; }
-    p.vy+=900*dt; p.x+=p.vx*dt; p.y+=p.vy*dt;
-    const inHole = p.x>hx && p.x<hx+holeW;
-    if(p.vy>0 && !inHole && p.y>=surf-1) return false;
-    if(inHole && p.y>=floorY) return false;
+    if(p.dust){ p.x+=p.vx*dt; p.y+=p.vy*dt; p.s+=dt*12*k; if(p.life<=0) return false; ctx.fillStyle=`rgba(200,150,100,${p.life*0.55})`; ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,Math.PI*2); ctx.fill(); return true; }
+    if(p.conf){ p.vy+=500*k*dt; p.vx*=0.99; p.x+=p.vx*dt; p.y+=p.vy*dt; if(p.life<=0||p.y>H) return false; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.spin+t*6); ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); ctx.restore(); return true; }
+    p.vy+=(p.g||900*k)*dt; p.x+=p.vx*dt; p.y+=p.vy*dt;
+    if(p.fall && p.y>=floorY-2) return false;
     if(p.life<=0 || p.y>H) return false;
-    ctx.fillStyle=p.c; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate((p.spin||0)+t*4); ctx.fillRect(-p.s/2,-p.s/2,p.s,p.s*0.8); ctx.restore(); return true;
+    ctx.fillStyle=p.c; ctx.beginPath(); ctx.ellipse(p.x,p.y,p.s*0.6,p.s*0.5,p.spin||0,0,Math.PI*2); ctx.fill(); return true;
   });
-  if(free && !pitReduce && Math.random()<0.1) _pit.parts.push({x:dx+(Math.random()-0.5)*30,y:surf-34,vx:(Math.random()-0.5)*70,vy:-140-Math.random()*130,life:2.2,c:['#4ade80','#fbbf24','#60a5fa','#f9a8d4'][Math.floor(Math.random()*4)],s:3,spin:Math.random()*6});
+
+  // ── Payoff moments ──
+  if(!share){
+    const conf = free ? 0.12 : (_pit.confetti>0 ? 0.9 : 0);
+    if(_pit.confetti>0) _pit.confetti-=dt;
+    if(conf && !pitReduce && Math.random()<conf){ for(let i=0;i<(free?1:3);i++) _pit.parts.push({conf:1,x:Math.random()*W,y:-10,vx:(Math.random()-0.5)*80*k,vy:(40+Math.random()*80)*k,life:4,c:['#4ade80','#fbbf24','#60a5fa','#f472b6','#ffffff'][Math.floor(Math.random()*5)],s:(5+Math.random()*4)*k,spin:Math.random()*6}); }
+    _pit.floats = _pit.floats.filter(f=>{ f.life-=dt; if(f.life<=0) return false; const u=1-f.life/f.max;
+      ctx.globalAlpha=Math.min(1,f.life/0.5); ctx.font=`800 ${18*k}px ${DH_FONT}`; ctx.textAlign='center'; ctx.fillStyle='#4ade80'; ctx.fillText(f.txt, dx, footY-58*k-u*40*k); ctx.globalAlpha=1; return true; });
+    if(_pit.banner){ const B=_pit.banner; B.life-=dt; if(B.life<=0) _pit.banner=null; else {
+      ctx.globalAlpha=Math.min(1,B.life/0.4, (3-B.life)/0.25);
+      ctx.font=`800 ${16*k}px ${DH_FONT}`; const tw=ctx.measureText(B.txt).width+32*k;
+      ctx.fillStyle='#4ade80'; dhRR(ctx,W/2-tw/2,14*k,tw,34*k,17*k); ctx.fill();
+      ctx.fillStyle='#06140b'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(B.txt,W/2,31*k); ctx.textBaseline='alphabetic'; ctx.globalAlpha=1; } }
+    if(stuck){ ctx.font=`700 ${11.5*k}px ${DH_FONT}`; const txt='Interest is refilling your hole'; const tw=ctx.measureText(txt).width+18*k;
+      ctx.fillStyle='rgba(120,53,15,0.9)'; dhRR(ctx,12*k,12*k,tw,24*k,12*k); ctx.fill(); ctx.fillStyle='#fde68a'; ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillText(txt,21*k,24*k); ctx.textBaseline='alphabetic'; }
+  }
 }
 
+function dhDigger(ctx,x,y,a,free,t,sc,stuck,share){
+  ctx.save(); ctx.lineCap='round'; ctx.lineJoin='round';
+  const jump = free && !share ? Math.abs(Math.sin(t*5))*6 : 0;
+  ctx.translate(x,y); ctx.scale(sc,sc);
+  // shadow
+  ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.beginPath(); ctx.ellipse(0,0,9-jump*0.4,2.2,0,0,Math.PI*2); ctx.fill();
+  ctx.translate(0,-jump);
+  // legs + boots
+  ctx.strokeStyle='#334155'; ctx.lineWidth=3.4;
+  ctx.beginPath(); ctx.moveTo(-3.6,-2); ctx.lineTo(-1.2,-10); ctx.moveTo(3.6,-2); ctx.lineTo(1.2,-10); ctx.stroke();
+  ctx.fillStyle='#111827'; dhRR(ctx,-7,-3,6,3.2,1.5); ctx.fill(); dhRR(ctx,1.2,-3,6,3.2,1.5); ctx.fill();
+  // body
+  ctx.fillStyle='#22c55e'; dhRR(ctx,-6,-21,12,12.5,4.5); ctx.fill();
+  ctx.fillStyle='#4ade80'; dhRR(ctx,-6,-21,6,12.5,[4.5,0,0,4.5]); ctx.fill();
+  ctx.fillStyle='#16a34a'; ctx.fillRect(-6,-11.5,12,1.6);
+  // head
+  ctx.fillStyle='#f5c9a0'; ctx.beginPath(); ctx.arc(0,-26,5.2,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#1f2937'; ctx.beginPath(); ctx.arc(1.9,-26.4,0.75,0,Math.PI*2); ctx.arc(-1.4,-26.4,0.75,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#9a4f2c'; ctx.lineWidth=0.8; ctx.beginPath();
+  if(free || stuck===false) ctx.arc(0.3,-24.6,1.7,0.25,Math.PI-0.25); else { ctx.moveTo(-1.2,-23.6); ctx.lineTo(1.8,-23.9); }
+  ctx.stroke();
+  ctx.fillStyle='rgba(244,114,182,0.35)'; ctx.beginPath(); ctx.arc(3.4,-24.8,1.1,0,Math.PI*2); ctx.fill();
+  // hard hat
+  ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.arc(0,-27.6,5.9,Math.PI,0); ctx.fill();
+  ctx.fillStyle='#f59e0b'; dhRR(ctx,-7.6,-28.4,15.2,2.2,1.1); ctx.fill();
+  ctx.fillStyle='#fef3c7'; ctx.beginPath(); ctx.arc(4.2,-30.4,1.4,0,Math.PI*2); ctx.fill();
+  if(stuck && !share){ const d=(t*1.4)%1; ctx.fillStyle=`rgba(147,197,253,${1-d})`; ctx.beginPath(); ctx.ellipse(-6.2,-27+d*7,0.9,1.3,0,0,Math.PI*2); ctx.fill(); }
+  if(free){
+    const w=share?0:Math.sin(t*6)*2;
+    ctx.strokeStyle='#22c55e'; ctx.lineWidth=2.8;
+    ctx.beginPath(); ctx.moveTo(-4,-19); ctx.lineTo(-9,-30+w); ctx.moveTo(4,-19); ctx.lineTo(9,-30-w); ctx.stroke();
+    ctx.fillStyle='#f5c9a0'; ctx.beginPath(); ctx.arc(-9,-30.5+w,1.7,0,Math.PI*2); ctx.arc(9,-30.5-w,1.7,0,Math.PI*2); ctx.fill();
+  } else {
+    const cs=Math.cos(a), sn=Math.sin(a), hx=cs*7, hy=-19+sn*7;
+    // shovel
+    ctx.strokeStyle='#c8955c'; ctx.lineWidth=2.2;
+    ctx.beginPath(); ctx.moveTo(hx-cs*7,hy-sn*7); ctx.lineTo(hx+cs*13,hy+sn*13); ctx.stroke();
+    const bx=hx+cs*15.5, by=hy+sn*15.5;
+    ctx.fillStyle='#cbd5e1'; ctx.beginPath();
+    ctx.moveTo(bx-sn*3.8-cs*2.4,by+cs*3.8-sn*2.4); ctx.lineTo(bx+sn*3.8-cs*2.4,by-cs*3.8-sn*2.4); ctx.lineTo(bx+sn*2.6+cs*5,by-cs*2.6+sn*5); ctx.lineTo(bx-sn*2.6+cs*5,by+cs*2.6+sn*5); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='rgba(255,255,255,0.35)'; ctx.beginPath(); ctx.arc(bx-sn*1.5,by+cs*1.5,1,0,Math.PI*2); ctx.fill();
+    if(a<-0.6){ ctx.fillStyle='#b07a47'; ctx.beginPath(); ctx.arc(bx+cs*1.5,by+sn*1.5,2.6,0,Math.PI*2); ctx.fill(); }
+    // arm
+    ctx.strokeStyle='#22c55e'; ctx.lineWidth=2.8;
+    ctx.beginPath(); ctx.moveTo(0,-19); ctx.lineTo(hx,hy); ctx.stroke();
+    ctx.fillStyle='#f5c9a0'; ctx.beginPath(); ctx.arc(hx,hy,1.7,0,Math.PI*2); ctx.fill();
+  }
+  ctx.restore();
+}
 
-// ── Share my climb: a 1080x1350 card with the scene, the percent and the date. No dollar amounts or debt names. ──
+// ── Share: a 1080x1350 card with the scene, the percent and the date. No dollar amounts or debt names. ──
 async function pitShareImage(){
   try{ await document.fonts.ready; }catch(e){}
-  const D=_pit.D||pitData(), W=1080, H=1350, pad=56;
+  const D=_pit.D||pitData(), W=1080, H=1350, pad=60;
   const cv=document.createElement('canvas'); cv.width=W; cv.height=H; const x=cv.getContext('2d');
-  const disp="'Bricolage Grotesque', sans-serif", body="Geist, Inter, sans-serif";
-  const bg=x.createLinearGradient(0,0,0,H); bg.addColorStop(0,'#0f131b'); bg.addColorStop(1,'#090b10'); x.fillStyle=bg; x.fillRect(0,0,W,H);
-  const gl=x.createRadialGradient(W*0.85,0,0,W*0.85,0,W*0.9); gl.addColorStop(0,'rgba(74,222,128,0.14)'); gl.addColorStop(1,'rgba(0,0,0,0)'); x.fillStyle=gl; x.fillRect(0,0,W,H);
+  const disp="'Bricolage Grotesque', Geist, sans-serif", body="Geist, Inter, sans-serif";
+  x.fillStyle='#0b0f17'; x.fillRect(0,0,W,H);
+  const gl=x.createRadialGradient(W*0.9,0,0,W*0.9,0,W); gl.addColorStop(0,'rgba(74,222,128,0.16)'); gl.addColorStop(1,'rgba(0,0,0,0)'); x.fillStyle=gl; x.fillRect(0,0,W,H);
   // brand
-  x.fillStyle='#4ade80'; groveRoundRect(x,pad,pad,52,52,13); x.fill();
-  x.fillStyle='#08140c'; x.font=`800 34px ${disp}`; x.textAlign='center'; x.textBaseline='middle'; x.fillText('Q',pad+26,pad+28);
-  x.textAlign='left'; x.fillStyle='#4ade80'; x.font=`700 30px ${disp}`; x.fillText('Qualisight',pad+68,pad+27);
-  x.textBaseline='alphabetic';
-  // headline
+  x.fillStyle='#4ade80'; dhRR(x,pad,pad,54,54,14); x.fill();
+  x.fillStyle='#06140b'; x.font=`800 34px ${disp}`; x.textAlign='center'; x.textBaseline='middle'; x.fillText('Q',pad+27,pad+29);
+  x.textAlign='left'; x.fillStyle='#e8edf8'; x.font=`700 30px ${disp}`; x.fillText('Qualisight',pad+72,pad+28); x.textBaseline='alphabetic';
   const free=D.bal<=0, pct=_pit.outPct??0;
-  x.fillStyle='#4ade80'; x.font=`800 ${free?150:190}px ${disp}`; x.fillText(free?'Debt-free':`${pct}%`, pad-6, 330);
-  x.fillStyle='#e8edf8'; x.font=`700 52px ${disp}`; x.fillText(free?'I dug my way out.':'of the way out of debt', pad, 405);
-  x.fillStyle='#97a2b8'; x.font=`400 32px ${body}`;
-  x.fillText(free?'Every layer cleared.':D.plan.canFinish?`On track to be out by ${monthsToDateLabel(D.plan.months)}.`:'Digging my way out, one payment at a time.', pad, 458);
-  // the scene, drawn at a real size then scaled up
-  const sw=520, sh=440, scale=2, tile=document.createElement('canvas'); tile.width=sw*scale; tile.height=sh*scale;
-  const keep={cv:_pit.cv,ctx:_pit.ctx,W:_pit.W,H:_pit.H,parts:_pit.parts,r:_pit.r};
+  x.fillStyle='#4ade80'; x.font=`800 ${free?160:210}px ${disp}`; x.fillText(free?'Debt-free':`${pct}%`, pad-8, 340);
+  x.fillStyle='#ffffff'; x.font=`800 58px ${disp}`; x.fillText(free?'I dug my way out.':'of the way out of debt', pad, 420);
+  x.fillStyle='#9aa4b8'; x.font=`500 32px ${body}`;
+  x.fillText(free?'Every layer cleared.':D.plan.canFinish?`Out of the hole by ${monthsToDateLabel(D.plan.months)}.`:'Digging out, one payment at a time.', pad, 474);
+  // scene
+  const ty=530, tw=W-pad*2, th=H-ty-150, sw=560, sh=Math.round(sw*th/tw), scale=tw/sw;
+  const tile=document.createElement('canvas'); tile.width=Math.round(sw*scale); tile.height=Math.round(sh*scale);
+  const keep={cv:_pit.cv,ctx:_pit.ctx,W:_pit.W,H:_pit.H,parts:_pit.parts,r:_pit.r,floats:_pit.floats,banner:_pit.banner};
   try{
-    _pit.cv=tile; _pit.ctx=tile.getContext('2d'); _pit.ctx.setTransform(scale,0,0,scale,0,0); _pit.W=sw; _pit.H=sh; _pit.share=true; _pit.r=_pit.rT; _pit.parts=[];
+    _pit.cv=tile; _pit.ctx=tile.getContext('2d'); _pit.ctx.setTransform(scale,0,0,scale,0,0); _pit.W=sw; _pit.H=sh; _pit.share=true; _pit.r=_pit.rT; _pit.parts=[]; _pit.floats=[]; _pit.banner=null;
     pitDraw(0);
   } finally { Object.assign(_pit,keep); _pit.share=false; }
-  const ty=510, th=H-ty-150;
-  x.save(); groveRoundRect(x,pad,ty,W-pad*2,th,28); x.clip(); x.drawImage(tile,pad,ty,W-pad*2,th); x.restore();
-  x.strokeStyle='rgba(255,255,255,0.1)'; x.lineWidth=2; groveRoundRect(x,pad,ty,W-pad*2,th,28); x.stroke();
+  x.save(); dhRR(x,pad,ty,tw,th,30); x.clip(); x.drawImage(tile,pad,ty,tw,th); x.restore();
   // footer
-  x.fillStyle='#e8edf8'; x.font=`700 36px ${disp}`; x.fillText('Dig out at qualisight.ca',pad,H-62);
-  x.fillStyle='#6b7488'; x.font=`400 22px ${body}`; x.textAlign='right'; x.fillText('No dollar amounts shown',W-pad,H-66); x.textAlign='left';
+  x.fillStyle='#ffffff'; x.font=`800 38px ${disp}`; x.fillText('Dig out at qualisight.ca',pad,H-62);
+  x.fillStyle='#6b7488'; x.font=`500 22px ${body}`; x.textAlign='right'; x.fillText('No dollar amounts shown',W-pad,H-68); x.textAlign='left';
   return cv;
 }
 function pitShareCaption(){
@@ -7044,55 +7100,6 @@ async function pitShare(){
   document.getElementById('gs-loading').hidden=true;
   const file=new File([_grove.shareBlob],'my-debt-climb.png',{type:'image/png'});
   document.getElementById('gs-share').hidden=!(navigator.canShare && navigator.canShare({files:[file]}));
-}
-
-function pitDigger(ctx,x,y,a,free,t,sc,stuck){
-  ctx.save(); ctx.lineCap='round'; ctx.lineJoin='round';
-  ctx.translate(x,y); ctx.scale(sc,sc); ctx.translate(-x,-y);
-  const hipY=y-9, shY=y-18, bob=free?Math.abs(Math.sin(t*6))*1.5:0;
-  y-=bob; 
-  // shadow
-  ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.beginPath(); ctx.ellipse(x,y+bob+0.5,7,1.6,0,0,Math.PI*2); ctx.fill();
-  // legs + boots
-  ctx.strokeStyle='#475569'; ctx.lineWidth=2.8;
-  ctx.beginPath(); ctx.moveTo(x-3.5,y-1.5); ctx.lineTo(x,hipY-bob); ctx.lineTo(x+3.5,y-1.5); ctx.stroke();
-  ctx.fillStyle='#1e293b'; ctx.fillRect(x-6,y-2.2,4.5,2.4); ctx.fillRect(x+1.8,y-2.2,4.5,2.4);
-  const sy=shY-bob, hy0=hipY-bob;
-  // body: green work shirt + belt + vest stripe
-  ctx.fillStyle='#4ade80'; ctx.beginPath(); ctx.roundRect ? ctx.roundRect(x-4.5,sy-1,9,hy0-sy+2,3) : ctx.rect(x-4.5,sy-1,9,hy0-sy+2); ctx.fill();
-  ctx.fillStyle='#fbbf24'; ctx.fillRect(x-4.5,sy+3,9,1.2);
-  ctx.fillStyle='#3f2d1e'; ctx.fillRect(x-4.5,hy0-1.5,9,1.6); ctx.fillStyle='#cbd5e1'; ctx.fillRect(x-0.8,hy0-1.5,1.6,1.6);
-  // head, face, hard hat with headlamp
-  ctx.fillStyle='#e8c39e'; ctx.beginPath(); ctx.arc(x,sy-5,4,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#1e293b'; ctx.fillRect(x+1.2,sy-5.6,1,1.1); ctx.fillRect(x-1.6,sy-5.6,1,1.1);
-  ctx.strokeStyle='#7c4a2d'; ctx.lineWidth=0.7; ctx.beginPath(); free?ctx.arc(x,sy-3.8,1.6,0.2,Math.PI-0.2):ctx.moveTo(x-1,sy-3), ctx.lineTo(x+1.2,sy-3); ctx.stroke();
-  ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.arc(x,sy-6,4.7,Math.PI,0); ctx.fill(); ctx.fillRect(x-6,sy-6.4,12,1.6);
-  ctx.fillStyle='#fef9c3'; ctx.beginPath(); ctx.arc(x+3.4,sy-8,1.1,0,Math.PI*2); ctx.fill();
-  if(!free){ // headlamp beam toward the shovel
-    const g=ctx.createRadialGradient(x+4,sy-8,1,x+4,sy-8,22); g.addColorStop(0,'rgba(254,249,195,0.28)'); g.addColorStop(1,'rgba(254,249,195,0)');
-    ctx.fillStyle=g; ctx.beginPath(); ctx.moveTo(x+4,sy-8); ctx.arc(x+4,sy-8,22,0.3,1.1); ctx.closePath(); ctx.fill();
-  }
-  if(stuck){ const d=(t*1.5)%1; ctx.fillStyle=`rgba(147,197,253,${1-d})`; ctx.beginPath(); ctx.arc(x-5,sy-6+d*6,0.9,0,Math.PI*2); ctx.fill(); }
-  if(free){
-    ctx.strokeStyle='#4ade80'; ctx.lineWidth=2.3;
-    const w=Math.sin(t*6)*2;
-    ctx.beginPath(); ctx.moveTo(x-3,sy+1); ctx.lineTo(x-8,sy-9+w); ctx.moveTo(x+3,sy+1); ctx.lineTo(x+8,sy-9-w); ctx.stroke();
-    ctx.fillStyle='#78350f'; ctx.beginPath(); ctx.arc(x-8,sy-9.5+w,1.4,0,Math.PI*2); ctx.arc(x+8,sy-9.5-w,1.4,0,Math.PI*2); ctx.fill();
-    ctx.strokeStyle='#a3825f'; ctx.lineWidth=1.8; ctx.beginPath(); ctx.moveTo(x+14,y-20+bob); ctx.lineTo(x+14,y-3+bob); ctx.stroke();
-    ctx.fillStyle='#94a3b8'; ctx.fillRect(x+11,y-4+bob,6,5);
-  } else {
-    const cs=Math.cos(a), sn=Math.sin(a), hx=x+cs*6, hy=sy+1+sn*6;
-    ctx.strokeStyle='#4ade80'; ctx.lineWidth=2.3;
-    ctx.beginPath(); ctx.moveTo(x,sy+1); ctx.lineTo(hx,hy); ctx.stroke();
-    ctx.strokeStyle='#a3825f'; ctx.lineWidth=1.8;
-    ctx.beginPath(); ctx.moveTo(hx-cs*6,hy-sn*6); ctx.lineTo(hx+cs*12,hy+sn*12); ctx.stroke();
-    ctx.fillStyle='#78350f'; ctx.beginPath(); ctx.arc(hx,hy,1.5,0,Math.PI*2); ctx.fill();
-    const bx=hx+cs*14, by=hy+sn*14;
-    ctx.fillStyle='#94a3b8'; ctx.beginPath();
-    ctx.moveTo(bx-sn*3.2-cs*2,by+cs*3.2-sn*2); ctx.lineTo(bx+sn*3.2-cs*2,by-cs*3.2-sn*2); ctx.lineTo(bx+sn*2.4+cs*4,by-cs*2.4+sn*4); ctx.lineTo(bx-sn*2.4+cs*4,by+cs*2.4+sn*4); ctx.closePath(); ctx.fill();
-    if(a<-0.8){ ctx.fillStyle='#7a5a3f'; ctx.beginPath(); ctx.arc(bx,by,2.2,0,Math.PI*2); ctx.fill(); }
-  }
-  ctx.restore();
 }
 
 function renderDebt(){
