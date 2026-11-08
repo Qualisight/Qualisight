@@ -367,6 +367,54 @@ header{
   .dt-hero-stat{border-left:none;padding-left:0;}
 }
 
+/* Site insights (owner only) */
+.qi-overlay{position:fixed;inset:0;z-index:9999;background:rgba(5,7,10,0.8);display:none;overflow-y:auto;padding:2rem 1rem}
+.qi-overlay.open{display:block}
+.qi-sheet{max-width:980px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1.4rem 1.5rem 2rem}
+.qi-head{display:flex;justify-content:space-between;gap:1rem;align-items:flex-start}
+.qi-title{font-family:var(--font-display);font-weight:800;font-size:1.5rem;letter-spacing:-0.03em}
+.qi-sub{font-size:0.85rem;color:var(--muted);margin-top:0.2rem}
+.qi-x{background:none;border:none;color:var(--muted);font-size:1.8rem;cursor:pointer;line-height:1}
+.qi-tools{display:flex;justify-content:space-between;gap:0.8rem;flex-wrap:wrap;margin:1rem 0}
+.qi-range{display:inline-flex;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:0.2rem;gap:0.2rem}
+.qi-range button{background:none;border:none;color:var(--muted);font:600 0.8rem var(--font-body);padding:0.4rem 0.8rem;border-radius:8px;cursor:pointer}
+.qi-range button.on{background:var(--accent);color:#08140c}
+.qi-copy{background:var(--card2);border:1px solid var(--border2);color:var(--accent);font:600 0.82rem var(--font-body);padding:0.45rem 0.9rem;border-radius:10px;cursor:pointer}
+.qi-body{display:flex;flex-direction:column;gap:0.7rem}
+.qi-empty{color:var(--muted);font-size:0.9rem;padding:1.5rem 0}
+.qi-empty.small{padding:0.4rem 0;font-size:0.82rem}
+.qi-note{background:var(--amber-soft);border:1px solid rgba(251,191,36,0.3);color:#fde68a;border-radius:12px;padding:0.7rem 0.9rem;font-size:0.84rem}
+.qi-kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.6rem}
+.qi-kpis div{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:0.8rem}
+.qi-kpis span{display:block;font-size:0.72rem;color:var(--muted)}
+.qi-kpis b{font-family:var(--font-display);font-size:1.5rem;font-weight:800}
+.qi-h{font-weight:700;font-size:0.95rem;margin-top:0.9rem}
+.qi-sm{font-size:0.76rem;color:var(--muted);margin-bottom:0.4rem}
+.qi-fix{display:flex;gap:0.8rem;background:var(--card2);border:1px solid var(--border);border-radius:14px;padding:0.9rem 1rem}
+.qi-fix.top{border-color:rgba(248,113,113,0.45)}
+.qi-fix-n{width:26px;height:26px;border-radius:50%;background:var(--red-soft);color:var(--red);font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:0.85rem}
+.qi-fix b{font-size:0.95rem}
+.qi-fix p{font-size:0.84rem;color:var(--muted);margin:0.3rem 0 0;line-height:1.5}
+.qi-fix .qi-do{color:var(--text)}
+.qi-do span{color:var(--accent);font-weight:700}
+.qi-funnel{display:flex;flex-direction:column;gap:0.5rem}
+.qi-step{background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:0.6rem 0.8rem}
+.qi-step.bad{border-color:rgba(248,113,113,0.5)}
+.qi-step-top{display:flex;justify-content:space-between;font-size:0.86rem}
+.qi-step-bar{height:7px;background:rgba(255,255,255,0.06);border-radius:4px;overflow:hidden;margin-top:0.35rem;flex:1}
+.qi-step-bar i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.qi-step.bad .qi-step-bar i{background:var(--red)}
+.qi-step-sub{font-size:0.72rem;color:var(--muted);margin-top:0.3rem}
+.qi-step.bad .qi-step-sub{color:var(--red)}
+.qi-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.qi-mini{display:flex;align-items:center;gap:0.6rem;font-size:0.8rem;margin:0.3rem 0}
+.qi-mini span{width:110px;color:var(--muted)}
+.qi-mini .qi-step-bar{margin:0}
+.qi-t{width:100%;border-collapse:collapse;font-size:0.8rem;margin-top:0.3rem}
+.qi-t th{text-align:left;color:var(--muted);font-weight:500;padding:0.35rem 0.4rem;border-bottom:1px solid var(--border)}
+.qi-t td{padding:0.4rem;border-bottom:1px solid var(--border);word-break:break-word}
+@media(max-width:700px){.qi-kpis{grid-template-columns:1fr 1fr}.qi-grid{grid-template-columns:1fr}.qi-sheet{padding:1.1rem}}
+
 /* Debt pit: dig yourself out */
 .pit{background:var(--card);border:1px solid var(--border2);border-radius:20px;overflow:hidden;margin-bottom:1rem}
 .pit-head{display:flex;justify-content:space-between;align-items:center;gap:0.8rem;padding:1.1rem 1.2rem 0.9rem}
@@ -2885,7 +2933,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
           <tr><td><strong>Financial information you enter</strong></td><td>Income, expenses, budgets, debts, savings, investment holdings, account types (such as TFSA, RRSP, or FHSA), and financial goals that you choose to input. This is sensitive personal information and we treat it accordingly.</td></tr>
           <tr><td><strong>AI advisor conversations</strong></td><td>The questions you ask our AI advisor and the financial context used to answer them, so the feature can respond to you.</td></tr>
           <tr><td><strong>Subscription information</strong></td><td>Whether you are on a trial or paid plan, and billing status. Payment card numbers are handled directly by our payment processor and are never seen or stored by us.</td></tr>
-          <tr><td><strong>Technical information</strong></td><td>Basic information your browser sends automatically, such as device and browser type, and information needed to keep you securely logged in. We do not use advertising trackers.</td></tr>
+          <tr><td><strong>Technical information</strong></td><td>Basic information your browser sends automatically, such as device and browser type, and information needed to keep you securely logged in. We also record anonymous usage events on our own servers, such as which pages are opened, which buttons are tapped, and errors, tied to a random ID rather than your name or email. These never include the dollar amounts you enter. We do not use advertising trackers.</td></tr>
         </table>
         <p>We do <strong>not</strong> connect to your bank accounts, and we do not collect your Social Insurance Number, government identification, or any payment card numbers.</p>
       </div>
@@ -2974,7 +3022,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 
       <div class="pp-section">
         <h3><span class="pp-num">11</span>Cookies and similar technologies</h3>
-        <p>We use only the cookies and local browser storage necessary to keep you securely signed in and to make the app function. We do not use third-party advertising cookies or cross-site tracking. Because we rely on strictly necessary functionality, the app may not work properly if you disable these.</p>
+        <p>We use only the cookies and local browser storage necessary to keep you securely signed in, to make the app function, and to hold the random ID used for the anonymous usage events described above. We do not use third-party advertising cookies or cross-site tracking. Because we rely on strictly necessary functionality, the app may not work properly if you disable these.</p>
       </div>
 
       <div class="pp-section">
@@ -12518,5 +12566,329 @@ window.addEventListener('resize', ()=>{
   }
 });
 </script>
+<script>
+// ══════════════════════════════════════════
+// FIRST-PARTY USAGE EVENTS (no third parties, no dollar amounts, no names or emails)
+// Each browser gets a random visitor id. Events go to our own Supabase table (site_events),
+// which the public can only write to. Only the owner's account can read it (see analytics_setup.sql).
+// Open the report at qualisight.ca/?insights=1 while signed in as the owner.
+// ══════════════════════════════════════════
+function QA_user(){ try{ return (typeof currentUser!=='undefined' && currentUser) || null; }catch(e){ return null; } }
+const QA = (function(){
+  const q=[]; let sent=0, errs=0, flushT=null;
+  const store=(k,v)=>{ try{ if(v===undefined) return localStorage.getItem(k); localStorage.setItem(k,v); }catch(e){ return null; } };
+  const sstore=(k,v)=>{ try{ if(v===undefined) return sessionStorage.getItem(k); sessionStorage.setItem(k,v); }catch(e){ return null; } };
+  const rid=()=>Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4);
+  try{ if(new URLSearchParams(location.search).get('notrack')==='1') store('qs_notrack','1'); }catch(e){}
+  const off = ()=> store('qs_notrack')==='1' || /HeadlessChrome|bot|crawl|spider/i.test(navigator.userAgent||'');
+  let vid=store('qs_vid'); if(!vid){ vid=rid(); store('qs_vid',vid); }
+  let sid=sstore('qs_tab'); const newSession=!sid; if(!sid){ sid=rid(); sstore('qs_tab',sid); }
+  const t0=Date.now();
+  let stage='landed';
+  const RANK={landed:0,scrolled:1,tapped:2,demo:3,signup_open:4,signed_up:5,activated:6};
+  function reach(s){ if((RANK[s]??-1)>(RANK[stage]??-1)) stage=s; }
+  function log(name, props){
+    if(off() || sent>300) return;
+    sent++;
+    q.push({vid, sid, name:String(name).slice(0,40), props:props||{}});
+    clearTimeout(flushT); flushT=setTimeout(flush, 4000);
+  }
+  function flush(){
+    if(!q.length || typeof SUPABASE_URL==='undefined') return;
+    const batch=q.splice(0,q.length);
+    try{
+      fetch(SUPABASE_URL+'/rest/v1/site_events',{method:'POST',keepalive:true,
+        headers:{'apikey':SUPABASE_ANON,'Authorization':'Bearer '+SUPABASE_ANON,'Content-Type':'application/json','Prefer':'return=minimal'},
+        body:JSON.stringify(batch)}).catch(()=>{});
+    }catch(e){}
+  }
+  return { log, flush, reach, get stage(){return stage;}, t0, newSession, vid, off };
+})();
+
+(function(){
+  const $=id=>document.getElementById(id);
+  const mobile = ()=> (window.innerWidth||1000) <= 700;
+  const wrap=(name, before, after)=>{
+    const orig=window[name]; if(typeof orig!=='function') return;
+    window[name]=function(){ try{ before && before.apply(this, arguments); }catch(e){}
+      const r=orig.apply(this, arguments);
+      if(after){ Promise.resolve(r).then(v=>{ try{ after.call(this, v, arguments); }catch(e){} }); }
+      return r; };
+  };
+  const sectionOf=el=>{ const s=el && el.closest && el.closest('section,.lp-sticky,.lp-nav,nav'); if(!s) return 'other';
+    if(s.classList.contains('lp-hero')) return 'hero'; if(s.classList.contains('lp-sticky')) return 'sticky_bar';
+    if(s.tagName==='NAV'||s.classList.contains('lp-nav')) return 'top_nav'; return (s.id||'how').replace('lp-',''); };
+  const clickWhere=()=>{ try{ const e=window.event; return sectionOf(e && e.target); }catch(_){ return 'other'; } };
+
+  // ── Visit (once per tab session) ──
+  if(QA.newSession){
+    let src={}; try{ src=JSON.parse(localStorage.getItem('qs_source')||'{}'); }catch(e){}
+    const p=new URLSearchParams(location.search);
+    let ref=''; try{ const r=document.referrer?new URL(document.referrer).hostname:''; ref=r&&r!==location.hostname?r:''; }catch(e){}
+    QA.log('visit',{src:(p.get('utm_source')||ref||src.source||'direct').slice(0,60), med:(p.get('utm_medium')||'').slice(0,40), camp:(p.get('utm_campaign')||'').slice(0,60),
+      demo:p.get('demo')||'', dev:mobile()?'mobile':'desktop', back:!!localStorage.getItem('qs_seen')});
+    try{ localStorage.setItem('qs_seen','1'); }catch(e){}
+  }
+
+  // ── Landing page: shown, how far they scroll ──
+  let lpLogged=false;
+  const checkLanding=()=>{ const lp=$('landing-page'); if(!lp||lpLogged) return; if(!lp.classList.contains('hidden') && getComputedStyle(lp).display!=='none'){ lpLogged=true; QA.log('lp_view',{dev:mobile()?'mobile':'desktop'}); watchSections(); } };
+  [0,300,1000,2500].forEach(ms=>setTimeout(checkLanding,ms));
+  function watchSections(){
+    if(!('IntersectionObserver' in window)) return;
+    const seen=new Set();
+    const io=new IntersectionObserver(es=>es.forEach(e=>{ if(!e.isIntersecting) return; const k=sectionOf(e.target); if(seen.has(k)) return; seen.add(k);
+      QA.log('lp_section',{s:k, secs:Math.round((Date.now()-QA.t0)/1000)}); if(k!=='hero') QA.reach('scrolled'); }),{threshold:0.35});
+    document.querySelectorAll('#landing-page section').forEach(s=>io.observe(s));
+  }
+
+  // ── Buttons and steps ──
+  wrap('lpShowSignup', ()=>{ QA.reach('tapped'); QA.log('cta',{w:'signup',at:clickWhere()}); });
+  wrap('showSignIn',   ()=>{ QA.log('cta',{w:'signin',at:clickWhere()}); });
+  wrap('lpTryDemo',    ()=>{ QA.reach('tapped'); QA.log('cta',{w:'demo',at:clickWhere()}); });
+  wrap('startDemo',    ()=>{ QA.reach('demo'); QA.log('demo_start',{}); });
+  wrap('exitDemo',     ()=>{ QA.log('demo_exit',{secs:Math.round((Date.now()-QA.t0)/1000)}); });
+  let lastSuErr='';
+  wrap('showCreate',   ()=>{
+    // a failed sign-up shows its error and then reopens this form, which clears it, so grab it first
+    const t=(($('cr-error')||{}).textContent||'').trim(); if(t && t!==lastSuErr){ lastSuErr=t; QA.log('signup_error',{m:t.slice(0,90)}); }
+    QA.reach('signup_open'); QA.log('signup_open',{demo:!!(QA_user()&&QA_user().isDemo)}); });
+  wrap('acceptTermsAndCreate', null, ()=>{
+    const verify = $('auth-verify') && $('auth-verify').style.display==='block';
+    const u=QA_user(); if(verify || (u && !u.isDemo)){ QA.reach('signed_up'); QA.log('signup_done',{verify:!!verify}); QA.flush(); }
+  });
+  // A signed-in user: log once, and remember which kinds of data were empty so we can spot their first real entry.
+  // init() can sign someone in before this script runs, so also poll for a little while.
+  let seenUser=null;
+  const onUser=()=>{ const u=QA_user(); if(!u || u.isDemo || seenUser===u.id) return; seenUser=u.id;
+    const fresh = typeof isNewAccount==='function' && isNewAccount();
+    QA.log('signin',{fresh:!!fresh}); window._qaBase=qaCounts(); };
+  wrap('handleSignedInUser', null, onUser);
+  let polls=0; const poll=setInterval(()=>{ onUser(); if(++polls>40) clearInterval(poll); },750);
+  wrap('showOnboarding', ()=>QA.log('onboard_open',{}));
+  wrap('dismissOnboarding', (skip)=>QA.log('onboard_close',{skip:!!skip}));
+  wrap('showPaywall', ()=>QA.log('paywall',{}));
+  wrap('startCheckout', ()=>{ QA.log('checkout',{}); QA.flush(); });
+  let lastPage='';
+  wrap('showPage', (id)=>{ if(id===lastPage) return; lastPage=id; QA.log('page',{p:String(id).slice(0,20),demo:!!(QA_user()&&QA_user().isDemo)}); });
+
+  // ── First real data a user adds (counts only, never amounts) ──
+  function qaCounts(){ try{ return {income:(state.income||[]).length, expenses:(state.expenses||[]).length, debts:(state.debts||[]).length, holdings:(state.portfolio||[]).length, accounts:(state.accounts||[]).length}; }catch(e){ return {}; } }
+  wrap('save', ()=>{
+    const u=QA_user(); if(!u || u.isDemo || !window._qaBase) return;
+    const c=qaCounts();
+    Object.keys(c).forEach(k=>{
+      const key='qs_fd_'+u.id.slice(0,8)+'_'+k;
+      if(c[k]>0 && !(window._qaBase[k]>0) && !localStorage.getItem(key)){ try{ localStorage.setItem(key,'1'); }catch(e){} window._qaBase[k]=c[k]; QA.reach('activated'); QA.log('first_data',{k}); }
+    });
+  });
+
+  // ── Errors people see on forms ──
+  const watchText=(id,name)=>{ const el=$(id); if(!el||!('MutationObserver' in window)) return; let last='';
+    new MutationObserver(()=>{ const t=(el.textContent||'').trim(); if(t && t!==last && !(name==='signup_error' && t===lastSuErr)){ last=t; if(name==='signup_error') lastSuErr=t; QA.log(name,{m:t.slice(0,90)}); } }).observe(el,{childList:true,characterData:true,subtree:true}); };
+  watchText('cr-error','signup_error'); watchText('si-error','signin_error');
+
+  // ── JavaScript errors (capped) ──
+  let jsErr=0;
+  window.addEventListener('error', e=>{ if(++jsErr>8) return; QA.log('js_error',{m:String(e.message||'').slice(0,120), l:e.lineno||0}); });
+  window.addEventListener('unhandledrejection', e=>{ if(++jsErr>8) return; QA.log('js_error',{m:('promise: '+String(e.reason&&e.reason.message||e.reason||'')).slice(0,120)}); });
+
+  // ── Leaving: how long they stayed and how far they got ──
+  let left=false;
+  const bye=()=>{ if(left) return; left=true; QA.log('leave',{secs:Math.round((Date.now()-QA.t0)/1000), stage:QA.stage}); QA.flush(); };
+  document.addEventListener('visibilitychange',()=>{ if(document.visibilityState==='hidden') bye(); else left=false; });
+  window.addEventListener('pagehide', bye);
+})();
+
+// ══════════════════════════════════════════
+// INSIGHTS (owner only): qualisight.ca/?insights=1
+// ══════════════════════════════════════════
+const QI = { days:30, rows:null };
+(function(){
+  let want=false; try{ want=new URLSearchParams(location.search).has('insights'); }catch(e){}
+  if(!want) return;
+  try{ localStorage.setItem('qs_notrack','1'); }catch(e){} // never count the owner
+  let tries=0; const wait=()=>{ const u=QA_user(); if(u && !u.isDemo) return qiOpen(); if(++tries<600) setTimeout(wait,500); };
+  setTimeout(wait,800);
+})();
+
+async function qiFetch(days){
+  const since=new Date(Date.now()-days*864e5).toISOString(); const all=[]; const step=1000;
+  for(let from=0; from<60000; from+=step){
+    const {data,error}=await sb.from('site_events').select('created_at,vid,sid,name,props').gte('created_at',since).order('created_at',{ascending:true}).range(from,from+step-1);
+    if(error) throw error;
+    all.push(...data); if(data.length<step) break;
+  }
+  return all;
+}
+
+function qiAnalyse(rows){
+  const V=new Map();
+  rows.forEach(r=>{ let v=V.get(r.vid); if(!v){ v={vid:r.vid,ev:[],days:new Set(),src:null,dev:null,sec:new Set(),errs:[],leave:null}; V.set(r.vid,v); }
+    v.ev.push(r); v.days.add(r.created_at.slice(0,10));
+    const p=r.props||{};
+    if(r.name==='visit' && !v.src){ v.src=(p.src||'direct').toLowerCase(); v.dev=p.dev; v.camp=p.camp||''; }
+    if(r.name==='lp_view' && !v.dev) v.dev=p.dev;
+    if(r.name==='lp_section') v.sec.add(p.s);
+    if(r.name==='js_error') v.errs.push(p.m);
+    if(r.name==='leave' && !v.leave) v.leave=p;
+  });
+  const has=(v,n,f)=>v.ev.some(e=>e.name===n && (!f||f(e.props||{})));
+  const list=[...V.values()].map(v=>{
+    const lp=has(v,'lp_view');
+    const signedUp=has(v,'signup_done') || has(v,'signin',p=>p.fresh);
+    return { ...v, lp,
+      scrolled: [...v.sec].some(s=>s!=='hero') || has(v,'cta') || has(v,'demo_start'),
+      tapped: has(v,'cta',p=>p.w!=='signin'),
+      demo: has(v,'demo_start'),
+      signupOpen: has(v,'signup_open'),
+      signedUp, verifyWait: has(v,'signup_done',p=>p.verify) && !has(v,'signin'),
+      activated: has(v,'first_data'),
+      returned: signedUp && v.days.size>=2,
+      onbSkip: has(v,'onboard_close',p=>p.skip), onbOpen: has(v,'onboard_open'),
+      paywall: has(v,'paywall'), checkout: has(v,'checkout'),
+      signupErr: v.ev.filter(e=>e.name==='signup_error').map(e=>(e.props||{}).m),
+      lastSec: (()=>{ const order=['hero','features','grove','tips','how','pricing','faq']; let m='hero'; v.sec.forEach(s=>{ if(order.indexOf(s)>order.indexOf(m)) m=s; }); return m; })(),
+      dev: v.dev||'unknown', src: v.src||'direct' };
+  });
+  const L=list.filter(v=>v.lp); // people who saw the landing page
+  const n=a=>a.length, pct=(a,b)=>b?a/b:0;
+  const steps=[
+    ['Saw the landing page', L],
+    ['Looked past the first screen', L.filter(v=>v.scrolled)],
+    ['Tapped a button (sign up or demo)', L.filter(v=>v.tapped)],
+    ['Opened the sign-up form', list.filter(v=>v.signupOpen)],
+    ['Created an account', list.filter(v=>v.signedUp)],
+    ['Added their own data', list.filter(v=>v.activated)],
+    ['Came back another day', list.filter(v=>v.returned)],
+  ].map(([label,a])=>({label,count:n(a)}));
+  steps.forEach((s,i)=>{ s.ofPrev = i? pct(s.count, steps[i-1].count) : 1; s.ofTop = pct(s.count, steps[0].count); });
+  let worst=null; steps.forEach((s,i)=>{ if(i && steps[i-1].count>=5 && (!worst || s.ofPrev<worst.ofPrev)) worst={...s,i}; });
+
+  const groupBy=(arr,key)=>{ const m=new Map(); arr.forEach(v=>{ const k=v[key]; const g=m.get(k)||{k,vis:0,su:0,tap:0}; g.vis++; if(v.signedUp) g.su++; if(v.tapped) g.tap++; m.set(k,g); }); return [...m.values()].sort((a,b)=>b.vis-a.vis); };
+  const sources=groupBy(L,'src'), devices=groupBy(L,'dev');
+  const bounced=L.filter(v=>!v.scrolled && !v.tapped && v.leave);
+  const med=a=>{ if(!a.length) return null; const s=[...a].sort((x,y)=>x-y); return s[Math.floor(s.length/2)]; };
+  const bounceSecs=med(bounced.map(v=>v.leave.secs||0));
+  const stopAt={}; L.filter(v=>!v.tapped).forEach(v=>{ stopAt[v.lastSec]=(stopAt[v.lastSec]||0)+1; });
+  const ctaAt={}; rows.filter(r=>r.name==='cta').forEach(r=>{ const k=((r.props||{}).w||'')+' · '+((r.props||{}).at||''); ctaAt[k]=(ctaAt[k]||0)+1; });
+  const errMap={}; rows.filter(r=>r.name==='js_error').forEach(r=>{ const m=(r.props||{}).m||'?'; errMap[m]=errMap[m]||new Set(); errMap[m].add(r.vid); });
+  const errors=Object.entries(errMap).map(([m,s])=>({m,people:s.size})).sort((a,b)=>b.people-a.people);
+  const suErr={}; list.forEach(v=>v.signupErr.forEach(m=>{ suErr[m]=(suErr[m]||0)+1; }));
+  const signupErrors=Object.entries(suErr).sort((a,b)=>b[1]-a[1]);
+  const pages={}; rows.filter(r=>r.name==='page').forEach(r=>{ const p=r.props||{}; const k=(p.demo?'demo: ':'')+p.p; pages[k]=(pages[k]||0)+1; });
+
+  // ── Diagnoses: what's driving people away, and what to do about it ──
+  const F=[]; const add=(impact,title,why,fix)=>F.push({impact,title,why,fix});
+  const sScroll=pct(steps[1].count,steps[0].count), sTap=pct(steps[2].count,steps[1].count);
+  if(steps[0].count>=15 && sScroll<0.5) add(0.4+0.6*(1-sScroll),'Most visitors leave from the first screen',
+    `${Math.round((1-sScroll)*100)}% of visitors never scrolled or tapped anything${bounceSecs!=null?`, and the typical one left after about ${bounceSecs} seconds`:''}.`,
+    'The top of the page has a few seconds to make one promise. Lead with a single clear line (for example "See the date you will be debt-free"), show the app moving right away (the debt hole or the grove), and make sure it matches exactly what the ad said.');
+  if(steps[1].count>=15 && sTap<0.2) add(0.8*(1-sTap),'People scroll but don\'t tap anything',
+    `Only ${Math.round(sTap*100)}% of people who scrolled tapped Start or the demo.`,
+    'Most people won\'t make an account before they see it work. Put a big "Try it with sample numbers, no sign-up" button near the top and repeat it after each section.');
+  const demoers=list.filter(v=>v.demo), demoSU=pct(demoers.filter(v=>v.signedUp).length, demoers.length);
+  if(demoers.length>=10 && demoSU<0.08) add(0.7,'The demo isn\'t turning into sign-ups',
+    `${demoers.length} people tried the demo, and ${Math.round(demoSU*100)}% of them made an account.`,
+    'Give demo users one obvious next step while they are excited: after they move a slider or log a payment, show "Do this with your real numbers" with a one-tap sign-up.');
+  const op=list.filter(v=>v.signupOpen), opDone=pct(op.filter(v=>v.signedUp).length, op.length);
+  if(op.length>=5 && opDone<0.6) add(0.9*(1-opDone),'People open the sign-up form and quit',
+    `${op.length} people opened sign-up and ${Math.round(opDone*100)}% finished.${signupErrors.length?` Most common message they saw: "${signupErrors[0][0].replace(/[.!]+$/,'')}".`:''}`,
+    'Make the form as short as possible: email and password only, "No card needed" right on the button, and add "Continue with Google" if you can.');
+  const waiting=list.filter(v=>v.verifyWait).length;
+  if(waiting>=2) add(0.85,'Accounts stuck waiting on email confirmation',
+    `${waiting} people signed up but never came back through the confirmation email.`,
+    'Let people into the app right away and confirm their email later, or turn off email confirmation in Supabase. Every extra step loses people.');
+  const su=list.filter(v=>v.signedUp), act=pct(su.filter(v=>v.activated).length, su.length);
+  if(su.length>=3 && act<0.5) add(0.95,'New accounts leave without adding anything',
+    `${su.length} people made an account, and ${Math.round(act*100)}% added any of their own numbers.${su.filter(v=>v.onbSkip).length?` ${su.filter(v=>v.onbSkip).length} skipped the welcome steps.`:''}`,
+    'Ask for one thing first, like their biggest debt, and show something rewarding instantly (their debt-free date and the hole). Save the rest of setup for later.');
+  const ac=list.filter(v=>v.activated), ret=pct(ac.filter(v=>v.returned).length, ac.length);
+  if(ac.length>=5 && ret<0.3) add(0.6,'People try it once and don\'t come back',
+    `${Math.round(ret*100)}% of people who added data came back on another day.`,
+    'Give them a reason to return: a weekly email with their progress ("You are 36% out, up 2% this week"), or a reminder to log this month\'s payment.');
+  const mob=devices.find(d=>d.k==='mobile'), desk=devices.find(d=>d.k==='desktop');
+  if(mob && desk && mob.vis>=20 && desk.vis>=10){ const mr=pct(mob.tap,mob.vis), dr=pct(desk.tap,desk.vis); if(mr<dr*0.5) add(0.7,'Phone visitors do much worse than computer visitors',
+    `${Math.round(mr*100)}% of phone visitors tapped a button, compared to ${Math.round(dr*100)}% on computers.`,
+    'Ads send mostly phone traffic. Open the site on your phone as a stranger would and fix anything slow, cramped or hard to tap on the first screen.'); }
+  sources.filter(s=>s.vis>=25 && s.su===0).slice(0,2).forEach(s=>add(0.5,`Traffic from ${s.k} isn't signing up`,
+    `${s.vis} visitors from ${s.k}, no accounts.`,
+    'Check that the ad or post promises the same thing the page shows first. If someone clicked for the grove video, they should land on the grove.'));
+  if(errors.length) add(Math.min(0.9, 0.3+3*errors.reduce((a,e)=>a+e.people,0)/Math.max(1,list.length)),'Visitors are hitting errors',
+    `${errors.reduce((a,e)=>a+e.people,0)} people saw a JavaScript error. Most common: "${errors[0].m.replace(/[.!]+$/,'')}".`,
+    'Send me the error text and I can track it down and fix it.');
+  const pw=list.filter(v=>v.paywall); if(pw.length>=5 && !pw.some(v=>v.checkout)) add(0.4,'People hit the paywall and turn around',
+    `${pw.length} people saw the subscribe screen and none tapped subscribe.`,
+    'Show what they get for $12 in their own numbers right on the paywall, and remind them the free tools stay free.');
+  F.sort((a,b)=>b.impact-a.impact);
+  return { list, L, steps, worst, sources, devices, bounceSecs, stopAt, ctaAt, errors, signupErrors, pages, F, total:rows.length };
+}
+
+function qiEnsure(){
+  if($q('qi-overlay')) return;
+  const el=document.createElement('div'); el.id='qi-overlay'; el.className='qi-overlay';
+  el.innerHTML=`<div class="qi-sheet">
+    <div class="qi-head"><div><div class="qi-title">Site insights</div><div class="qi-sub">Who visits, where they drop off, and what to fix. Only you can see this. Your own visits are never counted.</div></div>
+      <button class="qi-x" onclick="qiClose()" aria-label="Close">×</button></div>
+    <div class="qi-tools"><div class="qi-range" id="qi-range">${[7,30,90].map(d=>`<button data-d="${d}" onclick="qiLoad(${d})">${d} days</button>`).join('')}</div>
+      <button class="qi-copy" onclick="qiCopy()" id="qi-copy">Copy report</button></div>
+    <div id="qi-body" class="qi-body">Loading…</div></div>`;
+  document.body.appendChild(el);
+}
+function $q(id){ return document.getElementById(id); }
+function qiOpen(){ qiEnsure(); $q('qi-overlay').classList.add('open'); qiLoad(QI.days); }
+function qiClose(){ $q('qi-overlay')?.classList.remove('open'); }
+async function qiLoad(days){
+  QI.days=days; document.querySelectorAll('#qi-range button').forEach(b=>b.classList.toggle('on', +b.dataset.d===days));
+  const body=$q('qi-body'); body.innerHTML='<div class="qi-empty">Loading…</div>';
+  try{ QI.rows=await qiFetch(days); }catch(e){ body.innerHTML=`<div class="qi-empty">Couldn't load events: ${escHtml(e.message||String(e))}. Make sure you ran analytics_setup.sql in Supabase and you're signed in with the owner account.</div>`; return; }
+  if(!QI.rows.length){ body.innerHTML='<div class="qi-empty">No visits recorded yet in this range. Tracking starts once the update is live, so check back after some traffic comes in.</div>'; QI.A=null; return; }
+  const A=QI.A=qiAnalyse(QI.rows);
+  const P=x=>Math.round(x*100)+'%';
+  const top=A.steps[0].count;
+  const small = top<30 ? `<div class="qi-note">Only ${top} visitor${top===1?'':'s'} so far, so treat these numbers as early hints. They get reliable after about 100.</div>` : '';
+  const fixes = A.F.length ? A.F.map((f,i)=>`<div class="qi-fix ${i===0?'top':''}"><div class="qi-fix-n">${i+1}</div><div><b>${f.title}</b><p>${f.why}</p><p class="qi-do"><span>What to do:</span> ${f.fix}</p></div></div>`).join('')
+    : '<div class="qi-empty small">Nothing stands out yet. Either things look fine or there isn\'t enough traffic to tell.</div>';
+  const maxC=Math.max(1,top);
+  const funnel=A.steps.map((s,i)=>`<div class="qi-step ${A.worst&&A.worst.i===i?'bad':''}">
+      <div class="qi-step-top"><span>${s.label}</span><b>${s.count}</b></div>
+      <div class="qi-step-bar"><i style="width:${Math.max(2,s.count/maxC*100)}%"></i></div>
+      ${i?`<div class="qi-step-sub">${P(s.ofPrev)} of the step before${A.worst&&A.worst.i===i?' · biggest drop':''}</div>`:''}</div>`).join('');
+  const table=(rows,cols)=>`<table class="qi-t"><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr>${rows.join('')}</table>`;
+  const src=table(A.sources.slice(0,8).map(s=>`<tr><td>${escHtml(s.k)}</td><td>${s.vis}</td><td>${P(s.tap/s.vis)}</td><td>${s.su}</td></tr>`),['Came from','Visitors','Tapped','Accounts']);
+  const dev=table(A.devices.map(s=>`<tr><td>${escHtml(s.k)}</td><td>${s.vis}</td><td>${P(s.tap/s.vis)}</td><td>${s.su}</td></tr>`),['Device','Visitors','Tapped','Accounts']);
+  const order=['hero','features','grove','tips','how','pricing','faq'], names={hero:'Top of page',features:'Features',grove:'Money grove',tips:'Calculators',how:'How it works',pricing:'Pricing',faq:'FAQ'};
+  const stopTot=Object.values(A.stopAt).reduce((a,b)=>a+b,0)||1;
+  const stop=order.filter(k=>A.stopAt[k]).map(k=>`<div class="qi-mini"><span>${names[k]}</span><div class="qi-step-bar"><i style="width:${A.stopAt[k]/stopTot*100}%"></i></div><b>${A.stopAt[k]}</b></div>`).join('') || '<div class="qi-empty small">No data yet.</div>';
+  const ctas=Object.entries(A.ctaAt).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k,c])=>`<tr><td>${escHtml(k)}</td><td>${c}</td></tr>`);
+  const errs=A.errors.slice(0,5).map(e=>`<tr><td>${escHtml(e.m)}</td><td>${e.people}</td></tr>`);
+  body.innerHTML=`${small}
+    <div class="qi-kpis"><div><span>Visitors</span><b>${top}</b></div><div><span>New accounts</span><b>${A.steps[4].count}</b></div><div><span>Visitor to account</span><b>${top?P(A.steps[4].count/top):'0%'}</b></div><div><span>Typical bounce</span><b>${A.bounceSecs!=null?A.bounceSecs+'s':'n/a'}</b></div></div>
+    <div class="qi-h">What's driving people away</div>${fixes}
+    <div class="qi-h">The funnel</div><div class="qi-funnel">${funnel}</div>
+    <div class="qi-grid"><div><div class="qi-h">Where people stopped scrolling</div><div class="qi-sm">People who left without tapping anything, by the furthest section they reached.</div>${stop}</div>
+      <div><div class="qi-h">Buttons tapped</div>${ctas.length?table(ctas,['Button · where','Taps']):'<div class="qi-empty small">None yet.</div>'}</div></div>
+    <div class="qi-grid"><div><div class="qi-h">Traffic sources</div>${src}</div><div><div class="qi-h">Phone vs computer</div>${dev}</div></div>
+    ${errs.length?`<div class="qi-h">Errors visitors hit</div>${table(errs,['Error','People'])}`:''}
+    ${A.signupErrors.length?`<div class="qi-h">Messages shown on the sign-up form</div>${table(A.signupErrors.slice(0,5).map(([m,c])=>`<tr><td>${escHtml(m)}</td><td>${c}</td></tr>`),['Message','Times'])}`:''}`;
+}
+function qiReport(){
+  const A=QI.A; if(!A) return 'No data yet.';
+  const P=x=>Math.round(x*100)+'%';
+  let t=`Qualisight site report, last ${QI.days} days (${new Date().toLocaleDateString('en-CA')})\n\nFunnel:\n`;
+  A.steps.forEach((s,i)=>{ t+=`- ${s.label}: ${s.count}${i?` (${P(s.ofPrev)} of previous)`:''}\n`; });
+  t+=`\nTypical bounce: ${A.bounceSecs!=null?A.bounceSecs+'s':'n/a'}\n\nSources:\n`; A.sources.slice(0,8).forEach(s=>t+=`- ${s.k}: ${s.vis} visitors, ${P(s.tap/s.vis)} tapped, ${s.su} accounts\n`);
+  t+=`\nDevices:\n`; A.devices.forEach(s=>t+=`- ${s.k}: ${s.vis} visitors, ${P(s.tap/s.vis)} tapped, ${s.su} accounts\n`);
+  t+=`\nStopped scrolling at:\n`; Object.entries(A.stopAt).forEach(([k,c])=>t+=`- ${k}: ${c}\n`);
+  t+=`\nButtons tapped:\n`; Object.entries(A.ctaAt).forEach(([k,c])=>t+=`- ${k}: ${c}\n`);
+  t+=`\nApp pages opened:\n`; Object.entries(A.pages).sort((a,b)=>b[1]-a[1]).slice(0,12).forEach(([k,c])=>t+=`- ${k}: ${c}\n`);
+  if(A.errors.length){ t+=`\nErrors:\n`; A.errors.slice(0,8).forEach(e=>t+=`- ${e.m} (${e.people} people)\n`); }
+  if(A.signupErrors.length){ t+=`\nSign-up form messages:\n`; A.signupErrors.slice(0,5).forEach(([m,c])=>t+=`- ${m} (${c})\n`); }
+  t+=`\nProblems found:\n`; A.F.forEach((f,i)=>t+=`${i+1}. ${f.title}. ${f.why}\n`);
+  return t;
+}
+async function qiCopy(){ const b=$q('qi-copy'); try{ await navigator.clipboard.writeText(qiReport()); b.textContent='Copied, paste it to Claude'; }catch(e){ b.textContent='Copy failed'; } setTimeout(()=>b.textContent='Copy report',2500); }
+</script>
+
 </body>
 </html>
