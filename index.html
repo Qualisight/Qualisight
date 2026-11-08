@@ -418,26 +418,50 @@ header{
 .qi-t td{padding:0.4rem;border-bottom:1px solid var(--border);word-break:break-word}
 @media(max-width:700px){.qi-kpis{grid-template-columns:1fr 1fr}.qi-grid{grid-template-columns:1fr}.qi-sheet{padding:1.1rem}}
 
-/* Debt hole: dig yourself out */
-.dh{background:var(--card);border:1px solid var(--border2);border-radius:22px;overflow:hidden;margin-bottom:1rem}
-.dh-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.15rem 1.25rem 1rem}
-.dh-big{font-family:var(--font-display);font-weight:800;font-size:3rem;line-height:0.95;letter-spacing:-0.045em;color:var(--accent);font-variant-numeric:tabular-nums}
-.dh-big-sub{font-size:0.95rem;color:var(--text);margin-top:0.35rem;font-weight:600;letter-spacing:-0.01em}
-.dh-share{display:inline-flex;align-items:center;gap:0.45rem;background:#4ade80;color:#06140b;border:none;border-radius:999px;padding:0.6rem 1.1rem;font:700 0.85rem var(--font-body);cursor:pointer;white-space:nowrap;flex-shrink:0}
-.dh-share:hover{background:#22c55e}
-.dh-stage{position:relative;height:380px;background:#0b0f18;cursor:pointer;-webkit-tap-highlight-color:transparent}
-.dh-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
-.dh-foot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:1.25rem;padding:1.1rem 1.25rem 1.2rem;align-items:start}
-.dh-stats{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
-.dh-stats span{display:block;font-size:0.75rem;color:var(--muted);margin-bottom:0.15rem}
-.dh-stats b{font-family:var(--font-display);font-size:1.45rem;font-weight:800;letter-spacing:-0.02em;color:var(--text);font-variant-numeric:tabular-nums}
-.dh-slider label{display:flex;justify-content:space-between;gap:0.6rem;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:0.4rem}
-.dh-slider label b{color:var(--accent);font-variant-numeric:tabular-nums}
-.dh-slider input{width:100%;accent-color:#4ade80;margin:0}
-.dh-msg{font-size:0.86rem;color:var(--muted);line-height:1.45;margin-top:0.45rem;min-height:1.3em}
-.dh-msg b{color:var(--accent)}
-@media(max-width:720px){.dh-foot{grid-template-columns:1fr;gap:1rem}}
-@media(max-width:520px){.dh-stage{height:330px}.dh-big{font-size:2.5rem}.dh-head{padding:1rem 1rem 0.85rem}.dh-foot{padding:1rem}.dh-stats b{font-size:1.25rem}}
+/* Debt storm */
+.ds{background:var(--card);border:1px solid var(--border2);border-radius:22px;overflow:hidden;margin-bottom:1rem}
+.ds-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.15rem 1.25rem 1rem}
+.ds-big{font-family:var(--font-display);font-weight:800;font-size:3rem;line-height:0.95;letter-spacing:-0.045em;color:var(--accent);font-variant-numeric:tabular-nums}
+.ds-big-sub{font-size:0.95rem;color:var(--text);margin-top:0.4rem;font-weight:600;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap}
+.ds-lvl{font-size:0.72rem;font-weight:700;padding:0.15rem 0.55rem;border-radius:999px;border:1px solid}
+.ds-lvl-severe{color:#fca5a5;border-color:rgba(248,113,113,0.45);background:rgba(248,113,113,0.1)}
+.ds-lvl-heavy{color:#fdba74;border-color:rgba(251,146,60,0.45);background:rgba(251,146,60,0.1)}
+.ds-lvl-moderate{color:#fde68a;border-color:rgba(251,191,36,0.45);background:rgba(251,191,36,0.1)}
+.ds-lvl-light,.ds-lvl-clearing{color:#a7f3d0;border-color:rgba(74,222,128,0.4);background:rgba(74,222,128,0.08)}
+.ds-share{display:inline-flex;align-items:center;gap:0.45rem;background:#4ade80;color:#06140b;border:none;border-radius:999px;padding:0.6rem 1.1rem;font:700 0.85rem var(--font-body);cursor:pointer;white-space:nowrap;flex-shrink:0}
+.ds-share:hover{background:#22c55e}
+.ds-stage{position:relative;height:390px;background:#0b0f18}
+.ds-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.ds-foot{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:1.25rem;padding:1.1rem 1.25rem 1rem;align-items:start}
+.ds-stats{display:grid;grid-template-columns:1fr 1fr;gap:0.8rem}
+.ds-stats span{display:block;font-size:0.75rem;color:var(--muted);margin-bottom:0.15rem}
+.ds-stats b{font-family:var(--font-display);font-size:1.45rem;font-weight:800;letter-spacing:-0.02em;color:var(--text);font-variant-numeric:tabular-nums}
+.ds-slider label{display:flex;justify-content:space-between;gap:0.6rem;font-size:0.85rem;font-weight:600;color:var(--text);margin-bottom:0.4rem}
+.ds-slider label b{color:var(--accent);font-variant-numeric:tabular-nums}
+.ds-slider input{width:100%;accent-color:#4ade80;margin:0}
+.ds-msg{font-size:0.86rem;color:var(--muted);line-height:1.45;margin-top:0.45rem;min-height:1.3em}
+.ds-msg b{color:var(--accent)}
+.ds-ach{border-top:1px solid var(--border);padding:0.95rem 1.25rem 1.15rem}
+.ds-ach-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.6rem}
+.ds-ach-top b{font-size:0.9rem}
+.ds-ach-top span{font-size:0.78rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.ds-ach-row{display:flex;gap:0.45rem;flex-wrap:wrap}
+@media(max-width:520px){.ds-ach-row{display:grid;grid-template-columns:repeat(5,1fr);justify-items:center;gap:0.5rem}}
+.ds-badge{width:40px;height:40px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--card2);border:1px solid var(--border);color:var(--faint);cursor:pointer;transition:transform .15s}
+.ds-badge:hover{transform:translateY(-2px)}
+.ds-badge.got{background:rgba(74,222,128,0.14);border-color:rgba(74,222,128,0.5);color:#4ade80}
+.ds-badge.sel{outline:2px solid var(--accent);outline-offset:2px}
+.ds-ach-next{font-size:0.82rem;color:var(--muted);margin-top:0.6rem;line-height:1.45}
+.ds-ach-next b{color:var(--text)} .ds-ach-next span{color:var(--accent);font-weight:600}
+/* per-debt milestones on the debt cards */
+.dt-mile-bar{position:relative;overflow:visible}
+.dt-mile-bar .dt-mini-fill{position:relative;z-index:1}
+.dt-tick{position:absolute;top:50%;width:11px;height:11px;border-radius:50%;transform:translate(-50%,-50%);background:var(--card);border:2px solid rgba(255,255,255,0.3);z-index:3}
+.dt-tick.on{background:#4ade80;border-color:var(--card);box-shadow:0 0 0 1.5px #4ade80}
+.dt-mile-chip{display:inline-flex;align-items:center;gap:0.3rem;font-size:0.7rem;font-weight:700;color:#4ade80;background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.3);border-radius:999px;padding:0.08rem 0.5rem}
+@media(max-width:720px){.ds-foot{grid-template-columns:1fr;gap:1rem}}
+@media(max-width:520px){.ds-stage{height:340px}.ds-big{font-size:2.5rem}.ds-head{padding:1rem 1rem 0.85rem}.ds-foot{padding:1rem}.ds-stats b{font-size:1.25rem}.ds-ach{padding:0.9rem 1rem 1rem}.ds-badge{width:36px;height:36px}}
+@media (prefers-reduced-motion: reduce){.ds-badge{transition:none}}
 
 /* Attack-first callout */
 .dt-attack{
@@ -6597,20 +6621,19 @@ function toggleDebtCard(el){
 }
 
 // ══════════════════════════════════════════
-// DEBT HOLE: dig yourself out
-// The hole is your debt. Each remaining debt is a layer of dirt, stacked in payoff order,
-// with the one you're paying first right above your head. Every payment makes the hole shallower,
-// and the dirt you've dug out piles up beside it. The sky turns from night to sunrise as you climb.
+// DEBT STORM
+// The more debt you have left (and the higher its interest), the wilder the storm:
+// darker sky, heavier rain, lightning, bigger waves. Each debt is a storm cloud that
+// shrinks as you pay it and turns white once it's cleared. Your little boat sails from
+// the open sea toward a calm harbour as you pay. Debt-free is a still, golden evening.
 // ══════════════════════════════════════════
-const _pit = { built:false, extra:0, r:1, rT:1, parts:[], floats:[], phase:0, burst:0, visible:true, raf:null, last:0, crumbleT:0, W:0, H:360, prevBal:null, banner:null, share:false };
+const _pit = { built:false, extra:0, r:1, rT:1, c:1, cT:1, drops:[], parts:[], floats:[], visible:true, raf:null, last:0, W:0, H:380, prevBal:null, banner:null, share:false, bolt:null, flash:0, nextBolt:2, confetti:0 };
 const pitReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-const DH_SOIL = ['#b07a47','#8f5d39','#c4915a','#7a4e30','#a36a3e','#d1a06a'];
-const DH_FONT = 'Geist,Inter,system-ui,sans-serif';
+const DS_FONT = 'Geist,Inter,system-ui,sans-serif';
 function pitRand(n){ let t=(n*2654435761)>>>0; t^=t>>>15; t=Math.imul(t,2246822519)>>>0; t^=t>>>13; return (t>>>0)/4294967296; }
 function pitShortDate(m){ const d=new Date(); d.setMonth(d.getMonth()+m); return d.toLocaleDateString('en-CA',{month:'short',year:'numeric'}); }
-function dhMix(a,b,t){ const pa=parseInt(a.slice(1),16), pb=parseInt(b.slice(1),16); const c=(s)=>Math.round(((pa>>s)&255)+(((pb>>s)&255)-((pa>>s)&255))*t); return `rgb(${c(16)},${c(8)},${c(0)})`; }
-function dhShade(hex,f){ const n=parseInt(hex.slice(1,7),16); const c=v=>Math.max(0,Math.min(255,Math.round(v*f))); return `rgb(${c(n>>16)},${c((n>>8)&255)},${c(n&255)})`; }
-function dhRR(ctx,x,y,w,h,r){ ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(x,y,w,h,r); else ctx.rect(x,y,w,h); }
+function dsMix(a,b,t){ t=Math.max(0,Math.min(1,t)); const pa=parseInt(a.slice(1),16), pb=parseInt(b.slice(1),16); const c=s=>Math.round(((pa>>s)&255)+(((pb>>s)&255)-((pa>>s)&255))*t); return `rgb(${c(16)},${c(8)},${c(0)})`; }
+function dsRR(ctx,x,y,w,h,r){ ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(x,y,w,h,r); else ctx.rect(x,y,w,h); }
 
 // Same rules as simulateAllDebts, but also records the total owed each month
 // and the month each debt is cleared (keyed by its index in state.debts)
@@ -6646,45 +6669,113 @@ function pitData(){
   const bal = all.reduce((s,d)=>s+Math.max(0,d.balance||0),0);
   const orig = all.reduce((s,d)=>s+Math.max(d.origBalance||0,d.balance||0),0);
   const denom = Math.max(orig, bal, 1);
-  return { order, all, bal, orig, denom, base:pitSim(0), plan:pitSim(_pit.extra) };
+  const base = pitSim(0), plan = pitSim(_pit.extra);
+  // storm strength: how much is left, pushed up by expensive debt, maxed out if interest is winning
+  const r = bal/denom;
+  const wRate = bal>0 ? all.reduce((s,d)=>s+Math.max(0,d.balance||0)*(d.rate||0),0)/bal : 0;
+  let chaos = bal<=0 ? 0 : Math.pow(r,0.8)*(0.72+0.28*Math.min(1,wRate/20));
+  if(bal>0 && !plan.canFinish) chaos = Math.max(chaos, 0.92);
+  if(bal>0) chaos = Math.max(chaos, 0.08);
+  return { order, all, bal, orig, denom, base, plan, r, chaos, wRate };
+}
+function dsLevel(c){ return c<=0 ? 'Calm' : c<0.2 ? 'Clearing' : c<0.42 ? 'Light' : c<0.62 ? 'Moderate' : c<0.82 ? 'Heavy' : 'Severe'; }
+
+// ── Achievements ──
+const DEBT_ACH = [
+  {id:'faced',     name:'Faced the storm',  desc:'Added your first debt',                          ic:'<path d="M17.5 19H9a7 7 0 1 1 6.7-9h1.8a4.5 4.5 0 1 1 0 9Z"/>'},
+  {id:'first_pay', name:'First stroke',     desc:'Logged your first payment',                      ic:'<path d="M20 6 9 17l-5-5"/>'},
+  {id:'extra',     name:'Rowing harder',    desc:'Paid more than the minimum on a debt',           ic:'<path d="M12 19V5"/><path d="m5 12 7-7 7 7"/>'},
+  {id:'p10',       name:'Storm breaking',   desc:'Paid off 10% of your debt',                      ic:'<path d="M12 2v2"/><path d="m4.9 4.9 1.4 1.4"/><path d="M20 12h2"/><path d="m19.1 4.9-1.4 1.4"/><path d="M15.9 13.1A4 4 0 1 0 8 12"/><path d="M13 22H7a5 5 0 1 1 4.9-6H13a3 3 0 0 1 0 6Z"/>'},
+  {id:'cleared',   name:'First cloud gone', desc:'Paid off a whole debt',                          ic:'<circle cx="12" cy="12" r="9"/><path d="m8 12 3 3 5-6"/>'},
+  {id:'lightning', name:'Lightning tamed',  desc:'Paid off a debt charging 15% or more',           ic:'<path d="M13 2 3 14h9l-1 8 10-12h-9l1-8z"/>'},
+  {id:'p50',       name:'Halfway to calm',  desc:'Paid off half your debt',                        ic:'<circle cx="12" cy="12" r="9"/><path d="M12 3v18"/><path d="M12 3a9 9 0 0 1 0 18" fill="currentColor"/>'},
+  {id:'steady',    name:'Steady sailor',    desc:'Made payments in 3 different months',            ic:'<rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4"/><path d="M8 2v4"/><path d="M3 10h18"/><path d="m9 16 2 2 4-4"/>'},
+  {id:'p75',       name:'Blue skies',       desc:'Paid off 75% of your debt',                      ic:'<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.9 4.9 1.4 1.4"/><path d="m17.7 17.7 1.4 1.4"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.3 17.7-1.4 1.4"/><path d="m19.1 4.9-1.4 1.4"/>'},
+  {id:'free',      name:'Calm waters',      desc:'Paid off every debt',                            ic:'<path d="M2 12c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M2 17c2-2 4-2 6 0s4 2 6 0 4-2 6 0"/><path d="M12 3v5"/><path d="M8 8h8"/>'},
+];
+function debtAchCheck(D){
+  const all=D.all, pays=[]; all.forEach(d=>(d.transactions||[]).forEach(t=>{ if(t.type==='payment') pays.push({...t, min:d.min||0}); }));
+  const paidPct = D.denom>0 ? (D.denom-D.bal)/D.denom : 0;
+  const months = new Set(pays.map(p=>(p.date||'').slice(0,7)).filter(Boolean));
+  const cleared = all.filter(d=>(d.balance||0)<=0 && Math.max(d.origBalance||0,0)>0);
+  return {
+    faced: all.length>0,
+    first_pay: pays.length>0 || paidPct>0,
+    extra: pays.some(p=>p.min>0 && p.amount>p.min+0.5),
+    p10: paidPct>=0.10, cleared: cleared.length>0,
+    lightning: cleared.some(d=>(d.rate||0)>=15),
+    p50: paidPct>=0.5, steady: months.size>=3, p75: paidPct>=0.75,
+    free: all.length>0 && D.bal<=0,
+  };
+}
+function debtAchUpdate(D){
+  const now=debtAchCheck(D);
+  const demo = !!(typeof currentUser!=='undefined' && currentUser && currentUser.isDemo);
+  if(demo){ _pit.ach=Object.fromEntries(Object.entries(now).filter(([,v])=>v).map(([k])=>[k,'demo'])); return []; }
+  const first = !state.debtAch;
+  if(first) state.debtAch={};
+  const fresh=[];
+  DEBT_ACH.forEach(a=>{ if(now[a.id] && !state.debtAch[a.id]){ state.debtAch[a.id]=new Date().toISOString().slice(0,10); if(!first) fresh.push(a); } });
+  _pit.ach=state.debtAch;
+  if(fresh.length || first){ clearTimeout(_pit.saveT); _pit.saveT=setTimeout(()=>{ try{ save(); }catch(e){} },50); }
+  return fresh;
+}
+function debtAchRender(){
+  const el=document.getElementById('ds-ach'); if(!el) return;
+  const got=_pit.ach||{}, n=DEBT_ACH.filter(a=>got[a.id]).length;
+  const next=DEBT_ACH.find(a=>!got[a.id]);
+  const D=_pit.D;
+  let hint='';
+  if(next && D){
+    const need=p=>Math.max(0, D.denom*p-(D.denom-D.bal));
+    hint = next.id==='p10'?`${fmtW(need(0.10))} more to go` : next.id==='p50'?`${fmtW(need(0.5))} more to go` : next.id==='p75'?`${fmtW(need(0.75))} more to go` : next.id==='free'?`${fmtW(D.bal)} to go` : next.desc;
+  }
+  el.innerHTML=`<div class="ds-ach-top"><b>Achievements</b><span>${n} of ${DEBT_ACH.length}</span></div>
+    <div class="ds-ach-row">${DEBT_ACH.map(a=>`<button type="button" class="ds-badge ${got[a.id]?'got':''}" title="${a.name}: ${a.desc}" aria-label="${a.name}, ${got[a.id]?'earned':'locked'}: ${a.desc}" onclick="debtAchShow('${a.id}',this)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${a.ic}</svg></button>`).join('')}</div>
+    <div class="ds-ach-next" id="ds-ach-next">${next?`<span>Next:</span> <b>${next.name}</b>. ${hint}`:'<b>Every achievement earned.</b> Nice work.'}</div>`;
+}
+function debtAchShow(id,btn){
+  const a=DEBT_ACH.find(x=>x.id===id), got=(_pit.ach||{})[id], el=document.getElementById('ds-ach-next'); if(!a||!el) return;
+  document.querySelectorAll('.ds-badge.sel').forEach(b=>b.classList.remove('sel')); btn.classList.add('sel');
+  el.innerHTML = got ? `<b>${a.name}</b>. ${a.desc}.${got!=='demo'?` Earned ${new Date(got+'T12:00').toLocaleDateString('en-CA',{month:'short',day:'numeric',year:'numeric'})}.`:''}` : `<span>Locked:</span> <b>${a.name}</b>. ${a.desc}.`;
 }
 
 function renderDebtPit(){
   const mount = document.getElementById('dt-pit-mount');
   if(!mount) return;
   if(!(state.debts||[]).length){ mount.innerHTML=''; _pit.built=false; _pit.prevBal=null; pitStop(); return; }
-  if(!_pit.built || !mount.querySelector('.dh')){
+  if(!_pit.built || !mount.querySelector('.ds')){
     mount.innerHTML = `
-    <div class="dh">
-      <div class="dh-head">
+    <div class="ds">
+      <div class="ds-head">
         <div>
-          <div class="dh-big"><span id="dh-big">0%</span></div>
-          <div class="dh-big-sub" id="dh-big-sub">of the way out of debt</div>
+          <div class="ds-big" id="ds-big">0%</div>
+          <div class="ds-big-sub" id="ds-big-sub">of your debt paid off</div>
         </div>
-        <button type="button" class="dh-share" onclick="pitShare()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>Share</button>
+        <button type="button" class="ds-share" onclick="pitShare()"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="M16 6l-4-4-4 4"/><path d="M12 2v13"/></svg>Share</button>
       </div>
-      <div class="dh-stage" id="pit-stage" role="img" aria-label="You, digging out of a hole made of your debts"><canvas></canvas></div>
-      <div class="dh-foot">
-        <div class="dh-stats">
-          <div><span>Out of the hole</span><b id="dh-date"></b></div>
-          <div><span>Left to dig</span><b id="dh-left"></b></div>
+      <div class="ds-stage" id="pit-stage" role="img" aria-label="Your debt storm"><canvas></canvas></div>
+      <div class="ds-foot">
+        <div class="ds-stats">
+          <div><span>Calm waters by</span><b id="ds-date"></b></div>
+          <div><span>Left to pay</span><b id="ds-left"></b></div>
         </div>
-        <div class="dh-slider">
-          <label for="pit-extra"><span>Dig faster: pay extra each month</span><b id="dh-extra">+$0</b></label>
+        <div class="ds-slider">
+          <label for="pit-extra"><span>Calm it faster: pay extra each month</span><b id="ds-extra">+$0</b></label>
           <input type="range" id="pit-extra" min="0" max="1000" step="25" value="${_pit.extra}">
-          <div class="dh-msg" id="dh-msg"></div>
+          <div class="ds-msg" id="ds-msg"></div>
         </div>
       </div>
+      <div class="ds-ach" id="ds-ach"></div>
     </div>`;
     _pit.built = true;
     _pit.cv = mount.querySelector('canvas'); _pit.ctx = _pit.cv.getContext('2d');
     const stage = document.getElementById('pit-stage');
-    stage.addEventListener('click', ()=>{ _pit.burst = 1; if(pitReduce) pitDraw(0); });
     document.getElementById('pit-extra').addEventListener('input', e=>{ _pit.extra = +e.target.value; pitText(); if(pitReduce) pitDraw(0); });
     if('ResizeObserver' in window){ _pit.ro && _pit.ro.disconnect(); _pit.ro = new ResizeObserver(()=>{ pitSize(); pitDraw(0); }); _pit.ro.observe(stage); }
     if('IntersectionObserver' in window){ _pit.io && _pit.io.disconnect(); _pit.io = new IntersectionObserver(en=>{ _pit.visible = en[0].isIntersecting; if(_pit.visible) pitStart(); }); _pit.io.observe(stage); }
     pitSize();
-    const d0 = pitData(); _pit.r = _pit.rT = d0.bal/d0.denom; // first paint: no animation
+    const d0 = pitData(); _pit.r = _pit.rT = d0.r; _pit.c = _pit.cT = d0.chaos; // first paint: no animation
   }
   pitText();
   pitStart();
@@ -6692,38 +6783,45 @@ function renderDebtPit(){
 
 function pitText(){
   const D = pitData(); _pit.D = D;
-  _pit.rT = D.bal / D.denom;
-  // payoff moments: a payment floats up, a cleared layer gets a celebration
+  _pit.rT = D.r; _pit.cT = D.chaos;
+  // payoff moments
   const now = {}; D.all.forEach(d=>{ const key=(d.id||d.name||'')+''; now[key]=(now[key]||0)+Math.max(0,d.balance||0); });
   if(_pit.prevBal){
     let paid=0; const cleared=[];
     Object.keys(now).forEach(key=>{ const was=_pit.prevBal[key]; if(was===undefined) return; if(now[key]<was-0.5) paid+=was-now[key]; if(was>0.5 && now[key]<=0.5){ const d=D.all.find(x=>((x.id||x.name||'')+'')===key); cleared.push(d?d.name:key); } });
-    if(Object.keys(_pit.prevBal).length!==Object.keys(now).length && !cleared.length && paid>Math.max(...Object.values(_pit.prevBal),0)) paid=0;
     if(paid>0) _pit.floats.push({txt:`−${fmtW(paid)}`, life:2.2, max:2.2});
-    if(cleared.length){ _pit.banner={txt: D.bal<=0 ? 'You made it out!' : `${cleared[0]} cleared!`, life:3}; _pit.confetti=2.2; }
+    if(cleared.length){ _pit.banner={txt: D.bal<=0 ? 'Calm waters. You made it!' : `${cleared[0]} cleared!`, life:3}; _pit.confetti=2.2; }
   }
   _pit.prevBal = now;
-  const outPct = D.bal<=0 ? 100 : Math.max(0, Math.min(99, Math.floor((1-D.bal/D.denom)*100)));
+  const fresh = debtAchUpdate(D);
+  if(fresh.length){
+    const a=fresh[fresh.length-1];
+    if(!_pit.banner) _pit.banner={txt:`Achievement: ${a.name}`, life:3};
+    _pit.confetti=Math.max(_pit.confetti,1.6);
+    if(typeof showToast==='function') setTimeout(()=>showToast(fresh.length>1 ? `<strong>${fresh.length} achievements unlocked</strong><br>${fresh.map(x=>x.name).join(', ')}.` : `<strong>Achievement unlocked: ${a.name}</strong><br>${a.desc}.`), 900);
+  }
+  const outPct = D.bal<=0 ? 100 : Math.max(0, Math.min(99, Math.floor((1-D.r)*100)));
   _pit.outPct = outPct;
   const set=(id,h)=>{ const e=document.getElementById(id); if(e) e.innerHTML=h; };
-  const p = D.plan, b = D.base;
-  set('dh-big', D.bal<=0 ? 'Debt-free' : `${outPct}%`);
-  set('dh-big-sub', D.bal<=0 ? `You dug your way out of ${fmtW(D.denom)}` : 'of the way out of debt');
-  set('dh-left', fmtW(D.bal));
-  set('dh-extra', `+${fmtW(_pit.extra)}`);
-  set('dh-date', D.bal<=0 ? 'Done' : p.canFinish ? pitShortDate(p.months) : 'Not yet');
+  const p = D.plan, b = D.base, lvl=dsLevel(D.chaos);
+  set('ds-big', D.bal<=0 ? 'Debt-free' : `${outPct}%`);
+  set('ds-big-sub', D.bal<=0 ? `Calm waters. You paid off ${fmtW(D.denom)}.` : 'of your debt paid off');
+  set('ds-left', fmtW(D.bal));
+  set('ds-extra', `+${fmtW(_pit.extra)}`);
+  set('ds-date', D.bal<=0 ? 'Now' : p.canFinish ? pitShortDate(p.months) : 'Not yet');
   let msg;
   if(D.bal<=0) msg = `Point that money at your TFSA now.`;
-  else if(!p.canFinish) msg = `Interest is refilling the hole as fast as you dig. Slide right until you start climbing.`;
-  else if(_pit.extra<=0) msg = `Slide to see how much sooner you get out.`;
-  else if(!b.canFinish) msg = `That's enough to start climbing. Out in <b>${monthsToDuration(p.months)}</b>.`;
+  else if(!p.canFinish) msg = `Interest is feeding the storm faster than you pay. Slide right until it starts to clear.`;
+  else if(_pit.extra<=0) msg = `Slide to see how much sooner the storm clears.`;
+  else if(!b.canFinish) msg = `That's enough to start clearing the storm. Calm in <b>${monthsToDuration(p.months)}</b>.`;
   else {
     const sooner = b.months - p.months, saved = Math.max(0, b.interest - p.interest);
-    msg = sooner>0 ? `Out <b>${sooner} month${sooner===1?'':'s'} sooner</b>, and <b>${fmtW(saved)}</b> less interest.` : `<b>${fmtW(saved)}</b> less interest.`;
+    msg = sooner>0 ? `Calm <b>${sooner} month${sooner===1?'':'s'} sooner</b>, and <b>${fmtW(saved)}</b> less interest.` : `<b>${fmtW(saved)}</b> less interest.`;
   }
-  set('dh-msg', msg);
+  set('ds-msg', msg);
+  debtAchRender();
   const st=document.getElementById('pit-stage');
-  if(st) st.setAttribute('aria-label', D.bal<=0 ? 'You climbed all the way out of debt' : `You are ${outPct}% of the way out of a hole made of your debts`);
+  if(st) st.setAttribute('aria-label', D.bal<=0 ? 'Calm water at sunset: you are debt-free' : `Debt storm level ${lvl}. You have paid off ${outPct}% of your debt.`);
 }
 
 function pitSize(){
@@ -6733,7 +6831,6 @@ function pitSize(){
   _pit.cv.width = Math.round(_pit.W*dpr); _pit.cv.height = Math.round(_pit.H*dpr);
   _pit.ctx.setTransform(dpr,0,0,dpr,0,0);
 }
-
 function pitStart(){
   if(pitReduce){ pitDraw(0); return; }
   if(_pit.raf) return;
@@ -6749,301 +6846,250 @@ function pitStart(){
 }
 function pitStop(){ if(_pit.raf) cancelAnimationFrame(_pit.raf); _pit.raf=null; }
 
-function dhLayout(W,H,free){
-  const k = Math.max(0.8, Math.min(1.35, H/360));
-  const surf = Math.round(H*(free?0.66:0.31)), bottom = H-16*k, depth = bottom-surf;
-  const topW = Math.max(120, Math.min(280, W*0.36));
-  const labelW = Math.min(210, W*0.42);
-  let cx = Math.min(W*0.44, W - labelW - topW/2 - 6);
-  cx = Math.max(cx, topW/2 + 16);
-  const botW = topW*0.82;
-  const half = y => (topW/2) + ((botW-topW)/2) * Math.max(0,Math.min(1,(y-surf)/depth));
-  return { k, surf, bottom, depth, topW, botW, cx, half, labelW };
-}
-
 function pitDraw(dt){
   const ctx=_pit.ctx, D=_pit.D; if(!ctx || !D || !_pit.W) return;
-  const W=_pit.W, H=_pit.H, L=dhLayout(W,H,D.bal<=0), {k,surf,bottom,depth,topW,cx,half}=L;
-  const t = performance.now()/1000, share=_pit.share;
-  _pit.r += (_pit.rT-_pit.r)*(pitReduce||share?1:Math.min(1,dt*2.4));
-  const r=_pit.r, prog=Math.max(0,Math.min(1,1-r));
-  const dep = rr=>Math.pow(Math.max(0,Math.min(1,rr)),0.62);
-  const floorY = surf + dep(r)*depth;
-  const free = D.bal<=0, stuck = !free && !D.plan.canFinish;
-  const hx0 = cx-topW/2, hx1 = cx+topW/2;
+  const W=_pit.W, H=_pit.H, share=_pit.share, still=pitReduce||share;
+  const k = Math.max(0.8, Math.min(1.35, H/380));
+  const t = still ? 12.3 : performance.now()/1000;
+  const ease = still?1:Math.min(1,dt*1.6);
+  _pit.r += (_pit.rT-_pit.r)*ease; _pit.c += (_pit.cT-_pit.c)*ease;
+  const c=Math.max(0,Math.min(1,_pit.c)), calm=1-c, prog=Math.max(0,Math.min(1,1-_pit.r));
+  const free = D.bal<=0;
+  const seaY = Math.round(H*0.70);
   ctx.clearRect(0,0,W,H);
 
-  // ── Sky: night to sunrise as you climb ──
-  const sky=ctx.createLinearGradient(0,0,0,surf);
-  sky.addColorStop(0, dhMix('#060a14','#3b6ea5',prog));
-  sky.addColorStop(0.7, dhMix('#0d1626','#9fc7d9',prog));
-  sky.addColorStop(1, dhMix('#16213a','#ffd39a',prog));
-  ctx.fillStyle=sky; ctx.fillRect(0,0,W,surf+2);
-  if(prog<0.85) for(let i=0;i<30;i++){ const a=(1-prog/0.85)*0.75*(0.55+0.45*Math.sin(t*1.4+i*2.1)); ctx.fillStyle=`rgba(255,255,255,${a*(0.4+pitRand(i+7)*0.6)})`; const s=pitRand(i+3)<0.15?2:1.3; ctx.fillRect(pitRand(i)*W, pitRand(i+40)*(surf*0.75), s, s); }
-  const sunX = Math.min(W-40*k, hx1 + (W-hx1)*0.62), sunY = surf + 30*k - prog*(surf*0.72);
-  ctx.save(); ctx.beginPath(); ctx.rect(0,0,W,surf); ctx.clip();
-  const glow=ctx.createRadialGradient(sunX,sunY,6,sunX,sunY,120*k); glow.addColorStop(0,`rgba(255,196,92,${0.35+0.4*prog})`); glow.addColorStop(1,'rgba(255,196,92,0)');
-  ctx.fillStyle=glow; ctx.fillRect(0,0,W,surf);
-  ctx.fillStyle=dhMix('#f59e0b','#ffd36b',prog); ctx.beginPath(); ctx.arc(sunX,sunY,19*k,0,Math.PI*2); ctx.fill();
-  // clouds
-  for(let i=0;i<3;i++){ const span=W+200*k, x=((pitRand(i+90)*span + (share?0:t)*(5+i*2.5)*k)%span)-100*k, y=surf*(0.18+0.22*i)+pitRand(i)*10;
-    const ca=Math.max(0,(prog-0.35)/0.65)*0.7*(1-i*0.2); if(ca<0.02) continue; ctx.fillStyle=`rgba(255,255,255,${ca})`; const s=k*(0.8+0.3*pitRand(i+5));
-    ctx.beginPath(); [[0,0,13],[15,-6,16],[33,0,12],[17,4,12]].forEach(([dx,dy,rr])=>{ ctx.moveTo(x+dx*s+rr*s,y+dy*s); ctx.arc(x+dx*s,y+dy*s,rr*s,0,Math.PI*2); }); ctx.fill(); }
-  // hills
-  ctx.fillStyle=dhMix('#0c1a1b','#4c8a5d',prog); ctx.beginPath(); ctx.moveTo(0,surf);
-  for(let x=0;x<=W+10;x+=10) ctx.lineTo(x, surf-12*k-Math.sin(x*0.011+0.6)*9*k-Math.sin(x*0.027)*5*k);
-  ctx.lineTo(W,surf); ctx.fill();
-  ctx.fillStyle=dhMix('#0f2220','#5fa36d',prog); ctx.beginPath(); ctx.moveTo(0,surf);
-  for(let x=0;x<=W+10;x+=10) ctx.lineTo(x, surf-5*k-Math.sin(x*0.018+2)*5*k);
-  ctx.lineTo(W,surf); ctx.fill();
-  ctx.restore();
-
-  // ── Ground ──
-  if(free){ const gg=ctx.createLinearGradient(0,surf,0,H); gg.addColorStop(0,'#8f5d39'); gg.addColorStop(1,'#4a2e1b'); ctx.fillStyle=gg; } else ctx.fillStyle='#2a1a10';
-  ctx.fillRect(0,surf,W,H-surf);
-  // bedrock below the floor (what you've already dug through)
-  for(let i=0;i<4;i++){ const y=floorY+14*k+i*16*k; if(y<H){ ctx.fillStyle='rgba(0,0,0,0.18)'; ctx.fillRect(0,y,W,2*k); } }
-  for(let i=0;i<Math.round(W/40);i++){ const py=floorY+8*k+pitRand(i+70)*(H-floorY); if(py<H-3){ ctx.fillStyle=pitRand(i+71)<0.5?'#3a2618':'#22150c'; ctx.beginPath(); ctx.ellipse(pitRand(i+72)*W,py,(3+pitRand(i)*5)*k,(2+pitRand(i+1)*3)*k,0,0,Math.PI*2); ctx.fill(); } }
-  // debt layers between you and the surface
-  const bands=[]; let yb=floorY;
-  D.order.forEach(({d,idx},kk)=>{ const h=D.bal>0 ? d.balance/D.bal*(floorY-surf) : 0; if(h<=0.3) return; bands.push({d,idx,k:kk,y0:yb-h,y1:yb,col:DH_SOIL[idx%DH_SOIL.length]}); yb-=h; });
-  bands.forEach(b=>{
-    ctx.fillStyle=b.col; ctx.fillRect(0,b.y0,W,b.y1-b.y0);
-    ctx.fillStyle='rgba(255,255,255,0.10)'; ctx.fillRect(0,b.y0,W,Math.min(2*k,b.y1-b.y0));
-    ctx.fillStyle='rgba(0,0,0,0.12)'; ctx.fillRect(0,b.y1-Math.min(2*k,b.y1-b.y0),W,Math.min(2*k,b.y1-b.y0));
-    const n=Math.round((b.y1-b.y0)*W/2600);
-    for(let i=0;i<n;i++){ const px=pitRand(b.idx*97+i)*W, py=b.y0+3*k+pitRand(b.idx*31+i*3)*Math.max(0,b.y1-b.y0-6*k); const rr=(1.4+pitRand(i*5+b.idx)*2.2)*k;
-      ctx.fillStyle=pitRand(i+b.idx*7)<0.5?dhShade(b.col,0.82):dhShade(b.col,1.12); ctx.beginPath(); ctx.ellipse(px,py,rr*1.4,rr,0,0,Math.PI*2); ctx.fill(); }
-  });
-
-  // ── Surface: grass, dirt pile, tree ──
-  const grassY=surf-1;
-  ctx.fillStyle=dhMix('#1f6b3c','#4fc46d',prog);
-  const holeOpen = floorY>surf+0.5;
-  const gL=holeOpen?hx0:W, gR=holeOpen?hx1:W;
-  ctx.fillRect(0,grassY,gL,6*k); if(gR<W) ctx.fillRect(gR,grassY,W-gR,6*k);
-  ctx.fillStyle=dhMix('#2a8a4c','#7be08f',prog);
-  for(let x=4;x<W;x+=9*k){ if(holeOpen && x>hx0-4 && x<hx1+4) continue; const h=(4+pitRand(Math.round(x))*5)*k; ctx.beginPath(); ctx.moveTo(x-2*k,grassY+1); ctx.lineTo(x,grassY-h); ctx.lineTo(x+2*k,grassY+1); ctx.fill(); }
-  // tree on the far right
-  if(W>620 && W-hx1>150*k){ const tx=W-30*k, s=k*(W<520?0.8:1);
-    ctx.fillStyle='#5b3a24'; dhRR(ctx,tx-3.5*s,surf-30*s,7*s,30*s,3*s); ctx.fill();
-    const leaf=dhMix('#15532f','#3fae5d',prog), leaf2=dhMix('#1d6b3b','#5cc977',prog);
-    [[0,-46,20,leaf],[-14,-36,14,leaf],[14,-35,15,leaf],[-4,-56,13,leaf2],[8,-50,11,leaf2]].forEach(([dx,dy,rr,c])=>{ ctx.fillStyle=c; ctx.beginPath(); ctx.arc(tx+dx*s,surf+dy*s,rr*s,0,Math.PI*2); ctx.fill(); }); }
-  // the pile you've dug out grows with what you've paid
-  const pileX = Math.max(34*k, hx0 - 62*k), pileW = (46+120*Math.sqrt(prog))*k, pileH=(5+44*Math.sqrt(prog))*k;
-  if(!free || true){
-    const px0=pileX-pileW/2, px1=pileX+pileW/2;
-    ctx.fillStyle='#b98249'; ctx.beginPath(); ctx.moveTo(px0,surf+2); ctx.bezierCurveTo(px0+pileW*0.25,surf-pileH*1.05,px1-pileW*0.25,surf-pileH*1.05,px1,surf+2); ctx.fill();
-    ctx.fillStyle='#9a6a3b'; ctx.beginPath(); ctx.moveTo(pileX+pileW*0.05,surf+2); ctx.bezierCurveTo(pileX+pileW*0.2,surf-pileH*0.85,px1-pileW*0.18,surf-pileH*0.6,px1,surf+2); ctx.fill();
-    for(let i=0;i<Math.round(3+prog*10);i++){ const a=pitRand(i+400), x=px0+pileW*(0.15+a*0.7), y=surf-pileH*(0.2+0.6*pitRand(i+401))*(1-Math.abs(a-0.5)*1.2); ctx.fillStyle=pitRand(i+402)<0.5?'#d39a5d':'#8a5c33'; ctx.beginPath(); ctx.arc(x,y,(1.5+pitRand(i)*2)*k,0,Math.PI*2); ctx.fill(); }
+  // ── Sky ──
+  const sky=ctx.createLinearGradient(0,0,0,seaY);
+  sky.addColorStop(0,   dsMix('#3d7cc4','#0b0f16',c));
+  sky.addColorStop(0.55,dsMix('#f2b880','#1a2130',c));
+  sky.addColorStop(1,   dsMix('#ffd9a3','#283143',c));
+  ctx.fillStyle=sky; ctx.fillRect(0,0,W,seaY+2);
+  // sun sits low on the horizon, breaking through as the storm clears
+  const sunX=W*0.72, sunY=seaY-(14+46*calm)*k;
+  if(calm>0.18){
+    const sa=Math.pow(calm,1.6);
+    const g=ctx.createRadialGradient(sunX,sunY,4,sunX,sunY,160*k); g.addColorStop(0,`rgba(255,214,140,${0.65*sa})`); g.addColorStop(1,'rgba(255,214,140,0)');
+    ctx.fillStyle=g; ctx.fillRect(0,0,W,seaY);
+    ctx.save(); ctx.beginPath(); ctx.rect(0,0,W,seaY); ctx.clip();
+    ctx.fillStyle=`rgba(255,226,160,${Math.min(1,sa*1.5)})`; ctx.beginPath(); ctx.arc(sunX,sunY,24*k,0,Math.PI*2); ctx.fill(); ctx.restore();
   }
-  _pit.pileTarget = {x:pileX, y:surf-pileH*0.7};
+  // distant shore
+  ctx.fillStyle=dsMix('#6a8f7e','#161c26',c); ctx.beginPath(); ctx.moveTo(0,seaY);
+  for(let x=0;x<=W*0.55;x+=12) ctx.lineTo(x, seaY-(6+Math.sin(x*0.02)*4+Math.sin(x*0.05+1)*2)*k*(1-x/(W*0.55)*0.6));
+  ctx.lineTo(W*0.55,seaY); ctx.fill();
 
-  // ── The hole ──
-  if(holeOpen){
-    const rad=Math.min(14*k,(floorY-surf)/2);
-    const hb=half(floorY);
-    ctx.save();
-    ctx.beginPath(); ctx.moveTo(cx-half(surf),surf);
-    ctx.lineTo(cx-hb,floorY-rad); ctx.quadraticCurveTo(cx-hb,floorY,cx-hb+rad,floorY);
-    ctx.lineTo(cx+hb-rad,floorY); ctx.quadraticCurveTo(cx+hb,floorY,cx+hb,floorY-rad);
-    ctx.lineTo(cx+half(surf),surf); ctx.closePath();
-    ctx.fillStyle='#140c07'; ctx.fill(); ctx.clip();
-    // you can see the layers on the back wall
-    bands.forEach(b=>{ ctx.fillStyle=dhShade(b.col,0.42); ctx.fillRect(hx0-20,b.y0,topW+40,b.y1-b.y0); ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.fillRect(hx0-20,b.y0,topW+40,1.2*k); });
-    // the layer you're digging now glows
-    if(bands[0] && !stuck){ const a=0.18+0.12*Math.sin(t*3); ctx.fillStyle=`rgba(251,191,36,${share?0.2:a})`; ctx.fillRect(hx0-20,bands[0].y0,topW+40,bands[0].y1-bands[0].y0); }
-    // light falls in from the top, wall shadows on the sides
-    const lt=ctx.createLinearGradient(0,surf,0,surf+70*k); lt.addColorStop(0,`rgba(255,220,160,${0.10+0.22*prog})`); lt.addColorStop(1,'rgba(255,220,160,0)'); ctx.fillStyle=lt; ctx.fillRect(hx0-20,surf,topW+40,70*k);
-    const sh=ctx.createLinearGradient(cx-half(surf),0,cx+half(surf),0); sh.addColorStop(0,'rgba(0,0,0,0.55)'); sh.addColorStop(0.16,'rgba(0,0,0,0)'); sh.addColorStop(0.84,'rgba(0,0,0,0)'); sh.addColorStop(1,'rgba(0,0,0,0.55)'); ctx.fillStyle=sh; ctx.fillRect(hx0-20,surf,topW+40,floorY-surf);
-    // floor
-    ctx.fillStyle='#3a2516'; ctx.fillRect(hx0-20,floorY-4*k,topW+40,4*k);
-    ctx.restore();
-    // ladder up the right wall
-    if(floorY-surf>26*k){
-      const lx2=cx+half(floorY)-12*k, lx1=lx2-15*k;
-      ctx.strokeStyle='#c8955c'; ctx.lineWidth=3*k; ctx.lineCap='round';
-      ctx.beginPath(); ctx.moveTo(lx1,floorY-2); ctx.lineTo(lx1+3*k,surf-16*k); ctx.moveTo(lx2,floorY-2); ctx.lineTo(lx2+3*k,surf-16*k); ctx.stroke();
-      ctx.lineWidth=2.2*k; ctx.strokeStyle='#e0b07a';
-      for(let y=floorY-9*k;y>surf-12*k;y-=11*k){ const f=(floorY-y)/(floorY-surf+16*k)*3*k; ctx.beginPath(); ctx.moveTo(lx1+f,y); ctx.lineTo(lx2+f,y); ctx.stroke(); }
-    }
-    // lip of the hole
-    ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.fillRect(cx-half(surf)-2,surf+4*k,topW+4,2*k);
-  } else {
-    // filled in: a fresh patch of dirt where the hole was
-    ctx.fillStyle='#5a3a22'; dhRR(ctx,cx-topW*0.42,surf-1,topW*0.84,7*k,4*k); ctx.fill();
-  }
-
-  // ── 1 year from now (with the slider's extra) ──
-  if(!free && !share && D.plan.canFinish && holeOpen){
-    const gy = surf + dep(Math.max(0,D.plan.series[12]??0)/D.denom)*depth;
-    if(floorY-gy>6*k){
-      ctx.setLineDash([6*k,5*k]); ctx.strokeStyle='rgba(255,255,255,0.85)'; ctx.lineWidth=1.6*k;
-      ctx.beginPath(); ctx.moveTo(cx-half(gy)+4,gy); ctx.lineTo(cx+half(gy)-4,gy); ctx.stroke(); ctx.setLineDash([]);
-      const narrow = cx-half(gy) < 150*k;
-      const txt = D.plan.months<=12 ? `Out in ${D.plan.months} mo` : narrow ? 'In 1 year' : 'You, 1 year from now';
-      ctx.font=`600 ${11*k}px ${DH_FONT}`; const tw=ctx.measureText(txt).width+14*k;
-      const tx = cx-half(gy)-tw-8*k >= 4 ? cx-half(gy)-tw-8*k : Math.max(4, cx-half(gy)-tw+tw*0.35);
-      ctx.fillStyle='rgba(255,255,255,0.92)'; dhRR(ctx,tx,gy-10*k,tw,20*k,10*k); ctx.fill();
-      ctx.fillStyle='#0b0f18'; ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillText(txt,tx+7*k,gy+0.5); ctx.textBaseline='alphabetic';
+  // ── Background storm clouds: the worse the storm, the more of the sky they cover ──
+  if(c>0.25){
+    const nBg=Math.round(4+8*c), a=Math.min(1,(c-0.25)/0.5);
+    for(let i=0;i<nBg;i++){
+      const span=W+260*k, sp=(still?0:t)*(8+22*c)*k*(0.6+pitRand(i+5)*0.8);
+      const x=((pitRand(i+11)*span+sp)%span)-130*k, y=H*(0.02+0.2*pitRand(i+12)), R=(28+30*pitRand(i+13))*k;
+      ctx.fillStyle=`rgba(${Math.round(38-14*c)},${Math.round(44-14*c)},${Math.round(56-14*c)},${0.85*a})`;
+      ctx.beginPath(); [[-0.9,0.1,0.55],[-0.2,-0.2,0.75],[0.6,0,0.6],[0,0.2,0.65]].forEach(([dx,dy,rr])=>{ ctx.moveTo(x+dx*R+rr*R,y+dy*R); ctx.arc(x+dx*R,y+dy*R,rr*R,0,Math.PI*2); }); ctx.fill();
     }
   }
+  // ── Flash from lightning ──
+  if(_pit.flash>0){ ctx.fillStyle=`rgba(220,230,255,${_pit.flash})`; ctx.fillRect(0,0,W,seaY); _pit.flash=Math.max(0,_pit.flash-dt*1.2); }
 
-  // ── Layer tags on the right ──
-  if(!share){
-    const lx = hx1 + 16*k, maxW = W - lx - 8;
-    const fs=11.5*k, fsA=11*k, hTag=22*k;
-    const tags=[];
-    bands.forEach((b,i)=>{ if(maxW<70) return; tags.push({b, focus:i===0, y:(b.y0+b.y1)/2}); });
-    // keep tags from overlapping: stack them, nearest to the floor first
-    const gap=hTag+5*k; let maxTags=Math.max(1,Math.floor((floorY-surf-8*k)/gap)+1);
-    let shown=tags.slice(0,maxTags), hidden=tags.length-shown.length;
-    for(let i=0;i<shown.length;i++){ if(i>0 && shown[i].y>shown[i-1].y-gap) shown[i].y=shown[i-1].y-gap; }
-    const topLimit=surf+hTag/2+10*k; if(shown.length && shown[shown.length-1].y<topLimit){ const shift=topLimit-shown[shown.length-1].y; shown.forEach(s=>s.y+=shift); }
-    shown.forEach(s=>{
-      const {b,focus}=s, y=s.y, mid=(b.y0+b.y1)/2;
-      const name=b.d.name, amt=fmtW(b.d.balance);
-      ctx.font=`700 ${fs}px ${DH_FONT}`; const amtW=ctx.measureText(amt).width;
-      ctx.font=`600 ${fs}px ${DH_FONT}`;
-      let nm=name; const room=maxW-amtW-30*k;
-      while(nm.length>2 && ctx.measureText(nm).width>room) nm=nm.slice(0,-1);
-      if(nm!==name) nm=nm.replace(/\s+$/,'')+'…';
-      const nmW=ctx.measureText(nm).width, tagW=Math.min(maxW, 22*k+nmW+8*k+amtW+(focus?0:0));
-      // connector
-      ctx.strokeStyle='rgba(0,0,0,0.35)'; ctx.lineWidth=1.2*k; ctx.beginPath(); ctx.moveTo(cx+half(mid)+2,mid); ctx.lineTo(lx,y); ctx.stroke();
-      ctx.fillStyle=focus?'#fbbf24':'rgba(12,10,8,0.72)'; dhRR(ctx,lx,y-hTag/2,tagW,hTag,hTag/2); ctx.fill();
-      ctx.fillStyle=focus?'#1a1206':b.col; ctx.beginPath(); ctx.arc(lx+11*k,y,4.2*k,0,Math.PI*2); ctx.fill();
-      if(!focus){ ctx.strokeStyle='rgba(255,255,255,0.25)'; ctx.lineWidth=1; ctx.stroke(); }
-      ctx.textBaseline='middle'; ctx.textAlign='left';
-      ctx.fillStyle=focus?'#1a1206':'#f3f4f6'; ctx.font=`600 ${fs}px ${DH_FONT}`; ctx.fillText(nm,lx+20*k,y+0.5);
-      ctx.fillStyle=focus?'rgba(26,18,6,0.8)':'rgba(243,244,246,0.65)'; ctx.font=`700 ${fsA}px ${DH_FONT}`; ctx.fillText(amt,lx+20*k+nmW+7*k,y+0.5);
-      ctx.textBaseline='alphabetic';
-    });
-    if(shown.length && bands[0] && !stuck){
-      const y0=shown[0].y+hTag/2+4*k;
-      if(y0+12*k<H){ ctx.font=`700 ${9.5*k}px ${DH_FONT}`; ctx.fillStyle='#fbbf24'; ctx.textAlign='left'; ctx.fillText('DIGGING THIS ONE FIRST', lx+6*k, y0+8*k); }
-    }
-    if(hidden>0){ ctx.font=`600 ${10.5*k}px ${DH_FONT}`; ctx.fillStyle='rgba(255,255,255,0.7)'; ctx.textAlign='left'; ctx.fillText(`+${hidden} more layer${hidden>1?'s':''}`, lx+4*k, surf+12*k); }
-  }
-
-  // ── Flag + date at the top ──
-  const fx = holeOpen ? hx1 + 22*k : cx + topW*0.5;
-  ctx.strokeStyle='#e5e7eb'; ctx.lineWidth=2*k; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(fx,surf+1); ctx.lineTo(fx,surf-40*k); ctx.stroke();
-  const wv=share?0:Math.sin(t*3.5)*2.5*k;
-  ctx.fillStyle='#4ade80'; ctx.beginPath(); ctx.moveTo(fx,surf-40*k); ctx.quadraticCurveTo(fx+12*k,surf-40*k+wv,fx+24*k,surf-35*k); ctx.quadraticCurveTo(fx+12*k,surf-29*k-wv,fx,surf-28*k); ctx.fill();
+  // ── Island and harbour on the right (where you're heading) ──
+  const isX = W - Math.min(170*k, W*0.24), dockX = isX - 26*k;
+  ctx.fillStyle=dsMix('#6fae6a','#1f2a2a',c*0.9);
+  ctx.beginPath(); ctx.moveTo(isX-18*k,seaY+3*k); ctx.quadraticCurveTo(isX+30*k,seaY-30*k,isX+90*k,seaY-26*k); ctx.quadraticCurveTo(W+10,seaY-34*k,W+10,seaY+3*k); ctx.closePath(); ctx.fill();
+  ctx.fillStyle=dsMix('#e9d3a0','#2b2f33',c*0.9); ctx.beginPath(); ctx.moveTo(isX-22*k,seaY+3*k); ctx.quadraticCurveTo(isX+10*k,seaY-6*k,isX+60*k,seaY-4*k); ctx.lineTo(isX+60*k,seaY+3*k); ctx.fill();
+  // cottage with a warm window
+  const hx=isX+58*k, hy=seaY-28*k;
+  ctx.fillStyle=dsMix('#f4efe6','#3a3f47',c*0.85); ctx.fillRect(hx,hy-16*k,24*k,16*k);
+  ctx.fillStyle=dsMix('#c2533a','#2b2f36',c*0.8); ctx.beginPath(); ctx.moveTo(hx-4*k,hy-16*k); ctx.lineTo(hx+12*k,hy-28*k); ctx.lineTo(hx+28*k,hy-16*k); ctx.fill();
+  ctx.fillStyle=`rgba(255,200,90,${0.55+0.45*calm})`; ctx.fillRect(hx+8*k,hy-11*k,7*k,6*k);
+  // palm
+  const px=isX+30*k, py=seaY-20*k, sway=(still?0:Math.sin(t*(1+c*3)))*(1.5+6*c)*k;
+  ctx.strokeStyle=dsMix('#7a5232','#2a2622',c*0.8); ctx.lineWidth=3.2*k; ctx.lineCap='round';
+  ctx.beginPath(); ctx.moveTo(px,py); ctx.quadraticCurveTo(px-4*k,py-20*k,px+sway,py-38*k); ctx.stroke();
+  ctx.strokeStyle=dsMix('#2f8f4e','#1b2a26',c*0.85); ctx.lineWidth=3*k;
+  [-2.6,-2.0,-1.2,-0.5,0.2].forEach((a,i)=>{ const ax=px+sway, ay=py-38*k, L=(16+(i%2)*4)*k, aa=a+sway*0.02; ctx.beginPath(); ctx.moveTo(ax,ay); ctx.quadraticCurveTo(ax+Math.cos(aa)*L*0.6,ay+Math.sin(aa)*L*0.6-5*k,ax+Math.cos(aa)*L,ay+Math.sin(aa)*L+5*k); ctx.stroke(); });
+  // dock
+  ctx.fillStyle=dsMix('#a77a4f','#3a332c',c*0.8); ctx.fillRect(dockX,seaY-4*k,(isX-dockX)+6*k,4*k);
+  for(let i=0;i<3;i++){ ctx.fillRect(dockX+3*k+i*10*k,seaY-4*k,2.5*k,14*k); }
+  // flag with the date
+  const fX=isX+92*k<W-10?isX+92*k:isX+60*k, fBase=seaY-28*k;
+  ctx.strokeStyle='#e5e7eb'; ctx.lineWidth=1.8*k; ctx.beginPath(); ctx.moveTo(fX,fBase); ctx.lineTo(fX,fBase-30*k); ctx.stroke();
+  const wv=still?0:Math.sin(t*(3+c*6))*(2+4*c)*k;
+  ctx.fillStyle='#4ade80'; ctx.beginPath(); ctx.moveTo(fX,fBase-30*k); ctx.quadraticCurveTo(fX+10*k,fBase-30*k+wv,fX+20*k,fBase-26*k); ctx.quadraticCurveTo(fX+10*k,fBase-20*k-wv,fX,fBase-19*k); ctx.fill();
   {
-    const lbl = free ? 'Debt-free!' : D.plan.canFinish ? `Out by ${pitShortDate(D.plan.months)}` : 'Interest is winning';
-    ctx.font=`700 ${11.5*k}px ${DH_FONT}`; const tw=ctx.measureText(lbl).width+16*k;
-    let tx=fx+30*k; if(tx+tw>W-6) tx=Math.max(6,fx-tw-8*k);
-    ctx.fillStyle=stuck?'rgba(120,53,15,0.9)':'rgba(8,20,12,0.78)'; dhRR(ctx,tx,surf-46*k,tw,22*k,11*k); ctx.fill();
-    ctx.fillStyle=stuck?'#fde68a':'#bbf7d0'; ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillText(lbl,tx+8*k,surf-35*k); ctx.textBaseline='alphabetic';
+    const lbl = free ? 'Debt-free!' : D.plan.canFinish ? `Calm by ${pitShortDate(D.plan.months)}` : 'Not in sight yet';
+    ctx.font=`700 ${11*k}px ${DS_FONT}`; const tw=ctx.measureText(lbl).width+16*k;
+    const tx=Math.max(6, Math.min(W-tw-6, fX-tw/2+4*k)), ty=fBase-56*k;
+    ctx.fillStyle='rgba(8,12,18,0.72)'; dsRR(ctx,tx,ty,tw,21*k,10.5*k); ctx.fill();
+    ctx.fillStyle=free?'#bbf7d0':'#f1f5f9'; ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillText(lbl,tx+8*k,ty+10.8*k); ctx.textBaseline='alphabetic';
   }
 
-  // ── Interest refilling the hole ──
-  if(stuck && !pitReduce && !share){ _pit.crumbleT-=dt;
-    if(_pit.crumbleT<=0){ _pit.crumbleT=0.14+Math.random()*0.22; const side=Math.random()<0.5?-1:1; _pit.parts.push({x:cx+side*(half(surf)-6*k),y:surf+2,vx:-side*(20+Math.random()*30)*k,vy:10,life:3,c:DH_SOIL[(bands[bands.length-1]||{idx:0}).idx%DH_SOIL.length],s:(3+Math.random()*3)*k,fall:1}); } }
-
-  // ── The digger ──
-  const speed = stuck?0.6:(1+_pit.extra/350) + _pit.burst*2.2;
-  if(!pitReduce && !share) _pit.phase = (_pit.phase + dt*speed*0.8)%1;
-  _pit.burst = Math.max(0,_pit.burst-dt*0.7);
-  const ph = share?0.88:_pit.phase;
-  let a;
-  if(free) a=-1.5;
-  else if(ph<0.42) a=-1.35+2.45*((ph/0.42)**2);
-  else if(ph<0.58) a=1.1;
-  else if(ph<0.76) a=1.1-2.45*((ph-0.58)/0.18);
-  else a=-1.35;
-  const sc = 1.65*k;
-  const footY = free? surf : floorY-3*k;
-  const dx = free ? pileX+pileW*0.55+14*k : cx - topW*0.12;
-  if(!free && !pitReduce && !share && _pit.prevPh!==undefined){
-    if(_pit.prevPh<0.42 && ph>=0.42){ for(let i=0;i<5;i++) _pit.parts.push({x:dx+Math.cos(1.1)*20*sc,y:footY,vx:(Math.random()-0.5)*50*k,vy:-(20+Math.random()*30)*k,life:0.6,dust:1,s:2.5*k}); }
-    if(_pit.prevPh<0.74 && ph>=0.74){
-      const tipX=dx+Math.cos(a)*20*sc, tipY=footY-17*sc+Math.sin(a)*20*sc;
-      const T=0.75+Math.min(0.45,(tipY-surf)/600), g=1300*k, tgt=_pit.pileTarget;
-      const n=stuck?1:2+Math.round(_pit.burst*4), col=bands[0]?bands[0].col:'#b07a47';
-      for(let i=0;i<n;i++){ const ex=tgt.x+(Math.random()-0.5)*30*k, ey=tgt.y+(Math.random()-0.5)*8*k; _pit.parts.push({x:tipX,y:tipY,vx:(ex-tipX)/T,vy:(ey-tipY-0.5*g*T*T)/T,g,life:T,c:i?dhShade(col,1.1):col,s:(4+Math.random()*3)*k,spin:Math.random()*6}); }
+  // ── Debt clouds ──
+  const maxOrig=Math.max(1,...D.all.map(d=>Math.max(d.origBalance||0,d.balance||0)));
+  const clouds=[]; const n=D.all.length;
+  const x0=W*0.08, x1=W*0.86;
+  D.all.forEach((d,i)=>{
+    const done=(d.balance||0)<=0;
+    const frac=Math.max(0,d.balance||0)/maxOrig;
+    const R=(done?12:16+38*Math.sqrt(frac))*k*(W<520?0.82:1);
+    const baseX = n===1 ? W*0.42 : x0+(x1-x0)*(i+0.5)/n;
+    const drift = still?0:Math.sin(t*(0.25+c*0.6)+i*1.7)*(6+14*c)*k;
+    const cy = (done? H*0.12 : H*0.13+ (i%2)*H*0.06) + (still?0:Math.sin(t*0.8+i)*2*k);
+    clouds.push({d,i,done,R,x:baseX+drift,y:cy, focus:false});
+  });
+  const focusIdx = D.order[0] ? D.order[0].idx : -1;
+  clouds.forEach(cl=>{ cl.focus = cl.i===focusIdx; });
+  // rain first, so clouds sit on top of it
+  if(!share){
+    const wind=-(30+260*c*c)*k;
+    if(!pitReduce){
+      clouds.filter(cl=>!cl.done).forEach(cl=>{
+        const rate = c*c*cl.R*5.5;
+        let nDrops = rate*dt; while(nDrops>0){ if(Math.random()<nDrops) _pit.drops.push({x:cl.x+(Math.random()-0.5)*cl.R*1.6,y:cl.y+cl.R*0.35,vy:(520+Math.random()*180)*k}); nDrops-=1; }
+      });
+      let amb = Math.max(0,c-0.35)*Math.max(0,c-0.35)*W*1.6*dt; while(amb>0){ if(Math.random()<amb) _pit.drops.push({x:Math.random()*(W+200*k),y:-10,vy:(600+Math.random()*250)*k}); amb-=1; }
+    }
+    ctx.strokeStyle=`rgba(180,200,230,${0.35+0.3*c})`; ctx.lineWidth=1.1*k; ctx.beginPath();
+    _pit.drops=_pit.drops.filter(dr=>{ dr.y+=dr.vy*dt; dr.x+=wind*dt; if(dr.y>seaY+6*k) return false; ctx.moveTo(dr.x,dr.y); ctx.lineTo(dr.x-wind*0.018,dr.y-11*k); return true; });
+    ctx.stroke();
+  } else if(c>0.25){
+    ctx.strokeStyle=`rgba(180,200,230,${0.25+0.3*c})`; ctx.lineWidth=1.1*k; ctx.beginPath();
+    for(let j=0;j<Math.round(Math.max(0,c-0.4)*W*0.5);j++){ const rx=pitRand(j+900)*W, ry=pitRand(j+901)*seaY; ctx.moveTo(rx,ry); ctx.lineTo(rx+4*k*c,ry-11*k); }
+    clouds.filter(cl=>!cl.done).forEach(cl=>{ const nn=Math.round(c*c*cl.R*1.2); for(let j=0;j<nn;j++){ const rx=cl.x+(pitRand(j+cl.i*50)-0.5)*cl.R*1.8, ry=cl.y+cl.R*0.4+pitRand(j*3+cl.i)*(seaY-cl.y-cl.R*0.4); ctx.moveTo(rx,ry); ctx.lineTo(rx+3*k*c,ry-11*k); } });
+    ctx.stroke();
+  }
+  // lightning: rarer and gentler than real lightning, and never with reduced motion
+  if(!pitReduce && !share && c>0.5){
+    _pit.nextBolt-=dt;
+    if(_pit.nextBolt<=0){
+      const live=clouds.filter(cl=>!cl.done); const hot=live.filter(cl=>(cl.d.rate||0)>=15);
+      const src=(hot.length&&Math.random()<0.75?hot:live)[Math.floor(Math.random()*(hot.length&&Math.random()<0.75?hot.length:live.length))]||live[0];
+      if(src){ const pts=[[src.x,src.y+src.R*0.4]]; let bx=src.x, by=src.y+src.R*0.4; while(by<seaY){ bx+=(Math.random()-0.5)*26*k; by+=(12+Math.random()*16)*k; pts.push([bx,Math.min(by,seaY)]); } _pit.bolt={pts,life:0.22}; _pit.flash=0.16*Math.min(1,(c-0.4)*2); }
+      _pit.nextBolt = 1.6 + Math.random()*4.5/(c+0.1);
     }
   }
-  _pit.prevPh=ph;
-  dhDigger(ctx,dx,footY,a,free,t,sc,stuck,share);
-
-  // ── Particles ──
-  _pit.parts = _pit.parts.filter(p=>{
-    p.life-=dt;
-    if(p.dust){ p.x+=p.vx*dt; p.y+=p.vy*dt; p.s+=dt*12*k; if(p.life<=0) return false; ctx.fillStyle=`rgba(200,150,100,${p.life*0.55})`; ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,Math.PI*2); ctx.fill(); return true; }
-    if(p.conf){ p.vy+=500*k*dt; p.vx*=0.99; p.x+=p.vx*dt; p.y+=p.vy*dt; if(p.life<=0||p.y>H) return false; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.spin+t*6); ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); ctx.restore(); return true; }
-    p.vy+=(p.g||900*k)*dt; p.x+=p.vx*dt; p.y+=p.vy*dt;
-    if(p.fall && p.y>=floorY-2) return false;
-    if(p.life<=0 || p.y>H) return false;
-    ctx.fillStyle=p.c; ctx.beginPath(); ctx.ellipse(p.x,p.y,p.s*0.6,p.s*0.5,p.spin||0,0,Math.PI*2); ctx.fill(); return true;
+  if(_pit.bolt){ const B=_pit.bolt; B.life-=dt; if(B.life<=0) _pit.bolt=null; else {
+    ctx.strokeStyle=`rgba(255,250,210,${Math.min(1,B.life*6)})`; ctx.lineWidth=2.4*k; ctx.lineJoin='round'; ctx.beginPath(); B.pts.forEach(([x,y],j)=>j?ctx.lineTo(x,y):ctx.moveTo(x,y)); ctx.stroke();
+    ctx.strokeStyle=`rgba(255,255,255,${Math.min(1,B.life*6)})`; ctx.lineWidth=1*k; ctx.stroke(); } }
+  clouds.forEach(cl=>{
+    const {x,y,R}=cl;
+    const col = cl.done ? 'rgba(255,255,255,0.95)' : dsMix('#9aa5b5','#2a303b',0.25+0.75*c);
+    const under = cl.done ? 'rgba(226,232,240,0.95)' : dsMix('#7d8899','#1c2129',0.25+0.75*c);
+    ctx.fillStyle=under; ctx.beginPath();
+    [[-0.95,0.18,0.55],[-0.35,0.25,0.62],[0.35,0.25,0.6],[0.95,0.18,0.5]].forEach(([dx,dy,rr])=>{ ctx.moveTo(x+dx*R+rr*R,y+dy*R); ctx.arc(x+dx*R,y+dy*R,rr*R,0,Math.PI*2); });
+    ctx.fill();
+    ctx.fillStyle=col; ctx.beginPath();
+    [[-0.7,0,0.55],[-0.1,-0.28,0.72],[0.6,-0.08,0.6],[0.05,0.12,0.6]].forEach(([dx,dy,rr])=>{ ctx.moveTo(x+dx*R+rr*R,y+dy*R); ctx.arc(x+dx*R,y+dy*R,rr*R,0,Math.PI*2); });
+    ctx.fill();
+    if(!cl.done && (cl.d.rate||0)>=15 && c>0.3){ ctx.fillStyle=`rgba(253,224,71,${0.5+0.3*Math.sin(t*4+cl.i)})`; ctx.beginPath(); const bx=x+R*0.35, by=y+R*0.05; ctx.moveTo(bx,by-6*k); ctx.lineTo(bx-4*k,by+1*k); ctx.lineTo(bx-0.5*k,by+1*k); ctx.lineTo(bx-2*k,by+7*k); ctx.lineTo(bx+4*k,by-1*k); ctx.lineTo(bx+0.5*k,by-1*k); ctx.closePath(); ctx.fill(); }
+    if(cl.done){ ctx.strokeStyle='#22c55e'; ctx.lineWidth=2.2*k; ctx.lineCap='round'; ctx.beginPath(); ctx.moveTo(x-4*k,y); ctx.lineTo(x-1*k,y+3*k); ctx.lineTo(x+5*k,y-4*k); ctx.stroke(); }
   });
 
-  // ── Payoff moments ──
+  // ── Sea ──
+  const amp=(1.2+24*c*c+4*c)*k, spd=0.7+2.4*c;
+  const wave=(x,layer)=>seaY+layer*10*k + amp*(0.55+layer*0.25)*(Math.sin(x*0.018/k*(1-layer*0.15)+t*spd*(1+layer*0.3)+layer*2) + 0.45*Math.sin(x*0.041/k+t*spd*1.7+layer)) ;
+  const seaCols=[[dsMix('#3a7ca8','#1a2734',c),dsMix('#2b5f86','#141d27',c)],[dsMix('#2f6f9a','#17222e',c),dsMix('#235578','#111821',c)],[dsMix('#286490','#141e29',c),dsMix('#1c4a6c','#0d141c',c)]];
+  // sun path on the water when it's calm
+  for(let layer=0;layer<3;layer++){
+    const g=ctx.createLinearGradient(0,seaY,0,H); g.addColorStop(0,seaCols[layer][0]); g.addColorStop(1,seaCols[layer][1]);
+    ctx.fillStyle=g; ctx.beginPath(); ctx.moveTo(0,H);
+    for(let x=0;x<=W+8;x+=8) ctx.lineTo(x,wave(x,layer)); ctx.lineTo(W,H); ctx.closePath(); ctx.fill();
+    if(layer===0 && calm>0.1){ for(let j=0;j<14;j++){ const yy=seaY+6*k+j*((H-seaY)/14); const ww=(10+j*5)*k*(0.6+0.4*Math.sin(t*2+j)); ctx.fillStyle=`rgba(255,214,150,${0.45*calm*(1-j/16)})`; ctx.fillRect(sunX-ww/2,yy,ww,2*k); } }
+    // whitecaps in rough water
+    if(c>0.35){ ctx.strokeStyle=`rgba(255,255,255,${(c-0.35)*0.7})`; ctx.lineWidth=1.6*k; ctx.beginPath(); for(let x=10;x<W;x+=46*k){ const xx=x+((t*30*c)%(46*k)); const y=wave(xx,layer); if(wave(xx-4,layer)>y && wave(xx+4,layer)>y){ ctx.moveTo(xx-7*k,y+2*k); ctx.quadraticCurveTo(xx,y-2*k,xx+7*k,y+2*k); } } ctx.stroke(); }
+  }
+
+  // ── Your boat ──
+  const startX=Math.min(W*0.16, 90*k), endX=dockX-28*k;
+  const bxT = free ? endX : startX + (endX-startX-40*k)*Math.pow(prog,0.85);
+  if(_pit.bx===undefined || share) _pit.bx=bxT; else _pit.bx += (bxT-_pit.bx)*Math.min(1,dt*1.5);
+  const bx=_pit.bx, by=wave(bx,1)-1*k, tilt=Math.atan2(wave(bx+8*k,1)-wave(bx-8*k,1),16*k)*(0.6+0.8*c) + (still?0:Math.sin(t*spd*1.3)*0.16*c*c);
+  // 1 year from now (with the slider's extra)
+  if(!free && !share && D.plan.canFinish){
+    const p12 = 1-Math.max(0,D.plan.series[12]??0)/D.denom;
+    const gx = D.plan.months<=12 ? endX : startX + (endX-startX-40*k)*Math.pow(Math.max(0,p12),0.85);
+    if(gx-bx>26*k){
+      const gy=wave(gx,1);
+      ctx.save(); ctx.globalAlpha=0.5; ctx.setLineDash([4*k,3*k]); ctx.strokeStyle='#ffffff'; ctx.lineWidth=1.4*k;
+      ctx.beginPath(); ctx.moveTo(gx-15*k,gy-2*k); ctx.lineTo(gx+15*k,gy-2*k); ctx.lineTo(gx+10*k,gy+6*k); ctx.lineTo(gx-10*k,gy+6*k); ctx.closePath(); ctx.moveTo(gx,gy-2*k); ctx.lineTo(gx,gy-30*k); ctx.lineTo(gx+13*k,gy-6*k); ctx.lineTo(gx,gy-6*k); ctx.stroke(); ctx.restore();
+      const txt = D.plan.months<=12 ? `Docked in ${D.plan.months} mo` : (W<520?'In 1 year':'You, 1 year from now');
+      ctx.font=`600 ${10.5*k}px ${DS_FONT}`; const tw=ctx.measureText(txt).width+14*k;
+      const tx=Math.max(4,Math.min(W-tw-4,gx-tw/2)), ty=gy+12*k;
+      ctx.fillStyle='rgba(255,255,255,0.88)'; dsRR(ctx,tx,ty,tw,19*k,9.5*k); ctx.fill(); ctx.fillStyle='#0b1220'; ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillText(txt,tx+7*k,ty+9.8*k); ctx.textBaseline='alphabetic';
+    }
+  }
+  dsBoat(ctx,bx,by,tilt,k*(W<520?1.25:1.45),c,free,t,still);
+  // spray when it's rough
+  if(!pitReduce && !share && c>0.55 && Math.random()<(c-0.5)*dt*8){ for(let j=0;j<6;j++) _pit.parts.push({x:bx+(Math.random()-0.5)*30*k,y:by,vx:(Math.random()-0.5)*80*k,vy:-(80+Math.random()*120)*k,life:0.8,c:'rgba(230,240,255,0.8)',s:2*k}); }
+  // birds and a jumping fish when it's calm
+  if(c<0.3 && !share){ ctx.strokeStyle=`rgba(40,40,50,${0.7*(1-c/0.3)})`; ctx.lineWidth=1.5*k; for(let j=0;j<3;j++){ const bxx=((t*18*k+j*55*k)%(W+80))-40, byy=H*0.2+j*9*k+Math.sin(t*2+j)*4*k, f=Math.sin(t*8+j)*3*k; ctx.beginPath(); ctx.moveTo(bxx-6*k,byy-f); ctx.quadraticCurveTo(bxx-2*k,byy-2*k,bxx,byy); ctx.quadraticCurveTo(bxx+2*k,byy-2*k,bxx+6*k,byy-f); ctx.stroke(); } }
+
+  // ── Particles: spray, confetti ──
+  const confN = free ? 0.1 : (_pit.confetti>0 ? 0.85 : 0);
+  if(_pit.confetti>0) _pit.confetti-=dt;
+  if(confN && !pitReduce && !share && Math.random()<confN){ for(let j=0;j<(free?1:3);j++) _pit.parts.push({conf:1,x:Math.random()*W,y:-10,vx:(Math.random()-0.5)*80*k,vy:(40+Math.random()*80)*k,life:4,c:['#4ade80','#fbbf24','#60a5fa','#f472b6','#ffffff'][Math.floor(Math.random()*5)],s:(5+Math.random()*4)*k,spin:Math.random()*6}); }
+  _pit.parts=_pit.parts.filter(p=>{ p.life-=dt; if(p.life<=0||p.y>H) return false;
+    if(p.conf){ p.vy+=500*k*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.spin+t*6); ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); ctx.restore(); return true; }
+    p.vy+=600*k*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; if(p.vy>0 && p.y>seaY+4*k) return false; ctx.fillStyle=p.c; ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,Math.PI*2); ctx.fill(); return true; });
+
+  // ── Labels on the clouds ──
   if(!share){
-    const conf = free ? 0.12 : (_pit.confetti>0 ? 0.9 : 0);
-    if(_pit.confetti>0) _pit.confetti-=dt;
-    if(conf && !pitReduce && Math.random()<conf){ for(let i=0;i<(free?1:3);i++) _pit.parts.push({conf:1,x:Math.random()*W,y:-10,vx:(Math.random()-0.5)*80*k,vy:(40+Math.random()*80)*k,life:4,c:['#4ade80','#fbbf24','#60a5fa','#f472b6','#ffffff'][Math.floor(Math.random()*5)],s:(5+Math.random()*4)*k,spin:Math.random()*6}); }
-    _pit.floats = _pit.floats.filter(f=>{ f.life-=dt; if(f.life<=0) return false; const u=1-f.life/f.max;
-      ctx.globalAlpha=Math.min(1,f.life/0.5); ctx.font=`800 ${18*k}px ${DH_FONT}`; ctx.textAlign='center'; ctx.fillStyle='#4ade80'; ctx.fillText(f.txt, dx, footY-58*k-u*40*k); ctx.globalAlpha=1; return true; });
+    const maxLabels = Math.max(2, Math.floor(W/120));
+    const live = clouds.filter(cl=>!cl.done).sort((a,b)=>(b.focus-a.focus)||(b.d.balance-a.d.balance)).slice(0,maxLabels);
+    live.forEach(cl=>{
+      const name=cl.d.name, amt=fmtW(cl.d.balance);
+      const fs=11*k; ctx.font=`700 ${fs}px ${DS_FONT}`; const aw=ctx.measureText(amt).width;
+      ctx.font=`600 ${fs}px ${DS_FONT}`;
+      const maxW=Math.min(W/Math.max(1,Math.min(n,maxLabels))-8, 190*k);
+      let nm=name; while(nm.length>2 && ctx.measureText(nm).width+aw+28*k>maxW) nm=nm.slice(0,-1); if(nm!==name) nm=nm.replace(/\s+$/,'')+'…';
+      const nw=ctx.measureText(nm).width, tw=nw+aw+24*k, th=21*k;
+      const tx=Math.max(4,Math.min(W-tw-4,cl.x-tw/2)), ty=cl.y+cl.R*0.62+4*k;
+      ctx.fillStyle=cl.focus?'#fbbf24':'rgba(10,14,20,0.78)'; dsRR(ctx,tx,ty,tw,th,th/2); ctx.fill();
+      ctx.textBaseline='middle'; ctx.textAlign='left';
+      ctx.fillStyle=cl.focus?'#1a1206':'#f1f5f9'; ctx.font=`600 ${fs}px ${DS_FONT}`; ctx.fillText(nm,tx+9*k,ty+th/2+0.5);
+      ctx.fillStyle=cl.focus?'rgba(26,18,6,0.75)':'rgba(241,245,249,0.65)'; ctx.font=`700 ${fs}px ${DS_FONT}`; ctx.fillText(amt,tx+9*k+nw+6*k,ty+th/2+0.5);
+      ctx.textBaseline='alphabetic';
+      if(cl.focus){ ctx.font=`800 ${8.5*k}px ${DS_FONT}`; ctx.fillStyle='#fbbf24'; ctx.textAlign='center'; ctx.fillText('PAYING THIS FIRST', tx+tw/2, ty+th+11*k); }
+    });
+  }
+
+  // ── Storm level, payments, banners ──
+  if(!share){
+    const lvl=dsLevel(c<0.005&&free?0:_pit.cT), col = free?'#4ade80': _pit.cT>=0.82?'#f87171': _pit.cT>=0.62?'#fb923c': _pit.cT>=0.42?'#fbbf24':'#a7f3d0';
+    ctx.font=`700 ${11*k}px ${DS_FONT}`; const txt=free?'Calm waters':`Storm: ${lvl}`; const tw=ctx.measureText(txt).width+30*k;
+    ctx.fillStyle='rgba(8,12,18,0.7)'; dsRR(ctx,10*k,10*k,tw,23*k,11.5*k); ctx.fill();
+    ctx.fillStyle=col; ctx.beginPath(); ctx.arc(21*k,21.5*k,4*k,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#f1f5f9'; ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillText(txt,30*k,22*k); ctx.textBaseline='alphabetic';
+    _pit.floats=_pit.floats.filter(f=>{ f.life-=dt; if(f.life<=0) return false; const u=1-f.life/f.max; ctx.globalAlpha=Math.min(1,f.life/0.5); ctx.font=`800 ${18*k}px ${DS_FONT}`; ctx.textAlign='center'; ctx.fillStyle='#4ade80'; ctx.fillText(f.txt,bx,by-62*k-u*36*k); ctx.globalAlpha=1; return true; });
     if(_pit.banner){ const B=_pit.banner; B.life-=dt; if(B.life<=0) _pit.banner=null; else {
-      ctx.globalAlpha=Math.min(1,B.life/0.4, (3-B.life)/0.25);
-      ctx.font=`800 ${16*k}px ${DH_FONT}`; const tw=ctx.measureText(B.txt).width+32*k;
-      ctx.fillStyle='#4ade80'; dhRR(ctx,W/2-tw/2,14*k,tw,34*k,17*k); ctx.fill();
-      ctx.fillStyle='#06140b'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(B.txt,W/2,31*k); ctx.textBaseline='alphabetic'; ctx.globalAlpha=1; } }
-    if(stuck){ ctx.font=`700 ${11.5*k}px ${DH_FONT}`; const txt='Interest is refilling your hole'; const tw=ctx.measureText(txt).width+18*k;
-      ctx.fillStyle='rgba(120,53,15,0.9)'; dhRR(ctx,12*k,12*k,tw,24*k,12*k); ctx.fill(); ctx.fillStyle='#fde68a'; ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillText(txt,21*k,24*k); ctx.textBaseline='alphabetic'; }
+      ctx.globalAlpha=Math.max(0,Math.min(1,B.life/0.4,(3-B.life)/0.25));
+      ctx.font=`800 ${15*k}px ${DS_FONT}`; const tw2=ctx.measureText(B.txt).width+32*k;
+      ctx.fillStyle='#4ade80'; dsRR(ctx,W/2-tw2/2,H*0.36,tw2,34*k,17*k); ctx.fill();
+      ctx.fillStyle='#06140b'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(B.txt,W/2,H*0.36+17.5*k); ctx.textBaseline='alphabetic'; ctx.globalAlpha=1; } }
   }
 }
 
-function dhDigger(ctx,x,y,a,free,t,sc,stuck,share){
-  ctx.save(); ctx.lineCap='round'; ctx.lineJoin='round';
-  const jump = free && !share ? Math.abs(Math.sin(t*5))*6 : 0;
-  ctx.translate(x,y); ctx.scale(sc,sc);
-  // shadow
-  ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.beginPath(); ctx.ellipse(0,0,9-jump*0.4,2.2,0,0,Math.PI*2); ctx.fill();
-  ctx.translate(0,-jump);
-  // legs + boots
-  ctx.strokeStyle='#334155'; ctx.lineWidth=3.4;
-  ctx.beginPath(); ctx.moveTo(-3.6,-2); ctx.lineTo(-1.2,-10); ctx.moveTo(3.6,-2); ctx.lineTo(1.2,-10); ctx.stroke();
-  ctx.fillStyle='#111827'; dhRR(ctx,-7,-3,6,3.2,1.5); ctx.fill(); dhRR(ctx,1.2,-3,6,3.2,1.5); ctx.fill();
-  // body
-  ctx.fillStyle='#22c55e'; dhRR(ctx,-6,-21,12,12.5,4.5); ctx.fill();
-  ctx.fillStyle='#4ade80'; dhRR(ctx,-6,-21,6,12.5,[4.5,0,0,4.5]); ctx.fill();
-  ctx.fillStyle='#16a34a'; ctx.fillRect(-6,-11.5,12,1.6);
-  // head
-  ctx.fillStyle='#f5c9a0'; ctx.beginPath(); ctx.arc(0,-26,5.2,0,Math.PI*2); ctx.fill();
-  ctx.fillStyle='#1f2937'; ctx.beginPath(); ctx.arc(1.9,-26.4,0.75,0,Math.PI*2); ctx.arc(-1.4,-26.4,0.75,0,Math.PI*2); ctx.fill();
-  ctx.strokeStyle='#9a4f2c'; ctx.lineWidth=0.8; ctx.beginPath();
-  if(free || stuck===false) ctx.arc(0.3,-24.6,1.7,0.25,Math.PI-0.25); else { ctx.moveTo(-1.2,-23.6); ctx.lineTo(1.8,-23.9); }
-  ctx.stroke();
-  ctx.fillStyle='rgba(244,114,182,0.35)'; ctx.beginPath(); ctx.arc(3.4,-24.8,1.1,0,Math.PI*2); ctx.fill();
-  // hard hat
-  ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.arc(0,-27.6,5.9,Math.PI,0); ctx.fill();
-  ctx.fillStyle='#f59e0b'; dhRR(ctx,-7.6,-28.4,15.2,2.2,1.1); ctx.fill();
-  ctx.fillStyle='#fef3c7'; ctx.beginPath(); ctx.arc(4.2,-30.4,1.4,0,Math.PI*2); ctx.fill();
-  if(stuck && !share){ const d=(t*1.4)%1; ctx.fillStyle=`rgba(147,197,253,${1-d})`; ctx.beginPath(); ctx.ellipse(-6.2,-27+d*7,0.9,1.3,0,0,Math.PI*2); ctx.fill(); }
-  if(free){
-    const w=share?0:Math.sin(t*6)*2;
-    ctx.strokeStyle='#22c55e'; ctx.lineWidth=2.8;
-    ctx.beginPath(); ctx.moveTo(-4,-19); ctx.lineTo(-9,-30+w); ctx.moveTo(4,-19); ctx.lineTo(9,-30-w); ctx.stroke();
-    ctx.fillStyle='#f5c9a0'; ctx.beginPath(); ctx.arc(-9,-30.5+w,1.7,0,Math.PI*2); ctx.arc(9,-30.5-w,1.7,0,Math.PI*2); ctx.fill();
-  } else {
-    const cs=Math.cos(a), sn=Math.sin(a), hx=cs*7, hy=-19+sn*7;
-    // shovel
-    ctx.strokeStyle='#c8955c'; ctx.lineWidth=2.2;
-    ctx.beginPath(); ctx.moveTo(hx-cs*7,hy-sn*7); ctx.lineTo(hx+cs*13,hy+sn*13); ctx.stroke();
-    const bx=hx+cs*15.5, by=hy+sn*15.5;
-    ctx.fillStyle='#cbd5e1'; ctx.beginPath();
-    ctx.moveTo(bx-sn*3.8-cs*2.4,by+cs*3.8-sn*2.4); ctx.lineTo(bx+sn*3.8-cs*2.4,by-cs*3.8-sn*2.4); ctx.lineTo(bx+sn*2.6+cs*5,by-cs*2.6+sn*5); ctx.lineTo(bx-sn*2.6+cs*5,by+cs*2.6+sn*5); ctx.closePath(); ctx.fill();
-    ctx.fillStyle='rgba(255,255,255,0.35)'; ctx.beginPath(); ctx.arc(bx-sn*1.5,by+cs*1.5,1,0,Math.PI*2); ctx.fill();
-    if(a<-0.6){ ctx.fillStyle='#b07a47'; ctx.beginPath(); ctx.arc(bx+cs*1.5,by+sn*1.5,2.6,0,Math.PI*2); ctx.fill(); }
-    // arm
-    ctx.strokeStyle='#22c55e'; ctx.lineWidth=2.8;
-    ctx.beginPath(); ctx.moveTo(0,-19); ctx.lineTo(hx,hy); ctx.stroke();
-    ctx.fillStyle='#f5c9a0'; ctx.beginPath(); ctx.arc(hx,hy,1.7,0,Math.PI*2); ctx.fill();
-  }
+function dsBoat(ctx,x,y,tilt,s,c,free,t,still){
+  ctx.save(); ctx.translate(x,y); ctx.rotate(tilt); ctx.scale(s,s); ctx.lineCap='round'; ctx.lineJoin='round';
+  // sail
+  ctx.strokeStyle='#e5e7eb'; ctx.lineWidth=1.4; ctx.beginPath(); ctx.moveTo(2,-2); ctx.lineTo(2,-36); ctx.stroke();
+  const billow=still?0:Math.sin(t*2.2)*(1+3*c);
+  ctx.fillStyle='#f8fafc'; ctx.beginPath(); ctx.moveTo(3,-35); ctx.quadraticCurveTo(15+billow,-20,17,-6); ctx.lineTo(3,-6); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#4ade80'; ctx.beginPath(); ctx.moveTo(3,-35); ctx.quadraticCurveTo(15+billow,-20,17,-6); ctx.lineTo(13,-6); ctx.quadraticCurveTo(11+billow*0.7,-20,3,-30); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#22c55e'; ctx.beginPath(); ctx.moveTo(2,-36); ctx.lineTo(9,-34); ctx.lineTo(2,-32); ctx.fill();
+  // person (rain hat when it's stormy, cap when it's calm)
+  ctx.fillStyle='#22c55e'; dsRR(ctx,-11,-15,9,10,3.5); ctx.fill();
+  ctx.fillStyle='#f5c9a0'; ctx.beginPath(); ctx.arc(-6.5,-18.5,4.2,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#1f2937'; ctx.beginPath(); ctx.arc(-5,-18.8,0.65,0,Math.PI*2); ctx.arc(-7.8,-18.8,0.65,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#9a4f2c'; ctx.lineWidth=0.8; ctx.beginPath(); if(c<0.55) ctx.arc(-6.3,-17.4,1.5,0.25,Math.PI-0.25); else { ctx.moveTo(-7.6,-16.6); ctx.quadraticCurveTo(-6.3,-17.6,-5,-16.6); } ctx.stroke();
+  ctx.fillStyle='#fbbf24';
+  if(c>=0.45){ ctx.beginPath(); ctx.ellipse(-6.5,-21.6,6.4,1.8,0,0,Math.PI*2); ctx.fill(); ctx.beginPath(); ctx.arc(-6.5,-21.8,4.2,Math.PI,0); ctx.fill(); }
+  else { ctx.beginPath(); ctx.arc(-6.5,-21.4,4.3,Math.PI,0); ctx.fill(); ctx.fillRect(-6.5,-22,6.5,1.6); }
+  if(free){ const w=still?0:Math.sin(t*6)*2; ctx.strokeStyle='#22c55e'; ctx.lineWidth=2.4; ctx.beginPath(); ctx.moveTo(-9,-13); ctx.lineTo(-14,-24+w); ctx.moveTo(-4,-13); ctx.lineTo(1,-24-w); ctx.stroke(); }
+  else { ctx.strokeStyle='#22c55e'; ctx.lineWidth=2.4; ctx.beginPath(); ctx.moveTo(-5,-12); ctx.lineTo(1,-9); ctx.stroke(); }
+  // hull
+  ctx.fillStyle='#c2410c'; ctx.beginPath(); ctx.moveTo(-20,-6); ctx.lineTo(20,-6); ctx.quadraticCurveTo(16,4,10,5); ctx.lineTo(-12,5); ctx.quadraticCurveTo(-17,3,-20,-6); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#f8fafc'; ctx.fillRect(-19,-5,38,2);
+  ctx.fillStyle='rgba(0,0,0,0.18)'; ctx.beginPath(); ctx.moveTo(-14,2); ctx.lineTo(14,2); ctx.quadraticCurveTo(12,4.5,10,5); ctx.lineTo(-12,5); ctx.closePath(); ctx.fill();
   ctx.restore();
 }
 
@@ -7055,50 +7101,47 @@ async function pitShareImage(){
   const disp="'Bricolage Grotesque', Geist, sans-serif", body="Geist, Inter, sans-serif";
   x.fillStyle='#0b0f17'; x.fillRect(0,0,W,H);
   const gl=x.createRadialGradient(W*0.9,0,0,W*0.9,0,W); gl.addColorStop(0,'rgba(74,222,128,0.16)'); gl.addColorStop(1,'rgba(0,0,0,0)'); x.fillStyle=gl; x.fillRect(0,0,W,H);
-  // brand
-  x.fillStyle='#4ade80'; dhRR(x,pad,pad,54,54,14); x.fill();
+  x.fillStyle='#4ade80'; dsRR(x,pad,pad,54,54,14); x.fill();
   x.fillStyle='#06140b'; x.font=`800 34px ${disp}`; x.textAlign='center'; x.textBaseline='middle'; x.fillText('Q',pad+27,pad+29);
   x.textAlign='left'; x.fillStyle='#e8edf8'; x.font=`700 30px ${disp}`; x.fillText('Qualisight',pad+72,pad+28); x.textBaseline='alphabetic';
-  const free=D.bal<=0, pct=_pit.outPct??0;
+  const free=D.bal<=0, pct=_pit.outPct??0, lvl=dsLevel(D.chaos);
   x.fillStyle='#4ade80'; x.font=`800 ${free?160:210}px ${disp}`; x.fillText(free?'Debt-free':`${pct}%`, pad-8, 340);
-  x.fillStyle='#ffffff'; x.font=`800 58px ${disp}`; x.fillText(free?'I dug my way out.':'of the way out of debt', pad, 420);
+  x.fillStyle='#ffffff'; x.font=`800 58px ${disp}`; x.fillText(free?'The storm is over.':'of my debt paid off', pad, 420);
   x.fillStyle='#9aa4b8'; x.font=`500 32px ${body}`;
-  x.fillText(free?'Every layer cleared.':D.plan.canFinish?`Out of the hole by ${monthsToDateLabel(D.plan.months)}.`:'Digging out, one payment at a time.', pad, 474);
-  // scene
+  x.fillText(free?'Calm waters from here on.':`Storm level: ${lvl}.${D.plan.canFinish?` Calm by ${monthsToDateLabel(D.plan.months)}.`:''}`, pad, 474);
   const ty=530, tw=W-pad*2, th=H-ty-150, sw=560, sh=Math.round(sw*th/tw), scale=tw/sw;
   const tile=document.createElement('canvas'); tile.width=Math.round(sw*scale); tile.height=Math.round(sh*scale);
-  const keep={cv:_pit.cv,ctx:_pit.ctx,W:_pit.W,H:_pit.H,parts:_pit.parts,r:_pit.r,floats:_pit.floats,banner:_pit.banner};
+  const keep={cv:_pit.cv,ctx:_pit.ctx,W:_pit.W,H:_pit.H,parts:_pit.parts,drops:_pit.drops,r:_pit.r,c:_pit.c,bx:_pit.bx,floats:_pit.floats,banner:_pit.banner,bolt:_pit.bolt,flash:_pit.flash};
   try{
-    _pit.cv=tile; _pit.ctx=tile.getContext('2d'); _pit.ctx.setTransform(scale,0,0,scale,0,0); _pit.W=sw; _pit.H=sh; _pit.share=true; _pit.r=_pit.rT; _pit.parts=[]; _pit.floats=[]; _pit.banner=null;
+    _pit.cv=tile; _pit.ctx=tile.getContext('2d'); _pit.ctx.setTransform(scale,0,0,scale,0,0); _pit.W=sw; _pit.H=sh; _pit.share=true;
+    _pit.r=_pit.rT; _pit.c=_pit.cT; _pit.bx=undefined; _pit.parts=[]; _pit.drops=[]; _pit.floats=[]; _pit.banner=null; _pit.bolt=null; _pit.flash=0;
     pitDraw(0);
   } finally { Object.assign(_pit,keep); _pit.share=false; }
-  x.save(); dhRR(x,pad,ty,tw,th,30); x.clip(); x.drawImage(tile,pad,ty,tw,th); x.restore();
-  // footer
-  x.fillStyle='#ffffff'; x.font=`800 38px ${disp}`; x.fillText('Dig out at qualisight.ca',pad,H-62);
-  x.fillStyle='#6b7488'; x.font=`500 22px ${body}`; x.textAlign='right'; x.fillText('No dollar amounts shown',W-pad,H-68); x.textAlign='left';
+  x.save(); dsRR(x,pad,ty,tw,th,30); x.clip(); x.drawImage(tile,pad,ty,tw,th); x.restore();
+  x.fillStyle='#ffffff'; x.font=`800 38px ${disp}`; x.fillText('Calm your debt storm at qualisight.ca',pad,H-62);
   return cv;
 }
 function pitShareCaption(){
   const D=_pit.D||pitData();
-  if(D.bal<=0) return `I just dug myself all the way out of debt. Dig out at qualisight.ca`;
-  return `I'm ${_pit.outPct??0}% of the way out of my debt hole${D.plan.canFinish?` and on track to be out by ${monthsToDateLabel(D.plan.months)}`:''}. Dig out at qualisight.ca`;
+  if(D.bal<=0) return `My debt storm is over. Every debt paid off. Track yours at qualisight.ca`;
+  return `My debt storm is down to "${dsLevel(D.chaos)}". ${_pit.outPct??0}% paid off${D.plan.canFinish?`, calm by ${monthsToDateLabel(D.plan.months)}`:''}. Track yours at qualisight.ca`;
 }
 async function pitShare(){
   groveShareEnsureModal();
   const ov=document.getElementById('gs-overlay'), img=document.getElementById('gs-img');
   _grove.shareVariant='pit';
-  document.getElementById('gs-title').textContent='Share your climb';
-  document.getElementById('gs-sub').textContent='Your percent and date only. No dollar amounts or debt names.';
+  document.getElementById('gs-title').textContent='Share your debt storm';
+  document.getElementById('gs-sub').textContent='Your percent, storm level and date only. No dollar amounts or debt names.';
   document.getElementById('gs-cap').textContent=pitShareCaption();
-  document.getElementById('gs-loading').textContent='Drawing your climb…';
-  img.removeAttribute('src'); img.alt='Your debt climb share image'; document.getElementById('gs-loading').hidden=false;
+  document.getElementById('gs-loading').textContent='Drawing your storm…';
+  img.removeAttribute('src'); img.alt='Your debt storm share image'; document.getElementById('gs-loading').hidden=false;
   ov.classList.add('open');
   const cv=await pitShareImage();
   _grove.shareBlob=await new Promise(r=>cv.toBlob(r,'image/png'));
   if(_grove.shareUrl) URL.revokeObjectURL(_grove.shareUrl);
   _grove.shareUrl=URL.createObjectURL(_grove.shareBlob); img.src=_grove.shareUrl;
   document.getElementById('gs-loading').hidden=true;
-  const file=new File([_grove.shareBlob],'my-debt-climb.png',{type:'image/png'});
+  const file=new File([_grove.shareBlob],'my-debt-storm.png',{type:'image/png'});
   document.getElementById('gs-share').hidden=!(navigator.canShare && navigator.canShare({files:[file]}));
 }
 
@@ -7240,9 +7283,9 @@ function renderDebt(){
               <span class="dt-card-name">${escHtml(d.name)}<span class="dt-card-type">${typeLabel}</span></span>
               <span class="dt-card-balance" style="${isPaid?'color:var(--accent)':''}">${isPaid?'$0':fmt(d.balance)}</span>
             </div>
-            <div class="dt-mini-bar"><div class="dt-mini-fill" style="width:${paidPct}%"></div></div>
+            <div class="dt-mini-bar dt-mile-bar"><div class="dt-mini-fill" style="width:${paidPct}%"></div>${[25,50,75].map(m=>`<span class="dt-tick ${paidPct>=m?'on':''}" style="left:${m}%" title="${m}% paid"></span>`).join('')}</div>
             <div class="dt-card-metarow">
-              <span class="chip">${d.rate}% APR</span>
+              ${!isPaid&&paidPct>=25?`<span class="dt-mile-chip">${paidPct>=75?'75% paid':paidPct>=50?'Halfway':'25% paid'}</span>`:''}<span class="chip">${d.rate}% APR</span>
               <span class="chip">Min <strong>${fmt(d.min||0)}/mo</strong></span>
               <span class="chip ${tooLow?'warn':''}">Payoff <strong>${payoffChip}</strong></span>
               ${origBalance!==d.balance&&!isPaid?`<span class="chip">${fmtW(origBalance-d.balance)} paid down</span>`:''}
