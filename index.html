@@ -418,6 +418,53 @@ header{
 .qi-t td{padding:0.4rem;border-bottom:1px solid var(--border);word-break:break-word}
 @media(max-width:700px){.qi-kpis{grid-template-columns:1fr 1fr}.qi-grid{grid-template-columns:1fr}.qi-sheet{padding:1.1rem}}
 
+/* Budget game: coin jars */
+.bg{background:var(--card);border:1px solid var(--border2);border-radius:22px;overflow:hidden;margin-bottom:1rem}
+.bg-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.2rem}
+.bg-lvl{display:flex;align-items:center;gap:0.75rem;flex:1;min-width:0;max-width:420px}
+.bg-lvl-badge{width:46px;height:46px;flex-shrink:0;border-radius:12px;background:linear-gradient(135deg,#fde68a,#eab308);color:#3b2506;font:800 1.35rem/1 var(--font-display);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 -3px 0 rgba(0,0,0,0.18)}
+.bg-lvl-badge small{font:800 0.55rem var(--font-body);letter-spacing:0.08em;opacity:0.7;margin-bottom:1px}
+.bg-lvl-main{flex:1;min-width:0}
+.bg-lvl-top{display:flex;justify-content:space-between;gap:0.5rem;font-size:0.86rem;margin-bottom:0.35rem}
+.bg-lvl-top b{white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bg-lvl-top span{color:var(--muted);font-size:0.76rem;white-space:nowrap;font-variant-numeric:tabular-nums}
+.bg-xpbar{height:8px;border-radius:5px;background:rgba(255,255,255,0.07);overflow:hidden}
+.bg-xpbar i{display:block;height:100%;border-radius:5px;background:linear-gradient(90deg,#4ade80,#a3e635);transition:width .6s ease}
+.bg-health{font-size:0.76rem;font-weight:700;padding:0.3rem 0.75rem;border-radius:999px;border:1px solid;white-space:nowrap}
+.bg-h-thriving,.bg-h-track{color:#86efac;border-color:rgba(74,222,128,0.4);background:rgba(74,222,128,0.08)}
+.bg-h-tight{color:#fde68a;border-color:rgba(251,191,36,0.45);background:rgba(251,191,36,0.08)}
+.bg-h-over{color:#fca5a5;border-color:rgba(248,113,113,0.45);background:rgba(248,113,113,0.1)}
+.bg-h-setup{color:var(--muted);border-color:var(--border2)}
+.bg-stage{position:relative;height:340px;background:#141d19}
+.bg-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.bg-body{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:1.4rem;padding:1rem 1.2rem 1.15rem}
+.bg-h{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:0.6rem}
+.bg-h b{font-size:0.9rem} .bg-h span{font-size:0.76rem;color:var(--muted)}
+.bg-quests{display:flex;flex-direction:column;gap:0.5rem}
+.bg-q{display:flex;align-items:center;gap:0.7rem;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:0.6rem 0.75rem}
+.bg-q.done{border-color:rgba(74,222,128,0.4)}
+.bg-q-ic{width:24px;height:24px;border-radius:50%;border:2px solid var(--border2);flex-shrink:0;display:flex;align-items:center;justify-content:center;color:#06140b}
+.bg-q.done .bg-q-ic{background:#4ade80;border-color:#4ade80}
+.bg-q-main{flex:1;min-width:0}
+.bg-q-top{display:flex;justify-content:space-between;gap:0.5rem;font-size:0.84rem}
+.bg-q-top span{font-size:0.72rem;font-weight:700;color:#fbbf24;white-space:nowrap}
+.bg-q.done .bg-q-top span{color:#4ade80}
+.bg-q-desc{font-size:0.74rem;color:var(--muted);margin:0.1rem 0 0.35rem}
+.bg-q-bar{height:5px;border-radius:3px;background:rgba(255,255,255,0.07);overflow:hidden}
+.bg-q-bar i{display:block;height:100%;background:#fbbf24;border-radius:3px;transition:width .5s}
+.bg-q.done .bg-q-bar i{background:#4ade80}
+.bg-q-lbl{font-size:0.72rem;color:var(--muted);font-variant-numeric:tabular-nums;min-width:3.4em;text-align:right}
+.bg-badges{display:flex;gap:0.45rem;flex-wrap:wrap}
+.bg-badge{width:40px;height:40px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;background:var(--card2);border:1px solid var(--border);color:var(--faint);cursor:pointer;transition:transform .15s}
+.bg-badge:hover{transform:translateY(-2px)}
+.bg-badge.got{background:rgba(251,191,36,0.14);border-color:rgba(251,191,36,0.55);color:#fbbf24}
+.bg-badge.sel{outline:2px solid #fbbf24;outline-offset:2px}
+.bg-bnext{font-size:0.82rem;color:var(--muted);margin-top:0.6rem;line-height:1.45}
+.bg-bnext b{color:var(--text)} .bg-bnext span{color:#fbbf24;font-weight:600}
+@media(max-width:760px){.bg-body{grid-template-columns:1fr;gap:1.1rem}}
+@media(max-width:520px){.bg-stage{height:500px}.bg-lvl{min-width:210px}.bg-head{padding:0.9rem 1rem;flex-wrap:wrap}.bg-body{padding:1rem}.bg-badges{display:grid;grid-template-columns:repeat(4,1fr);justify-items:center}.bg-badge{width:38px;height:38px}}
+@media (prefers-reduced-motion: reduce){.bg-badge,.bg-xpbar i,.bg-q-bar i{transition:none}}
+
 /* Debt storm */
 .ds{background:var(--card);border:1px solid var(--border2);border-radius:22px;overflow:hidden;margin-bottom:1rem}
 .ds-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.15rem 1.25rem 1rem}
@@ -3952,6 +3999,9 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
   <!-- This-month status bar -->
   <div class="bm-status" id="bm-status"></div>
 
+  <!-- Budget game: coin jars, XP, quests, badges -->
+  <div id="bg-game-mount"></div>
+
   <!-- Quick log expense (the daily action — up top) -->
   <div class="bm-log-card">
     <div class="bm-section-head" style="margin-bottom:0.9rem">
@@ -5621,6 +5671,7 @@ function markNoSpendDay(){
   save();
   renderStreak();
   if(typeof renderDashboard==='function') renderDashboard();
+  try{ if(typeof renderBudgetGame==='function') renderBudgetGame(); }catch(e){}
   const s=currentStreak();
   showToast(`<strong>No-spend day logged!</strong> ${s>1?`That's a ${s}-day streak.`:'Streak started.'} Days you don't spend are wins too.`);
 }
@@ -6114,6 +6165,400 @@ function saveBudgetGoals(){
   wtAutoAdvance(2);
 }
 
+// ══════════════════════════════════════════
+// BUDGET GAME: the coin jar shelf
+// Each spending goal is a glass jar filled with coins. Spending takes coins out,
+// going over cracks the jar. What you don't spend piles up in the treasure chest.
+// XP comes from logging, no-spend days, monthly quests and badges.
+// ══════════════════════════════════════════
+const _bg = { built:false, visible:true, raf:null, last:0, W:0, H:330, parts:[], floats:[], banner:null, confetti:0, fill:{}, chest:null, burst:{} };
+const bgReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const BG_FONT = 'Geist,Inter,system-ui,sans-serif';
+const BG_LIDS = ['#4ade80','#60a5fa','#f472b6','#fbbf24','#a78bfa','#34d399','#fb923c','#22d3ee','#f87171'];
+const BG_LEVELS = ['Coin Rookie','Penny Pincher','Jar Keeper','Budget Builder','Money Manager','Savings Sage','Budget Boss','Coin Legend','Treasure Master'];
+function bgNeed(n){ return 75*n*(n-1); } // XP needed to reach level n
+function bgLevel(xp){ let n=1; while(xp>=bgNeed(n+1)) n++; return n; }
+function bgRR(ctx,x,y,w,h,r){ ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(x,y,w,h,r); else ctx.rect(x,y,w,h); }
+function bgShort(name){ const map={'Rent/Mortgage':'Rent','Food & Groceries':'Food','Transportation':'Transit','Entertainment':'Fun','Debt Payment':'Debt','Insurance':'Insurance','Utilities':'Utilities','Shopping':'Shopping'}; return map[name]||name; }
+
+function bgIsDemo(){ return !!(typeof currentUser!=='undefined' && currentUser && currentUser.isDemo); }
+function bgMonthStats(){
+  const ti=(state.income||[]).reduce((s,x)=>s+(x.actual||0),0);
+  const exps=state.expenses||[];
+  const te=exps.reduce((s,x)=>s+(x.actual||0),0);
+  const budgets=(state.budgets||[]).filter(b=>b.goal>0);
+  const tg=budgets.reduce((s,b)=>s+b.goal,0);
+  const jars=budgets.map((b,i)=>{ const spent=exps.filter(e=>e.cat===b.cat).reduce((s,e)=>s+(e.actual||0),0); return {cat:b.cat, goal:b.goal, spent, left:b.goal-spent, frac:Math.max(0,Math.min(1,(b.goal-spent)/b.goal)), over:spent>b.goal+0.5, idx:(state.budgets||[]).indexOf(b)}; });
+  const now=new Date(), dim=new Date(now.getFullYear(),now.getMonth()+1,0).getDate();
+  const day = bgIsDemo() ? Math.round(dim*0.85) : now.getDate(); // the demo's sample spending is a full month
+  const net=ti-te, sr=ti>0?net/ti:0;
+  const mk=typeof currentMonthKey==='function'?currentMonthKey():now.toISOString().slice(0,7);
+  const nsThisMonth=(state.noSpendDays||[]).filter(d=>d.startsWith(mk)).length;
+  let health='setup', healthTxt='Set your goals';
+  if(jars.length){
+    const FIXED=/rent|mortgage|insurance|utilit|debt|loan|phone|internet/i;
+    const flex=jars.filter(j=>!FIXED.test(j.cat)), fg=flex.reduce((s,j)=>s+j.goal,0), fs=flex.reduce((s,j)=>s+j.spent,0);
+    const pace = fg>0 ? (fs/fg)/Math.max(0.08,day/dim) : 0;
+    const overN=jars.filter(j=>j.over).length;
+    if(te>tg) { health='over'; healthTxt='Over budget'; }
+    else if(pace<=0.92 && !overN){ health='thriving'; healthTxt='Thriving'; }
+    else if(pace<=1.05 && overN<=1){ health='track'; healthTxt='On track'; }
+    else { health='tight'; healthTxt=overN?`${overN} jar${overN>1?'s':''} cracked`:'Spending fast'; }
+  }
+  return {ti,te,tg,net,sr,jars,day,dim,mk,nsThisMonth,expCount:exps.length,health,healthTxt};
+}
+
+// ── Quests (3 a month) and badges ──
+function bgQuests(S){
+  const goalsN=S.jars.length, q=[];
+  if(goalsN<3) q.push({id:'goals', name:'Line up your jars', desc:'Set spending goals for 3 categories', prog:goalsN/3, label:`${goalsN}/3`});
+  q.push({id:'log10', name:'Coin counter', desc:'Log 10 expenses this month', prog:Math.min(1,S.expCount/10), label:`${Math.min(10,S.expCount)}/10`});
+  q.push({id:'nospend3', name:'Quiet days', desc:'Have 3 no-spend days this month', prog:Math.min(1,S.nsThisMonth/3), label:`${Math.min(3,S.nsThisMonth)}/3`});
+  if(q.length<3){
+    if(S.ti>0) q.push({id:'save20', name:'Fill the chest', desc:'Keep 20% of your income this month', prog:Math.max(0,Math.min(1,S.sr/0.2)), label:`${Math.max(0,Math.round(S.sr*100))}%/20%`});
+    else { const s=typeof currentStreak==='function'?currentStreak():0; q.push({id:'streak7', name:'Week of logging', desc:'Reach a 7-day logging streak', prog:Math.min(1,s/7), label:`${Math.min(7,s)}/7`}); }
+  }
+  return q.slice(0,3).map(x=>({...x, done:x.prog>=1}));
+}
+const BG_ACH = [
+  {id:'first_log', name:'First coin',        desc:'Logged your first expense',                 ic:'<circle cx="12" cy="12" r="8"/><path d="M12 8v8"/><path d="M9.5 10.5h4a1.5 1.5 0 0 1 0 3h-3a1.5 1.5 0 0 0 0 3h4"/>'},
+  {id:'goals',     name:'Jars on the shelf', desc:'Set spending goals for 3 categories',       ic:'<path d="M8 3h8"/><path d="M7 6h10"/><rect x="6" y="6" width="12" height="15" rx="3"/>'},
+  {id:'streak7',   name:'Week warrior',      desc:'Logged 7 days in a row',                    ic:'<path d="M12.6 2.2c.4 3-1 4.7-2.5 6.4C8.6 10.3 7 12 7 14.8 7 18 9.3 21 12.2 21c3.2 0 5.3-2.6 5.3-5.8 0-2.4-1.1-4-2.2-5.3-.2 1.2-.8 2.2-1.7 2.8.5-3.6-.3-7.3-1-9.5z"/>'},
+  {id:'nospend5',  name:'Quiet week',        desc:'5 no-spend days in one month',              ic:'<circle cx="12" cy="12" r="9"/><path d="m5.6 5.6 12.8 12.8"/>'},
+  {id:'saver20',   name:'Treasure hunter',   desc:'Kept 20% of your income in a month',         ic:'<path d="M3 10h18v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M3 10a9 5 0 0 1 18 0"/><path d="M10 14h4"/>'},
+  {id:'intact',    name:'Not a crack',       desc:'Late in the month with every jar under budget', ic:'<path d="M12 3 4 7v6c0 4.5 3.4 7.5 8 8 4.6-.5 8-3.5 8-8V7z"/><path d="m9 12 2 2 4-4"/>'},
+  {id:'streak30',  name:'Habit locked',      desc:'Logged 30 days in a row',                   ic:'<rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/>'},
+  {id:'level5',    name:'Money Manager',     desc:'Reached level 5',                           ic:'<path d="m12 2 3 6.5 7 .9-5.1 4.8 1.3 7-6.2-3.4-6.2 3.4 1.3-7L2 9.4l7-.9z"/>'},
+];
+function bgAchCheck(S,lvl){
+  return {
+    first_log: S.expCount>0 || (state.yearly||[]).some(r=>r.type==='Expense' && (r.monthly||[]).some(v=>v>0)),
+    goals: S.jars.length>=3,
+    streak7: (state.longestStreak||0)>=7,
+    nospend5: S.nsThisMonth>=5,
+    saver20: S.ti>0 && S.sr>=0.2 && S.expCount>=5,
+    intact: S.jars.length>=3 && !S.jars.some(j=>j.over) && S.expCount>=10 && S.day>=20,
+    streak30: (state.longestStreak||0)>=30,
+    level5: lvl>=5,
+  };
+}
+
+// Award XP for anything new since the last render (no hooks needed)
+function bgUpdate(S){
+  const demo=bgIsDemo();
+  if(demo){ _bg.game={xp:640, month:S.mk, qdone:[], ach:{}, seenExp:S.expCount, seenNS:S.nsThisMonth, demo:true}; const lv=bgLevel(640); const a=bgAchCheck(S,lv); Object.keys(a).forEach(k=>{ if(a[k]) _bg.game.ach[k]='demo'; }); bgQuests(S).forEach(q=>{ if(q.done) _bg.game.qdone.push(q.id); }); return; }
+  const first=!state.bgame;
+  const g=state.bgame||(state.bgame={xp:0, month:S.mk, qdone:[], ach:{}, seenExp:S.expCount, seenNS:S.nsThisMonth});
+  _bg.game=g;
+  const events=[]; let changed=first;
+  if(g.month!==S.mk){ g.month=S.mk; g.qdone=[]; g.seenExp=0; g.seenNS=0; changed=true; }
+  if(S.expCount>g.seenExp){ const n=S.expCount-g.seenExp; const add=Math.min(n,10)*10; g.xp+=add; events.push({xp:add, kind:'exp'}); }
+  if(S.expCount!==g.seenExp){ g.seenExp=S.expCount; changed=true; }
+  if(S.nsThisMonth>g.seenNS){ const add=(S.nsThisMonth-g.seenNS)*25; g.xp+=add; events.push({xp:add, kind:'ns'}); }
+  if(S.nsThisMonth!==g.seenNS){ g.seenNS=S.nsThisMonth; changed=true; }
+  const fresh=[];
+  bgQuests(S).forEach(q=>{ if(q.done && !g.qdone.includes(q.id)){ g.qdone.push(q.id); if(!first){ g.xp+=100; fresh.push({type:'quest', name:q.name}); } changed=true; } });
+  const a=bgAchCheck(S,bgLevel(g.xp));
+  BG_ACH.forEach(b=>{ if(a[b.id] && !g.ach[b.id]){ g.ach[b.id]=new Date().toISOString().slice(0,10); if(!first){ g.xp+=50; fresh.push({type:'badge', name:b.name, desc:b.desc}); } changed=true; } });
+  const a2=bgAchCheck(S,bgLevel(g.xp)); if(a2.level5 && !g.ach.level5){ g.ach.level5=new Date().toISOString().slice(0,10); fresh.push({type:'badge',name:'Money Manager',desc:'Reached level 5'}); changed=true; }
+  const lvBefore=bgLevel(g.xp-events.reduce((s,e)=>s+e.xp,0)-fresh.reduce((s,f)=>s+(f.type==='quest'?100:f.type==='badge'?50:0),0));
+  const lvNow=bgLevel(g.xp);
+  if(!first){
+    events.forEach(e=>{ _bg.floats.push({txt:`+${e.xp} XP`, life:2, max:2, kind:e.kind}); if(e.kind==='exp'){ const last=(state.expenses||[])[S.expCount-1]; if(last){ _bg.burst[last.cat]=1.2; } } if(e.kind==='ns') _bg.burst.__chest=1.2; });
+    if(lvNow>lvBefore){ _bg.banner={txt:`Level ${lvNow}: ${BG_LEVELS[Math.min(lvNow-1,BG_LEVELS.length-1)]}!`, life:3}; _bg.confetti=2.2; }
+    else if(fresh.length){ const f=fresh[fresh.length-1]; _bg.banner={txt:f.type==='quest'?`Quest complete: ${f.name}`:`Badge: ${f.name}`, life:3}; _bg.confetti=1.6; }
+    if(fresh.length && typeof showToast==='function'){ const qn=fresh.filter(f=>f.type==='quest'), bn=fresh.filter(f=>f.type==='badge');
+      setTimeout(()=>showToast(`<strong>${qn.length?`Quest complete: ${qn.map(f=>f.name).join(', ')}`:''}${qn.length&&bn.length?' · ':''}${bn.length?`Badge${bn.length>1?'s':''}: ${bn.map(f=>f.name).join(', ')}`:''}</strong><br>+${qn.length*100+bn.length*50} XP${lvNow>lvBefore?`. You're now level ${lvNow}.`:''}`), 700); }
+  }
+  if(changed){ clearTimeout(_bg.saveT); _bg.saveT=setTimeout(()=>{ try{ save(); }catch(e){} },60); }
+}
+
+function renderBudgetGame(){
+  const mount=document.getElementById('bg-game-mount'); if(!mount) return;
+  const S=bgMonthStats(); _bg.S=S;
+  bgUpdate(S);
+  if(!_bg.built || !mount.querySelector('.bg')){
+    mount.innerHTML=`
+    <div class="bg">
+      <div class="bg-head">
+        <div class="bg-lvl">
+          <div class="bg-lvl-badge"><small>LVL</small><span id="bg-lvl-n">1</span></div>
+          <div class="bg-lvl-main">
+            <div class="bg-lvl-top"><b id="bg-lvl-name">Coin Rookie</b><span id="bg-lvl-xp">0 XP</span></div>
+            <div class="bg-xpbar"><i id="bg-xpfill"></i></div>
+          </div>
+        </div>
+        <span class="bg-health" id="bg-health"></span>
+      </div>
+      <div class="bg-stage" id="bg-stage" role="img" aria-label="Your coin jars"><canvas></canvas></div>
+      <div class="bg-body">
+        <div class="bg-col">
+          <div class="bg-h"><b>This month's quests</b><span id="bg-q-count"></span></div>
+          <div class="bg-quests" id="bg-quests"></div>
+        </div>
+        <div class="bg-col">
+          <div class="bg-h"><b>Badges</b><span id="bg-b-count"></span></div>
+          <div class="bg-badges" id="bg-badges"></div>
+          <div class="bg-bnext" id="bg-bnext"></div>
+        </div>
+      </div>
+    </div>`;
+    _bg.built=true;
+    _bg.cv=mount.querySelector('canvas'); _bg.ctx=_bg.cv.getContext('2d');
+    const st=document.getElementById('bg-stage');
+    st.addEventListener('click',()=>{ if(!_bg.S||!_bg.S.jars.length) showQuickSetup&&showQuickSetup(); });
+    if('ResizeObserver' in window){ _bg.ro&&_bg.ro.disconnect(); _bg.ro=new ResizeObserver(()=>{ bgSize(); bgDraw(0); }); _bg.ro.observe(st); }
+    if('IntersectionObserver' in window){ _bg.io&&_bg.io.disconnect(); _bg.io=new IntersectionObserver(en=>{ _bg.visible=en[0].isIntersecting; if(_bg.visible) bgStart(); }); _bg.io.observe(st); }
+    bgSize();
+    S.jars.forEach(j=>{ _bg.fill[j.cat]=j.frac; });
+  }
+  bgText(S);
+  bgStart();
+}
+
+function bgText(S){
+  const g=_bg.game||{xp:0,qdone:[],ach:{}};
+  const lv=bgLevel(g.xp), lo=bgNeed(lv), hi=bgNeed(lv+1);
+  const set=(id,h)=>{ const e=document.getElementById(id); if(e) e.innerHTML=h; };
+  set('bg-lvl-n', lv);
+  set('bg-lvl-name', BG_LEVELS[Math.min(lv-1,BG_LEVELS.length-1)]);
+  set('bg-lvl-xp', `${g.xp-lo} / ${hi-lo} XP`);
+  const f=document.getElementById('bg-xpfill'); if(f) f.style.width=`${Math.max(3,Math.min(100,(g.xp-lo)/(hi-lo)*100))}%`;
+  const h=document.getElementById('bg-health'); if(h){ h.className=`bg-health bg-h-${S.health}`; h.textContent=S.healthTxt; }
+  const qs=bgQuests(S);
+  set('bg-q-count', `${qs.filter(q=>q.done).length} of ${qs.length}`);
+  set('bg-quests', qs.map(q=>`<div class="bg-q ${q.done?'done':''}">
+      <div class="bg-q-ic">${q.done?'<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>':''}</div>
+      <div class="bg-q-main"><div class="bg-q-top"><b>${q.name}</b><span>${q.done?'Done':'+100 XP'}</span></div>
+      <div class="bg-q-desc">${q.desc}</div>
+      <div class="bg-q-bar"><i style="width:${Math.round(q.prog*100)}%"></i></div></div>
+      <div class="bg-q-lbl">${q.label}</div></div>`).join(''));
+  const got=g.ach||{}, n=BG_ACH.filter(b=>got[b.id]).length;
+  set('bg-b-count', `${n} of ${BG_ACH.length}`);
+  set('bg-badges', BG_ACH.map(b=>`<button type="button" class="bg-badge ${got[b.id]?'got':''}" title="${b.name}: ${b.desc}" aria-label="${b.name}, ${got[b.id]?'earned':'locked'}: ${b.desc}" onclick="bgBadgeShow('${b.id}',this)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${b.ic}</svg></button>`).join(''));
+  const next=BG_ACH.find(b=>!got[b.id]);
+  set('bg-bnext', next?`<span>Next:</span> <b>${next.name}</b>. ${next.desc}.`:'<b>Every badge earned.</b>');
+  const st=document.getElementById('bg-stage');
+  if(st) st.setAttribute('aria-label', S.jars.length ? `Coin jars: ${S.jars.filter(j=>!j.over).length} of ${S.jars.length} categories under budget. ${S.healthTxt}.` : 'Empty jars. Set spending goals to fill them.');
+}
+function bgBadgeShow(id,btn){
+  const b=BG_ACH.find(x=>x.id===id), got=((_bg.game||{}).ach||{})[id], el=document.getElementById('bg-bnext'); if(!b||!el) return;
+  document.querySelectorAll('.bg-badge.sel').forEach(x=>x.classList.remove('sel')); btn.classList.add('sel');
+  el.innerHTML = got ? `<b>${b.name}</b>. ${b.desc}.${got!=='demo'?` Earned ${new Date(got+'T12:00').toLocaleDateString('en-CA',{month:'short',day:'numeric',year:'numeric'})}.`:''}` : `<span>Locked:</span> <b>${b.name}</b>. ${b.desc}.`;
+}
+
+function bgSize(){
+  if(!_bg.cv) return;
+  const st=_bg.cv.parentElement, dpr=Math.min(2,window.devicePixelRatio||1);
+  _bg.W=st.clientWidth; _bg.H=st.clientHeight;
+  _bg.cv.width=Math.round(_bg.W*dpr); _bg.cv.height=Math.round(_bg.H*dpr);
+  _bg.ctx.setTransform(dpr,0,0,dpr,0,0);
+}
+function bgStart(){
+  if(bgReduce){ bgDraw(0); return; }
+  if(_bg.raf) return;
+  _bg.last=performance.now();
+  const loop=now=>{
+    const page=document.getElementById('page-monthly');
+    if(!_bg.visible || !_bg.cv || !_bg.cv.isConnected || (page && !page.classList.contains('active'))){ _bg.raf=null; return; }
+    const dt=Math.min(0.05,(now-_bg.last)/1000); _bg.last=now;
+    bgDraw(dt); _bg.raf=requestAnimationFrame(loop);
+  };
+  _bg.raf=requestAnimationFrame(loop);
+}
+
+function bgCoin(ctx,x,y,r,shade){
+  ctx.fillStyle=shade?'#b7791f':'#c98a1e'; ctx.beginPath(); ctx.ellipse(x,y+r*0.28,r,r*0.42,0,0,Math.PI*2); ctx.fill();
+  const g=ctx.createLinearGradient(x-r,y,x+r,y); g.addColorStop(0,'#fde68a'); g.addColorStop(0.5,'#facc15'); g.addColorStop(1,'#eab308');
+  ctx.fillStyle=g; ctx.beginPath(); ctx.ellipse(x,y,r,r*0.42,0,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='rgba(161,98,7,0.55)'; ctx.lineWidth=Math.max(0.6,r*0.12); ctx.beginPath(); ctx.ellipse(x,y,r*0.66,r*0.26,0,0,Math.PI*2); ctx.stroke();
+}
+
+function bgDraw(dt){
+  const ctx=_bg.ctx, S=_bg.S; if(!ctx||!S||!_bg.W) return;
+  const W=_bg.W, H=_bg.H, still=bgReduce, small=W<560;
+  const k=Math.max(0.8,Math.min(1.3,H/330)), t=still?5:performance.now()/1000;
+  ctx.clearRect(0,0,W,H);
+  const happy = S.health==='thriving'||S.health==='track', bad=S.health==='over'||S.health==='tight';
+
+  // ── Room: wall, window, lamp glow, floor ──
+  const wall=ctx.createLinearGradient(0,0,0,H); wall.addColorStop(0,'#1d2b25'); wall.addColorStop(1,'#141d19');
+  ctx.fillStyle=wall; ctx.fillRect(0,0,W,H);
+  ctx.fillStyle='rgba(255,255,255,0.025)'; for(let x=0;x<W;x+=26*k) ctx.fillRect(x,0,11*k,H);
+  const floorY=H-44*k;
+  // window
+  const chestW0=small?84*k:128*k, chestX0=W-chestW0-(small?12*k:26*k);
+  const ww=small?58*k:84*k, wh=small?48*k:70*k, wx=chestX0+chestW0/2-ww/2, wy=small?-100:16*k;
+  if(!small){
+    const sky=ctx.createLinearGradient(0,wy,0,wy+wh); sky.addColorStop(0,'#0f1d3a'); sky.addColorStop(1,'#29466b');
+    ctx.fillStyle='#5b4330'; bgRR(ctx,wx-5*k,wy-5*k,ww+10*k,wh+10*k,4*k); ctx.fill();
+    ctx.fillStyle=sky; ctx.fillRect(wx,wy,ww,wh);
+    ctx.fillStyle='#fef3c7'; ctx.beginPath(); ctx.arc(wx+ww*0.7,wy+wh*0.32,7*k,0,Math.PI*2); ctx.fill();
+    ctx.fillStyle='#29466b'; ctx.beginPath(); ctx.arc(wx+ww*0.7+3*k,wy+wh*0.32-2*k,6*k,0,Math.PI*2); ctx.fill();
+    for(let i=0;i<6;i++){ ctx.fillStyle=`rgba(255,255,255,${0.4+0.4*Math.sin(t*2+i)})`; ctx.fillRect(wx+pitRand(i+60)*ww,wy+pitRand(i+61)*wh*0.8,1.3*k,1.3*k); }
+    ctx.fillStyle='#5b4330'; ctx.fillRect(wx+ww/2-1.5*k,wy,3*k,wh); ctx.fillRect(wx,wy+wh/2-1.5*k,ww,3*k);
+  }
+  const lamp=ctx.createRadialGradient(W*0.45,0,10,W*0.45,0,W*0.7); lamp.addColorStop(0,'rgba(255,214,150,0.16)'); lamp.addColorStop(1,'rgba(255,214,150,0)'); ctx.fillStyle=lamp; ctx.fillRect(0,0,W,H);
+  const fl=ctx.createLinearGradient(0,floorY,0,H); fl.addColorStop(0,'#5a3e2b'); fl.addColorStop(1,'#3b281c'); ctx.fillStyle=fl; ctx.fillRect(0,floorY,W,H-floorY);
+  ctx.fillStyle='rgba(0,0,0,0.25)'; ctx.fillRect(0,floorY,W,3*k);
+  ctx.fillStyle='rgba(255,255,255,0.04)'; for(let x=-20;x<W;x+=70*k) ctx.fillRect(x+((floorY*0.3)%70),floorY+3*k,1.5*k,H-floorY);
+
+  // ── Shelves of jars ──
+  const chestW=chestW0, chestX=chestX0;
+  const areaR = small ? W-10*k : chestX-40*k;
+  const jars=S.jars.slice(0, small?9:10);
+  const n=jars.length;
+  if(!n){
+    // empty shelf with a prompt
+    const sy=H*0.52; ctx.fillStyle='#7a5536'; bgRR(ctx,20*k,sy,areaR-30*k,9*k,2*k); ctx.fill();
+    for(let i=0;i<3;i++){ const jx=40*k+i*70*k; bgJar(ctx,jx,sy,40*k,52*k,0,false,BG_LIDS[i],'',t,0,k); }
+    ctx.font=`700 ${14*k}px ${BG_FONT}`; ctx.fillStyle='#f1f5f9'; ctx.textAlign='left'; ctx.fillText('Your jars are empty',24*k,H*0.2);
+    ctx.font=`500 ${12*k}px ${BG_FONT}`; ctx.fillStyle='rgba(241,245,249,0.7)'; ctx.fillText('Tap to set spending goals and fill them with coins.',24*k,H*0.2+20*k);
+  } else {
+    const perRow = small ? Math.min(n,3) : Math.min(n, Math.max(3,Math.ceil(n/2)));
+    const rows=Math.ceil(n/perRow);
+    const top=small?14*k:26*k, bottomShelf=small ? floorY-chestW*0.56*1.85-40*k : floorY-30*k;
+    const rowH=(bottomShelf-top)/rows; _bg.shelfBot=bottomShelf;
+    const slotW=(areaR-14*k)/perRow;
+    const jw=Math.min(62*k, slotW*0.52), jh=Math.min(rowH*0.58, jw*1.25);
+    for(let r=0;r<rows;r++){
+      const sy=top+rowH*(r+1)-18*k;
+      ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.fillRect(12*k,sy+9*k,areaR-16*k,4*k);
+      const pl=ctx.createLinearGradient(0,sy,0,sy+10*k); pl.addColorStop(0,'#9a6b45'); pl.addColorStop(1,'#6b472d');
+      ctx.fillStyle=pl; bgRR(ctx,10*k,sy,areaR-12*k,10*k,2*k); ctx.fill();
+      ctx.fillStyle='#4a3020'; [0.12,0.88].forEach(f=>{ const bx=10*k+(areaR-12*k)*f; ctx.beginPath(); ctx.moveTo(bx-3*k,sy+10*k); ctx.lineTo(bx+3*k,sy+10*k); ctx.lineTo(bx+3*k,sy+20*k); ctx.lineTo(bx-3*k,sy+12*k); ctx.fill(); });
+      for(let c2=0;c2<perRow;c2++){
+        const i=r*perRow+c2; if(i>=n) break;
+        const j=jars[i]; const jx=12*k+slotW*(c2+0.5)-jw/2;
+        if(_bg.fill[j.cat]===undefined) _bg.fill[j.cat]=j.frac;
+        _bg.fill[j.cat]+= (j.frac-_bg.fill[j.cat])*(still?1:Math.min(1,dt*3));
+        const burst=_bg.burst[j.cat]||0; if(burst>0) _bg.burst[j.cat]=Math.max(0,burst-dt);
+        const wob = burst>0 ? Math.sin(t*30)*burst*1.6*k : 0;
+        bgJar(ctx,jx+wob,sy,jw,jh,_bg.fill[j.cat],j.over,BG_LIDS[j.idx%BG_LIDS.length],bgShort(j.cat),t,i,k);
+        if(burst>0.9 && !still && Math.random()<0.6){ _bg.parts.push({coin:1,x:jx+jw/2,y:sy-jh-4*k,vx:(Math.random()-0.5)*90*k,vy:-(120+Math.random()*80)*k,life:1,s:4*k}); }
+        // amount under the shelf
+        ctx.font=`700 ${(small?9.5:10.5)*k}px ${BG_FONT}`; ctx.textAlign='center';
+        const lbl = j.over ? `${fmtW(j.spent-j.goal)} over` : `${fmtW(Math.max(0,j.left))} left`;
+        ctx.fillStyle=j.over?'#fca5a5':(j.frac<0.15?'#fde68a':'#bbf7d0'); ctx.fillText(lbl,jx+jw/2,sy+(small?20:24)*k);
+      }
+    }
+  }
+
+  // ── Treasure chest + you ──
+  const cx=chestX, cy=floorY+6*k, cw=chestW, ch=cw*0.56;
+  const savedFrac = S.ti>0 ? Math.max(0,Math.min(1,S.sr/0.3)) : 0;
+  if(!small || true){
+    // chest body
+    ctx.fillStyle='rgba(0,0,0,0.35)'; ctx.beginPath(); ctx.ellipse(cx+cw/2,cy+2*k,cw*0.6,6*k,0,0,Math.PI*2); ctx.fill();
+    const body=ctx.createLinearGradient(0,cy-ch,0,cy); body.addColorStop(0,'#8a5a32'); body.addColorStop(1,'#5c3a20');
+    const pileH=(4+ch*0.9*savedFrac);
+    // open lid
+    ctx.fillStyle='#6b4426'; ctx.beginPath(); ctx.moveTo(cx+2*k,cy-ch); ctx.lineTo(cx+cw-2*k,cy-ch); ctx.lineTo(cx+cw-8*k,cy-ch-ch*0.75); ctx.quadraticCurveTo(cx+cw/2,cy-ch-ch*0.95,cx+8*k,cy-ch-ch*0.75); ctx.closePath(); ctx.fill();
+    ctx.fillStyle='#4a2d17'; ctx.beginPath(); ctx.moveTo(cx+6*k,cy-ch-1); ctx.lineTo(cx+cw-6*k,cy-ch-1); ctx.lineTo(cx+cw-11*k,cy-ch-ch*0.62); ctx.quadraticCurveTo(cx+cw/2,cy-ch-ch*0.78,cx+11*k,cy-ch-ch*0.62); ctx.closePath(); ctx.fill();
+    // gold pile (behind the front)
+    if(S.net>0){
+      const gp=ctx.createLinearGradient(0,cy-ch-pileH,0,cy-ch*0.6); gp.addColorStop(0,'#fde68a'); gp.addColorStop(1,'#eab308');
+      ctx.fillStyle=gp; ctx.beginPath(); ctx.moveTo(cx+4*k,cy-ch+2*k); ctx.quadraticCurveTo(cx+cw*0.5,cy-ch-pileH*2,cx+cw-4*k,cy-ch+2*k); ctx.fill();
+      for(let i=0;i<Math.round(4+savedFrac*10);i++){ { const u=pitRand(i+300); bgCoin(ctx,cx+cw*(0.14+0.72*u),cy-ch-1*k-pitRand(i+301)*pileH*0.95*Math.sin(Math.PI*(0.1+0.8*u)),(3.6+pitRand(i)*1.4)*k,i%2); } }
+      if(!still) for(let i=0;i<3;i++){ const ph=(t*0.8+i/3)%1; if(ph<0.3){ const sx=cx+cw*(0.2+0.6*pitRand(i+Math.floor(t*0.8+i/3)*5)), sy2=cy-ch-pileH*0.6*pitRand(i+9); const a=Math.sin(ph/0.3*Math.PI); ctx.fillStyle=`rgba(255,255,240,${a})`; ctx.fillRect(sx-3*k,sy2-0.6*k,6*k,1.2*k); ctx.fillRect(sx-0.6*k,sy2-3*k,1.2*k,6*k); } }
+    }
+    ctx.fillStyle=body; bgRR(ctx,cx,cy-ch,cw,ch,5*k); ctx.fill();
+    ctx.fillStyle='#d4a017'; ctx.fillRect(cx,cy-ch,cw,4*k); ctx.fillRect(cx+cw*0.18,cy-ch,4*k,ch); ctx.fillRect(cx+cw*0.82-4*k,cy-ch,4*k,ch);
+    ctx.fillStyle='#fbbf24'; bgRR(ctx,cx+cw/2-7*k,cy-ch+6*k,14*k,14*k,3*k); ctx.fill(); ctx.fillStyle='#78350f'; ctx.fillRect(cx+cw/2-1.2*k,cy-ch+10*k,2.4*k,6*k);
+    ctx.fillStyle='rgba(0,0,0,0.15)'; for(let y=cy-ch+8*k;y<cy;y+=9*k) ctx.fillRect(cx+4*k,y,cw-8*k,1);
+    if(S.net<=0 && S.ti>0){ ctx.strokeStyle='rgba(203,213,225,0.35)'; ctx.lineWidth=0.8; ctx.beginPath(); ctx.moveTo(cx+cw-6*k,cy-ch-ch*0.7); ctx.lineTo(cx+cw-22*k,cy-ch+2*k); ctx.moveTo(cx+cw-10*k,cy-ch-ch*0.5); ctx.lineTo(cx+cw-26*k,cy-ch-ch*0.4); ctx.stroke(); }
+    // label
+    const lbl = S.ti<=0 ? 'Add income to fill the chest' : S.net>0 ? `Saved ${fmtW(S.net)} · ${Math.round(S.sr*100)}%` : `Spent ${fmtW(-S.net)} more than you earned`;
+    ctx.font=`700 ${10.5*k}px ${BG_FONT}`; const tw=ctx.measureText(lbl).width+16*k;
+    const lx=Math.max(4,Math.min(W-tw-4,cx+cw/2-tw/2)); let ly=cy-ch-ch*1.05-(S.net>0?pileH*0.6:0)-22*k; if(small && n) ly=Math.max(ly,(_bg.shelfBot||0)+30*k);
+    ctx.fillStyle=S.net>0?'rgba(6,20,11,0.85)':'rgba(60,10,10,0.85)'; bgRR(ctx,lx,ly,tw,20*k,10*k); ctx.fill();
+    ctx.fillStyle=S.net>0?'#fde68a':'#fca5a5'; ctx.textAlign='left'; ctx.textBaseline='middle'; ctx.fillText(lbl,lx+8*k,ly+10.5*k); ctx.textBaseline='alphabetic';
+    // you, next to the chest
+    bgPerson(ctx,small?cx-22*k:cx-26*k,floorY+4*k,k*(small?1.45:1.8),happy,bad,t,still,!!_bg.confetti&&_bg.confetti>0);
+  }
+
+  // ── Particles, floats, banner ──
+  if(_bg.burst.__chest>0 && !still){ _bg.burst.__chest-=dt; if(Math.random()<0.5) _bg.parts.push({coin:1,x:cx+cw*0.5+(Math.random()-0.5)*cw*0.4,y:-6,vx:0,vy:60*k,life:1.4,s:4*k,toChest:1}); }
+  if(_bg.confetti>0){ _bg.confetti-=dt; if(!still) for(let i=0;i<3;i++) _bg.parts.push({conf:1,x:Math.random()*W,y:-8,vx:(Math.random()-0.5)*80*k,vy:(40+Math.random()*80)*k,life:3.5,c:['#4ade80','#fbbf24','#60a5fa','#f472b6','#fff'][Math.floor(Math.random()*5)],s:(5+Math.random()*4)*k,spin:Math.random()*6}); }
+  _bg.parts=_bg.parts.filter(p=>{ p.life-=dt; if(p.life<=0||p.y>H) return false;
+    if(p.conf){ p.vy+=480*k*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.spin+t*6); ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); ctx.restore(); return true; }
+    p.vy+=520*k*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; if(p.toChest && p.y>cy-ch) return false; ctx.globalAlpha=Math.min(1,p.life*2); bgCoin(ctx,p.x,p.y,p.s,0); ctx.globalAlpha=1; return true; });
+  _bg.floats=_bg.floats.filter(f=>{ f.life-=dt; if(f.life<=0) return false; const u=1-f.life/f.max; ctx.globalAlpha=Math.min(1,f.life/0.5); ctx.font=`800 ${17*k}px ${BG_FONT}`; ctx.textAlign='center'; ctx.lineWidth=4*k; ctx.strokeStyle='rgba(6,20,11,0.65)';
+    const fx=f.kind==='ns'?cx+cw/2:W*0.38, fy=(f.kind==='ns'?cy-ch*2.2:H*0.42)-u*34*k; ctx.strokeText(f.txt,fx,fy); ctx.fillStyle='#4ade80'; ctx.fillText(f.txt,fx,fy); ctx.globalAlpha=1; return true; });
+  if(_bg.banner){ const B=_bg.banner; B.life-=dt; if(B.life<=0) _bg.banner=null; else {
+    ctx.globalAlpha=Math.max(0,Math.min(1,B.life/0.4,(3-B.life)/0.25));
+    ctx.font=`800 ${15*k}px ${BG_FONT}`; const tw2=ctx.measureText(B.txt).width+34*k;
+    ctx.save(); ctx.shadowColor='rgba(0,0,0,0.4)'; ctx.shadowBlur=12*k; ctx.fillStyle='#4ade80'; bgRR(ctx,W/2-tw2/2,H*0.36,tw2,36*k,18*k); ctx.fill(); ctx.restore();
+    ctx.fillStyle='#06140b'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(B.txt,W/2,H*0.36+18.5*k); ctx.textBaseline='alphabetic'; ctx.globalAlpha=1; } }
+}
+
+function bgJar(ctx,x,shelfY,w,h,frac,over,lid,label,t,i,k){
+  const y0=shelfY-h, neck=w*0.72, nh=h*0.1;
+  // shadow
+  ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(x+w/2,shelfY+1,w*0.48,3*k,0,0,Math.PI*2); ctx.fill();
+  const bodyY=y0+nh, bodyH=h-nh, r=w*0.22;
+  // red glow when cracked
+  if(over){ const g=ctx.createRadialGradient(x+w/2,shelfY-bodyH/2,2,x+w/2,shelfY-bodyH/2,w); g.addColorStop(0,`rgba(248,113,113,${0.22+0.1*Math.sin(t*4+i)})`); g.addColorStop(1,'rgba(248,113,113,0)'); ctx.fillStyle=g; ctx.fillRect(x-w*0.5,shelfY-bodyH*1.5,w*2,bodyH*1.8); }
+  // glass body
+  ctx.save(); bgRR(ctx,x,bodyY,w,bodyH,r); ctx.fillStyle='rgba(200,230,255,0.07)'; ctx.fill(); ctx.clip();
+  // coins inside
+  const fillH=Math.max(0,frac)*(bodyH-6*k);
+  if(fillH>0){
+    const cr=Math.max(3.2*k,w*0.11), rowStep=cr*0.62;
+    let row=0;
+    for(let yy=shelfY-3*k-cr*0.3; yy>shelfY-3*k-fillH; yy-=rowStep){
+      const off=(row%2)*cr*0.9;
+      for(let xx=x+cr*0.8-off; xx<x+w; xx+=cr*1.8){ bgCoin(ctx,xx+(pitRand(row*13+Math.round(xx))-0.5)*2*k,yy,cr,row%2); }
+      row++;
+    }
+    const sy=shelfY-3*k-fillH; ctx.fillStyle='rgba(255,240,180,0.22)'; ctx.fillRect(x,sy-cr*0.5,w,cr*0.6);
+  }
+  ctx.restore();
+  // glass outline + shine
+  ctx.strokeStyle=over?'rgba(252,165,165,0.7)':'rgba(220,240,255,0.42)'; ctx.lineWidth=1.6*k; bgRR(ctx,x,bodyY,w,bodyH,r); ctx.stroke();
+  ctx.fillStyle='rgba(255,255,255,0.22)'; bgRR(ctx,x+w*0.12,bodyY+bodyH*0.14,w*0.09,bodyH*0.6,w*0.05); ctx.fill();
+  ctx.fillStyle='rgba(255,255,255,0.1)'; bgRR(ctx,x+w*0.26,bodyY+bodyH*0.14,w*0.04,bodyH*0.35,w*0.02); ctx.fill();
+  // lid
+  ctx.fillStyle=lid; bgRR(ctx,x+(w-neck)/2-2*k,y0-2*k,neck+4*k,nh+3*k,3*k); ctx.fill();
+  ctx.fillStyle='rgba(0,0,0,0.2)'; ctx.fillRect(x+(w-neck)/2-2*k,y0+nh-1*k,neck+4*k,1.5*k);
+  ctx.fillStyle='rgba(255,255,255,0.3)'; ctx.fillRect(x+(w-neck)/2,y0-1*k,neck,1.2*k);
+  // cracks
+  if(over){ ctx.strokeStyle='rgba(255,255,255,0.8)'; ctx.lineWidth=1.1*k; ctx.lineJoin='round'; ctx.beginPath();
+    ctx.moveTo(x+w*0.62,bodyY+bodyH*0.12); ctx.lineTo(x+w*0.5,bodyY+bodyH*0.3); ctx.lineTo(x+w*0.64,bodyY+bodyH*0.42); ctx.lineTo(x+w*0.52,bodyY+bodyH*0.6);
+    ctx.moveTo(x+w*0.5,bodyY+bodyH*0.3); ctx.lineTo(x+w*0.36,bodyY+bodyH*0.36); ctx.stroke(); }
+  // paper label
+  if(label){
+    let fsz=Math.min(10.5*k,w*0.18); ctx.font=`700 ${fsz}px ${BG_FONT}`; const maxW=w*1.08;
+    while(fsz>7.2*k && ctx.measureText(label).width>maxW-8*k){ fsz-=0.4; ctx.font=`700 ${fsz}px ${BG_FONT}`; }
+    let txt=label; while(txt.length>2 && ctx.measureText(txt).width>maxW-6*k) txt=txt.slice(0,-1); if(txt!==label) txt=txt.replace(/\s+$/,'')+'…';
+    const lw=Math.min(maxW,ctx.measureText(txt).width+10*k), lh=14*k, lx=x+w/2-lw/2, ly=bodyY+bodyH*0.38;
+    ctx.fillStyle='#f5ecd7'; bgRR(ctx,lx,ly,lw,lh,2*k); ctx.fill();
+    ctx.fillStyle='#3b2a1a'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(txt,x+w/2,ly+lh/2+0.5); ctx.textBaseline='alphabetic';
+  }
+}
+
+function bgPerson(ctx,x,y,s,happy,bad,t,still,cheer){
+  ctx.save(); ctx.translate(x,y); ctx.scale(s,s); ctx.lineCap='round'; ctx.lineJoin='round';
+  const hop = cheer&&!still ? Math.abs(Math.sin(t*6))*4 : (happy&&!still?Math.abs(Math.sin(t*2.2))*1.2:0);
+  ctx.fillStyle='rgba(0,0,0,0.3)'; ctx.beginPath(); ctx.ellipse(0,0,8,2,0,0,Math.PI*2); ctx.fill();
+  ctx.translate(0,-hop);
+  ctx.strokeStyle='#334155'; ctx.lineWidth=3.2; ctx.beginPath(); ctx.moveTo(-3.4,-2); ctx.lineTo(-1.2,-10); ctx.moveTo(3.4,-2); ctx.lineTo(1.2,-10); ctx.stroke();
+  ctx.fillStyle='#111827'; bgRR(ctx,-6.6,-3,5.6,3,1.4); ctx.fill(); bgRR(ctx,1,-3,5.6,3,1.4); ctx.fill();
+  ctx.fillStyle='#22c55e'; bgRR(ctx,-6,-21,12,12.5,4.5); ctx.fill(); ctx.fillStyle='#4ade80'; ctx.fillRect(-6,-21,5,12.5);
+  ctx.fillStyle='#f5c9a0'; ctx.beginPath(); ctx.arc(0,-26,5.2,0,Math.PI*2); ctx.fill();
+  ctx.fillStyle='#1f2937'; ctx.beginPath(); ctx.arc(1.9,-26.4,0.75,0,Math.PI*2); ctx.arc(-1.4,-26.4,0.75,0,Math.PI*2); ctx.fill();
+  ctx.strokeStyle='#9a4f2c'; ctx.lineWidth=0.8; ctx.beginPath(); if(bad){ ctx.moveTo(-1.3,-23.4); ctx.quadraticCurveTo(0.3,-24.6,1.9,-23.4); } else ctx.arc(0.3,-24.6,1.7,0.25,Math.PI-0.25); ctx.stroke();
+  ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.arc(0,-27.6,5.9,Math.PI,0); ctx.fill(); ctx.fillStyle='#f59e0b'; bgRR(ctx,-1,-28.4,8.5,2.2,1.1); ctx.fill();
+  if(cheer){ const w=still?0:Math.sin(t*6)*2; ctx.strokeStyle='#22c55e'; ctx.lineWidth=2.8; ctx.beginPath(); ctx.moveTo(-4,-19); ctx.lineTo(-9,-30+w); ctx.moveTo(4,-19); ctx.lineTo(9,-30-w); ctx.stroke(); }
+  else { // holding a coin out toward the chest
+    ctx.strokeStyle='#22c55e'; ctx.lineWidth=2.8; ctx.beginPath(); ctx.moveTo(4,-18); ctx.lineTo(10,-14); ctx.stroke();
+    if(!bad){ const f=still?1:Math.abs(Math.cos(t*3)); ctx.save(); ctx.translate(12,-15); ctx.scale(f,1); bgCoin(ctx,0,0,3.2,0); ctx.restore(); }
+    ctx.strokeStyle='#22c55e'; ctx.beginPath(); ctx.moveTo(-4,-18); ctx.lineTo(-7,-11); ctx.stroke();
+  }
+  if(bad && !still){ const d=(t*1.4)%1; ctx.fillStyle=`rgba(147,197,253,${1-d})`; ctx.beginPath(); ctx.ellipse(-6.4,-27+d*7,0.9,1.3,0,0,Math.PI*2); ctx.fill(); }
+  ctx.restore();
+}
+
 function renderMonthly(){
   // Ensure budgets exist (handles old data)
   if(!state.budgets || !state.budgets.length){
@@ -6287,6 +6732,7 @@ function renderMonthly(){
     }).join('');
   }
 
+  try{ renderBudgetGame(); }catch(e){ console.warn('budget game', e); }
   renderYearly(); // Year at a Glance lives on this page, render it here only
 }
 
