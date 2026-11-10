@@ -2932,6 +2932,39 @@ select option{background:#fff;color:var(--ink)}
   #page-investments .btn-ghost{min-height:36px}
 }
 
+
+/* Landing v3: tour, mid-page actions, two-plan pricing */
+#landing-page .lp-tour-sec{padding-top:2.5rem;padding-bottom:0.5rem}
+#landing-page .lp-tour-card{position:relative;display:block;width:100%;max-width:880px;margin:0 auto;padding:0;border:1px solid var(--border);border-radius:20px;overflow:hidden;background:#0b0f18;cursor:pointer;color:inherit;font:inherit;box-shadow:0 40px 80px -40px rgba(0,0,0,0.84)}
+#landing-page .lp-tour-card img{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;opacity:0.82;transition:opacity .2s,transform .4s}
+#landing-page .lp-tour-card:hover img{opacity:1;transform:scale(1.015)}
+#landing-page .lp-tour-play{position:absolute;left:50%;top:44%;transform:translate(-50%,-50%);width:76px;height:76px;border-radius:50%;background:#4ade80;color:#0b0d12;display:grid;place-items:center;box-shadow:0 0 0 10px rgba(74,222,128,0.18),0 18px 40px rgba(0,0,0,0.5)}
+#landing-page .lp-tour-play svg{margin-left:4px}
+#landing-page .lp-tour-txt{position:absolute;left:0;right:0;bottom:0;padding:5rem 1.3rem 1.1rem;text-align:left;background:linear-gradient(to top,rgba(11,13,18,1) 0,rgba(11,13,18,0.98) 62%,rgba(11,13,18,0))}
+#landing-page .lp-tour-txt b{display:block;color:#fff;font-size:1.2rem;letter-spacing:-0.01em}
+#landing-page .lp-tour-txt i{display:block;font-style:normal;color:#aab4c6;font-size:0.92rem;margin-top:0.2rem}
+#landing-page .lp-mid-cta{display:flex;flex-wrap:wrap;align-items:center;gap:0.9rem 1.2rem;margin-top:2.2rem}
+#landing-page .lp-mid-cta span{color:var(--muted);font-size:0.92rem}
+#landing-page .lp-pricing-two{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.2rem;max-width:920px;align-items:stretch}
+#landing-page .lp-pricing-two .lp-price-card{max-width:none;padding:2rem;display:flex;flex-direction:column}
+#landing-page .lp-pricing-two .lp-price-feats{flex:1}
+#landing-page .lp-pricing-two .lp-price-card::before,#landing-page .lp-pricing-two .lp-price-card::after{display:none!important}
+@media(max-width:600px){#landing-page .lp-pricing-two .lp-price-card{padding:1.8rem 1.4rem}}
+#landing-page .lp-pricing-two .lp-price-card .lp-btn-secondary{width:100%;justify-content:center;text-align:center}
+#landing-page .lp-price-free{border-color:rgba(74,222,128,0.45)!important}
+#landing-page .lp-price-free .lp-price-per{margin-left:0.4rem}
+@media(max-width:760px){
+  #landing-page .lp-pricing-two{grid-template-columns:1fr}
+  #landing-page .lp-tour-play{width:60px;height:60px}
+  #landing-page .lp-tour-txt b{font-size:1.02rem} #landing-page .lp-tour-txt i{font-size:0.82rem}
+  #landing-page .lp-mid-cta .lp-btn-primary{width:100%;justify-content:center}
+}
+/* phones: the buttons come before the live demo, so the first screen always has a way to start */
+@media(max-width:999px){
+  #landing-page .lp-hero:not(.lp-hero--grove) .lp-play{order:5;margin-top:1.2rem}
+  #landing-page .lp-hero:not(.lp-hero--grove) .lp-hero-sub{margin-bottom:1.3rem}
+}
+
 /* Landing v2: live hero demo, four worlds, promises */
 #landing-page .lp-hero:not(.lp-hero--grove) .lp-preview-wrap{display:none}
 #landing-page .lp-hero--grove .lp-play{display:none}
@@ -3619,6 +3652,17 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
     <div class="lp-trust-item"><span class="lp-trust-icon"></span>Works on your phone, no app store</div>
   </div>
 
+  <!-- TOUR -->
+  <section class="lp-section lp-tour-sec" id="lp-tour">
+    <div class="lp-container">
+      <button type="button" class="lp-tour-card" onclick="qsOpenTour()" aria-label="Watch the 40-second tour of Qualisight">
+        <img src="site-tour-poster.jpg" alt="The Qualisight debt storm page" loading="lazy" width="1280" height="800">
+        <span class="lp-tour-play"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></span>
+        <span class="lp-tour-txt"><b>See the whole app in 40 seconds</b><i>Dashboard, coin jars, debt storm, money grove and the road home</i></span>
+      </button>
+    </div>
+  </section>
+
   <!-- THE FOUR WORLDS -->
   <section class="lp-section" id="lp-features">
     <div class="lp-container">
@@ -3642,6 +3686,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
         <div><b>Badges that mean something</b><span>Earned from what you actually do, never from luck or the stock market.</span></div>
         <div><b>One score to watch</b><span>Your Money Score out of 100 shows how you're doing across budget, saving, debt and investing.</span></div>
       </div>
+      <div class="lp-mid-cta"><button class="lp-btn-primary" onclick="lpShowSignup()">Start free, no card</button><span>Or tap any world to try it with sample numbers.</span></div>
     </div>
   </section>
 
@@ -3802,6 +3847,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
           <span>The founder, Ontario</span>
         </div>
       </div>
+      <div class="lp-mid-cta"><button class="lp-btn-primary" onclick="lpShowSignup()">Start free, no card</button><span>Set up in about a minute. Budgeting stays free forever.</span></div>
     </div>
   </section>
 
@@ -3813,7 +3859,21 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
         <h2 class="lp-h2">Free forever. Premium if you want more.</h2>
         <p class="lp-lead">Your budget, coin jars, debt storm and dashboard are free forever. Investing, the road home and the AI advisor are free for 14 days, then $12 a month if you want to keep them.</p>
       </div>
-      <div class="lp-pricing-wrap">
+      <div class="lp-pricing-wrap lp-pricing-two">
+        <div class="lp-price-card lp-price-free">
+          <div class="lp-price-plan">Free</div>
+          <div class="lp-price-amt"><span class="lp-price-num">$0</span><span class="lp-price-per">forever</span></div>
+          <span class="lp-price-trial">No card, no time limit</span>
+          <ul class="lp-price-feats">
+            <li><span class="lp-check">✓</span>Budget with coin jars, quests and badges</li>
+            <li><span class="lp-check">✓</span>The debt storm and your debt-free date</li>
+            <li><span class="lp-check">✓</span>Dashboard with net worth and Money Score</li>
+            <li><span class="lp-check">✓</span>Snowball and avalanche payoff plans</li>
+            <li><span class="lp-check">✓</span>Works on your phone like an app</li>
+          </ul>
+          <button class="lp-btn-primary" onclick="lpShowSignup()">Start free, no card</button>
+          <p class="lp-price-fine">Includes a 14-day free look at everything in Premium.</p>
+        </div>
         <div class="lp-price-card">
           <div class="lp-price-glow"></div>
           <div class="lp-price-plan">Qualisight Premium</div>
@@ -3829,8 +3889,8 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
             <li><span class="lp-check">✓</span>Rent vs buy, with Canadian mortgage rules</li>
             <li><span class="lp-check">✓</span>Plus everything that's free: budget, coin jars, debt storm</li>
           </ul>
-          <button class="lp-btn-primary" onclick="lpShowSignup()">Start free, no card</button>
-          <p class="lp-price-fine">Budget and debt tools stay free whether or not you subscribe.</p>
+          <button class="lp-btn-secondary" onclick="lpShowSignup()">Try Premium free for 14 days</button>
+          <p class="lp-price-fine">No card for the trial. Budget and debt tools stay free either way.</p>
         </div>
       </div>
     </div>
@@ -13701,16 +13761,19 @@ function lpOpenWorld(id){
     let ov=document.getElementById('tour-overlay');
     if(!ov){
       ov=document.createElement('div'); ov.id='tour-overlay'; ov.className='tour-overlay';
-      ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true'); ov.setAttribute('aria-label','Money grove tour');
-      ov.innerHTML='<div class="tour-box"><div class="tour-head"><span>The money grove, in 50 seconds</span><button type="button" class="tour-x" aria-label="Close">×</button></div>'
-        +'<video controls playsinline preload="auto" poster="grove-tour-poster.jpg" src="grove-tour.mp4"></video>'
-        +'<div class="tour-cta"><button type="button" class="lp-btn-primary">Start for free</button><span>No credit card needed</span></div></div>';
+      ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true'); ov.setAttribute('aria-label','Product tour');
+      const gv=hero.classList.contains('lp-hero--grove');
+      ov.innerHTML='<div class="tour-box"><div class="tour-head"><span>'+(gv?'The money grove, in 50 seconds':'Qualisight in 40 seconds')+'</span><button type="button" class="tour-x" aria-label="Close">×</button></div>'
+        +'<video controls playsinline preload="auto" poster="'+(gv?'grove-tour-poster.jpg':'site-tour-poster.jpg')+'" src="'+(gv?'grove-tour.mp4':'site-tour.mp4')+'"></video>'
+        +'<div class="tour-cta"><button type="button" class="lp-btn-primary">Start free, no card</button><span>No bank login needed</span></div></div>';
+      ov.querySelector('video').addEventListener('ended',()=>{ try{ QA.log('tour_done',{}); }catch(e){} });
       ov.querySelector('.tour-x').onclick=closeTour;
       ov.addEventListener('click',e=>{ if(e.target===ov) closeTour(); });
       ov.querySelector('.tour-cta button').onclick=()=>{ closeTour(); lpShowSignup(); };
       document.addEventListener('keydown',e=>{ if(e.key==='Escape') closeTour(); });
       document.body.appendChild(ov);
     }
+    try{ if(typeof QA!=='undefined') QA.log('tour_open',{}); }catch(e){}
     ov.classList.add('open'); const v=ov.querySelector('video'); v.currentTime=0; v.muted=false; v.play().catch(()=>{});
   }
   window.qsOpenTour=openTour;
@@ -13724,7 +13787,7 @@ function lpOpenWorld(id){
     }
   } else {
     const btn=document.createElement('button'); btn.type='button'; btn.className='tour-open-btn';
-    btn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>Watch the 50-second tour';
+    btn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>'+(hero.classList.contains('lp-hero--grove')?'Watch the 50-second tour':'Watch the 40-second tour');
     btn.onclick=openTour;
     const early=hero.querySelector('.lp-preview-early'), note=hero.querySelector('.lp-hero-note');
     if(early) early.after(btn); else if(note) note.after(btn);
