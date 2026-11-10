@@ -2904,6 +2904,88 @@ select option{background:#fff;color:var(--ink)}
 
 
 
+/* Investments page v2: tabs, grove at a glance, compact cards */
+.iv-tabs{display:flex;gap:0.35rem;position:sticky;top:56px;z-index:20;margin:0 0 1rem;padding:0.45rem;background:rgba(13,15,20,0.96);border:1px solid var(--border);border-radius:14px;backdrop-filter:blur(8px)}
+.iv-tabs button{flex:1;min-height:40px;border-radius:10px;border:0;background:transparent;color:var(--muted);font:inherit;font-size:0.9rem;font-weight:600;cursor:pointer;transition:background .15s,color .15s}
+.iv-tabs button:hover{color:var(--text)}
+.iv-tabs button.on{background:#4ade80;color:#0b0d12}
+#page-investments[data-ivtab="grove"] > #alloc-accounts,#page-investments[data-ivtab="grove"] > #ck-mount,#page-investments[data-ivtab="grove"] > #iv-trades,#page-investments[data-ivtab="grove"] > #news-panel,
+#page-investments[data-ivtab="holdings"] > #grove,#page-investments[data-ivtab="holdings"] > #ck-mount,#page-investments[data-ivtab="holdings"] > #iv-trades,
+#page-investments[data-ivtab="stocks"] > #grove,#page-investments[data-ivtab="stocks"] > #alloc-accounts,#page-investments[data-ivtab="stocks"] > #iv-trades,#page-investments[data-ivtab="stocks"] > #news-panel,
+#page-investments[data-ivtab="trades"] > #grove,#page-investments[data-ivtab="trades"] > #alloc-accounts,#page-investments[data-ivtab="trades"] > #ck-mount,#page-investments[data-ivtab="trades"] > #news-panel{display:none!important}
+.iv-jump{display:none!important}
+.iv-hero-top,.iv-hero-mini{padding-right:0}
+.iv-hero::before,.iv-hero::after{display:none!important}
+.iv-refresh{border-color:transparent!important;color:var(--muted)!important}
+.iv-glance{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:0.6rem;margin-top:1.1rem;padding-top:1.1rem;border-top:1px solid var(--border)}
+.iv-glance:empty{display:none}
+.iv-g{display:flex;flex-direction:column;padding:0;border:1px solid var(--border);border-radius:14px;overflow:hidden;background:#0b0f18;cursor:pointer;color:inherit;font:inherit;text-align:left;transition:border-color .15s,transform .15s;min-width:0}
+.iv-g:hover{border-color:rgba(74,222,128,0.45);transform:translateY(-2px)}
+.iv-g-art{display:block;aspect-ratio:200/124;background:#0b0f18}
+.iv-g-art canvas{display:block;width:100%;height:100%}
+.iv-g-txt{display:block;padding:0.5rem 0.6rem 0.6rem;background:var(--surface)}
+.iv-g-txt i{font-style:normal;display:inline-block;font-size:0.62rem;font-weight:700;color:#0b0d12;border-radius:5px;padding:0.08rem 0.38rem}
+.iv-g-txt b{display:block;font-family:var(--font-num);font-size:0.98rem;color:var(--text);margin-top:0.25rem;font-variant-numeric:tabular-nums}
+.iv-g-txt em{display:block;font-style:normal;font-size:0.72rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.iv-g-txt em.up{color:#4ade80}.iv-g-txt em.down{color:#f87171}
+.grove-plan-wrap{border:1px solid var(--border);border-radius:12px;background:var(--card2)}
+.grove-plan-wrap summary{display:flex;justify-content:space-between;align-items:center;gap:0.6rem;cursor:pointer;list-style:none;padding:0.6rem 0.75rem;font-size:0.84rem;color:var(--muted);min-height:40px}
+.grove-plan-wrap summary::-webkit-details-marker{display:none}
+.grove-plan-wrap summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin-left:0.2rem;transition:transform .15s;flex:none}
+.grove-plan-wrap[open] summary::after{transform:rotate(-135deg)}
+.grove-plan-wrap summary b{margin-left:auto;color:var(--text);font-variant-numeric:tabular-nums}
+.grove-plan-wrap .grove-plan{border:0;border-top:1px solid var(--border);border-radius:0 0 12px 12px;background:transparent}
+.grove-plan label{font-size:0.76rem;color:var(--muted)}
+.grove-time-msg{font-size:0.78rem}
+.grove-ref-wrap{margin-top:1rem;border:1px solid var(--border);border-radius:16px;background:var(--surface);padding:0 1rem}
+.grove-ref-wrap summary{cursor:pointer;list-style:none;display:flex;flex-wrap:wrap;align-items:baseline;gap:0.3rem 0.7rem;padding:0.9rem 0;font-weight:700;color:var(--text);min-height:44px}
+.grove-ref-wrap summary::-webkit-details-marker{display:none}
+.grove-ref-wrap summary span{font-weight:400;font-size:0.84rem;color:var(--muted)}
+.grove-ref-wrap summary::after{content:"";width:8px;height:8px;border-right:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);margin-left:auto;transition:transform .15s}
+.grove-ref-wrap[open] summary::after{transform:rotate(-135deg)}
+.grove-ref-wrap .grove-ref{margin:0 0 1rem}
+details.iv-acct > summary{list-style:none;cursor:pointer}
+details.iv-acct > summary::-webkit-details-marker{display:none}
+.iv-acct-head{padding:0.95rem 1.1rem;flex-wrap:nowrap}
+.iv-acct-left{min-width:0;flex-wrap:nowrap}
+.iv-acct-name{font-size:0.98rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.iv-acct-right{gap:0.7rem;flex:none}
+.iv-acct-mv-label{display:none}
+.iv-acct-mv-val{font-size:1.1rem}
+.iv-acct-count{font-size:0.74rem;color:var(--muted);white-space:nowrap}
+.iv-acct-chev{color:var(--muted);transition:transform .15s;flex:none}
+details.iv-acct[open] .iv-acct-chev{transform:rotate(180deg)}
+.iv-acct-body{padding:0 1.1rem 1rem}
+.iv-holding{padding:0.75rem 0}
+.iv-hold-top{margin-bottom:0.45rem}
+.iv-hold-foot{display:flex;justify-content:space-between;align-items:center;gap:0.6rem;margin-top:0.35rem}
+.iv-hold-foot .iv-alloc-meta{flex:1;min-width:0;margin:0}
+.iv-hold-actions{flex:none}
+.iv-acct-remove{display:block;margin:0.7rem auto 0;background:none;border:0;color:var(--muted);font:inherit;font-size:0.76rem;cursor:pointer;text-decoration:underline;min-height:36px}
+.iv-acct-remove:hover{color:var(--red)}
+@media(max-width:760px){
+  .iv-tabs{top:52px;margin-left:-0.2rem;margin-right:-0.2rem;border-radius:12px}
+  .iv-tabs button{font-size:0.84rem}
+  .iv-hero{padding:1.2rem 1.1rem!important}
+  .iv-hero-actions{width:100%}
+  .iv-hero-actions .btn{flex:1}
+  .iv-glance{display:flex;overflow-x:auto;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;padding-bottom:0.3rem;margin-left:-0.2rem;margin-right:-0.2rem}
+  .iv-g{flex:0 0 132px;scroll-snap-align:start}
+  .grove-plots{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;-webkit-overflow-scrolling:touch;gap:0.7rem;padding-bottom:0.4rem;margin-left:-0.2rem;margin-right:-0.2rem;scrollbar-width:none}
+  .grove-plots::-webkit-scrollbar{display:none}
+  .grove-plots > .grove-plot{flex:0 0 88%;scroll-snap-align:center;min-width:0}
+  .grove-plots.n1 > .grove-plot{flex-basis:100%}
+  .grove-section-title::after{content:"  ·  swipe";color:var(--muted);font-weight:400}
+  .grove-time{padding:0.6rem 0.7rem}
+  .grove-time .grove-tbtn{flex:1 1 30%;min-height:38px}
+  .grove-time-label{width:100%;margin:0}
+  .grove-head{margin-bottom:0.7rem}
+  .grove-meta{gap:0.4rem}
+  .iv-acct-count{display:none}
+  .iv-hold-foot{flex-wrap:wrap}
+  .iv-hold-top{flex-wrap:wrap;gap:0.3rem 0.8rem}
+}
+
 /* Company check-up */
 .ck{margin-bottom:1.2rem;padding:1.2rem}
 .ck-title{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--text)}
@@ -4475,13 +4557,13 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 
 <!-- ═══════════ PORTFOLIO ═══════════ -->
 <!-- ═══════════ INVESTMENTS ═══════════ -->
-<div id="page-investments" class="page">
+<div id="page-investments" class="page" data-ivtab="grove">
 
   <!-- Header -->
   <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem;gap:1rem;flex-wrap:wrap">
     <div>
       <div class="hero-title" style="font-size:1.3rem">Investments</div>
-      <div class="hero-sub" style="margin:0">Your accounts, holdings, and allocation, all in one place.</div>
+      <div class="hero-sub" style="margin:0">Watch every account grow, see what you hold, and check the companies behind your stocks.</div>
       <div id="port-last-updated" style="font-size:0.75rem;color:var(--muted);margin-top:0.2rem"></div>
     </div>
   </div>
@@ -4495,16 +4577,22 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
         <div class="iv-hero-gain" id="iv-hero-gain"></div>
       </div>
       <div class="iv-hero-actions">
-        <button class="btn-ghost" id="refresh-btn" onclick="refreshAllPrices()">⟳ Refresh prices</button>
-        <button class="btn-ghost" id="add-account-btn" onclick="addAccount()">+ Add account</button>
         <button class="btn" id="add-holding-btn" onclick="addPortfolioEntry()">+ Add holding</button>
+        <button class="btn-ghost" id="add-account-btn" onclick="addAccount()">+ Add account</button>
+        <button class="btn-ghost iv-refresh" id="refresh-btn" onclick="refreshAllPrices()">⟳ Refresh prices</button>
       </div>
     </div>
     <div class="iv-hero-mini" id="iv-hero-mini"></div>
+    <div class="iv-glance" id="iv-glance" aria-label="Your grove at a glance"></div>
   </div>
 
   <!-- Money grove: rendered by renderGrove() -->
-  <div class="iv-jump" role="navigation" aria-label="Jump to"><button type="button" onclick="ivJump('grove')">Grove</button><button type="button" onclick="ivJump('alloc-accounts')">Holdings</button><button type="button" onclick="ivJump('ck-mount')">Stocks</button><button type="button" onclick="ivJump('iv-trades')">Trades</button></div>
+  <div class="iv-tabs" role="tablist" aria-label="Investments sections">
+    <button type="button" role="tab" data-t="grove" onclick="ivTab('grove')">Grove</button>
+    <button type="button" role="tab" data-t="holdings" onclick="ivTab('holdings')">Holdings</button>
+    <button type="button" role="tab" data-t="stocks" onclick="ivTab('stocks')">Stocks</button>
+    <button type="button" role="tab" data-t="trades" onclick="ivTab('trades')">Trades</button>
+  </div>
   <div id="grove" class="grove"></div>
 
   <!-- Hidden stat row kept for any legacy references (not displayed) -->
@@ -8440,7 +8528,7 @@ function renderPortfolio(){
     miniEl.innerHTML=[
       ['Invested', fmt(portBV), ''],
       ['Total gain', `${portGL>=0?'+':''}${fmt(portGL)}`, portGL>=0?'pos':'neg'],
-      ['Return', portBV>0?`${portGL>=0?'+':''}${portRet.toFixed(2)}%`:'—', portGL>=0?'pos':'neg'],
+      ['Return', portBV>0?`${portGL>=0?'+':''}${portRet.toFixed(2)}%`:'0%', portGL>=0?'pos':'neg'],
       ['Accounts', (state.accounts||[]).length+'', ''],
       ['Holdings', validHoldings.length+'', ''],
     ].map(([l,v,c])=>`<div class="iv-mini"><div class="iv-mini-label">${l}</div><div class="iv-mini-val ${c}">${v}</div></div>`).join('');
@@ -8597,6 +8685,7 @@ function calcAccountBalance(accountId){
 // Legacy stub — balance is now auto-calculated
 function updateAccountBalance(id, val){}
 
+const _ivOpen={};
 function renderAllocator(){
   if(!state.accounts) state.accounts=[];
   const accounts = state.accounts;
@@ -8683,11 +8772,6 @@ function renderAllocator(){
               <div class="iv-hold-mv-val">${fmt(mv)}</div>
               <div class="iv-hold-mv-ret ${gl>=0?'pos':'neg'}">${gl>=0?'+':''}${fmt(gl)} (${ret>=0?'+':''}${ret.toFixed(1)}%)</div>
             </div>
-            <div class="iv-hold-actions">
-              <button class="iv-act-btn news" id="newsbtn-${h.ticker}" onclick="toggleNewsPanel('${h.ticker}')" title="News">News</button>
-              <button class="iv-act-btn" onclick="editHolding('${acc.id}','${h.ticker}')">Edit</button>
-              <button class="iv-act-btn del" onclick="removeHolding('${h.ticker}','${acc.id}')">✕</button>
-            </div>
           </div>
         </div>
         <div class="iv-alloc">
@@ -8695,15 +8779,23 @@ function renderAllocator(){
             <div class="iv-alloc-fill ${fillCls}" style="width:${barWidth}%"></div>
             ${targetMarker}
           </div>
-          <div class="iv-alloc-meta">${allocMeta}</div>
+          <div class="iv-hold-foot">
+            <div class="iv-alloc-meta">${allocMeta}</div>
+            <div class="iv-hold-actions">
+              <button class="iv-act-btn news" id="newsbtn-${h.ticker}" onclick="toggleNewsPanel('${h.ticker}')" title="News">News</button>
+              <button class="iv-act-btn" onclick="editHolding('${acc.id}','${h.ticker}')">Edit</button>
+              <button class="iv-act-btn del" onclick="removeHolding('${h.ticker}','${acc.id}')" aria-label="Remove ${h.ticker}">✕</button>
+            </div>
+          </div>
         </div>
       </div>`;
     }).join('');
 
     const badgeStyle = `background:${color}22;color:${color};`;
 
-    return `<div class="iv-acct">
-      <div class="iv-acct-head">
+    const isOpen = (acc.id in _ivOpen) ? _ivOpen[acc.id] : (accounts.indexOf(acc)===0 || accounts.length<=2);
+    return `<details class="iv-acct"${isOpen?' open':''} ontoggle="_ivOpen['${acc.id}']=this.open">
+      <summary class="iv-acct-head">
         <div class="iv-acct-left">
           <span class="iv-acct-badge" style="${badgeStyle}">${acc.type}</span>
           <span class="iv-acct-name">${escHtml(acc.name)}</span>
@@ -8714,16 +8806,18 @@ function renderAllocator(){
             <div class="iv-acct-mv-val">${fmt(acctMV)}</div>
             ${holdings.length ? `<div class="iv-acct-mv-gain" style="color:${acctGL>=0?'var(--accent)':'var(--red)'}">${acctGL>=0?'+':''}${fmt(acctGL)} (${acctRet>=0?'+':''}${acctRet.toFixed(1)}%)</div>` : ''}
           </div>
-          <button class="iv-act-btn del" onclick="removeAccount('${acc.id}')">Remove</button>
+          <span class="iv-acct-count">${holdings.length} holding${holdings.length===1?'':'s'}</span>
+          <svg class="iv-acct-chev" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg>
         </div>
-      </div>
+      </summary>
       <div class="iv-acct-body">
         ${holdings.length
           ? holdingRows + `<div class="iv-acct-total"><span class="iv-acct-total-label">Total invested</span><span class="iv-acct-total-val">${fmt(acctMV)}</span></div>`
           : `<div class="iv-acct-empty">No holdings yet. Add one below.</div>`}
         <button class="iv-add-holding" onclick="addHoldingToAccount('${acc.id}')">+ Add holding to ${escHtml(acc.name)}</button>
+        <button class="iv-acct-remove" onclick="removeAccount('${acc.id}')">Remove this account</button>
       </div>
-    </div>`;
+    </details>`;
   }).join('');
   // Ensure news panel is always in DOM
   if(!document.getElementById('news-panel')){
@@ -9692,11 +9786,14 @@ function groveCardHtml(p){ return `
               <div style="text-align:right"><div class="grove-k">Worth</div><div class="grove-v" id="gp-${p.id}-v"></div><div class="grove-since" id="gp-${p.id}-since"></div></div>
             </div>
             <div><div class="grove-next" id="gp-${p.id}-next"></div><div class="grove-bar"><i id="gp-${p.id}-bar" style="background:${p.color}"></i></div></div>
-            <div class="grove-plan" style="--acc:${p.color}" id="gp-${p.id}-plan">
-              <label for="gp-${p.id}-slider">Planning to add each month <b id="gp-${p.id}-mo"></b></label>
-              <input type="range" id="gp-${p.id}-slider" min="0" max="${p.max}" step="25">
-              <div class="grove-proj" id="gp-${p.id}-proj"></div>
-            </div>
+            <details class="grove-plan-wrap"${window.innerWidth>=900?' open':''}>
+              <summary>Monthly plan <b id="gp-${p.id}-mo"></b></summary>
+              <div class="grove-plan" style="--acc:${p.color}" id="gp-${p.id}-plan">
+                <label for="gp-${p.id}-slider">Drag to plan what you add each month</label>
+                <input type="range" id="gp-${p.id}-slider" min="0" max="${p.max}" step="25">
+                <div class="grove-proj" id="gp-${p.id}-proj"></div>
+              </div>
+            </details>
             <div id="gp-${p.id}-cta"></div>
           </div>
         </div>`; }
@@ -9773,7 +9870,7 @@ function renderGrove(){
         <button type="button" class="grove-tbtn primary" onclick="groveDemoAdvance(1)">Next month</button>
         <button type="button" class="grove-tbtn" onclick="groveDemoAdvance(12)">Jump a year</button>
         <button type="button" class="grove-tbtn" id="grove-auto" aria-pressed="false" onclick="groveDemoAuto()">Autopilot</button>
-        <div class="grove-time-msg" id="grove-time-msg">Move time forward to watch the grove grow. Each month adds the amounts on the sliders and a month of simulated trading. The market also moves one trading day every few seconds while you watch, so bulls and bears come and go.</div>
+        <div class="grove-time-msg" id="grove-time-msg">Move time forward to watch the grove grow. Each month adds your planned deposits and a month of pretend trading.</div>
       </div>` : ''}
       ${groveSectionHtml('Registered accounts', visiblePlots.filter(p=>!p.optional))}
       ${visiblePlots.some(p=>p.optional) ? groveSectionHtml('Taxable, crypto and precious metals', visiblePlots.filter(p=>p.optional))
@@ -9786,7 +9883,7 @@ function renderGrove(){
           <div style="min-width:0"><b>${b.name}</b><span>${b.desc}</span></div>
         </div>`).join('')}
       </div>
-      <div class="grove-ref" id="grove-ref"></div>`;
+      <details class="grove-ref-wrap"><summary>Invite friends <span>Unlock four upgrades for your grove</span></summary><div class="grove-ref" id="grove-ref"></div></details>`;
     _grove.plots = {};
     visiblePlots.forEach(p=>{
       const P = _grove.plots[p.id] = { def:p, parts:[], pulse:0, flash:0 };
@@ -13479,6 +13576,7 @@ function renderAll(){
   renderPortfolio();
   renderAllocator();
   try{ ckRender(); }catch(e){ console.warn('check-up', e); }
+  try{ ivGlance(); let t='grove'; try{ t=sessionStorage.getItem('qs_ivtab')||'grove'; }catch(e){} ivTab(t,true); }catch(e){ console.warn('iv tabs', e); }
   renderTrades();
   renderBuyFinancesSummary();
   calcPaycheck();
@@ -13582,7 +13680,40 @@ function lpShowSignup(){
   document.getElementById('auth-screen').style.display='flex';
   showCreate();
 }
-function ivJump(id){ const el=document.getElementById(id); if(!el) return; window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+window.scrollY-118), behavior: pitReduce?'auto':'smooth'}); }
+// ── Investments page: tabs and the grove-at-a-glance strip ──
+function ivTab(t, quiet){
+  const pg=document.getElementById('page-investments'); if(!pg) return;
+  if(!['grove','holdings','stocks','trades'].includes(t)) t='grove';
+  pg.dataset.ivtab=t; try{ sessionStorage.setItem('qs_ivtab',t); }catch(e){}
+  pg.querySelectorAll('.iv-tabs button').forEach(b=>{ const on=b.dataset.t===t; b.classList.toggle('on',on); b.setAttribute('aria-selected',on); });
+  if(t==='trades') document.getElementById('iv-trades')?.classList.add('open');
+  if(t==='grove'){ try{ groveSize(); groveStart(); }catch(e){} }
+  if(t==='stocks'){ try{ ckRender(); }catch(e){} }
+  if(!quiet){ const bar=pg.querySelector('.iv-tabs'); if(bar && bar.getBoundingClientRect().top<0) window.scrollTo({top:bar.getBoundingClientRect().top+window.scrollY-70}); try{ if(typeof QA!=='undefined') QA.log('iv_tab',{t}); }catch(e){} }
+}
+function ivJump(id){ ivTab({grove:'grove','alloc-accounts':'holdings','ck-mount':'stocks','iv-trades':'trades'}[id]||'grove'); }
+function ivGlancePick(id){
+  ivTab('grove');
+  setTimeout(()=>{ const el=document.getElementById('gp-'+id); if(!el) return;
+    const row=el.parentElement; if(row && row.scrollWidth>row.clientWidth) row.scrollLeft=el.offsetLeft-row.offsetLeft-12;
+    window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+window.scrollY-130), behavior:pitReduce?'auto':'smooth'}); },60);
+}
+// one small live picture per plot, so the top of the page shows the whole grove
+function ivGlance(){
+  const m=document.getElementById('iv-glance'); if(!m || typeof groveShareStats!=='function') return;
+  let S; try{ S=groveShareStats(); }catch(e){ return; }
+  const plots=S.plots.filter(p=>!p.optional || S.tot[p.id].has);
+  if(!plots.length){ m.innerHTML=''; return; }
+  const sig=plots.map(p=>p.id+':'+Math.round(S.tot[p.id].contrib/50)+':'+Math.round(S.tot[p.id].value/50)).join('|')+'|'+(_grove.ph||'')+'|'+_grove.offset;
+  if(m.dataset.sig===sig) return; m.dataset.sig=sig;
+  m.innerHTML=plots.map(p=>{ const t=S.tot[p.id], gain=t.value-t.contrib;
+    return `<button type="button" class="iv-g" onclick="ivGlancePick('${p.id}')" aria-label="${p.name}: $${Math.round(t.value).toLocaleString('en-CA')}">
+      <span class="iv-g-art" id="ivg-${p.id}"></span>
+      <span class="iv-g-txt"><i style="background:${p.color}">${p.tag}</i><b>${t.has||t.value>0?fmt(t.value):'Not started'}</b>
+      <em class="${gain>=0?'up':'down'}">${t.contrib>0?(gain>=0?'+':'')+fmt(gain):groveLevelText(p,t.contrib)}</em></span></button>`; }).join('');
+  plots.forEach((p,i)=>setTimeout(()=>{ try{ const host=document.getElementById('ivg-'+p.id); if(!host) return;
+    const cv=groveShareTile(p,200,124,{scale:Math.min(2,window.devicePixelRatio||1)}); host.appendChild(cv); }catch(e){ console.warn('glance',p.id,e); } }, 30+i*40));
+}
 function lpBackHome(){
   document.getElementById('auth-screen').style.display='none';
   const lp=document.getElementById('landing-page'); lp.classList.remove('hidden'); lp.scrollTop=0;
