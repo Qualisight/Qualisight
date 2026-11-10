@@ -418,6 +418,45 @@ header{
 .qi-t td{padding:0.4rem;border-bottom:1px solid var(--border);word-break:break-word}
 @media(max-width:700px){.qi-kpis{grid-template-columns:1fr 1fr}.qi-grid{grid-template-columns:1fr}.qi-sheet{padding:1.1rem}}
 
+/* Housing game: the road home */
+.hq{background:var(--card);border:1px solid var(--border2);border-radius:22px;overflow:hidden;margin-bottom:1.2rem}
+.hq-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.1rem 1.25rem 0.95rem}
+.hq-big{font-family:var(--font-display);font-weight:800;font-size:3rem;line-height:0.95;letter-spacing:-0.045em;color:var(--accent);font-variant-numeric:tabular-nums}
+.hq-big-sub{font-size:0.95rem;color:var(--text);margin-top:0.4rem;font-weight:600}
+.hq-np{display:inline-flex;flex-direction:column;align-items:flex-end;background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.45);color:#fde68a;border-radius:14px;padding:0.4rem 0.8rem;font-weight:800;font-size:0.95rem;white-space:nowrap}
+.hq-np small{font-size:0.66rem;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em}
+.hq-np.done{color:#86efac;background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.45)}
+.hq-stage{position:relative;height:340px;background:#5aa9e6}
+.hq-stage canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.hq-body{padding:1.1rem 1.25rem 1.2rem;display:flex;flex-direction:column;gap:0.9rem}
+.hq-inputs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.7rem}
+.hq-f{display:flex;flex-direction:column;gap:0.3rem;min-width:0}
+.hq-f>span{font-size:0.74rem;color:var(--muted)}
+.hq-in{display:flex;align-items:center;background:var(--card2);border:1px solid var(--border);border-radius:10px;padding:0 0.65rem}
+.hq-in:focus-within{border-color:rgba(74,222,128,0.45)}
+.hq-in i{font-style:normal;color:var(--muted);font-size:0.9rem}
+.hq-in input{flex:1;min-width:0;background:transparent;border:none;outline:none;color:var(--text);font:600 0.95rem var(--font-body);padding:0.55rem 0.35rem;font-variant-numeric:tabular-nums}
+.hq-fhsa{display:flex;flex-direction:column;justify-content:center;min-height:2.45rem}
+.hq-fhsa b{font-size:0.95rem;font-variant-numeric:tabular-nums} .hq-fhsa small{font-size:0.7rem;color:var(--muted)}
+.hq-dep{display:flex;align-items:center;gap:0.45rem;flex-wrap:wrap}
+.hq-dep span{font-size:0.82rem;font-weight:600;margin-right:0.25rem}
+.hq-dep button{background:rgba(74,222,128,0.1);border:1px solid rgba(74,222,128,0.4);color:#86efac;font:700 0.82rem var(--font-body);border-radius:999px;padding:0.4rem 0.85rem;cursor:pointer}
+.hq-dep button:hover{background:#4ade80;color:#06140b}
+.hq-msg{font-size:0.88rem;color:var(--muted);line-height:1.5}
+.hq-msg b{color:var(--text)}
+.hq-stops{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.5rem}
+.hq-stop{display:flex;gap:0.55rem;align-items:flex-start;background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:0.55rem 0.65rem}
+.hq-stop.done{border-color:rgba(74,222,128,0.4)}
+.hq-stop.next{border-color:rgba(251,191,36,0.55);background:rgba(251,191,36,0.06)}
+.hq-stop-n{width:22px;height:22px;flex-shrink:0;border-radius:50%;background:var(--card);border:1.5px solid var(--border2);font-size:0.72rem;font-weight:800;display:flex;align-items:center;justify-content:center;color:var(--muted)}
+.hq-stop.done .hq-stop-n{background:#22c55e;border-color:#22c55e;color:#fff}
+.hq-stop.next .hq-stop-n{background:#fbbf24;border-color:#fbbf24;color:#1a1206}
+.hq-stop-main{display:flex;flex-direction:column;min-width:0}
+.hq-stop-main b{font-size:0.8rem;line-height:1.25}
+.hq-stop-main span{font-size:0.7rem;color:var(--muted);line-height:1.3;margin-top:0.1rem;font-variant-numeric:tabular-nums}
+@media(max-width:820px){.hq-inputs{grid-template-columns:1fr 1fr}.hq-stops{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.hq-stage{height:400px}.hq-big{font-size:2.5rem}.hq-head{padding:1rem}.hq-body{padding:1rem}}
+
 /* Budget game: coin jars */
 .bg{background:var(--card);border:1px solid var(--border2);border-radius:22px;overflow:hidden;margin-bottom:1rem}
 .bg-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1rem 1.2rem}
@@ -4321,6 +4360,9 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
     <div class="hero-title" style="font-size:1.3rem">Rent vs Buy</div>
     <div class="hero-sub" style="margin:0">A decision tool built for young Canadians, based on your actual income and finances.</div>
   </div>
+
+  <!-- Housing game: the road home -->
+  <div id="hq-mount"></div>
 
   <!-- Mode toggle -->
   <div class="rvb-mode-row" id="rvb-mode-row">
@@ -12701,6 +12743,321 @@ async function waitForPremium(){
   showToast('<strong>Still confirming your payment.</strong><br>Refresh in a minute. If nothing changes, email hello@qualisight.ca.');
 }
 
+// ══════════════════════════════════════════
+// HOUSING GAME: the road home
+// A winding road up to your future house. Your car drives along it as your down
+// payment grows, passing real Canadian milestones (FHSA, minimum down, closing costs,
+// the lender's debt test, 10%, 20% with no mortgage insurance) until you're ready for the keys.
+// ══════════════════════════════════════════
+const _hq = { built:false, visible:true, raf:null, last:0, W:0, H:340, parts:[], floats:[], banner:null, confetti:0, carP:null };
+const hqReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const HQ_FONT = 'Geist,Inter,system-ui,sans-serif';
+function hqRR(ctx,x,y,w,h,r){ ctx.beginPath(); if(ctx.roundRect) ctx.roundRect(x,y,w,h,r); else ctx.rect(x,y,w,h); }
+function hqIsDemo(){ return !!(typeof currentUser!=='undefined' && currentUser && currentUser.isDemo); }
+// Ontario land transfer tax, less the first-time buyer refund (up to $4,000), plus about $2,500 for legal fees, title insurance and an inspection
+function hqClosing(price){
+  const b=[[55000,0.005],[250000,0.01],[400000,0.015],[2000000,0.02],[Infinity,0.025]];
+  let ltt=0, prev=0; for(const [cap,r] of b){ if(price>prev){ ltt+=(Math.min(price,cap)-prev)*r; } prev=cap; }
+  return Math.max(0,ltt-4000)+2500;
+}
+function hqFhsaBalance(){
+  const ids=new Set((state.accounts||[]).filter(a=>a.type==='FHSA').map(a=>a.id));
+  return (state.portfolio||[]).filter(h=>ids.has(h.accountId)).reduce((s,h)=>s+(h.price||0)*(h.shares||0),0);
+}
+function hqFund(){
+  if(!state.homeFund){
+    const p = state.rental && state.rental.homePrice ? state.rental.homePrice : 0;
+    state.homeFund = hqIsDemo() ? {price:650000, saved:14000, monthly:900, reached:[]} : {price:p, saved:0, monthly:0, reached:null};
+  }
+  return state.homeFund;
+}
+function hqData(){
+  const hf=hqFund(), price=hf.price||0, fhsa=hqFhsaBalance(), hasFhsa=(state.accounts||[]).some(a=>a.type==='FHSA');
+  const saved=(hf.saved||0)+fhsa;
+  const closing=price?hqClosing(price):0, minD=price?minDownPayment(price):0;
+  const total=price?price*0.2+closing:1;
+  // lender's debt test (TDS) at the stress-test rate, with the down payment you have (at least the minimum)
+  let tds=null; const gross=state.grossIncome||0;
+  if(price && gross>0){
+    const down=Math.max(minD,Math.min(saved,price*0.2)), principal=price-down;
+    const prem=cmhcPremium(price,down)*principal;
+    const mort=monthlyMortgage(principal+prem, qualifyingRate(5.0), 25);
+    const tax=price*0.01/12, heat=100, debts=(state.debts||[]).reduce((s,d)=>s+((d.balance||0)>0?(d.min||0):0),0);
+    tds=(mort+tax+heat+debts)/(gross/12)*100;
+  }
+  const lenderOk = tds!=null && tds<=TDS_MAX;
+  const stops=[
+    {id:'target', name:'Pick your target', short:'Target', desc:'Set the price of the home you want', done:price>0, kind:'flag'},
+    {id:'fhsa', name:'Open an FHSA', short:'FHSA', desc:'Tax-free first home savings account, up to $8,000 a year', done:hasFhsa&&fhsa>0, kind:'flag', hint: hasFhsa?'Add FHSA holdings on the Investments page':'Add an FHSA on the Investments page'},
+    {id:'min', name:'Minimum down payment', short:'Min down', desc:`5% of the first $500k, 10% of the rest`, amt:minD, kind:'money'},
+    {id:'closing', name:'Closing costs covered', short:'Closing', desc:'Land transfer tax (after the first-time rebate), legal fees and inspection', amt:minD+closing, kind:'money'},
+    {id:'lender', name:'Pass the lender\'s debt test', short:'Lender', desc:`Total debt payments under ${TDS_MAX}% of income at the stress-test rate`, done:lenderOk, kind:'flag', hint: gross>0 ? (tds!=null?`Right now: ${Math.round(tds)}%`:'') : 'Add your income before tax in the Buy calculator below'},
+    {id:'ten', name:'10% down', short:'10%', desc:'Lower mortgage insurance premium', amt:price*0.1+closing, kind:'money'},
+    {id:'twenty', name:'20% down', short:'20%', desc:'No mortgage insurance at all', amt:price*0.2+closing, kind:'money'},
+    {id:'keys', name:'Ready for the keys', short:'Keys', desc:'20% down, closing costs saved, and you pass the debt test', kind:'flag'},
+  ];
+  stops.forEach(s=>{ if(s.kind==='money') s.done = price>0 && saved>=s.amt-0.5; });
+  stops[7].done = stops[6].done && lenderOk;
+  // where each stop sits on the road
+  const pos={target:0.04, fhsa:0.1};
+  if(price){ pos.min=Math.max(0.16,minD/total); pos.closing=Math.max(pos.min+0.07,(minD+closing)/total); pos.ten=Math.max(pos.closing+0.14,(price*0.1+closing)/total); pos.lender=(pos.closing+pos.ten)/2; pos.twenty=0.9; pos.keys=0.985; }
+  else { pos.min=0.25; pos.closing=0.35; pos.lender=0.47; pos.ten=0.6; pos.twenty=0.9; pos.keys=0.985; }
+  stops.forEach(s=>s.pos=pos[s.id]);
+  const prog = price? Math.max(0,Math.min(1,saved/total)) : 0;
+  // car position: follow the money, mapped piecewise so it lines up with the money stops
+  const money=stops.filter(s=>s.kind==='money');
+  let carP=0.02;
+  if(price){ let prevAmt=0, prevPos=0.02; for(const s of money){ if(saved>=s.amt){ prevAmt=s.amt; prevPos=s.pos; continue; } carP=prevPos+(s.pos-prevPos)*Math.max(0,(saved-prevAmt)/Math.max(1,s.amt-prevAmt)); break; } if(saved>=money[money.length-1].amt) carP=stops[7].done?0.985:0.9; }
+  const next=stops.find(s=>!s.done);
+  return {hf,price,fhsa,hasFhsa,saved,closing,minD,total,tds,lenderOk,stops,prog,carP,next,gross};
+}
+
+function hqMonthsTo(amt,D){ const m=D.hf.monthly||0; const need=amt-D.saved; if(need<=0) return 0; if(m<=0) return null; return Math.ceil(need/m); }
+function hqDateIn(m){ const d=new Date(); d.setMonth(d.getMonth()+m); return d.toLocaleDateString('en-CA',{month:'short',year:'numeric'}); }
+
+function renderHomeQuest(){
+  const mount=document.getElementById('hq-mount'); if(!mount) return;
+  const D=hqData(); _hq.D=D;
+  hqCelebrate(D);
+  if(!_hq.built || !mount.querySelector('.hq')){
+    mount.innerHTML=`
+    <div class="hq">
+      <div class="hq-head">
+        <div>
+          <div class="hq-big" id="hq-big">0%</div>
+          <div class="hq-big-sub" id="hq-big-sub">of the way to your keys</div>
+        </div>
+        <div class="hq-next-pill" id="hq-next-pill"></div>
+      </div>
+      <div class="hq-stage" id="hq-stage" role="img" aria-label="Your road home"><canvas></canvas></div>
+      <div class="hq-body">
+        <div class="hq-inputs">
+          <label class="hq-f"><span>Target home price</span><div class="hq-in"><i>$</i><input id="hq-price" type="number" inputmode="numeric" placeholder="650000"></div></label>
+          <label class="hq-f"><span>Saved for it (outside FHSA)</span><div class="hq-in"><i>$</i><input id="hq-saved" type="number" inputmode="numeric" placeholder="0"></div></label>
+          <label class="hq-f"><span>Saving per month</span><div class="hq-in"><i>$</i><input id="hq-monthly" type="number" inputmode="numeric" placeholder="0"></div></label>
+          <div class="hq-f"><span>In your FHSA</span><div class="hq-fhsa" id="hq-fhsa"></div></div>
+        </div>
+        <div class="hq-dep">
+          <span>Add to your home fund</span>
+          <button type="button" onclick="hqDeposit(100)">+$100</button>
+          <button type="button" onclick="hqDeposit(500)">+$500</button>
+          <button type="button" onclick="hqDeposit(1000)">+$1,000</button>
+        </div>
+        <div class="hq-msg" id="hq-msg"></div>
+        <div class="hq-stops" id="hq-stops"></div>
+      </div>
+    </div>`;
+    _hq.built=true;
+    _hq.cv=mount.querySelector('canvas'); _hq.ctx=_hq.cv.getContext('2d');
+    const bind=(id,key)=>{ const el=document.getElementById(id); el.addEventListener('change',()=>{ const v=Math.max(0,parseFloat(el.value)||0); hqFund()[key]=v; if(!hqIsDemo()) save(); renderHomeQuest(); if(typeof renderJourney==='function') try{ renderJourney(); }catch(e){} }); el.addEventListener('input',()=>{ const v=Math.max(0,parseFloat(el.value)||0); hqFund()[key]=v; _hq.D=hqData(); hqText(_hq.D); }); };
+    bind('hq-price','price'); bind('hq-saved','saved'); bind('hq-monthly','monthly');
+    const st=document.getElementById('hq-stage');
+    if('ResizeObserver' in window){ _hq.ro&&_hq.ro.disconnect(); _hq.ro=new ResizeObserver(()=>{ hqSize(); hqDraw(0); }); _hq.ro.observe(st); }
+    if('IntersectionObserver' in window){ _hq.io&&_hq.io.disconnect(); _hq.io=new IntersectionObserver(en=>{ _hq.visible=en[0].isIntersecting; if(_hq.visible) hqStart(); }); _hq.io.observe(st); }
+    hqSize(); _hq.carP=D.carP;
+  }
+  const setv=(id,v)=>{ const el=document.getElementById(id); if(el && document.activeElement!==el) el.value = v ? Math.round(v) : ''; };
+  setv('hq-price',D.hf.price); setv('hq-saved',D.hf.saved); setv('hq-monthly',D.hf.monthly);
+  hqText(D);
+  hqStart();
+}
+function hqDeposit(n){
+  const hf=hqFund(); hf.saved=(hf.saved||0)+n;
+  _hq.floats.push({txt:`+${fmtW(n)}`,life:2,max:2});
+  if(!hqIsDemo()) save();
+  renderHomeQuest();
+}
+function hqCelebrate(D){
+  const hf=D.hf, demo=hqIsDemo(), done=D.stops.filter(s=>s.done).map(s=>s.id);
+  if(demo){ hf.reached=done; return; }
+  if(!Array.isArray(hf.reached)){ hf.reached=done; return; } // first time: no fireworks for what's already true
+  const fresh=D.stops.filter(s=>s.done && !hf.reached.includes(s.id));
+  hf.reached=done;
+  if(D.stops[7].done && !state.homeGoalReached){ state.homeGoalReached=true; try{ checkJourneyMilestone&&checkJourneyMilestone(); }catch(e){} }
+  if(fresh.length){
+    const s=fresh[fresh.length-1];
+    _hq.banner={txt: s.id==='keys' ? 'Ready for the keys!' : `Stop reached: ${s.name}`, life:3}; _hq.confetti = s.id==='keys'?4:2;
+    if(typeof showToast==='function') setTimeout(()=>showToast(`<strong>${s.id==='keys'?'You\'re ready for the keys!':`Stop reached: ${s.name}`}</strong><br>${s.desc}.`),600);
+    clearTimeout(_hq.saveT); _hq.saveT=setTimeout(()=>{ try{ save(); }catch(e){} },60);
+  }
+}
+function hqText(D){
+  const set=(id,h)=>{ const e=document.getElementById(id); if(e) e.innerHTML=h; };
+  const pct=Math.round(D.prog*100), keys=D.stops[7].done;
+  set('hq-big', !D.price ? '—' : keys ? 'Keys ready' : `${pct}%`);
+  set('hq-big-sub', !D.price ? 'Set a target home price to start your road' : keys ? `You can buy your ${fmtW(D.price)} home` : `of the way to your keys on a ${fmtW(D.price)} home`);
+  set('hq-fhsa', D.hasFhsa ? `<b>${fmtW(D.fhsa)}</b><small>from your Investments page</small>` : `<b>$0</b><small>Add an FHSA on Investments</small>`);
+  const n=D.next;
+  set('hq-next-pill', !D.price ? '' : keys ? '<span class="hq-np done">At the front door</span>' : `<span class="hq-np"><small>Next stop</small>${n.short}</span>`);
+  let msg='';
+  if(!D.price) msg='Enter the price of the home you want. Your road and every stop on it are worked out from there.';
+  else if(keys) msg=`You have 20% down plus closing costs, and you pass the debt test. Time to talk to a mortgage broker.`;
+  else if(n.kind==='money'){ const m=hqMonthsTo(n.amt,D); msg=`<b>${fmtW(n.amt-D.saved)}</b> to the next stop, ${n.name.toLowerCase()}.${m!=null?` At ${fmtW(D.hf.monthly)} a month you'll get there by <b>${hqDateIn(m)}</b>.`:' Add how much you save each month to see when you\'ll get there.'}`;
+    const k=hqMonthsTo(D.stops[6].amt,D); if(k) msg+=` 20% down by ${hqDateIn(k)}.`; }
+  else msg=`<b>Next stop: ${n.name}.</b> ${n.desc}.${n.hint?` ${n.hint}.`:''}`;
+  set('hq-msg', msg);
+  set('hq-stops', D.stops.map((s,i)=>`<div class="hq-stop ${s.done?'done':''} ${n&&s.id===n.id?'next':''}">
+      <div class="hq-stop-n">${s.done?'<svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>':i+1}</div>
+      <div class="hq-stop-main"><b>${s.name}</b><span>${s.kind==='money'&&D.price?`${fmtW(s.amt)}`:(s.hint&&!s.done?s.hint:s.desc)}</span></div></div>`).join(''));
+  const st=document.getElementById('hq-stage'); if(st) st.setAttribute('aria-label', D.price?`Your road home: ${D.stops.filter(s=>s.done).length} of 8 stops reached, ${pct}% of the way to your keys.`:'Your road home. Set a target price to begin.');
+}
+
+function hqSize(){ if(!_hq.cv) return; const st=_hq.cv.parentElement, dpr=Math.min(2,window.devicePixelRatio||1); _hq.W=st.clientWidth; _hq.H=st.clientHeight; _hq.cv.width=Math.round(_hq.W*dpr); _hq.cv.height=Math.round(_hq.H*dpr); _hq.ctx.setTransform(dpr,0,0,dpr,0,0); _hq.lut=null; }
+function hqStart(){
+  if(hqReduce){ hqDraw(0); return; }
+  if(_hq.raf) return; _hq.last=performance.now();
+  const loop=now=>{ const page=document.getElementById('page-rental');
+    if(!_hq.visible||!_hq.cv||!_hq.cv.isConnected||(page&&!page.classList.contains('active'))){ _hq.raf=null; return; }
+    const dt=Math.min(0.05,(now-_hq.last)/1000); _hq.last=now; hqDraw(dt); _hq.raf=requestAnimationFrame(loop); };
+  _hq.raf=requestAnimationFrame(loop);
+}
+
+// the road: a smooth curve from the bottom-left up to the house, sampled by arc length
+function hqRoad(W,H,k){
+  if(_hq.lut && _hq.lut.W===W && _hq.lut.H===H) return _hq.lut;
+  const small=W<560;
+  const P = small
+    ? [[0.08,0.92],[0.3,0.95],[0.6,0.9],[0.86,0.8],[0.84,0.64],[0.5,0.62],[0.18,0.52],[0.26,0.38],[0.5,0.31]]
+    : [[0.02,0.92],[0.18,0.94],[0.32,0.76],[0.24,0.62],[0.4,0.56],[0.58,0.66],[0.68,0.5],[0.62,0.38],[0.76,0.32]];
+  const pts=P.map(([x,y])=>[x*W,y*H]);
+  // Catmull-Rom through the points
+  const samp=[];
+  for(let i=0;i<pts.length-1;i++){
+    const p0=pts[Math.max(0,i-1)], p1=pts[i], p2=pts[i+1], p3=pts[Math.min(pts.length-1,i+2)];
+    for(let s=0;s<20;s++){ const t=s/20, t2=t*t, t3=t2*t;
+      samp.push([0.5*((2*p1[0])+(-p0[0]+p2[0])*t+(2*p0[0]-5*p1[0]+4*p2[0]-p3[0])*t2+(-p0[0]+3*p1[0]-3*p2[0]+p3[0])*t3),
+                 0.5*((2*p1[1])+(-p0[1]+p2[1])*t+(2*p0[1]-5*p1[1]+4*p2[1]-p3[1])*t2+(-p0[1]+3*p1[1]-3*p2[1]+p3[1])*t3)]); } }
+  samp.push(pts[pts.length-1]);
+  const len=[0]; for(let i=1;i<samp.length;i++) len.push(len[i-1]+Math.hypot(samp[i][0]-samp[i-1][0],samp[i][1]-samp[i-1][1]));
+  const L=len[len.length-1];
+  const at=p=>{ const d=Math.max(0,Math.min(1,p))*L; let i=1; while(i<len.length-1 && len[i]<d) i++; const f=(d-len[i-1])/Math.max(1e-6,len[i]-len[i-1]); const a=samp[i-1], b=samp[i]; return {x:a[0]+(b[0]-a[0])*f, y:a[1]+(b[1]-a[1])*f, ang:Math.atan2(b[1]-a[1],b[0]-a[0])}; };
+  _hq.lut={W,H,samp,at,end:pts[pts.length-1]};
+  return _hq.lut;
+}
+
+function hqDraw(dt){
+  const ctx=_hq.ctx, D=_hq.D; if(!ctx||!D||!_hq.W) return;
+  const W=_hq.W, H=_hq.H, still=hqReduce, small=W<560;
+  const k=Math.max(0.8,Math.min(1.3,H/340)), t=still?3:performance.now()/1000;
+  const keys=D.stops[7].done;
+  ctx.clearRect(0,0,W,H);
+  // ── sky + sun + clouds ──
+  const sky=ctx.createLinearGradient(0,0,0,H*0.5); sky.addColorStop(0,'#5aa9e6'); sky.addColorStop(1,'#cfe9f7');
+  ctx.fillStyle=sky; ctx.fillRect(0,0,W,H);
+  const sx=W*0.12, sy=H*0.13; const sg=ctx.createRadialGradient(sx,sy,4,sx,sy,90*k); sg.addColorStop(0,'rgba(255,240,180,0.9)'); sg.addColorStop(1,'rgba(255,240,180,0)'); ctx.fillStyle=sg; ctx.fillRect(0,0,W,H*0.5);
+  ctx.fillStyle='#fff3b0'; ctx.beginPath(); ctx.arc(sx,sy,18*k,0,Math.PI*2); ctx.fill();
+  for(let i=0;i<4;i++){ const span=W+200*k, x=((pitRand(i+40)*span+(still?0:t)*(5+i*2)*k)%span)-100*k, y=H*(0.06+0.08*i)+pitRand(i)*8; const s=k*(0.7+0.4*pitRand(i+2));
+    ctx.fillStyle='rgba(255,255,255,0.92)'; ctx.beginPath(); [[0,0,12],[14,-6,15],[30,0,11],[15,4,11]].forEach(([dx,dy,r])=>{ ctx.moveTo(x+dx*s+r*s,y+dy*s); ctx.arc(x+dx*s,y+dy*s,r*s,0,Math.PI*2); }); ctx.fill(); }
+  if(!still){ ctx.strokeStyle='rgba(40,50,70,0.6)'; ctx.lineWidth=1.4*k; ctx.lineCap='round'; for(let i=0;i<3;i++){ const bx=((t*20*k+i*50*k)%(W+80))-40, by=H*0.16+i*8*k+Math.sin(t*1.8+i)*3*k, f=Math.sin(t*8+i)*3*k; ctx.beginPath(); ctx.moveTo(bx-6*k,by-f); ctx.quadraticCurveTo(bx-2*k,by-3*k,bx,by); ctx.quadraticCurveTo(bx+2*k,by-3*k,bx+6*k,by-f); ctx.stroke(); } }
+  // ── hills ──
+  const hill=(base,amp,f,ph,c1,c2)=>{ const g=ctx.createLinearGradient(0,H*base-amp,0,H); g.addColorStop(0,c1); g.addColorStop(1,c2); ctx.fillStyle=g; ctx.beginPath(); ctx.moveTo(0,H); for(let x=0;x<=W+8;x+=8) ctx.lineTo(x,H*base-amp*(0.5+0.5*Math.sin(x*f/k+ph))); ctx.lineTo(W,H); ctx.closePath(); ctx.fill(); };
+  hill(0.42,26*k,0.008,1,'#8fcf9a','#6fb57e');
+  hill(0.5,30*k,0.011,3,'#6cbf6f','#4f9d58');
+  hill(0.62,22*k,0.006,5,'#5cb35f','#3f8a47');
+  // ── road ──
+  const R=hqRoad(W,H,k);
+  // trees and little houses away from the road
+  const near=(x,y,d)=>R.samp.some(([px,py])=>Math.hypot(px-x,py-y)<d);
+  for(let i=0;i<(small?14:22);i++){ const x=pitRand(i*3+500)*W, y=H*(0.45+0.52*pitRand(i*3+501)); if(near(x,y,26*k) || Math.hypot(x-R.end[0],y-R.end[1])<90*k) continue;
+    const s=k*(0.6+0.5*pitRand(i)); if(pitRand(i+77)<0.75){ ctx.fillStyle='#6b4a2e'; ctx.fillRect(x-1.5*s,y-10*s,3*s,10*s); ctx.fillStyle=pitRand(i+5)<0.5?'#2f8f4e':'#3aa35b'; ctx.beginPath(); ctx.arc(x,y-15*s,9*s,0,Math.PI*2); ctx.arc(x-5*s,y-11*s,6*s,0,Math.PI*2); ctx.arc(x+5*s,y-11*s,6*s,0,Math.PI*2); ctx.fill(); }
+    else { ctx.fillStyle=['#fde68a','#bfdbfe','#fecaca'][i%3]; ctx.fillRect(x-8*s,y-11*s,16*s,11*s); ctx.fillStyle='#9a3412'; ctx.beginPath(); ctx.moveTo(x-10*s,y-11*s); ctx.lineTo(x,y-19*s); ctx.lineTo(x+10*s,y-11*s); ctx.fill(); ctx.fillStyle='#475569'; ctx.fillRect(x-2*s,y-6*s,4*s,6*s); } }
+  ctx.lineCap='round'; ctx.lineJoin='round';
+  const stroke=(w,c)=>{ ctx.strokeStyle=c; ctx.lineWidth=w; ctx.beginPath(); R.samp.forEach(([x,y],i)=>i?ctx.lineTo(x,y):ctx.moveTo(x,y)); ctx.stroke(); };
+  stroke(24*k,'#d6c9a8'); stroke(19*k,'#5b6472');
+  // driven part of the road glows green
+  const carTarget=D.carP; if(_hq.carP==null) _hq.carP=carTarget; _hq.carP += (carTarget-_hq.carP)*(still?1:Math.min(1,dt*1.8));
+  const moving=Math.abs(carTarget-_hq.carP)>0.002;
+  ctx.setLineDash([7*k,9*k]); stroke(1.8*k,'rgba(255,255,255,0.85)'); ctx.setLineDash([]);
+  { const n=Math.max(2,Math.round(_hq.carP*R.samp.length)); ctx.strokeStyle='rgba(74,222,128,0.55)'; ctx.lineWidth=5*k; ctx.beginPath(); for(let i=0;i<n && i<R.samp.length;i++){ const [x,y]=R.samp[i]; i?ctx.lineTo(x,y):ctx.moveTo(x,y); } ctx.stroke(); }
+
+  // ── the house at the end ──
+  const [ex,ey]=R.end; hqHouse(ctx,ex+40*k*(small?0.7:1),ey+4*k,k*(small?1.05:1.3),keys,D.prog,t,still);
+
+  // ── stops ──
+  D.stops.forEach((s,i)=>{
+    const p=R.at(s.pos), isNext=D.next&&D.next.id===s.id;
+    const ox=p.x+Math.sin(p.ang)*20*k, oy=p.y-Math.cos(p.ang)*20*k-2*k; // beside the road
+    const sx2=ox, sy2=Math.min(oy,p.y-8*k);
+    ctx.strokeStyle='#4b5563'; ctx.lineWidth=2*k; ctx.beginPath(); ctx.moveTo(sx2,sy2+2*k); ctx.lineTo(sx2,sy2+16*k); ctx.stroke();
+    const r=(isNext?11.5:10)*k;
+    if(isNext && !still){ ctx.fillStyle=`rgba(251,191,36,${0.25+0.2*Math.sin(t*4)})`; ctx.beginPath(); ctx.arc(sx2,sy2-6*k,r+6*k,0,Math.PI*2); ctx.fill(); }
+    ctx.fillStyle=s.done?'#22c55e':isNext?'#fbbf24':'#ffffff'; ctx.beginPath(); ctx.arc(sx2,sy2-6*k,r,0,Math.PI*2); ctx.fill();
+    ctx.strokeStyle=s.done?'#15803d':isNext?'#b45309':'#9ca3af'; ctx.lineWidth=1.6*k; ctx.stroke();
+    if(s.done){ ctx.strokeStyle='#fff'; ctx.lineWidth=2.4*k; ctx.beginPath(); ctx.moveTo(sx2-4*k,sy2-6*k); ctx.lineTo(sx2-1*k,sy2-3*k); ctx.lineTo(sx2+4.5*k,sy2-9.5*k); ctx.stroke(); }
+    else { ctx.fillStyle=isNext?'#1a1206':'#374151'; ctx.font=`800 ${10.5*k}px ${HQ_FONT}`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(String(i+1),sx2,sy2-5.5*k); ctx.textBaseline='alphabetic'; }
+    // label: always for the next stop, and for the rest when there's room
+    if(isNext || !small){
+      const txt=s.short; ctx.font=`700 ${(isNext?11:9.5)*k}px ${HQ_FONT}`; const tw=ctx.measureText(txt).width+12*k, th=(isNext?19:16)*k;
+      const lx=Math.max(3,Math.min(W-tw-3,sx2-tw/2)), ly=sy2-6*k-r-th-3*k;
+      ctx.fillStyle=isNext?'#fbbf24':s.done?'rgba(21,128,61,0.9)':'rgba(17,24,39,0.7)'; hqRR(ctx,lx,ly,tw,th,th/2); ctx.fill();
+      ctx.fillStyle=isNext?'#1a1206':'#fff'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(txt,lx+tw/2,ly+th/2+0.5); ctx.textBaseline='alphabetic';
+    }
+  });
+
+  // ── your car ──
+  const cp=R.at(_hq.carP);
+  hqCar(ctx,cp.x,cp.y,cp.ang,k*(small?1.05:1.25),t,moving,still,keys);
+  if(moving && !still && Math.random()<0.5) _hq.parts.push({dust:1,x:cp.x-Math.cos(cp.ang)*16*k,y:cp.y-Math.sin(cp.ang)*16*k+3*k,vx:-Math.cos(cp.ang)*20*k,vy:-10*k,life:0.7,s:3*k});
+
+  // ── particles, floats, banner ──
+  if(_hq.confetti>0){ _hq.confetti-=dt; if(!still) for(let i=0;i<3;i++) _hq.parts.push({conf:1,x:Math.random()*W,y:-8,vx:(Math.random()-0.5)*80*k,vy:(40+Math.random()*80)*k,life:3.5,c:['#4ade80','#fbbf24','#60a5fa','#f472b6','#fff'][Math.floor(Math.random()*5)],s:(5+Math.random()*4)*k,spin:Math.random()*6}); }
+  _hq.parts=_hq.parts.filter(p=>{ p.life-=dt; if(p.life<=0||p.y>H) return false;
+    if(p.conf){ p.vy+=480*k*dt; p.x+=p.vx*dt; p.y+=p.vy*dt; ctx.save(); ctx.translate(p.x,p.y); ctx.rotate(p.spin+t*6); ctx.fillStyle=p.c; ctx.fillRect(-p.s/2,-p.s/4,p.s,p.s/2); ctx.restore(); return true; }
+    p.x+=p.vx*dt; p.y+=p.vy*dt; p.s+=dt*10*k; ctx.fillStyle=`rgba(200,190,170,${p.life*0.6})`; ctx.beginPath(); ctx.arc(p.x,p.y,p.s,0,Math.PI*2); ctx.fill(); return true; });
+  _hq.floats=_hq.floats.filter(f=>{ f.life-=dt; if(f.life<=0) return false; const u=1-f.life/f.max; ctx.globalAlpha=Math.min(1,f.life/0.5); ctx.font=`800 ${18*k}px ${HQ_FONT}`; ctx.textAlign='center'; ctx.lineWidth=4*k; ctx.strokeStyle='rgba(6,20,11,0.55)'; ctx.strokeText(f.txt,cp.x,cp.y-34*k-u*30*k); ctx.fillStyle='#4ade80'; ctx.fillText(f.txt,cp.x,cp.y-34*k-u*30*k); ctx.globalAlpha=1; return true; });
+  if(!D.price){ ctx.font=`800 ${15*k}px ${HQ_FONT}`; const txt='Set a target price to start your road'; const tw=ctx.measureText(txt).width+30*k; ctx.fillStyle='rgba(8,12,18,0.78)'; hqRR(ctx,W/2-tw/2,H*0.3,tw,34*k,17*k); ctx.fill(); ctx.fillStyle='#fff'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(txt,W/2,H*0.3+17.5*k); ctx.textBaseline='alphabetic'; }
+  if(_hq.banner){ const B=_hq.banner; B.life-=dt; if(B.life<=0) _hq.banner=null; else { ctx.globalAlpha=Math.max(0,Math.min(1,B.life/0.4,(3-B.life)/0.25)); ctx.font=`800 ${15*k}px ${HQ_FONT}`; const tw=ctx.measureText(B.txt).width+34*k; ctx.save(); ctx.shadowColor='rgba(0,0,0,0.35)'; ctx.shadowBlur=12*k; ctx.fillStyle='#4ade80'; hqRR(ctx,W/2-tw/2,H*0.08,tw,36*k,18*k); ctx.fill(); ctx.restore(); ctx.fillStyle='#06140b'; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(B.txt,W/2,H*0.08+18.5*k); ctx.textBaseline='alphabetic'; ctx.globalAlpha=1; } }
+}
+
+function hqHouse(ctx,x,y,s,keys,prog,t,still){
+  ctx.save(); ctx.translate(x,y); ctx.scale(s,s); ctx.lineJoin='round';
+  // lawn + path
+  ctx.fillStyle='#4fae5b'; ctx.beginPath(); ctx.ellipse(0,2,58,10,0,0,Math.PI*2); ctx.fill();
+  // house body
+  ctx.fillStyle='#fdf6e3'; ctx.fillRect(-34,-40,68,40);
+  ctx.fillStyle='rgba(0,0,0,0.06)'; ctx.fillRect(10,-40,24,40);
+  // roof + chimney
+  ctx.fillStyle='#2f6f4e'; ctx.fillRect(16,-66,8,18);
+  ctx.fillStyle='#b4432f'; ctx.beginPath(); ctx.moveTo(-42,-38); ctx.lineTo(0,-70); ctx.lineTo(42,-38); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='rgba(0,0,0,0.12)'; ctx.beginPath(); ctx.moveTo(0,-70); ctx.lineTo(42,-38); ctx.lineTo(30,-38); ctx.closePath(); ctx.fill();
+  // windows (lit when you're ready)
+  const lit=keys?1:0.15+0.5*prog;
+  [[-26,-30],[14,-30]].forEach(([wx,wy])=>{ ctx.fillStyle=`rgba(255,${Math.round(200+40*lit)},${Math.round(110+60*(1-lit))},${0.35+0.65*lit})`; ctx.fillRect(wx,wy,12,11); ctx.strokeStyle='#7c5a3a'; ctx.lineWidth=1.4; ctx.strokeRect(wx,wy,12,11); ctx.beginPath(); ctx.moveTo(wx+6,wy); ctx.lineTo(wx+6,wy+11); ctx.moveTo(wx,wy+5.5); ctx.lineTo(wx+12,wy+5.5); ctx.stroke(); });
+  // door
+  ctx.fillStyle='#22c55e'; hqRR(ctx,-6,-22,12,22,[5,5,0,0]); ctx.fill(); ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.arc(3,-11,1.2,0,Math.PI*2); ctx.fill();
+  // fence
+  ctx.fillStyle='#ffffff'; for(let i=-52;i<=52;i+=7){ if(Math.abs(i)<10) continue; ctx.fillRect(i,-9,3,11); } ctx.fillRect(-52,-5,40,2); ctx.fillRect(12,-5,43,2);
+  // bushes
+  [[-40,-2],[40,-2]].forEach(([bx,by])=>{ ctx.fillStyle='#2f8f4e'; ctx.beginPath(); ctx.arc(bx,by-4,7,0,Math.PI*2); ctx.arc(bx+6,by-2,5,0,Math.PI*2); ctx.fill(); });
+  // smoke when it's yours
+  if(keys && !still){ for(let i=0;i<4;i++){ const ph=((t*0.4+i/4)%1); ctx.fillStyle=`rgba(240,240,245,${0.55*(1-ph)})`; ctx.beginPath(); ctx.arc(20+Math.sin(ph*6+i)*3+ph*8,-68-ph*30,2+ph*5,0,Math.PI*2); ctx.fill(); } }
+  // sign: For sale, then Sold
+  ctx.fillStyle='#7c5a3a'; ctx.fillRect(48,-30,2.5,30);
+  ctx.fillStyle=keys?'#22c55e':'#ffffff'; hqRR(ctx,34,-44,30,16,2.5); ctx.fill(); ctx.strokeStyle=keys?'#15803d':'#dc2626'; ctx.lineWidth=1.4; ctx.stroke();
+  ctx.fillStyle=keys?'#ffffff':'#dc2626'; ctx.font=`800 7.4px ${HQ_FONT}`; ctx.textAlign='center'; ctx.textBaseline='middle'; ctx.fillText(keys?'SOLD':'FOR SALE',49,-35.6); ctx.textBaseline='alphabetic';
+  ctx.restore();
+}
+
+function hqCar(ctx,x,y,ang,s,t,moving,still,keys){
+  ctx.save(); ctx.translate(x,y); const flip=Math.cos(ang)<0; ctx.rotate(flip?ang+Math.PI:ang); ctx.scale(flip?-s:s,s);
+  ctx.fillStyle='rgba(0,0,0,0.25)'; ctx.beginPath(); ctx.ellipse(0,5,17,3.2,0,0,Math.PI*2); ctx.fill();
+  const bob=moving&&!still?Math.sin(t*20)*0.5:0; ctx.translate(0,bob);
+  // body
+  const g=ctx.createLinearGradient(0,-12,0,3); g.addColorStop(0,'#4ade80'); g.addColorStop(1,'#16a34a');
+  ctx.fillStyle=g; ctx.beginPath(); ctx.moveTo(-17,1); ctx.lineTo(-17,-5); ctx.quadraticCurveTo(-16,-8,-11,-8); ctx.lineTo(-7,-14); ctx.quadraticCurveTo(-5,-16,0,-16); ctx.lineTo(6,-16); ctx.quadraticCurveTo(9,-16,11,-10); ctx.lineTo(15,-8); ctx.quadraticCurveTo(18,-7,18,-3); ctx.lineTo(18,1); ctx.closePath(); ctx.fill();
+  // windows + driver
+  ctx.fillStyle='#bfe3f7'; ctx.beginPath(); ctx.moveTo(-6,-9); ctx.lineTo(-3,-14); ctx.lineTo(1,-14); ctx.lineTo(1,-9); ctx.closePath(); ctx.fill();
+  ctx.beginPath(); ctx.moveTo(3,-9); ctx.lineTo(3,-14); ctx.lineTo(6,-14); ctx.lineTo(9.5,-9); ctx.closePath(); ctx.fill();
+  ctx.fillStyle='#f5c9a0'; ctx.beginPath(); ctx.arc(5.5,-11,2.3,0,Math.PI*2); ctx.fill(); ctx.fillStyle='#fbbf24'; ctx.beginPath(); ctx.arc(5.5,-12,2.5,Math.PI,0); ctx.fill();
+  // lights
+  ctx.fillStyle='#fef3c7'; ctx.fillRect(16,-6,2.2,2.5); ctx.fillStyle='#ef4444'; ctx.fillRect(-17,-5,1.8,2.4);
+  // wheels
+  const rot=moving&&!still?t*18:0;
+  [[-9,1],[10,1]].forEach(([wx,wy])=>{ ctx.fillStyle='#1f2937'; ctx.beginPath(); ctx.arc(wx,wy,4,0,Math.PI*2); ctx.fill(); ctx.strokeStyle='#9ca3af'; ctx.lineWidth=1; ctx.beginPath(); ctx.moveTo(wx+Math.cos(rot)*2.6,wy+Math.sin(rot)*2.6); ctx.lineTo(wx-Math.cos(rot)*2.6,wy-Math.sin(rot)*2.6); ctx.stroke(); });
+  if(keys){ ctx.fillStyle='#fbbf24'; ctx.font='bold 8px sans-serif'; }
+  ctx.restore();
+}
+
 function renderAll(){
   renderDashboard();
   renderMonthly(); // renderYearly() is called inside renderMonthly
@@ -12711,6 +13068,7 @@ function renderAll(){
   renderBuyFinancesSummary();
   calcPaycheck();
   if(document.getElementById('rent-amount')?.value) calcRent();
+  try{ renderHomeQuest(); }catch(e){ console.warn('home quest', e); }
 }
 
 // ══════════════════════════════════════════
