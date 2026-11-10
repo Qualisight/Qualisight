@@ -2983,6 +2983,9 @@ details.iv-acct[open] .iv-acct-chev{transform:rotate(180deg)}
   .grove-meta{gap:0.4rem}
   .iv-acct-count{display:none}
   .iv-hold-foot{flex-wrap:wrap}
+  .iv-hold-foot .iv-alloc-meta{flex:1 1 100%}
+  .iv-hold-actions{margin-left:auto}
+  .ck-inline .ck{padding:0.85rem}
   .iv-hold-top{flex-wrap:wrap;gap:0.3rem 0.8rem}
 }
 
@@ -3051,6 +3054,14 @@ details.iv-acct[open] .iv-acct-chev{transform:rotate(180deg)}
 .ck-news:hover b{color:#4ade80}
 .ck-news span{display:block;color:var(--muted);font-size:0.74rem;margin-top:0.15rem}
 @media(max-width:760px){.ck-chips{display:flex;overflow-x:auto}.ck-chip{flex:0 0 112px}}
+
+.ck-inline{margin-top:0.8rem}
+.ck-inline .ck{margin:0;padding:1rem;border:1px solid rgba(74,222,128,0.35);border-radius:14px;background:rgba(74,222,128,0.03)}
+.ck-head{display:flex;justify-content:space-between;align-items:center;gap:0.6rem;margin-bottom:0.6rem}
+.ck-x{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;width:36px;height:36px;font-size:1.2rem;line-height:1;cursor:pointer}
+.ck-x:hover{color:var(--text)}
+.iv-act-btn.ck-open{color:#4ade80;border-color:rgba(74,222,128,0.45)}
+.iv-act-btn.ck-open.active{background:#4ade80;color:#0b0d12;border-color:#4ade80}
 
 /* Site polish pass */
 .auth-box{position:relative}
@@ -4036,7 +4047,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
             <li><span class="lp-check">✓</span>The road home: every step to your first home</li>
             <li><span class="lp-check">✓</span>An AI advisor that reads your real numbers</li>
             <li><span class="lp-check">✓</span>Rent vs buy, with Canadian mortgage rules</li>
-            <li><span class="lp-check">✓</span>Company check-up and news for every stock you own</li>
+            <li><span class="lp-check">✓</span>Company check-up and news on every stock you own</li>
             <li><span class="lp-check">✓</span>Plus everything that's free: budget, coin jars, debt storm</li>
           </ul>
           <button class="lp-btn-secondary" onclick="lpShowSignup()">Try Premium free for 14 days</button>
@@ -4606,7 +4617,6 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
   <div class="iv-tabs" role="tablist" aria-label="Investments sections">
     <button type="button" role="tab" data-t="grove" onclick="ivTab('grove')">Grove</button>
     <button type="button" role="tab" data-t="holdings" onclick="ivTab('holdings')">Holdings</button>
-    <button type="button" role="tab" data-t="stocks" onclick="ivTab('stocks')">Stocks</button>
     <button type="button" role="tab" data-t="trades" onclick="ivTab('trades')">Trades</button>
   </div>
   <div id="grove" class="grove"></div>
@@ -4617,8 +4627,6 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
   <!-- Account blocks — rendered by renderAllocator() -->
   <div id="alloc-accounts" style="margin-bottom:1.2rem"></div>
 
-  <!-- Company check-up: rendered by ckRender() -->
-  <div id="ck-mount"></div>
 
   <!-- Add account form -->
   <div id="alloc-add-form" style="display:none;margin-bottom:1.2rem" class="card">
@@ -8776,6 +8784,8 @@ function renderAllocator(){
         : `<span class="iv-alloc-actual"><strong>${actualPct.toFixed(1)}%</strong> of account</span>
            <span class="iv-alloc-status notarget">${statusTxt}</span>`;
 
+      const ckk = (h.type==='Stocks' && Number(h.shares)>0) ? ckKey(h.ticker) : null;
+      const ckOn = !!(ckk && _ck.open && _ck.open.key===ckk && _ck.open.acc===acc.id);
       return `<div class="iv-holding">
         <div class="iv-hold-top">
           <div class="iv-hold-id">
@@ -8798,12 +8808,14 @@ function renderAllocator(){
           <div class="iv-hold-foot">
             <div class="iv-alloc-meta">${allocMeta}</div>
             <div class="iv-hold-actions">
+              ${ckk?`<button class="iv-act-btn ck-open${ckOn?' active':''}" onclick="ckToggle('${ckk}','${acc.id}')" aria-expanded="${ckOn}" title="Sales, profit, EPS and news for this company">Check-up</button>`:''}
               <button class="iv-act-btn news" id="newsbtn-${h.ticker}" onclick="toggleNewsPanel('${h.ticker}')" title="News">News</button>
               <button class="iv-act-btn" onclick="editHolding('${acc.id}','${h.ticker}')">Edit</button>
               <button class="iv-act-btn del" onclick="removeHolding('${h.ticker}','${acc.id}')" aria-label="Remove ${h.ticker}">✕</button>
             </div>
           </div>
         </div>
+        ${ckOn?'<div id="ck-mount" class="ck-inline"></div>':''}
       </div>`;
     }).join('');
 
@@ -8835,6 +8847,7 @@ function renderAllocator(){
       </div>
     </details>`;
   }).join('');
+  try{ if(_ck.open) ckRender(); }catch(e){ console.warn('check-up', e); }
   // Ensure news panel is always in DOM
   if(!document.getElementById('news-panel')){
     el.insertAdjacentHTML('afterend', `<div id="news-panel" class="news-panel" style="display:none"><div class="news-panel-header"><div class="news-ticker-label" id="news-panel-ticker">—</div><button class="news-close-btn" onclick="closeNewsPanel()">✕</button></div><div class="news-section-title">Recent Headlines</div><div id="news-headlines"></div></div>`);
@@ -13699,15 +13712,14 @@ function lpShowSignup(){
 // ── Investments page: tabs and the grove-at-a-glance strip ──
 function ivTab(t, quiet){
   const pg=document.getElementById('page-investments'); if(!pg) return;
-  if(!['grove','holdings','stocks','trades'].includes(t)) t='grove';
+  if(!['grove','holdings','trades'].includes(t)) t='grove';
   pg.dataset.ivtab=t; try{ sessionStorage.setItem('qs_ivtab',t); }catch(e){}
   pg.querySelectorAll('.iv-tabs button').forEach(b=>{ const on=b.dataset.t===t; b.classList.toggle('on',on); b.setAttribute('aria-selected',on); });
   if(t==='trades') document.getElementById('iv-trades')?.classList.add('open');
   if(t==='grove'){ try{ groveSize(); groveStart(); }catch(e){} }
-  if(t==='stocks'){ try{ ckRender(); }catch(e){} }
   if(!quiet){ const bar=pg.querySelector('.iv-tabs'); if(bar && bar.getBoundingClientRect().top<0) window.scrollTo({top:bar.getBoundingClientRect().top+window.scrollY-70}); try{ if(typeof QA!=='undefined') QA.log('iv_tab',{t}); }catch(e){} }
 }
-function ivJump(id){ ivTab({grove:'grove','alloc-accounts':'holdings','ck-mount':'stocks','iv-trades':'trades'}[id]||'grove'); }
+function ivJump(id){ ivTab({grove:'grove','alloc-accounts':'holdings','ck-mount':'holdings','iv-trades':'trades'}[id]||'grove'); }
 function ivGlancePick(id){
   ivTab('grove');
   setTimeout(()=>{ const el=document.getElementById('gp-'+id); if(!el) return;
@@ -13758,7 +13770,7 @@ function lpFmt(n){return '$'+Math.round(n).toLocaleString('en-CA');}
 // A stock can only be opened here if it is in your holdings. Numbers come from the fundamentals table,
 // which a server job fills from each company's own SEC filings (and which checks ownership again
 // before fetching anything new). This shows facts only. It never says whether to buy or sell.
-const _ck={ rows:{}, sig:null, loading:false, failed:false, sel:null, metric:'revenue', period:'annual', news:{}, asked:{} };
+const _ck={ rows:{}, sig:null, loading:false, failed:false, sel:null, open:null, metric:'revenue', period:'annual', news:{}, asked:{} };
 // one key per stock, the same rule the server uses (stockKey)
 function ckKey(raw){
   let t=String(raw||'').toUpperCase().replace(/\s+/g,''), suf='';
@@ -13804,7 +13816,14 @@ async function ckLoad(keys){
   }catch(e){ console.warn('check-up load', e); _ck.failed=true; }
   _ck.loading=false; ckRender();
 }
-function ckPick(key){ _ck.sel=key; try{ if(typeof QA!=='undefined') QA.log('stock_check',{s:key}); }catch(e){} ckRender(); }
+function ckToggle(key, acc){
+  const same=_ck.open && _ck.open.key===key && _ck.open.acc===acc;
+  _ck.open = same ? null : {key, acc}; _ck.sel = same ? null : key; _ck.sig=null;
+  if(!same){ _ivOpen[acc]=true; try{ if(typeof QA!=='undefined') QA.log('stock_check',{s:key}); }catch(e){} }
+  renderAllocator(); ckRender();
+  if(!same) setTimeout(()=>{ const m=document.getElementById('ck-mount'); if(m){ const top=m.getBoundingClientRect().top; if(top<110 || top>window.innerHeight*0.7) window.scrollTo({top:Math.max(0,top+window.scrollY-170), behavior:pitReduce?'auto':'smooth'}); } },60);
+}
+function ckPick(key){ _ck.sel=key; ckRender(); }
 function ckSet(k,v){ _ck[k]=v; ckRender(); }
 async function ckNews(key){
   const own=ckOwned(); if(!own[key]) return;                      // news is for stocks you own
@@ -13821,25 +13840,15 @@ function ckNewsHtml(key){
 }
 function ckRender(){
   const m=document.getElementById('ck-mount'); if(!m) return;
-  const own=ckOwned(), keys=Object.keys(own).sort((a,b)=>own[b].shares-own[a].shares).slice(0,24);
-  const head=`<div class="ck-head"><div class="ck-title">Company check-up</div>
-    <div class="ck-sub">Sales, profit, earnings per share and news for the stocks you own, straight from each company's own reports.</div></div>`;
-  if(!keys.length){
-    m.innerHTML=`<div class="ck card">${head}<div class="ck-lock">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-      <b>Own a stock to unlock its check-up</b>
-      <p>Add any stock you hold (pick the type "Stocks") and its numbers and news open up here. Funds and ETFs don't have company reports, so they aren't included.</p>
-      <button type="button" class="btn btn-primary" onclick="addPortfolioEntry()">+ Add a stock you own</button></div></div>`;
-    return;
-  }
+  const own=ckOwned();
+  if(!_ck.open || !own[_ck.open.key]){ _ck.open=null; m.remove(); return; }
+  _ck.sel=_ck.open.key;
+  const keys=[_ck.sel];
+  const head=`<div class="ck-head"><div class="ck-title">Company check-up</div><button type="button" class="ck-x" onclick="ckToggle('${_ck.sel}','${_ck.open.acc}')" aria-label="Close check-up">×</button></div>`;
   const sig=keys.join(',');
-  if(_ck.sig!==sig){ _ck.sig=sig; _ck.failed=false; if(document.getElementById('page-investments')?.classList.contains('active')) ckLoad(keys); else _ck.sig=null; }
-  if(!_ck.sel || !own[_ck.sel]) _ck.sel=keys[0];
+  if(_ck.sig!==sig){ _ck.sig=sig; _ck.failed=false; if(!_ck.rows[_ck.sel]) ckLoad(keys); }
   const key=_ck.sel, row=_ck.rows[key], o=own[key];
-  const chips=keys.map(k=>{ const r=_ck.rows[k]; return `<button type="button" class="ck-chip${k===key?' on':''}" onclick="ckPick('${k}')" aria-pressed="${k===key}"><b>${escHtml(own[k].ticker)}</b><span>${r?escHtml(String(r.name||'')):'&nbsp;'}</span></button>`; }).join('');
-  const shell=inner=>{ m.innerHTML=`<div class="ck card">${head}<div class="ck-chips">${chips}</div>${inner}</div>`;
-    const strip=m.querySelector('.ck-chips'), on=m.querySelector('.ck-chip.on');
-    if(strip && on && strip.scrollWidth>strip.clientWidth) strip.scrollLeft=Math.max(0, on.offsetLeft-strip.offsetLeft-(strip.clientWidth-on.offsetWidth)/2); };
+  const shell=inner=>{ m.innerHTML=`<div class="ck">${head}${inner}</div>`; };
   const newsBlock=`<div class="ck-newswrap"><div class="ck-cap">News for ${escHtml(o.ticker)}</div>${ckNewsHtml(key)}</div>`;
   if(!row){
     const msg=_ck.loading?'Loading company numbers…'
