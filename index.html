@@ -3036,6 +3036,22 @@ details.iv-acct[open] .iv-acct-chev{transform:rotate(180deg)}
   .ck-bar-v{font-size:0.58rem}.ck-bar-l{font-size:0.58rem}
 }
 
+.ck-lock{text-align:center;padding:1.6rem 0.5rem 0.6rem;color:var(--muted)}
+.ck-lock svg{color:#4ade80}
+.ck-lock b{display:block;color:var(--text);font-size:1.05rem;margin:0.5rem 0 0.3rem}
+.ck-lock p{font-size:0.86rem;line-height:1.5;max-width:420px;margin:0 auto 1rem}
+.ck-lock .btn{min-height:44px}
+.ck-chips{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
+.ck-newswrap{margin-top:1rem;border-top:1px solid var(--border);padding-top:0.8rem}
+.ck-newsbtn{background:transparent;border:1px solid var(--border);color:var(--text);font:inherit;font-size:0.85rem;font-weight:600;border-radius:999px;padding:0.5rem 1rem;cursor:pointer;min-height:40px}
+.ck-newsbtn:hover{border-color:#4ade80}
+.ck-news{display:block;padding:0.6rem 0;border-top:1px solid var(--border);text-decoration:none}
+.ck-news:first-of-type{border-top:0}
+.ck-news b{display:block;color:var(--text);font-size:0.9rem;font-weight:600;line-height:1.4}
+.ck-news:hover b{color:#4ade80}
+.ck-news span{display:block;color:var(--muted);font-size:0.74rem;margin-top:0.15rem}
+@media(max-width:760px){.ck-chips{display:flex;overflow-x:auto}.ck-chip{flex:0 0 112px}}
+
 /* Site polish pass */
 .auth-box{position:relative}
 .auth-back + .auth-logo{margin-top:0.9rem}
@@ -4020,7 +4036,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
             <li><span class="lp-check">✓</span>The road home: every step to your first home</li>
             <li><span class="lp-check">✓</span>An AI advisor that reads your real numbers</li>
             <li><span class="lp-check">✓</span>Rent vs buy, with Canadian mortgage rules</li>
-            <li><span class="lp-check">✓</span>Company check-up: sales, profit and EPS for five big stocks</li>
+            <li><span class="lp-check">✓</span>Company check-up and news for every stock you own</li>
             <li><span class="lp-check">✓</span>Plus everything that's free: budget, coin jars, debt storm</li>
           </ul>
           <button class="lp-btn-secondary" onclick="lpShowSignup()">Try Premium free for 14 days</button>
@@ -13737,98 +13753,149 @@ function lpFmt(n){return '$'+Math.round(n).toLocaleString('en-CA');}
 
 
 // ══════════════════════════════════════════
-// COMPANY CHECK-UP: real figures for five big S&P 500 companies
+// COMPANY CHECK-UP: real figures and news for the stocks you own
 // ══════════════════════════════════════════
-// Numbers come from the fundamentals table, refreshed weekly from the companies' own SEC filings.
-// This shows facts only. It never says whether to buy or sell.
-const _ck={ rows:null, loading:false, failed:false, sel:null, metric:'revenue', period:'annual' };
-const CK_ORDER=['AAPL','MSFT','NVDA','AMZN','GOOGL'];
-function ckBig(n){ if(n==null||!isFinite(n)) return 'n/a'; const a=Math.abs(n), sg=n<0?'-':'';
-  return a>=1e12? sg+'$'+(a/1e12).toFixed(2)+'T' : a>=1e9? sg+'$'+(a/1e9).toFixed(1)+'B' : a>=1e6? sg+'$'+(a/1e6).toFixed(0)+'M' : sg+'$'+a.toLocaleString('en-CA',{maximumFractionDigits:2}); }
-function ckUsd(n){ return n==null||!isFinite(n) ? 'n/a' : (n<0?'-':'')+'$'+Math.abs(n).toLocaleString('en-CA',{minimumFractionDigits:2,maximumFractionDigits:2}); }
-function ckPct(a,b){ if(a==null||b==null||!(b>0)) return null; return (a-b)/b*100; }
-function ckChange(p){ if(p==null) return ''; const up=p>=0; return `<em class="${up?'up':'down'}">${up?'▲':'▼'} ${Math.abs(p).toFixed(Math.abs(p)<10?1:0)}% vs the year before</em>`; }
-// shares the user holds of each company (US listing only; a CDR ending in .TO or .NE is a different product)
+// A stock can only be opened here if it is in your holdings. Numbers come from the fundamentals table,
+// which a server job fills from each company's own SEC filings (and which checks ownership again
+// before fetching anything new). This shows facts only. It never says whether to buy or sell.
+const _ck={ rows:{}, sig:null, loading:false, failed:false, sel:null, metric:'revenue', period:'annual', news:{}, asked:{} };
+// one key per stock, the same rule the server uses (stockKey)
+function ckKey(raw){
+  let t=String(raw||'').toUpperCase().replace(/\s+/g,''), suf='';
+  const pre=t.match(/^(TSX|TSXV|NEO|CSE|NYSE|NASDAQ|AMEX|ARCA|BATS):(.+)$/);
+  if(pre){ t=pre[2]; suf=({TSX:'TO',TSXV:'V',NEO:'NE',CSE:'CN'})[pre[1]]||''; }
+  const m=t.match(/^(.*)\.(TO|NE|V|CN|TRT|TSX|TSXV|US)$/);
+  if(m){ t=m[1]; const map={TRT:'TO',TSX:'TO',TSXV:'V',US:''}; suf=(m[2] in map)?map[m[2]]:m[2]; }
+  t=t.replace(/\./g,'-');
+  const key=suf?`${t}.${suf}`:t;
+  return /^[A-Z][A-Z0-9\-]{0,9}(\.(TO|NE|V|CN))?$/.test(key) ? key : null;
+}
+// the stocks this person holds: key -> { shares, ticker }
 function ckOwned(){
   const out={};
   (state.portfolio||[]).forEach(h=>{
-    if(!h || !(Number(h.shares)>0) || h.type==='Crypto') return;
-    let t=String(h.ticker||'').toUpperCase().replace(/\s+/g,'');
-    const cdr=/\.(TO|NE|TRT|TSX)$/.test(t) || /^(TSX|NEO):/.test(t);
-    t=t.replace(/^(NASDAQ|NYSE):/,'').replace(/\.(US|TO|NE|TRT|TSX)$/,'');
-    if(t==='GOOG') t='GOOGL';
-    if(!CK_ORDER.includes(t)) return;
-    const o=out[t]||(out[t]={shares:0,cdr:false}); if(cdr) o.cdr=true; else o.shares+=Number(h.shares);
+    if(!h || !(Number(h.shares)>0) || h.type!=='Stocks') return;
+    const k=ckKey(h.ticker); if(!k) return;
+    const o=out[k]||(out[k]={shares:0,ticker:String(h.ticker).toUpperCase()}); o.shares+=Number(h.shares);
   });
   return out;
 }
-async function ckLoad(){
-  if(_ck.loading || _ck.rows) return; _ck.loading=true; _ck.failed=false;
+function ckCur(c){ return c==='CAD'?'CA$':c==='USD'?'$':(c||'')+' '; }
+function ckBig(n,c){ if(n==null||!isFinite(n)) return 'n/a'; const a=Math.abs(n), sg=n<0?'-':'', u=ckCur(c);
+  return a>=1e12? sg+u+(a/1e12).toFixed(2)+'T' : a>=1e9? sg+u+(a/1e9).toFixed(1)+'B' : a>=1e6? sg+u+(a/1e6).toFixed(0)+'M' : sg+u+a.toLocaleString('en-CA',{maximumFractionDigits:0}); }
+function ckAmt(n,c){ return n==null||!isFinite(n) ? 'n/a' : (n<0?'-':'')+ckCur(c)+Math.abs(n).toLocaleString('en-CA',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+function ckPct(a,b){ if(a==null||b==null||!(b>0)) return null; return (a-b)/b*100; }
+function ckChange(p){ if(p==null) return ''; const up=p>=0; return `<em class="${up?'up':'down'}">${up?'▲':'▼'} ${Math.abs(p).toFixed(Math.abs(p)<10?1:0)}% vs the year before</em>`; }
+async function ckLoad(keys){
+  if(_ck.loading) return; _ck.loading=true; _ck.failed=false;
   try{
-    const r=await sb.from('fundamentals').select('symbol,name,data,updated_at');
-    if(r.error || !Array.isArray(r.data) || !r.data.length) throw new Error(r.error?r.error.message:'empty');
-    _ck.rows=r.data.filter(x=>x && x.data && Array.isArray(x.data.annual) && x.data.annual.length>=2)
-      .sort((a,b)=>CK_ORDER.indexOf(a.symbol)-CK_ORDER.indexOf(b.symbol));
-    if(!_ck.rows.length){ _ck.rows=null; throw new Error('no usable rows'); }
+    const r=await sb.from('fundamentals').select('symbol,name,data,updated_at').in('symbol',keys);
+    if(r.error || !Array.isArray(r.data)) throw new Error(r.error?r.error.message:'no data');
+    r.data.forEach(x=>{ if(x && x.data && keys.includes(x.symbol)) _ck.rows[x.symbol]=x; });
+    // anything not on file yet: ask the server, which checks these are really in your saved holdings
+    const missing=keys.filter(k=>!_ck.rows[k] && !_ck.asked[k]);
+    if(missing.length && currentUser && !currentUser.isDemo){
+      missing.forEach(k=>_ck.asked[k]=1);
+      for(let i=0;i<missing.length;i+=6){
+        const f=await sb.functions.invoke('refresh-fundamentals',{ body:{ symbols:missing.slice(i,i+6) } });
+        ((f.data&&f.data.rows)||[]).forEach(x=>{ if(x && x.data) _ck.rows[x.symbol]=x; });
+      }
+    }
   }catch(e){ console.warn('check-up load', e); _ck.failed=true; }
   _ck.loading=false; ckRender();
 }
-function ckPick(sym){ _ck.sel=sym; try{ if(typeof QA!=='undefined') QA.log('stock_check',{s:sym}); }catch(e){} ckRender(); }
+function ckPick(key){ _ck.sel=key; try{ if(typeof QA!=='undefined') QA.log('stock_check',{s:key}); }catch(e){} ckRender(); }
 function ckSet(k,v){ _ck[k]=v; ckRender(); }
+async function ckNews(key){
+  const own=ckOwned(); if(!own[key]) return;                      // news is for stocks you own
+  _ck.news[key]={loading:true}; ckRender();
+  let list=[]; try{ list=await fetchNewsForTicker(key.split('.')[0].replace(/-/g,'.')) || []; }catch(e){ list=[]; }
+  _ck.news[key]={list:list.slice(0,5)}; ckRender();
+}
+function ckNewsHtml(key){
+  const n=_ck.news[key];
+  if(!n) return `<button type="button" class="ck-newsbtn" onclick="ckNews('${key}')">Show the latest news</button>`;
+  if(n.loading) return `<div class="ck-wait" style="padding:0.4rem 0">Finding headlines…</div>`;
+  if(!n.list.length) return `<div class="ck-fact">No recent headlines found for this one. Try again later.</div>`;
+  return n.list.map(a=>`<a class="ck-news" href="${escHtml(String(a.url||'#'))}" target="_blank" rel="noopener"><b>${escHtml(String(a.title||'Untitled'))}</b><span>${escHtml(String(a.source||''))}${a.time_published?' · '+formatNewsDate(a.time_published):''}</span></a>`).join('');
+}
 function ckRender(){
   const m=document.getElementById('ck-mount'); if(!m) return;
-  const head=`<div class="ck-head"><div><div class="ck-title">Company check-up</div>
-    <div class="ck-sub">Sales, profit and earnings per share for five of the biggest S&amp;P 500 companies, straight from their own reports.</div></div></div>`;
-  if(!_ck.rows){
-    if(!_ck.loading && !_ck.failed && document.getElementById('page-investments')?.classList.contains('active')) ckLoad();
-    m.innerHTML=`<div class="ck card">${head}<div class="ck-wait">${_ck.failed?'Couldn\'t load company numbers right now. <button type="button" class="ck-link" onclick="_ck.failed=false;ckLoad()">Try again</button>':'Loading company numbers…'}</div></div>`;
+  const own=ckOwned(), keys=Object.keys(own).sort((a,b)=>own[b].shares-own[a].shares).slice(0,24);
+  const head=`<div class="ck-head"><div class="ck-title">Company check-up</div>
+    <div class="ck-sub">Sales, profit, earnings per share and news for the stocks you own, straight from each company's own reports.</div></div>`;
+  if(!keys.length){
+    m.innerHTML=`<div class="ck card">${head}<div class="ck-lock">
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+      <b>Own a stock to unlock its check-up</b>
+      <p>Add any stock you hold (pick the type "Stocks") and its numbers and news open up here. Funds and ETFs don't have company reports, so they aren't included.</p>
+      <button type="button" class="btn btn-primary" onclick="addPortfolioEntry()">+ Add a stock you own</button></div></div>`;
     return;
   }
-  const own=ckOwned();
-  if(!_ck.sel || !_ck.rows.some(r=>r.symbol===_ck.sel)) _ck.sel=(_ck.rows.find(r=>own[r.symbol]&&own[r.symbol].shares>0)||_ck.rows[0]).symbol;
-  const row=_ck.rows.find(r=>r.symbol===_ck.sel), d=row.data, A=d.annual, Q=d.quarterly||[];
+  const sig=keys.join(',');
+  if(_ck.sig!==sig){ _ck.sig=sig; _ck.failed=false; if(document.getElementById('page-investments')?.classList.contains('active')) ckLoad(keys); else _ck.sig=null; }
+  if(!_ck.sel || !own[_ck.sel]) _ck.sel=keys[0];
+  const key=_ck.sel, row=_ck.rows[key], o=own[key];
+  const chips=keys.map(k=>{ const r=_ck.rows[k]; return `<button type="button" class="ck-chip${k===key?' on':''}" onclick="ckPick('${k}')" aria-pressed="${k===key}"><b>${escHtml(own[k].ticker)}</b><span>${r?escHtml(String(r.name||'')):'&nbsp;'}</span></button>`; }).join('');
+  const shell=inner=>{ m.innerHTML=`<div class="ck card">${head}<div class="ck-chips">${chips}</div>${inner}</div>`;
+    const strip=m.querySelector('.ck-chips'), on=m.querySelector('.ck-chip.on');
+    if(strip && on && strip.scrollWidth>strip.clientWidth) strip.scrollLeft=Math.max(0, on.offsetLeft-strip.offsetLeft-(strip.clientWidth-on.offsetWidth)/2); };
+  const newsBlock=`<div class="ck-newswrap"><div class="ck-cap">News for ${escHtml(o.ticker)}</div>${ckNewsHtml(key)}</div>`;
+  if(!row){
+    const msg=_ck.loading?'Loading company numbers…'
+      : _ck.failed?`Couldn't load company numbers right now. <button type="button" class="ck-link" onclick="_ck.sig=null;_ck.asked={};ckRender()">Try again</button>`
+      : (currentUser&&currentUser.isDemo)?'This one loads once you have your own account. In the demo, try a stock that already shows a company name.'
+      : 'Loading company numbers…';
+    return shell(`<div class="ck-wait">${msg}</div>${newsBlock}`);
+  }
+  const d=row.data;
+  if(d.unsupported){
+    const why=d.reason==='different_company'?'That ticker in Canada is a different company from the one filing under the same letters in the US, so we can\'t match its reports.'
+      : d.reason==='no_figures'?'This company files in the US, but not in a format we can read sales and profit from.'
+      : 'It doesn\'t file company reports with the U.S. regulator. That is normal for funds, ETFs and many companies listed only in Canada.';
+    return shell(`<div class="ck-name"><b>${escHtml(String(row.name||o.ticker))}</b><span>${escHtml(o.ticker)}</span></div><div class="ck-note">We don't have filed figures for this one. ${why}</div>${newsBlock}`);
+  }
+  const A=d.annual, Q=d.quarterly||[], cur=d.currency||'USD', curName=cur==='CAD'?'Canadian':'US';
   const last=A[A.length-1], prev=A[A.length-2];
-  const chips=_ck.rows.map(r=>{ const o=own[r.symbol], has=o&&(o.shares>0||o.cdr);
-    return `<button type="button" class="ck-chip${r.symbol===_ck.sel?' on':''}" onclick="ckPick('${r.symbol}')" aria-pressed="${r.symbol===_ck.sel}"><b>${r.symbol}</b><span>${escHtml(r.name)}</span>${has?'<i>You own it</i>':''}</button>`; }).join('');
-  const price=d.price&&d.price.usd>0?d.price:null;
+  const price=d.price ? {amount:d.price.amount??d.price.usd, day:d.price.day} : null;
   const ttm=Q.length>=4 && Q.slice(-4).every(q=>q.eps!=null) ? Q.slice(-4).reduce((s,q)=>s+q.eps,0) : last.eps;
-  const pe=price&&ttm>0 ? price.usd/ttm : null;
+  const pe=price&&price.amount>0&&ttm>0 ? price.amount/ttm : null;
   const margin=last.revenue>0&&last.netIncome!=null ? last.netIncome/last.revenue*100 : null;
-  const yieldPct=price&&last.dps>0 ? last.dps/price.usd*100 : null;
-  const o=own[row.symbol];
-  const ownLine = o&&o.shares>0
-    ? `<div class="ck-own"><b>You own ${(+o.shares.toFixed(4)).toLocaleString('en-CA')} share${o.shares===1?'':'s'}.</b> Your slice of ${last.label} profit was about ${ckUsd(o.shares*last.eps)} US (${ckUsd(last.eps)} per share).${price?` Worth about ${ckUsd(o.shares*price.usd)} US today.`:''}</div>`
-    : o&&o.cdr ? `<div class="ck-own">You hold the Canadian CDR of this company. It tracks the same business, but one CDR is a small fraction of one US share, so the per-share figures here don't apply one-for-one.</div>`
-    : '';
+  const yieldPct=price&&last.dps>0 ? last.dps/price.amount*100 : null;
+  const sh=(+o.shares.toFixed(4)).toLocaleString('en-CA');
+  const ownLine = d.receipt
+    ? `<div class="ck-own"><b>You own ${sh} of the Canadian CDR.</b> It tracks this same company, but one CDR is a small fraction of one US share, so the per-share figures here don't apply one-for-one.</div>`
+    : `<div class="ck-own"><b>You own ${sh} share${o.shares===1?'':'s'}.</b> Your slice of ${last.label} profit was about ${ckAmt(o.shares*last.eps,cur)} (${ckAmt(last.eps,cur)} per share).${price?` Worth about ${ckAmt(o.shares*price.amount,cur)} today.`:''}</div>`;
   const oneOff=last.opIncome>0 && last.netIncome>last.opIncome*1.08;
   const tile=(lbl,val,sub)=>`<div class="ck-tile"><span>${lbl}</span><b>${val}</b>${sub||''}</div>`;
   const tiles=[
-    tile('Sales (revenue)', ckBig(last.revenue), ckChange(ckPct(last.revenue,prev.revenue))),
-    tile('Profit (net income)', ckBig(last.netIncome), ckChange(ckPct(last.netIncome,prev.netIncome))),
-    tile('Earnings per share', ckUsd(last.eps), ckChange(ckPct(last.eps,prev.eps))),
+    tile('Sales (revenue)', ckBig(last.revenue,cur), ckChange(ckPct(last.revenue,prev.revenue))),
+    tile('Profit (net income)', ckBig(last.netIncome,cur), ckChange(ckPct(last.netIncome,prev.netIncome))),
+    tile('Earnings per share', ckAmt(last.eps,cur), ckChange(ckPct(last.eps,prev.eps))),
     tile('Profit margin', margin==null?'n/a':margin.toFixed(1)+'%', '<em>of each sales dollar kept as profit</em>'),
     tile('Price to earnings', pe==null?'n/a':pe.toFixed(1), '<em>share price ÷ last 12 months of EPS</em>'),
-    tile('Dividend per share', last.dps>0?ckUsd(last.dps):'None', yieldPct?`<em>about ${yieldPct.toFixed(1)}% of the share price a year</em>`:'<em>paid over the year</em>'),
+    tile('Dividend per share', last.dps>0?ckAmt(last.dps,cur):(last.dps===0||cur==='USD'?'None':'n/a'), yieldPct?`<em>about ${yieldPct.toFixed(1)}% of the share price a year</em>`:'<em>paid over the year</em>'),
   ].join('');
-  // bar chart
-  const rows=(_ck.period==='annual'?A:Q), key=_ck.metric==='profit'?'netIncome':_ck.metric;
-  const vals=rows.map(r=>r[key]), max=Math.max(1e-9,...vals.map(v=>Math.abs(v||0)));
-  const fmtV=v=>key==='eps'?ckUsd(v):ckBig(v);
+  const hasQ=Q.length>=2; if(!hasQ && _ck.period==='quarterly') _ck.period='annual';
+  const rows=(_ck.period==='annual'?A:Q), fkey=_ck.metric==='profit'?'netIncome':_ck.metric;
+  const vals=rows.map(r=>r[fkey]), max=Math.max(1e-9,...vals.map(v=>Math.abs(v||0)));
+  const fmtV=v=>fkey==='eps'?ckAmt(v,cur):ckBig(v,cur);
   const bars=rows.map((r,i)=>{ const v=vals[i], h=v==null?0:Math.max(3,Math.abs(v)/max*100);
-    return `<div class="ck-bar"><span class="ck-bar-v">${v==null?'':fmtV(v)}</span><div class="ck-bar-fill${v<0?' neg':''}${i===rows.length-1?' cur':''}" style="height:${h}%"></div><span class="ck-bar-l">${_ck.period==='annual'?r.label.replace('FY',"'").replace(/'20/,"'"):r.label.replace(' 20'," '")}</span></div>`; }).join('');
+    return `<div class="ck-bar"><span class="ck-bar-v">${v==null?'n/a':fmtV(v)}</span><div class="ck-bar-fill${v<0?' neg':''}${i===rows.length-1?' cur':''}" style="height:${h}%"></div><span class="ck-bar-l">${_ck.period==='annual'?r.label.replace('FY20',"'"):r.label.replace(' 20'," '")}</span></div>`; }).join('');
   const seg=(k,opts)=>`<div class="ck-seg" role="group">${opts.map(([v,l])=>`<button type="button" class="${_ck[k]===v?'on':''}" onclick="ckSet('${k}','${v}')" aria-pressed="${_ck[k]===v}">${l}</button>`).join('')}</div>`;
-  const upYears=A.slice(1).filter((r,i)=>r.revenue>A[i].revenue).length;
+  const revYears=A.slice(1).filter((r,i)=>r.revenue!=null&&A[i].revenue!=null);
+  const upYears=A.slice(1).filter((r,i)=>r.revenue!=null&&A[i].revenue!=null&&r.revenue>A[i].revenue).length;
   const asOf=price?new Date(price.day+'T12:00:00').toLocaleDateString('en-CA',{month:'short',day:'numeric'}):'';
-  m.innerHTML=`<div class="ck card">${head}
-    <div class="ck-chips">${chips}</div>
-    <div class="ck-name"><b>${escHtml(row.name)}</b><span>${row.symbol}${price?` · ${ckUsd(price.usd)} US a share${asOf?' on '+asOf:''}`:''}</span></div>
+  shell(`
+    <div class="ck-name"><b>${escHtml(String(row.name))}</b><span>${escHtml(o.ticker)}${price?` · ${ckAmt(price.amount,cur)} a share${asOf?' on '+asOf:''}`:''}</span></div>
     ${ownLine}
     <div class="ck-cap">Latest full year (${last.label}, ended ${new Date(last.end+'T12:00:00').toLocaleDateString('en-CA',{month:'short',year:'numeric'})})</div>
     <div class="ck-tiles">${tiles}</div>
-    ${oneOff?`<div class="ck-note">Profit this year was higher than what the main business earned (${ckBig(last.opIncome)}). The rest came from things like investment gains, which may not repeat.</div>`:''}
-    <div class="ck-chart-head">${seg('metric',[['revenue','Sales'],['profit','Profit'],['eps','EPS']])}${seg('period',[['annual','Yearly'],['quarterly','Quarterly']])}</div>
-    <div class="ck-chart" role="img" aria-label="${_ck.metric} by ${_ck.period==='annual'?'year':'quarter'} for ${escHtml(row.name)}">${bars}</div>
-    <div class="ck-fact">Sales grew in ${upYears} of the last ${A.length-1} years.</div>
+    ${oneOff?`<div class="ck-note">Profit this year was higher than what the main business earned (${ckBig(last.opIncome,cur)}). The rest came from things like investment gains, which may not repeat.</div>`:''}
+    <div class="ck-chart-head">${seg('metric',[['revenue','Sales'],['profit','Profit'],['eps','EPS']])}${hasQ?seg('period',[['annual','Yearly'],['quarterly','Quarterly']]):''}</div>
+    <div class="ck-chart" role="img" aria-label="${_ck.metric} by ${_ck.period==='annual'?'year':'quarter'} for ${escHtml(String(row.name))}">${bars}</div>
+    ${revYears.length?`<div class="ck-fact">Sales grew in ${upYears} of the last ${revYears.length} year${revYears.length===1?'':'s'}.</div>`:''}
+    ${newsBlock}
     <details class="ck-learn"><summary>What do these numbers mean?</summary>
       <p><b>Sales (revenue)</b> is all the money the company took in from customers.</p>
       <p><b>Profit (net income)</b> is what was left after every cost and tax.</p>
@@ -13837,10 +13904,7 @@ function ckRender(){
       <p><b>Price to earnings (P/E)</b> is how many dollars people pay today for each dollar of yearly profit. A higher number means buyers expect more growth. It is not a score for good or bad.</p>
       <p><b>Dividend</b> is cash the company pays out to shareholders. Many growing companies pay little or none.</p>
     </details>
-    <div class="ck-foot">Figures are in US dollars, from each company's filings with the U.S. Securities and Exchange Commission. Updated weekly. Each company's year ends in a different month. This is information, not advice to buy or sell.</div>
-  </div>`;
-  const strip=m.querySelector('.ck-chips'), on=m.querySelector('.ck-chip.on');
-  if(strip && on && strip.scrollWidth>strip.clientWidth) strip.scrollLeft=Math.max(0, on.offsetLeft-strip.offsetLeft-(strip.clientWidth-on.offsetWidth)/2);
+    <div class="ck-foot">Figures are in ${curName} dollars, from the company's filings with the U.S. Securities and Exchange Commission. Refreshed about weekly. Each company's year ends in a different month. This is information, not advice to buy or sell.</div>`);
 }
 
 // ══════════════════════════════════════════
