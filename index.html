@@ -13776,7 +13776,7 @@ function ckOwned(){
   (state.portfolio||[]).forEach(h=>{
     if(!h || !(Number(h.shares)>0) || h.type!=='Stocks') return;
     const k=ckKey(h.ticker); if(!k) return;
-    const o=out[k]||(out[k]={shares:0,ticker:String(h.ticker).toUpperCase()}); o.shares+=Number(h.shares);
+    const o=out[k]||(out[k]={shares:0,ticker:String(h.ticker).toUpperCase(),px:0}); o.shares+=Number(h.shares); if(Number(h.price)>0) o.px=Number(h.price);
   });
   return out;
 }
@@ -13863,7 +13863,9 @@ function ckRender(){
   const margin=last.revenue>0&&last.netIncome!=null ? last.netIncome/last.revenue*100 : null;
   const yieldPct=price&&last.dps>0 ? last.dps/price.amount*100 : null;
   const sh=(+o.shares.toFixed(4)).toLocaleString('en-CA');
-  const ownLine = d.receipt
+  // a Canadian listing priced far below the US share is a CDR (a small fraction of one share), whatever its name says
+  const isCdr = !!d.receipt || (key.includes('.') && cur==='USD' && price && o.px>0 && o.px < price.amount*0.6);
+  const ownLine = isCdr
     ? `<div class="ck-own"><b>You own ${sh} of the Canadian CDR.</b> It tracks this same company, but one CDR is a small fraction of one US share, so the per-share figures here don't apply one-for-one.</div>`
     : `<div class="ck-own"><b>You own ${sh} share${o.shares===1?'':'s'}.</b> Your slice of ${last.label} profit was about ${ckAmt(o.shares*last.eps,cur)} (${ckAmt(last.eps,cur)} per share).${price?` Worth about ${ckAmt(o.shares*price.amount,cur)} today.`:''}</div>`;
   const oneOff=last.opIncome>0 && last.netIncome>last.opIncome*1.08;
