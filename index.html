@@ -2989,6 +2989,83 @@ details.iv-acct[open] .iv-acct-chev{transform:rotate(180deg)}
   .iv-hold-top{flex-wrap:wrap;gap:0.3rem 0.8rem}
 }
 
+/* Onboarding v2 */
+.db-nw-val.start{color:var(--text)}
+#onboarding-overlay{align-items:flex-start;overflow-y:auto;padding:1.2rem 1rem 2rem}
+#onboarding-overlay .ob-box{max-width:640px;margin:auto}
+.ob2{width:100%;display:flex;flex-direction:column;align-items:center;text-align:center;animation:fadeIn .35s ease}
+.ob2-dots{display:flex;gap:6px;margin-bottom:1.3rem}
+.ob2-dots i{width:26px;height:5px;border-radius:99px;background:rgba(255,255,255,0.12)}
+.ob2-dots i.on{background:#4ade80}.ob2-dots i.done{background:rgba(74,222,128,0.45)}
+.ob2-kicker{font-size:0.8rem;font-weight:700;color:#4ade80;letter-spacing:0.04em;text-transform:uppercase;margin-bottom:0.4rem}
+.ob2-title{font-family:var(--font-display);font-size:1.7rem;line-height:1.15;letter-spacing:-0.02em;color:var(--text);margin:0 0 0.5rem;font-weight:800}
+.ob2-title span{color:#4ade80}
+.ob2-sub{color:var(--muted);font-size:0.98rem;line-height:1.55;margin:0 0 1.2rem;max-width:480px}
+.ob2-sub b{color:var(--text)}
+.ob2-quests{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.8rem;width:100%;margin-bottom:1rem}
+.ob2-quest{display:flex;flex-direction:column;padding:0;border:1px solid var(--border);border-radius:18px;overflow:hidden;background:var(--surface);cursor:pointer;color:inherit;font:inherit;text-align:left;transition:border-color .15s,transform .15s}
+.ob2-quest:hover,.ob2-quest:focus-visible{border-color:#4ade80;transform:translateY(-2px)}
+.ob2-quest-art{display:block;aspect-ratio:16/9;background:#0b0f18}
+.ob2-quest-art canvas{display:block;width:100%;height:100%}
+.ob2-quest-txt{display:block;padding:0.75rem 0.9rem 0.9rem}
+.ob2-quest-txt b{display:block;color:var(--text);font-size:1.02rem}
+.ob2-quest-txt i{display:block;font-style:normal;color:var(--muted);font-size:0.82rem;margin-top:0.15rem;line-height:1.35}
+.ob2-form{width:100%;max-width:420px;text-align:left;display:flex;flex-direction:column;gap:0.9rem;margin-top:0.6rem}
+.ob2-field{display:block}
+.ob2-field > span{display:block;font-size:0.95rem;font-weight:600;color:var(--text);margin-bottom:0.4rem}
+.ob2-field small{display:block;color:var(--muted);font-size:0.78rem;margin-top:0.35rem}
+.ob2-input{position:relative}
+.ob2-input em{position:absolute;left:0.9rem;top:50%;transform:translateY(-50%);font-style:normal;color:var(--muted);font-size:1.15rem}
+.ob2-input input{width:100%;background:var(--surface);border:1px solid var(--border);border-radius:14px;color:var(--text);font-family:var(--font-num);font-size:1.3rem;font-weight:700;padding:0.85rem 1rem 0.85rem 2rem;outline:none;font-variant-numeric:tabular-nums}
+.ob2-input input:focus{border-color:#4ade80}
+.ob2-chips,.ob2-pick{display:flex;flex-wrap:wrap;gap:0.4rem}
+.ob2-chips{margin-top:-0.4rem}
+.ob2-chips button,.ob2-pick button{background:transparent;border:1px solid var(--border);color:var(--text);font:inherit;font-size:0.85rem;font-weight:600;border-radius:999px;padding:0.45rem 0.85rem;cursor:pointer;min-height:38px}
+.ob2-chips button:hover{border-color:#4ade80}
+.ob2-pick button.on{background:#4ade80;border-color:#4ade80;color:#0b0d12}
+.ob2-err{min-height:1.2rem;color:#f87171;font-size:0.85rem;margin:0.6rem 0 0.2rem;max-width:420px}
+.ob2-go{width:100%;max-width:420px;min-height:52px;border-radius:14px;border:0;background:#4ade80;color:#0b0d12;font:inherit;font-size:1.05rem;font-weight:700;cursor:pointer;margin-top:0.3rem}
+.ob2-go:hover{filter:brightness(1.06)}
+.ob2-safe{font-size:0.76rem;color:var(--muted);margin-top:0.7rem;max-width:440px;line-height:1.45}
+.ob2-row{display:flex;gap:1.4rem;margin-top:0.9rem}
+.ob2-skip{background:none;border:0;color:var(--muted);font:inherit;font-size:0.85rem;cursor:pointer;text-decoration:underline;text-underline-offset:3px;min-height:36px}
+.ob2-skip:hover{color:var(--text)}
+.ob2-ba{display:flex;align-items:center;gap:0.6rem;width:100%;margin:0.6rem 0 1rem}
+.ob2-ba figure{flex:1;margin:0;min-width:0}
+.ob2-pic{aspect-ratio:16/10;border-radius:14px;overflow:hidden;border:1px solid var(--border);background:#0b0f18}
+.ob2-ba figure:last-of-type .ob2-pic{border-color:#4ade80;box-shadow:0 0 0 3px rgba(74,222,128,0.12)}
+.ob2-pic canvas{display:block;width:100%;height:100%}
+.ob2-ba figcaption{font-size:0.78rem;color:var(--muted);margin-top:0.35rem;font-weight:600}
+.ob2-ba figure:last-of-type figcaption{color:#4ade80}
+.ob2-arrow{color:#4ade80;flex:none;margin-bottom:1.2rem}
+.ob2-boost{margin-bottom:1rem}
+.ob2-plan{width:100%;max-width:420px;text-align:left;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:0.9rem 1rem;margin-bottom:1rem}
+.ob2-plan b{display:block;color:var(--text);font-size:0.9rem;margin-bottom:0.5rem}
+.ob2-plan div{display:flex;gap:0.6rem;align-items:flex-start;color:var(--muted);font-size:0.88rem;line-height:1.4;padding:0.25rem 0}
+.ob2-plan i{flex:none;width:20px;height:20px;border-radius:50%;background:rgba(74,222,128,0.14);color:#4ade80;font-style:normal;font-size:0.72rem;font-weight:700;display:grid;place-items:center}
+@media(max-width:560px){ .ob2-title{font-size:1.4rem} .ob2-quests{gap:0.6rem} .ob2-quest-txt{padding:0.6rem 0.7rem 0.75rem} .ob2-quest-txt b{font-size:0.92rem} .ob2-quest-txt i{font-size:0.76rem} }
+/* starter checklist on the dashboard */
+.obc{margin-bottom:1rem;padding:1.1rem 1.2rem;border-color:rgba(74,222,128,0.35)!important}
+.obc-top{display:flex;justify-content:space-between;gap:0.8rem;align-items:flex-start}
+.obc-title{font-family:var(--font-display);font-weight:700;font-size:1.05rem;color:var(--text)}
+.obc-sub{font-size:0.85rem;color:var(--muted);margin-top:0.15rem}
+.obc-sub b{color:var(--text)}
+.obc-x{background:transparent;border:0;color:var(--muted);font-size:1.3rem;line-height:1;cursor:pointer;width:36px;height:36px;border-radius:8px;flex:none}
+.obc-x:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.obc-bar{height:8px;border-radius:99px;background:rgba(255,255,255,0.08);margin:0.8rem 0;overflow:hidden}
+.obc-bar i{display:block;height:100%;border-radius:99px;background:#4ade80;transition:width .5s ease}
+.obc-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.15rem 1.2rem}
+.obc-item{display:flex;align-items:center;gap:0.6rem;min-height:44px;font-size:0.9rem;color:var(--text)}
+.obc-check{flex:none;width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,0.2);display:grid;place-items:center;color:#0b0d12}
+.obc-item.done .obc-check{background:#4ade80;border-color:#4ade80}
+.obc-item.done .obc-t{color:var(--muted);text-decoration:line-through}
+.obc-t{flex:1;min-width:0}
+.obc-t small{display:block;color:var(--muted);font-size:0.74rem}
+.obc-go,.obc-alt{flex:none;border-radius:999px;font:inherit;font-size:0.78rem;font-weight:700;cursor:pointer;min-height:34px;padding:0 0.85rem;border:1px solid var(--border);background:transparent;color:var(--text)}
+.obc-item.next .obc-go{background:#4ade80;border-color:#4ade80;color:#0b0d12}
+.obc-alt{color:var(--muted);font-weight:600}
+@media(max-width:700px){ .obc-list{grid-template-columns:1fr} }
+
 /* Company check-up */
 .ck{margin-bottom:1.2rem;padding:1.2rem}
 .ck-title{font-family:var(--font-display);font-size:1.05rem;font-weight:700;color:var(--text)}
@@ -3304,50 +3381,8 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 <body>
 
 <!-- ═══════════ ONBOARDING OVERLAY ═══════════ -->
-<div id="onboarding-overlay">
-  <div class="ob-box">
-
-    <!-- STEP 1: instant first action -->
-    <div id="ob-step-1" class="ob-stage">
-      <div class="ob-logo">Qualisight</div>
-      <div class="ob-welcome-badge">Welcome aboard</div>
-      <div class="ob-title">Let's start with one thing you bought recently</div>
-      <div class="ob-sub">No setup, no forms. Just tell me one purchase and I'll show you what Qualisight does. Takes 10 seconds.</div>
-
-      <div class="ob-first-input">
-        <div class="ob-fi-row">
-          <input id="ob-exp-name" class="ob-fi-text" placeholder="e.g. Groceries, gas, coffee…" autocomplete="off">
-          <div class="ob-fi-amt-wrap">
-            <span class="ob-fi-dollar">$</span>
-            <input id="ob-exp-amt" class="ob-fi-amt" type="number" placeholder="0" inputmode="decimal">
-          </div>
-        </div>
-        <button class="ob-fi-btn" onclick="obLogFirstExpense()">See what happens</button>
-        <div id="ob-fi-error" class="ob-fi-error"></div>
-      </div>
-
-      <span class="ob-skip" onclick="dismissOnboarding(true)">Skip, I'll explore on my own</span>
-    </div>
-
-    <!-- STEP 2: instant payoff -->
-    <div id="ob-step-2" class="ob-stage" style="display:none">
-      <div class="ob-payoff-check">✓</div>
-      <div class="ob-title" id="ob-payoff-title">Nice, that's your first expense tracked</div>
-      <div class="ob-sub" id="ob-payoff-sub"></div>
-
-      <div class="ob-payoff-card" id="ob-payoff-card"></div>
-
-      <div class="ob-payoff-insight" id="ob-payoff-insight"></div>
-
-      <div class="ob-next-prompt">That's the idea. The more you track, the clearer your money gets. Want to add your income next so Qualisight can show your full picture?</div>
-
-      <div class="ob-actions">
-        <button class="ob-primary-btn" onclick="obGoToIncome()">Add my income</button>
-        <button class="ob-secondary-btn" onclick="obFinish()">I'll do it later</button>
-      </div>
-    </div>
-
-  </div>
+<div id="onboarding-overlay" role="dialog" aria-modal="true" aria-label="Welcome to Qualisight">
+  <div class="ob-box"></div>
 </div>
 
 <!-- ═══════════ PRIVACY POLICY MODAL ═══════════ -->
@@ -4341,6 +4376,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 <!-- ═══════════ DASHBOARD ═══════════ -->
 <div id="page-dashboard" class="page active">
   <!-- Net worth + Money Score -->
+  <div id="ob-checklist"></div>
   <div class="db-hero" id="db-hero"></div>
 
   <!-- Next best moves -->
@@ -5445,107 +5481,204 @@ function isNewAccount(){
     && !state.trades.length;
 }
 
-// ── Activation onboarding ──
+// ── Onboarding v2: pick a quest, give one number, see your future ──
+// Three short screens. Everything typed here is saved as real data, so the app is never empty afterwards.
+const OB_QUESTS=[
+  {id:'debt',   world:'debt',   page:'debt',        title:'Get out of debt',            sub:'See the exact month you will be debt-free'},
+  {id:'budget', world:'budget', page:'monthly',     title:'Know where my money goes',   sub:'Turn your pay into jars of coins'},
+  {id:'home',   world:'home',   page:'rental',      title:'Buy my first home',          sub:'Map every step to the keys'},
+  {id:'grow',   world:'grove',  page:'investments', title:'Grow my savings',            sub:'Watch a TFSA grow into a tree'},
+];
+const OB_DEBT_TYPES=[['credit_card','Credit card',20.99],['loc','Line of credit',9.5],['student_loan','Student loan',6.5],['car_loan','Car loan',7.9]];
+const _ob={ step:1, quest:null, v:{} };
+function obNum(id){ const el=document.getElementById(id); return el ? Math.max(0, parseFloat(String(el.value).replace(/[, $]/g,''))||0) : 0; }
+function obMoney(n){ return '$'+Math.round(n).toLocaleString('en-CA'); }
+function obMonthOut(m){ const d=new Date(); d.setMonth(d.getMonth()+Math.max(0,Math.round(m))); return d.toLocaleDateString('en-CA',{month:'long',year:'numeric'}); }
+// draw one of the four worlds into a canvas, from a given state, without touching the real one
+function obDraw(world, cv, st){
+  if(!cv) return;
+  const keepTot=_grove.tot; window._lpSandbox=true;
+  try{ lpWithState(st, ()=>{ _grove.tot=null; dbThumb(world, cv); }); }
+  catch(e){ console.warn('onboarding art', world, e); }
+  finally{ window._lpSandbox=false; _grove.tot=keepTot; }
+}
+function obSampleState(world){
+  if(world==='debt'){ const b=lpPath(200)[6]; return {debts:LP_DEBTS.map((d,i)=>({...d,balance:b[i]})), debtStrategy:'snowball'}; }
+  const d=JSON.parse(JSON.stringify(DEMO_STATE)); d.homeFund={price:650000,saved:42000,monthly:900,reached:[]}; if(!d.grove) d.grove={history:{},badges:[],levels:{},plan:{}};
+  return d;
+}
 function showOnboarding(){
-  // Always start on step 1, instant-action stage
-  const s1=document.getElementById('ob-step-1'), s2=document.getElementById('ob-step-2');
-  if(s1&&s2){ s1.style.display='flex'; s2.style.display='none'; }
-  const err=document.getElementById('ob-fi-error'); if(err) err.textContent='';
+  _ob.step=1; _ob.quest=null; _ob.v={};
   document.getElementById('onboarding-overlay').classList.add('open');
-  setTimeout(()=>document.getElementById('ob-exp-name')?.focus(), 350);
+  obRender();
 }
-
-// Guess a budget category from free-text description
-function obGuessCategory(name){
-  const n=(name||'').toLowerCase();
-  const map=[
-    [['grocer','food','loblaw','metro','sobey','no frills','walmart','costco','superstore'],'Food & Groceries'],
-    [['restaurant','dining','coffee','starbucks','tim','mcdonald','uber eat','doordash','skip','pizza','lunch','dinner','takeout','take out'],'Food & Groceries'],
-    [['gas','fuel','petro','esso','shell','transit','uber','lyft','parking','bus','go train','presto'],'Transportation'],
-    [['rent','mortgage','landlord'],'Rent/Mortgage'],
-    [['hydro','electric','water','internet','phone','bell','rogers','telus','utility','wifi'],'Utilities'],
-    [['netflix','spotify','movie','game','concert','bar','club','entertain','disney','prime video'],'Entertainment'],
-    [['cloth','amazon','shoe','shop','mall','zara','nike','sephora'],'Shopping'],
-    [['insurance','premium'],'Insurance'],
-    [['visa','mastercard','credit','loan payment','card payment'],'Debt Payment'],
-  ];
-  for(const [keys,cat] of map){ if(keys.some(k=>n.includes(k))) return cat; }
-  return 'Other';
-}
-
-function obLogFirstExpense(){
-  const nameEl=document.getElementById('ob-exp-name');
-  const amtEl=document.getElementById('ob-exp-amt');
-  const errEl=document.getElementById('ob-fi-error');
-  const name=(nameEl.value||'').trim();
-  const amt=parseFloat(amtEl.value)||0;
-  if(!name){ errEl.textContent='What did you buy? Just a word or two.'; nameEl.focus(); return; }
-  if(amt<=0){ errEl.textContent='How much was it?'; amtEl.focus(); return; }
-  errEl.textContent='';
-
-  const cat=obGuessCategory(name);
-
-  // Ensure budgets exist, then log the expense for real
-  if(!state.budgets || !state.budgets.length){
-    state.budgets=[
-      {cat:'Rent/Mortgage',goal:0},{cat:'Food & Groceries',goal:0},
-      {cat:'Utilities',goal:0},{cat:'Transportation',goal:0},
-      {cat:'Entertainment',goal:0},{cat:'Shopping',goal:0},
-      {cat:'Insurance',goal:0},{cat:'Debt Payment',goal:0},{cat:'Other',goal:0},
-    ];
+function obDots(){ return `<div class="ob2-dots" aria-label="Step ${_ob.step} of 3">${[1,2,3].map(i=>`<i class="${i===_ob.step?'on':i<_ob.step?'done':''}"></i>`).join('')}</div>`; }
+function obRender(){
+  const box=document.querySelector('#onboarding-overlay .ob-box'); if(!box) return;
+  const first=(typeof currentUser!=='undefined'&&currentUser&&currentUser.name&&!currentUser.isDemo)?String(currentUser.name).split(' ')[0]:'';
+  if(_ob.step===1){
+    box.innerHTML=`<div class="ob2">${obDots()}
+      <div class="ob2-kicker">Welcome${first?', '+escHtml(first):''}</div>
+      <h2 class="ob2-title">What do you want to win first?</h2>
+      <p class="ob2-sub">Pick one. You can do all four later. This just decides where we start.</p>
+      <div class="ob2-quests">${OB_QUESTS.map(q=>`<button type="button" class="ob2-quest" onclick="obPick('${q.id}')">
+        <span class="ob2-quest-art"><canvas id="obq-${q.id}"></canvas></span>
+        <span class="ob2-quest-txt"><b>${q.title}</b><i>${q.sub}</i></span></button>`).join('')}</div>
+      <button type="button" class="ob2-skip" onclick="obSkip()">Skip for now</button></div>`;
+    OB_QUESTS.forEach((q,i)=>setTimeout(()=>obDraw(q.world, document.getElementById('obq-'+q.id), obSampleState(q.world)), 40+i*60));
+    return;
   }
-  state.expenses.push({name, actual:amt, cat});
-
-  // Count it toward the streak + journey
-  if(typeof recordActivity==='function'){ recordActivity(); }
-  if(typeof checkJourneyMilestone==='function'){ checkJourneyMilestone(); }
-  save();
-
-  // ── Build the instant payoff ──
-  document.getElementById('ob-payoff-card').innerHTML=`
-    <div class="ob-pc-left">
-      <div class="ob-pc-cat">${escHtml(name)}</div>
-      <div class="ob-pc-tag">auto-sorted into ${cat}</div>
+  const q=OB_QUESTS.find(x=>x.id===_ob.quest);
+  if(_ob.step===2){
+    const chips=(id,vals,fmtFn)=>`<div class="ob2-chips">${vals.map(v=>`<button type="button" onclick="obChip('${id}',${v})">${(fmtFn||obMoney)(v)}</button>`).join('')}</div>`;
+    const field=(id,label,ph,help)=>`<label class="ob2-field" for="${id}"><span>${label}</span><div class="ob2-input"><em>$</em><input id="${id}" type="text" inputmode="decimal" placeholder="${ph}" autocomplete="off" oninput="obErr('')"></div>${help?`<small>${help}</small>`:''}</label>`;
+    let body='';
+    if(q.id==='debt') body=`
+      <div class="ob2-field"><span>Which debt bugs you most?</span><div class="ob2-pick" id="ob-dtype">${OB_DEBT_TYPES.map(([v,l],i)=>`<button type="button" data-v="${v}" class="${i===0?'on':''}" onclick="obSeg(this)">${l}</button>`).join('')}</div></div>
+      ${field('ob-a','About how much do you owe on it?','5,000')}${chips('ob-a',[2000,5000,10000,20000])}
+      ${field('ob-b','What do you pay on it each month?','150','A rough guess is fine. You can change everything later.')}`;
+    if(q.id==='budget') body=`
+      ${field('ob-a','What lands in your bank account each month?','3,500','Your pay after tax. A rough guess is fine.')}${chips('ob-a',[2500,3500,4500,6000])}`;
+    if(q.id==='home') body=`
+      ${field('ob-a','What price of home are you aiming for?','650,000')}${chips('ob-a',[500000,650000,800000,1000000],v=>'$'+(v/1000)+'k')}
+      ${field('ob-b','How much have you saved for it so far?','0')}
+      ${field('ob-c','How much can you save each month?','500','Zero is fine. We will show what a little would do.')}`;
+    if(q.id==='grow') body=`
+      ${field('ob-a','How much could you put away each month?','200','Even $25 counts. This is a plan, not a payment.')}${chips('ob-a',[50,100,250,500])}`;
+    box.innerHTML=`<div class="ob2">${obDots()}
+      <div class="ob2-kicker">${q.title}</div>
+      <h2 class="ob2-title">${q.id==='budget'?'One number and your jars are filled':q.id==='grow'?'One number to plant your tree':'A few quick numbers'}</h2>
+      <div class="ob2-form">${body}</div>
+      <div class="ob2-err" id="ob-err" role="alert"></div>
+      <button type="button" class="ob2-go" onclick="obSubmit()">Show me my future</button>
+      <div class="ob2-safe">No bank login. Only you can see this.</div>
+      <div class="ob2-row"><button type="button" class="ob2-skip" onclick="_ob.step=1;obRender()">Back</button><button type="button" class="ob2-skip" onclick="obSkip()">Skip for now</button></div></div>`;
+    setTimeout(()=>document.getElementById('ob-a')?.focus(), 250);
+    return;
+  }
+  // step 3: the reveal
+  const R=_ob.reveal;
+  box.innerHTML=`<div class="ob2">${obDots()}
+    <div class="ob2-kicker">Here is what is possible</div>
+    <h2 class="ob2-title">${R.head}</h2>
+    <div class="ob2-ba">
+      <figure><div class="ob2-pic"><canvas id="ob-now"></canvas></div><figcaption>Today</figcaption></figure>
+      <span class="ob2-arrow" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M13 6l6 6-6 6"/></svg></span>
+      <figure><div class="ob2-pic"><canvas id="ob-then"></canvas></div><figcaption>${R.thenLabel}</figcaption></figure>
     </div>
-    <div class="ob-pc-amt">${fmt(amt)}</div>`;
-
-  // A real, projection-based insight to make value visible
-  const yearly=amt*52; // if weekly-ish
-  const monthly=amt*4;
-  let insight;
-  if(cat==='Food & Groceries' || cat==='Transportation' || cat==='Entertainment'){
-    insight=`If something like this happens weekly, that's about <strong>${fmt(monthly)}/month</strong>, roughly <strong>${fmt(yearly)} a year</strong> on ${cat.toLowerCase()}. That's the kind of thing most people never notice until they track it.`;
-  } else if(cat==='Other'){
-    insight=`Tracked and categorised in one tap. Do this a few times and Qualisight starts showing you exactly where your money actually goes, usually a few surprises in there.`;
-  } else {
-    insight=`That's <strong>${fmt(amt)}</strong> logged against your ${cat.toLowerCase()} budget. Keep going and you'll see your full month take shape automatically.`;
+    <p class="ob2-sub ob2-boost">${R.boost}</p>
+    <div class="ob2-plan"><b>Your first three steps</b>${R.steps.map((t,i)=>`<div><i>${i+1}</i>${t}</div>`).join('')}</div>
+    <button type="button" class="ob2-go" onclick="obFinish()">Start my quest</button>
+    ${R.note?`<div class="ob2-safe">${R.note}</div>`:''}</div>`;
+  setTimeout(()=>{ obDraw(q.world, document.getElementById('ob-now'), R.now); obDraw(q.world, document.getElementById('ob-then'), R.then); }, 60);
+}
+function obPick(id){ _ob.quest=id; _ob.step=2; try{ QA.log('onb_pick',{q:id}); }catch(e){} obRender(); }
+function obChip(id,v){ const el=document.getElementById(id); if(el){ el.value=Number(v).toLocaleString('en-CA'); obErr(''); } }
+function obSeg(b){ b.parentElement.querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b)); }
+function obErr(t){ const e=document.getElementById('ob-err'); if(e) e.textContent=t; }
+function obSubmit(){
+  const q=_ob.quest, a=obNum('ob-a'), b=obNum('ob-b'), c=obNum('ob-c');
+  if(!state.onb) state.onb={};
+  if(q==='debt'){
+    if(!(a>0)) return obErr('Type roughly how much you owe. A guess is fine.');
+    const pick=document.querySelector('#ob-dtype button.on'), T=OB_DEBT_TYPES.find(x=>x[0]===(pick&&pick.dataset.v))||OB_DEBT_TYPES[0];
+    const interest=a*T[2]/1200, min=b>0?b:Math.max(25,Math.round(a*0.03));
+    if(min<=interest+1) return obErr(`At about ${T[2]}% interest, ${obMoney(a)} grows by ${obMoney(interest)} a month. Enter a payment above that so the plan can finish.`);
+    state.debts.push({name:T[1], type:T[0], balance:a, origBalance:a, min, rate:T[2]});
+    if(Array.isArray(state.budgets) && !state.budgets.some(x=>x.cat==='Debt Payment')) state.budgets.push({cat:'Debt Payment',goal:0});
+    const p0=pitSim(0), p1=pitSim(100);
+    const sooner=(p0.months-p1.months), saved=Math.max(0,p0.interest-p1.interest);
+    _ob.reveal={ head:`You could be debt-free by <span>${obMonthOut(p0.months)}</span>`, thenLabel:obMonthOut(p0.months),
+      now:{debts:JSON.parse(JSON.stringify(state.debts)), debtStrategy:state.debtStrategy||'snowball'}, then:{debts:[], debtStrategy:'snowball'},
+      boost: sooner>0?`Add just $100 a month and you finish <b>${sooner} month${sooner===1?'':'s'} sooner</b>, keeping about <b>${obMoney(saved)}</b> that would have gone to interest.`:`You are already on a fast plan. Every extra dollar clears the storm sooner.`,
+      steps:['Log your next payment and watch the storm calm','Add any other debts so the date is exact','Set up your coin jars to find extra money'],
+      note:`We assumed about ${T[2]}% interest, a typical rate for a ${T[1].toLowerCase()}. Fix it on the Debt page for an exact date.` };
   }
-  document.getElementById('ob-payoff-insight').innerHTML=insight;
-  document.getElementById('ob-payoff-sub').textContent='Here it is, already sorted for you:';
-
-  // Swap stages
-  document.getElementById('ob-step-1').style.display='none';
-  document.getElementById('ob-step-2').style.display='flex';
+  if(q==='budget'){
+    if(!(a>0)) return obErr('Type roughly what you take home each month.');
+    state.income.push({name:'Paycheque', actual:a});
+    const split={'Rent/Mortgage':0.30,'Food & Groceries':0.12,'Utilities':0.05,'Transportation':0.08,'Entertainment':0.05,'Shopping':0.05,'Insurance':0.04,'Debt Payment':0.06,'Other':0.05};
+    if(!Array.isArray(state.budgets)) state.budgets=[];
+    Object.entries(split).forEach(([cat,p])=>{ const g=Math.round(a*p/10)*10; const ex=state.budgets.find(x=>x.cat===cat); if(ex){ if(!(ex.goal>0)) ex.goal=g; } else state.budgets.push({cat,goal:g}); });
+    const keep=Math.round(a*0.20), nowS=JSON.parse(JSON.stringify(state));
+    const thenS=JSON.parse(JSON.stringify(state)); thenS.expenses=[];
+    _ob.reveal={ head:`Keep 20% and that is <span>${obMoney(keep*12)}</span> saved in a year`, thenLabel:'A full treasure chest',
+      now:nowS, then:obSampleState('budget'),
+      boost:`We split your ${obMoney(a)} into nine jars as a starting point. What you do not spend, about <b>${obMoney(keep)} a month</b>, fills your treasure chest.`,
+      steps:['Log one thing you bought today','Change any jar that does not fit your life','Come back tomorrow to start your streak'],
+      note:'The split is a common starting point, not a rule. Every jar can be changed.' };
+  }
+  if(q==='home'){
+    if(!(a>=50000)) return obErr('Type the price of a home you would like, for example 650,000.');
+    state.homeFund={price:a, saved:b, monthly:c, reached:[]};
+    const need=minDownPayment(a), gap=Math.max(0,need-b), m=c>0?Math.ceil(gap/c):null, m2=Math.ceil(gap/((c||0)+200));
+    const nowS=JSON.parse(JSON.stringify(state)), thenS=JSON.parse(JSON.stringify(state)); thenS.homeFund={price:a, saved:a, monthly:c, reached:[]};
+    _ob.reveal={ head: gap<=0?`You already have the <span>minimum down payment</span>`: m?`Your minimum down payment by <span>${obMonthOut(m)}</span>`:`You need <span>${obMoney(need)}</span> to get started`, thenLabel:'Keys in hand',
+      now:nowS, then:thenS,
+      boost: gap<=0?`${obMoney(need)} is the least a lender accepts on a ${obMoney(a)} home. Next come closing costs and the stress test, and the road shows both.`
+        : `The least a lender accepts on a ${obMoney(a)} home is <b>${obMoney(need)}</b>. Saving $200 more a month gets you there by <b>${obMonthOut(m2)}</b>.`,
+      steps:['Open the road and see all eight stops','Add your FHSA if you have one','Set up your coin jars to find more to save'],
+      note:'Uses Canadian minimum down payment rules: 5% of the first $500,000 and 10% of the rest.' };
+  }
+  if(q==='grow'){
+    if(!(a>0)) return obErr('Type any amount, even 25.');
+    if(!state.grove) state.grove={history:{},badges:[],levels:{},plan:{}}; if(!state.grove.plan) state.grove.plan={};
+    state.grove.plan.tfsa=Math.min(1000, Math.round(a/25)*25||25);
+    if(!Array.isArray(state.accounts)) state.accounts=[];
+    if(!state.accounts.some(x=>x.type==='TFSA')) state.accounts.push({id:'acc-'+Date.now(), type:'TFSA', name:'TFSA', holdings:[]});
+    const r=0.05/12, n=120, fv=a*((Math.pow(1+r,n)-1)/r), put=a*n;
+    const nowS=JSON.parse(JSON.stringify(state));
+    const thenS={accounts:[{id:'t',type:'TFSA',name:'TFSA',holdings:[]}], portfolio:[{ticker:'XEQT',type:'ETF',shares:1,cost:put,price:fv,accountId:'t'}], grove:{history:{},badges:[],levels:{},plan:{}}};
+    _ob.reveal={ head:`${obMoney(a)} a month could become about <span>${obMoney(fv)}</span>`, thenLabel:'In 10 years',
+      now:nowS, then:thenS,
+      boost:`That is <b>${obMoney(put)}</b> from you and about <b>${obMoney(fv-put)}</b> of growth. In a TFSA, the growth is yours tax-free.`,
+      steps:['Add your first holding to plant the tree','Set up your coin jars to find the money','Check back each month and watch it grow'],
+      note:'Assumes 5% growth a year for illustration. Real returns go up and down and are never guaranteed.' };
+  }
+  state.onb.quest=q; state.onb.at=new Date().toISOString();
+  try{ recordActivity(); }catch(e){}
+  try{ QA.log('onb_number',{q}); }catch(e){}
+  save(); _ob.step=3; obRender();
 }
-
-function obGoToIncome(){
-  dismissOnboarding(true); // mark done, no legacy walkthrough
-  showPage('monthly');
-  renderMonthly();
-  setTimeout(()=>{
-    // Open the setup accordion and focus the income field
-    const setup=document.getElementById('bm-setup');
-    if(setup && !setup.classList.contains('open')) setup.classList.add('open');
-    const incEl=document.getElementById('inc-name');
-    if(incEl){ incEl.scrollIntoView({behavior:'smooth',block:'center'}); setTimeout(()=>incEl.focus(),300); }
-  }, 250);
-}
-
 function obFinish(){
+  const q=OB_QUESTS.find(x=>x.id===_ob.quest);
   dismissOnboarding(true);
-  showPage('monthly');
-  renderMonthly();
-  showToast('✓ Your expense is saved. Add more anytime, your budget builds itself as you go.');
+  try{ QA.log('onb_done',{q:_ob.quest}); }catch(e){}
+  renderAll(); showPage(q?q.page:'dashboard'); window.scrollTo(0,0);
+  if(typeof showToast==='function') showToast('<strong>Your quest has started.</strong> Your next steps are waiting on the Dashboard.');
+}
+function obSkip(){ try{ QA.log('onb_skip',{step:_ob.step}); }catch(e){} if(!state.onb) state.onb={skipped:true}; dismissOnboarding(true); renderAll(); }
+
+// ── The starter checklist: carries the first week, so people use the whole app ──
+function obChecklist(){
+  const o=state.onb||{}, q=o.quest;
+  const hasJars=(state.income||[]).length>0 && (state.budgets||[]).some(b=>b.goal>0);
+  const items=[ {t:'Pick your first quest', done:true} ];
+  if(q==='debt')  items.push({t:'Log a debt payment', done:(state.debts||[]).some(d=>(d.transactions||[]).length>0), go:"showPage('debt')"});
+  if(q==='home')  items.push({t:'Visit the road home', done:!!o.sawHome, go:"obMark('sawHome');showPage('rental')"});
+  if(q==='grow')  items.push({t:'Add your first holding', done:(state.portfolio||[]).length>0, go:"showPage('investments');addPortfolioEntry()"});
+  items.push({t:'Fill your coin jars', done:hasJars, go:"showPage('monthly')"});
+  items.push({t:'Log something you bought', done:(state.expenses||[]).length>0, go:"showPage('monthly')"});
+  if(q!=='debt') items.push({t:'Add a debt, or say you have none', done:(state.debts||[]).length>0 || !!o.noDebt, go:"showPage('debt')", alt:["I have none","obMark('noDebt')"]});
+  items.push({t:'Come back tomorrow', done:(state.longestStreak||0)>=2, hint:'Open the app two days in a row to start a streak'});
+  return items;
+}
+function obMark(k){ if(!state.onb) state.onb={}; state.onb[k]=true; save(); renderDashboardPlus(); }
+function obChecklistHtml(){
+  const o=state.onb; if(!o || o.hidden || (typeof currentUser!=='undefined'&&currentUser&&currentUser.isDemo)) return '';
+  const items=obChecklist(), done=items.filter(i=>i.done).length, all=done===items.length;
+  if(all && o.cheered) return '';
+  if(all && !o.cheered){ o.cheered=true; save(); setTimeout(()=>{ if(typeof showToast==='function') showToast('<strong>Starter quests complete.</strong> You know your way around now.'); },400); }
+  const next=items.find(i=>!i.done);
+  return `<div class="obc card"><div class="obc-top"><div><div class="obc-title">${all?'Starter quests complete':'Your starter quests'}</div>
+      <div class="obc-sub">${all?'Nice work. This card will tuck itself away.':`${done} of ${items.length} done. Next: <b>${next.t}</b>`}</div></div>
+      <button type="button" class="obc-x" onclick="obMark('hidden')" aria-label="Hide starter quests">×</button></div>
+    <div class="obc-bar"><i style="width:${Math.round(done/items.length*100)}%"></i></div>
+    <div class="obc-list">${items.map(i=>`<div class="obc-item${i.done?' done':''}${i===next?' next':''}">
+      <span class="obc-check">${i.done?'<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 13l4 4L19 7"/></svg>':''}</span>
+      <span class="obc-t">${i.t}${i.hint&&!i.done?`<small>${i.hint}</small>`:''}</span>
+      ${!i.done&&i.alt?`<button type="button" class="obc-alt" onclick="${i.alt[1]}">${i.alt[0]}</button>`:''}
+      ${!i.done&&i.go?`<button type="button" class="obc-go" onclick="${i.go}">${i===next?'Do it':'Go'}</button>`:''}</div>`).join('')}</div></div>`;
 }
 
 function dismissOnboarding(skipWalkthrough){
@@ -13511,6 +13644,7 @@ const DB_IC={
 
 function renderDashboardPlus(){
   const hero=document.getElementById('db-hero'); if(!hero) return;
+  try{ const oc=document.getElementById('ob-checklist'); if(oc) oc.innerHTML=obChecklistHtml(); }catch(e){ console.warn('starter quests', e); }
   const N=dbNetWorth(), hist=dbHistory(N.nw), sc=dbScore();
   const name=(typeof currentUser!=='undefined'&&currentUser&&currentUser.name&&!currentUser.isDemo)?String(currentUser.name).split(' ')[0]:'';
   const hr=new Date().getHours(), greet=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
@@ -13527,8 +13661,8 @@ function renderDashboardPlus(){
     <div class="db-nw">
       <div class="db-greet">${greet}${name?`, ${escHtml(name)}`:''}</div>
       <div class="db-nw-label">Net worth</div>
-      <div class="db-nw-val ${N.nw<0?'neg':''}">${N.nw<0?'−':''}${fmtW(Math.abs(N.nw))}</div>
-      ${delta!=null?`<div class="db-nw-delta ${up?'up':'down'}">${up?'▲':'▼'} ${fmtW(Math.abs(delta))} <span>${dbIsDemo()?'this month':'last 30 days'}</span></div>`:`<div class="db-nw-delta"><span>Your trend line starts today. Check back tomorrow to see it move.</span></div>`}
+      <div class="db-nw-val ${N.nw<0?(delta==null?'start':'neg'):''}">${N.nw<0?'−':''}${fmtW(Math.abs(N.nw))}</div>
+      ${delta!=null?`<div class="db-nw-delta ${up?'up':'down'}">${up?'▲':'▼'} ${fmtW(Math.abs(delta))} <span>${dbIsDemo()?'this month':'last 30 days'}</span></div>`:`<div class="db-nw-delta"><span>${N.nw<0?'This is your starting line. Every payment moves it up.':'Your trend line starts today. Check back tomorrow to see it move.'}</span></div>`}
       <svg class="db-spark${hist.length<2?' db-spark--empty':''}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
         <defs><linearGradient id="dbsg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${up?'#4ade80':'#f87171'}" stop-opacity="0.35"/><stop offset="1" stop-color="${up?'#4ade80':'#f87171'}" stop-opacity="0"/></linearGradient></defs>
         <path d="${line} L ${W} ${H} L 0 ${H} Z" fill="url(#dbsg)"/>
