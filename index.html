@@ -13764,7 +13764,7 @@ function lpOpenWorld(id){
       ov.setAttribute('role','dialog'); ov.setAttribute('aria-modal','true'); ov.setAttribute('aria-label','Product tour');
       const gv=hero.classList.contains('lp-hero--grove');
       ov.innerHTML='<div class="tour-box"><div class="tour-head"><span>'+(gv?'The money grove, in 50 seconds':'Qualisight in 40 seconds')+'</span><button type="button" class="tour-x" aria-label="Close">×</button></div>'
-        +'<video controls playsinline preload="auto" poster="'+(gv?'grove-tour-poster.jpg':'site-tour-poster.jpg')+'" src="'+(gv?'grove-tour.mp4':'site-tour.mp4')+'"></video>'
+        +'<video controls playsinline preload="auto" poster="'+(gv?'grove-tour-poster.jpg':'site-tour-poster.jpg')+'" src="'+(gv?'grove-tour.mp4':'site-tour.mp4?v=2')+'"></video>'
         +'<div class="tour-cta"><button type="button" class="lp-btn-primary">Start free, no card</button><span>No bank login needed</span></div></div>';
       ov.querySelector('video').addEventListener('ended',()=>{ try{ QA.log('tour_done',{}); }catch(e){} });
       ov.querySelector('.tour-x').onclick=closeTour;
