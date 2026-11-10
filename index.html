@@ -3063,6 +3063,9 @@ details.iv-acct[open] .iv-acct-chev{transform:rotate(180deg)}
 .iv-act-btn.ck-open{color:#4ade80;border-color:rgba(74,222,128,0.45)}
 .iv-act-btn.ck-open.active{background:#4ade80;color:#0b0d12;border-color:#4ade80}
 
+.ck-newshead{font-size:0.95rem;font-weight:700;color:var(--text);margin-bottom:0.3rem}
+.ck-news span i{font-style:normal;margin-right:0.45rem}
+
 /* Site polish pass */
 .auth-box{position:relative}
 .auth-back + .auth-logo{margin-top:0.9rem}
@@ -13821,22 +13824,32 @@ function ckToggle(key, acc){
   _ck.open = same ? null : {key, acc}; _ck.sel = same ? null : key; _ck.sig=null;
   if(!same){ _ivOpen[acc]=true; try{ if(typeof QA!=='undefined') QA.log('stock_check',{s:key}); }catch(e){} }
   renderAllocator(); ckRender();
+  if(!same) ckNews(key);
   if(!same) setTimeout(()=>{ const m=document.getElementById('ck-mount'); if(m){ const top=m.getBoundingClientRect().top; if(top<110 || top>window.innerHeight*0.7) window.scrollTo({top:Math.max(0,top+window.scrollY-170), behavior:pitReduce?'auto':'smooth'}); } },60);
 }
 function ckPick(key){ _ck.sel=key; ckRender(); }
 function ckSet(k,v){ _ck[k]=v; ckRender(); }
-async function ckNews(key){
+// News loads by itself when a check-up opens. Headlines are kept for six hours so reopening costs nothing.
+async function ckNews(key, force){
   const own=ckOwned(); if(!own[key]) return;                      // news is for stocks you own
+  if(_ck.news[key] && !force) return;
+  try{ const c=JSON.parse(sessionStorage.getItem('qs_news_'+key)||'null'); if(!force && c && Date.now()-c.t<6*3600e3 && Array.isArray(c.list) && c.list.length){ _ck.news[key]={list:c.list}; ckRender(); return; } }catch(e){}
   _ck.news[key]={loading:true}; ckRender();
-  let list=[]; try{ list=await fetchNewsForTicker(key.split('.')[0].replace(/-/g,'.')) || []; }catch(e){ list=[]; }
-  _ck.news[key]={list:list.slice(0,5)}; ckRender();
+  const sym=key.split('.')[0].replace(/-/g,'.');
+  let list=[]; try{ list=await fetchNewsForTicker(sym) || []; }catch(e){ list=[]; }
+  list=list.slice(0,4).map(a=>{ const ts=(a.ticker_sentiment||[]).find(t=>t.ticker===sym);
+    return { title:String(a.title||'Untitled'), url:String(a.url||''), source:String(a.source||''), time:a.time_published||'', score: ts?ts.ticker_sentiment_score:a.overall_sentiment_score }; });
+  _ck.news[key]={list};
+  try{ if(list.length) sessionStorage.setItem('qs_news_'+key, JSON.stringify({t:Date.now(), list})); }catch(e){}
+  ckRender();
 }
 function ckNewsHtml(key){
   const n=_ck.news[key];
-  if(!n) return `<button type="button" class="ck-newsbtn" onclick="ckNews('${key}')">Show the latest news</button>`;
-  if(n.loading) return `<div class="ck-wait" style="padding:0.4rem 0">Finding headlines…</div>`;
-  if(!n.list.length) return `<div class="ck-fact">No recent headlines found for this one. Try again later.</div>`;
-  return n.list.map(a=>`<a class="ck-news" href="${escHtml(String(a.url||'#'))}" target="_blank" rel="noopener"><b>${escHtml(String(a.title||'Untitled'))}</b><span>${escHtml(String(a.source||''))}${a.time_published?' · '+formatNewsDate(a.time_published):''}</span></a>`).join('');
+  if(!n || n.loading) return `<div class="ck-wait" style="padding:0.4rem 0">Finding the latest headlines…</div>`;
+  if(!n.list.length) return `<div class="ck-fact">No recent headlines found right now. <button type="button" class="ck-link" onclick="ckNews('${key}',true)">Try again</button></div>`;
+  return n.list.map(a=>{ let tag=''; try{ if(a.score!=null && a.score!==''){ const [txt,cls]=sentimentLabel(a.score); tag=`<i class="sentiment-badge sent-${cls}">${txt}</i>`; } }catch(e){}
+    const safe=/^https?:\/\//i.test(a.url)?a.url:'#';
+    return `<a class="ck-news" href="${escHtml(safe)}" target="_blank" rel="noopener"><b>${escHtml(a.title)}</b><span>${tag}${escHtml(a.source)}${a.time?' · '+formatNewsDate(a.time):''}</span></a>`; }).join('');
 }
 function ckRender(){
   const m=document.getElementById('ck-mount'); if(!m) return;
@@ -13849,7 +13862,7 @@ function ckRender(){
   if(_ck.sig!==sig){ _ck.sig=sig; _ck.failed=false; if(!_ck.rows[_ck.sel]) ckLoad(keys); }
   const key=_ck.sel, row=_ck.rows[key], o=own[key];
   const shell=inner=>{ m.innerHTML=`<div class="ck">${head}${inner}</div>`; };
-  const newsBlock=`<div class="ck-newswrap"><div class="ck-cap">News for ${escHtml(o.ticker)}</div>${ckNewsHtml(key)}</div>`;
+  const newsBlock=`<div class="ck-newswrap"><div class="ck-newshead">Latest news on ${escHtml(o.ticker)}</div>${ckNewsHtml(key)}</div>`;
   if(!row){
     const msg=_ck.loading?'Loading company numbers…'
       : _ck.failed?`Couldn't load company numbers right now. <button type="button" class="ck-link" onclick="_ck.sig=null;_ck.asked={};ckRender()">Try again</button>`
