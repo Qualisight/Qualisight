@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Debt Payoff Calculator Canada: Snowball vs Avalanche | Qualisight</title>
+<meta name="description" content="Free Canadian debt payoff calculator. Enter your debts, compare snowball and avalanche, and see the month you will be debt-free. No sign-up needed.">
+<link rel="canonical" href="https://qualisight.ca/debt-payoff-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Debt Payoff Calculator: Snowball vs Avalanche">
+<meta property="og:description" content="Enter your debts and see the month you will be debt-free. Free, no sign-up.">
+<meta property="og:url" content="https://qualisight.ca/debt-payoff-calculator/">
+<meta property="og:image" content="https://qualisight.ca/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0d0f14">
+<link rel="icon" href="/icon-192.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Qualisight","item":"https://qualisight.ca/"},{"@type":"ListItem","position":2,"name":"Debt payoff calculator","item":"https://qualisight.ca/debt-payoff-calculator/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What is the debt snowball method?","acceptedAnswer":{"@type":"Answer","text":"You pay the minimum on every debt, then put all your extra money on the smallest balance. When it is gone, its payment rolls onto the next smallest. You get quick wins, which helps many people keep going."}},
+{"@type":"Question","name":"What is the debt avalanche method?","acceptedAnswer":{"@type":"Answer","text":"You pay the minimum on every debt, then put all your extra money on the debt with the highest interest rate. It usually costs the least interest overall."}},
+{"@type":"Question","name":"Which is better, snowball or avalanche?","acceptedAnswer":{"@type":"Answer","text":"Avalanche never costs more interest than snowball, and often costs less. Snowball clears individual debts sooner, which can make it easier to stick with. The best method is the one you will keep doing."}},
+{"@type":"Question","name":"Why does the calculator say my debt will never be paid off?","acceptedAnswer":{"@type":"Answer","text":"If a payment is smaller than the interest added each month, the balance grows. Raise the payment above the monthly interest and the plan can finish."}}]}</script>
+<style>
+:root{--bg:#0b0d12;--surface:#141821;--border:rgba(255,255,255,0.09);--text:#e8edf8;--muted:#97a2b8;--green:#4ade80;--red:#f87171;--amber:#fbbf24}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--green)}
+.wrap{max-width:860px;margin:0 auto;padding:0 1.1rem}
+header{display:flex;justify-content:space-between;align-items:center;padding:1rem 0}
+.logo{font-weight:800;font-size:1.15rem;color:var(--green);text-decoration:none;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 1.2rem;border-radius:12px;background:var(--green);color:#0b0d12;font-weight:700;text-decoration:none;border:0;font:inherit;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);min-height:40px;font-weight:600}
+h1{font-size:2rem;line-height:1.15;letter-spacing:-0.03em;margin:1.2rem 0 0.5rem}
+h2{font-size:1.35rem;letter-spacing:-0.02em;margin:2.4rem 0 0.6rem}
+h3{font-size:1.05rem;margin:1.4rem 0 0.3rem}
+p{margin:0.5rem 0;color:#c4ccdb}.lead{color:var(--muted);font-size:1.05rem;max-width:620px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:1.1rem;margin-top:1.2rem}
+table{width:100%;border-collapse:collapse}
+th{font-size:0.75rem;color:var(--muted);font-weight:600;text-align:left;padding:0 0.3rem 0.4rem}
+td{padding:0.25rem 0.3rem}
+input[type=text],input[type=number]{width:100%;background:#0e121a;border:1px solid var(--border);border-radius:10px;color:var(--text);font:inherit;padding:0.6rem 0.65rem;min-height:44px}
+input:focus{outline:2px solid var(--green);outline-offset:1px}
+input[type=number]{-moz-appearance:textfield;appearance:textfield}input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.x{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;width:40px;height:44px;cursor:pointer;font-size:1.1rem}
+.row{display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center;margin-top:0.9rem}
+.extra{flex:1;min-width:230px}
+.extra label{display:flex;justify-content:space-between;font-size:0.9rem;color:var(--muted)}
+.extra b{color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green);height:30px}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-weight:600;padding:0.5rem 1rem;border-radius:999px;cursor:pointer;min-height:40px}
+.seg button[aria-pressed=true]{background:var(--green);color:#0b0d12}
+.big{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.7rem;margin-top:1rem}
+.big div{border:1px solid var(--border);border-radius:14px;padding:0.8rem}
+.big span{display:block;font-size:0.75rem;color:var(--muted)}
+.big b{display:block;font-size:1.35rem;font-variant-numeric:tabular-nums;margin-top:0.1rem}
+.big em{display:block;font-style:normal;font-size:0.78rem;color:var(--green)}
+.warn{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);color:#f3d48a;border-radius:12px;padding:0.7rem 0.85rem;margin-top:0.9rem;font-size:0.92rem}
+.cmp{font-size:0.92rem;color:var(--muted);margin-top:0.8rem}.cmp b{color:var(--text)}
+svg{display:block;width:100%;height:auto;margin-top:0.9rem}
+ol.order{margin:0.6rem 0 0;padding-left:1.2rem;color:#c4ccdb}
+.cta{background:linear-gradient(135deg,rgba(74,222,128,0.14),rgba(74,222,128,0.03));border:1px solid rgba(74,222,128,0.4);border-radius:18px;padding:1.2rem;margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:0.9rem;align-items:center;justify-content:space-between}
+.cta p{margin:0;max-width:480px;color:var(--text)}.cta small{display:block;color:var(--muted)}
+details{border-top:1px solid var(--border);padding:0.7rem 0}summary{cursor:pointer;font-weight:600;min-height:32px}
+footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);color:var(--muted);font-size:0.85rem}
+@media(max-width:640px){h1{font-size:1.6rem}.big{grid-template-columns:1fr}table,tbody,thead{display:block}tr{display:grid;grid-template-columns:1fr 1fr 1fr 44px;gap:0 0.2rem}th:nth-child(1){display:none}th:nth-child(2){grid-column:1}td:nth-child(1){grid-column:1/-1;padding-top:0.7rem}td input[type=number]{padding:0.6rem 0.45rem}td:nth-child(1) input{background:transparent;border-color:transparent;padding-left:0.3rem;min-height:34px;font-weight:600}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><a class="logo" href="/">Qualisight</a><a class="btn ghost" href="/?utm_source=organic&utm_campaign=debt_calculator">Open the app</a></header>
+
+<h1>Debt payoff calculator: snowball vs avalanche</h1>
+<p class="lead">Enter your debts and what you can pay. See the month you will be debt-free, how much interest you will pay, and which method wins for you. Free, no sign-up, nothing is saved or sent anywhere.</p>
+
+<section class="card" aria-label="Calculator">
+  <table id="debts"><thead><tr><th>Name</th><th>Balance ($)</th><th>Interest (%)</th><th>Monthly payment ($)</th><th></th></tr></thead><tbody></tbody></table>
+  <div class="row"><button class="btn ghost" type="button" id="add">+ Add a debt</button>
+    <div class="extra"><label for="extra">Extra you can pay each month <b id="extraV">$0</b></label><input type="range" id="extra" min="0" max="1500" step="25" value="100"></div></div>
+  <div class="row"><div class="seg" role="group" aria-label="Method"><button type="button" id="mSnow" aria-pressed="true">Snowball</button><button type="button" id="mAva" aria-pressed="false">Avalanche</button></div>
+    <span id="mHint" style="color:var(--muted);font-size:0.9rem"></span></div>
+  <div id="out" aria-live="polite"></div>
+</section>
+
+<div class="cta"><p><b>Want to watch your debt clear like a storm?</b><small>Qualisight turns this plan into a storm that calms with every payment, with badges along the way. Budgeting and debt payoff are free forever. No card, no bank login.</small></p>
+  <a class="btn" href="/?utm_source=organic&utm_campaign=debt_calculator">Save this plan free</a></div>
+
+<h2>How the two methods work</h2>
+<p>Both methods start the same way: you pay at least the monthly payment on every debt. The difference is where your <b>extra</b> money goes.</p>
+<h3>Snowball: smallest balance first</h3>
+<p>All extra money goes to the debt with the smallest balance. When it is gone, its payment rolls onto the next smallest, so your payments grow like a snowball. You clear whole debts sooner, which feels good and helps many people keep going.</p>
+<h3>Avalanche: highest interest first</h3>
+<p>All extra money goes to the debt with the highest interest rate. This never costs more interest than snowball, and it often costs less. The first win can take longer if your highest-rate debt is also a big one.</p>
+<h3>A worked example</h3>
+<p>Say you have a $6,800 credit card at 20.99% with a $200 payment, a $4,200 line of credit at 9.5% with a $110 payment, and a $14,500 car loan at 7.9% with a $330 payment. Those are the numbers the calculator starts with. Move the extra payment slider and watch the debt-free date and the interest change. Then swap in your own numbers.</p>
+
+<h2>Common questions</h2>
+<details><summary>What is the debt snowball method?</summary><p>You pay the minimum on every debt, then put all your extra money on the smallest balance. When it is gone, its payment rolls onto the next smallest. You get quick wins, which helps many people keep going.</p></details>
+<details><summary>What is the debt avalanche method?</summary><p>You pay the minimum on every debt, then put all your extra money on the debt with the highest interest rate. It usually costs the least interest overall.</p></details>
+<details><summary>Which is better, snowball or avalanche?</summary><p>Avalanche never costs more interest than snowball, and often costs less. Snowball clears individual debts sooner, which can make it easier to stick with. The best method is the one you will keep doing.</p></details>
+<details><summary>Why does the calculator say my debt will never be paid off?</summary><p>If a payment is smaller than the interest added each month, the balance grows. Raise the payment above the monthly interest and the plan can finish.</p></details>
+
+<h2>What this calculator assumes</h2>
+<p>Interest is added once a month at one twelfth of the yearly rate, rates stay the same, you make every payment, and you add no new debt. Real lenders can calculate interest daily and change rates, so treat the dates as close estimates. This page is information, not financial advice. If your debts feel unmanageable, a non-profit credit counsellor can talk through your options for free.</p>
+
+<footer>Built by a solo founder in Ontario. Last checked November 2026. <a href="/">Qualisight</a> is a Canadian budgeting, debt and savings app that turns your money into a game.</footer>
+</div>
+<script>
+(function(){
+  var debts=[{n:'Credit card',b:6800,r:20.99,m:200},{n:'Line of credit',b:4200,r:9.5,m:110},{n:'Car loan',b:14500,r:7.9,m:330}], method='snow';
+  var tb=document.querySelector('#debts tbody'), out=document.getElementById('out'), extra=document.getElementById('extra');
+  function money(n){ return '$'+Math.round(n).toLocaleString('en-CA'); }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function monthOut(m){ var d=new Date(); d.setMonth(d.getMonth()+m); return d.toLocaleDateString('en-CA',{month:'long',year:'numeric'}); }
+  function dur(m){ var y=Math.floor(m/12), r=m%12; return (y?y+' yr'+(y>1?'s':'')+' ':'')+(r||!y?r+' mo':''); }
+  function rows(){
+    tb.innerHTML=debts.map(function(d,i){ return '<tr><td><input type="text" data-i="'+i+'" data-k="n" value="'+esc(d.n)+'" aria-label="Debt name"></td>'
+      +'<td><input type="number" inputmode="decimal" min="0" step="100" data-i="'+i+'" data-k="b" value="'+d.b+'" aria-label="Balance for '+esc(d.n)+'"></td>'
+      +'<td><input type="number" inputmode="decimal" min="0" max="60" step="0.01" data-i="'+i+'" data-k="r" value="'+d.r+'" aria-label="Interest rate for '+esc(d.n)+'"></td>'
+      +'<td><input type="number" inputmode="decimal" min="0" step="5" data-i="'+i+'" data-k="m" value="'+d.m+'" aria-label="Monthly payment for '+esc(d.n)+'"></td>'
+      +'<td>'+(debts.length>1?'<button class="x" type="button" data-del="'+i+'" aria-label="Remove '+esc(d.n)+'">×</button>':'')+'</td></tr>'; }).join('');
+  }
+  // month-by-month plan: minimums first, then extra plus freed-up payments go to the target debt
+  function plan(kind, ex){
+    var L=debts.filter(function(d){return d.b>0;}).map(function(d,i){ return {n:d.n,b:d.b,r:d.r/1200,m:d.m,i:i}; });
+    L.sort(function(a,b){ return kind==='snow' ? a.b-b.b : b.r-a.r; });
+    var months=0, interest=0, series=[L.reduce(function(s,x){return s+x.b;},0)], order=[];
+    while(L.some(function(x){return x.b>0.005;}) && months<720){
+      var pool=ex, moved=false;
+      L.forEach(function(x){ if(x.b<=0.005){ pool+=x.m; return; } var it=x.b*x.r; interest+=it; x.b+=it; var p=Math.min(x.m,x.b); x.b-=p; if(p>it+0.001) moved=true; });
+      for(var k=0;k<L.length&&pool>0.005;k++){ if(L[k].b>0.005){ var p2=Math.min(pool,L[k].b); L[k].b-=p2; pool-=p2; moved=true; } }
+      months++;
+      L.forEach(function(x){ if(x.b<=0.005 && !x.done){ x.done=months; order.push({n:x.n,at:months}); } });
+      series.push(Math.max(0,L.reduce(function(s,x){return s+x.b;},0)));
+      if(!moved) return {ok:false};
+    }
+    return {ok:months<720, months:months, interest:interest, series:series, order:order};
+  }
+  function chart(a,b){
+    var W=800,H=220,n=Math.max(a.series.length,b.series.length), max=Math.max(a.series[0],1);
+    function path(s){ return s.map(function(v,i){ return (i?'L':'M')+(i/(n-1||1)*W).toFixed(1)+' '+(H-10-(v/max)*(H-30)).toFixed(1); }).join(' '); }
+    return '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Total balance over time for both methods"><path d="'+path(b.series)+'" fill="none" stroke="#97a2b8" stroke-width="2" stroke-dasharray="6 6"/><path d="'+path(a.series)+'" fill="none" stroke="#4ade80" stroke-width="3"/><line x1="0" y1="'+(H-10)+'" x2="'+W+'" y2="'+(H-10)+'" stroke="rgba(255,255,255,0.15)"/></svg>';
+  }
+  function render(){
+    var ex=+extra.value; document.getElementById('extraV').textContent='+'+money(ex);
+    document.getElementById('mSnow').setAttribute('aria-pressed',method==='snow'); document.getElementById('mAva').setAttribute('aria-pressed',method==='ava');
+    document.getElementById('mHint').textContent=method==='snow'?'Extra goes to the smallest balance first.':'Extra goes to the highest interest rate first.';
+    var live=debts.filter(function(d){return d.b>0;});
+    if(!live.length){ out.innerHTML='<p class="cmp">Add a debt with a balance to see your plan.</p>'; return; }
+    var s=plan('snow',ex), a=plan('ava',ex), cur=method==='snow'?s:a, oth=method==='snow'?a:s, base=plan(method,0);
+    if(!cur.ok){
+      var bad=live.filter(function(d){ return d.m<=d.b*d.r/1200; }).map(function(d){ return esc(d.n)+' (interest is about '+money(d.b*d.r/1200)+' a month)'; });
+      out.innerHTML='<div class="warn"><b>This plan never finishes.</b> '+(bad.length?'The payment on '+bad.join(' and ')+' does not cover the interest, so the balance grows. ':'')+'Raise a payment or add extra each month.</div>'; return;
+    }
+    var saved=base.ok?base.interest-cur.interest:0, sooner=base.ok?base.months-cur.months:0;
+    var diff=oth.ok?Math.round(oth.interest-cur.interest):0;
+    out.innerHTML='<div class="big"><div><span>Debt-free by</span><b>'+monthOut(cur.months)+'</b><em>'+dur(cur.months)+'</em></div>'
+      +'<div><span>Total interest</span><b>'+money(cur.interest)+'</b>'+(ex>0&&saved>1?'<em>'+money(saved)+' less than paying no extra</em>':'')+'</div>'
+      +'<div><span>Time saved by the extra</span><b>'+(ex>0&&sooner>0?dur(sooner):'None yet')+'</b>'+(ex>0?'':'<em>Move the slider to see</em>')+'</div></div>'
+      +chart(cur,oth)
+      +'<p class="cmp">Green line: '+(method==='snow'?'snowball':'avalanche')+'. Dashed line: '+(method==='snow'?'avalanche':'snowball')+'. '
+      +(Math.abs(diff)<1&&oth.months===cur.months?'For these debts both methods come out the same.'
+        :(method==='snow'?'Avalanche':'Snowball')+' would finish in <b>'+monthOut(oth.months)+'</b> with <b>'+money(oth.interest)+'</b> of interest, '+(diff>0?money(diff)+' more':money(-diff)+' less')+' than this plan.')+'</p>'
+      +'<h3 style="margin-top:1rem">The order your debts disappear</h3><ol class="order">'+cur.order.map(function(o){ return '<li><b>'+esc(o.n)+'</b> is gone in '+monthOut(o.at)+'</li>'; }).join('')+'</ol>';
+  }
+  tb.addEventListener('input',function(e){ var t=e.target, i=+t.dataset.i, k=t.dataset.k; if(k==null) return; debts[i][k]= k==='n' ? t.value : Math.max(0,parseFloat(t.value)||0); render(); });
+  tb.addEventListener('click',function(e){ var d=e.target.dataset.del; if(d==null) return; debts.splice(+d,1); rows(); render(); });
+  document.getElementById('add').onclick=function(){ if(debts.length>=8) return; debts.push({n:'Debt '+(debts.length+1),b:1000,r:19.99,m:50}); rows(); render(); };
+  extra.addEventListener('input',render);
+  document.getElementById('mSnow').onclick=function(){ method='snow'; render(); };
+  document.getElementById('mAva').onclick=function(){ method='ava'; render(); };
+  rows(); render();
+})();
+</script>
+</body>
+</html>

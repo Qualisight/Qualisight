@@ -17,7 +17,7 @@
 <meta property="og:image" content="https://qualisight.ca/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
-<meta property="og:image:alt" content="Qualisight: your money, finally making sense, with a money grove tree">
+<meta property="og:image:alt" content="Qualisight: your money, as a game you can win. A money tree in full autumn colour at sunset.">
 <meta property="og:locale" content="en_CA">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Qualisight: your money, as a game you can win">
@@ -4157,6 +4157,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
         <button class="lp-footer-link" onclick="lpScrollTo('lp-features')">The four worlds</button>
         <button class="lp-footer-link" onclick="lpScrollTo('lp-tips')">Tools</button>
         <button class="lp-footer-link" onclick="lpScrollTo('lp-pricing')">Pricing</button>
+        <a class="lp-footer-link" href="/debt-payoff-calculator/" style="text-decoration:none">Debt payoff calculator</a>
         <button class="lp-footer-link" onclick="showSignIn()">Sign in</button>
         <button class="lp-footer-link" onclick="showTerms()">Terms</button>
         <button class="lp-footer-link" onclick="showPrivacy()">Privacy Policy</button>
@@ -4275,7 +4276,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
   <button class="ai-toggle" id="ai-toggle-btn" onclick="toggleAI()">AI Advisor</button>
   <div class="user-pill" style="position:relative">
     <div class="user-pill-dot"></div>
-    <div class="user-pill-name" id="user-label">—</div>
+    <div class="user-pill-name" id="user-label"></div>
     <button class="logout-btn qi-head-btn" id="qi-head-btn" onclick="qiOpen()" title="Site insights" aria-label="Site insights" style="display:none"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3v18h18"/><path d="M7 15l4-4 3 3 5-6"/></svg><span>Insights</span></button>
     <button class="logout-btn" onclick="toggleSettingsMenu()" title="Settings" aria-label="Settings" id="settings-gear-btn"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg></button>
     <div id="settings-dropdown" style="display:none;position:absolute;top:calc(100% + 8px);right:0;background:var(--card);border:1px solid var(--border2);border-radius:10px;box-shadow:0 8px 32px rgba(0,0,0,0.5);min-width:190px;z-index:400;overflow:hidden">
@@ -6162,8 +6163,8 @@ function fmtW(n){
   return '$'+Math.round(parseFloat(n||0)).toLocaleString('en-CA');
 }
 function pct(n){ return (parseFloat(n||0)*100).toFixed(1)+'%'; }
-function fmtPct(a,b){ if(!b) return '—'; return ((a/b)*100).toFixed(0)+'%'; }
-function fmtRet(a,b){ if(!b) return '—'; const r=((a-b)/b*100); return (r>=0?'+':'')+r.toFixed(2)+'%'; }
+function fmtPct(a,b){ if(!b) return 'n/a'; return ((a/b)*100).toFixed(0)+'%'; }
+function fmtRet(a,b){ if(!b) return 'n/a'; const r=((a-b)/b*100); return (r>=0?'+':'')+r.toFixed(2)+'%'; }
 
 // ══════════════════════════════════════════
 // ENGAGEMENT: STREAK + JOURNEY
@@ -7159,7 +7160,7 @@ function renderMonthly(){
       </div>
       <div class="bm-stat">
         <div class="bm-stat-label">${leftToSpend>=0?'Left to spend':'Over budget'}</div>
-        <div class="bm-stat-val ${tg>0?(leftToSpend>=0?'pos':'neg'):''}">${tg>0?fmtW(Math.abs(leftToSpend)):'—'}</div>
+        <div class="bm-stat-val ${tg>0?(leftToSpend>=0?'pos':'neg'):''}">${tg>0?fmtW(Math.abs(leftToSpend)):'n/a'}</div>
         <div class="bm-stat-sub">${tg>0?'against your goals':'set goals below'}</div>
       </div>
       <div class="bm-stat highlight">
@@ -8385,7 +8386,7 @@ function renderDebt(){
         // scenarios
         const minSceneTime = pf.canPayOff ? monthsToDuration(pf.months) : 'Never paid off';
         const minSceneInt  = pf.canPayOff ? fmt(Math.round(pf.totalInterest))+' interest' : 'Below monthly interest';
-        const recSceneTime = pfRec.canPayOff ? monthsToDuration(pfRec.months) : '—';
+        const recSceneTime = pfRec.canPayOff ? monthsToDuration(pfRec.months) : 'n/a';
         const recSceneInt  = pfRec.canPayOff ? fmt(Math.round(pfRec.totalInterest))+' interest' : '';
 
         const scenarios = `<div class="dt-scenarios">
@@ -8698,7 +8699,7 @@ function renderPortfolio(){
   const statsEl = document.getElementById('port-stats');
   if(statsEl) statsEl.innerHTML=[
     ['Portfolio Value',  fmt(portMV),  'pos'],
-    ['Total Return',     portBV>0?portRet.toFixed(2)+'%':'—', portGL>=0?'pos':'neg'],
+    ['Total Return',     portBV>0?portRet.toFixed(2)+'%':'n/a', portGL>=0?'pos':'neg'],
   ].map(([l,v,c])=>`<div class="stat-tile"><div class="label">${l}</div><div class="value ${c}">${v}</div></div>`).join('');
 }
 
@@ -8868,7 +8869,7 @@ function renderAllocator(){
   // News panel: keep it available by appending once outside the loop
   let newsHtml = `<div class="news-panel" id="news-panel" style="margin-top:0.8rem">
     <div class="news-panel-header">
-      <div class="news-ticker-label" id="news-panel-ticker">—</div>
+      <div class="news-ticker-label" id="news-panel-ticker"></div>
       <button class="news-close-btn" onclick="closeNewsPanel()">✕</button>
     </div>
     <div class="news-section-title">Recent Headlines</div>
@@ -8986,7 +8987,7 @@ function renderAllocator(){
   try{ if(_ck.open) ckRender(); }catch(e){ console.warn('check-up', e); }
   // Ensure news panel is always in DOM
   if(!document.getElementById('news-panel')){
-    el.insertAdjacentHTML('afterend', `<div id="news-panel" class="news-panel" style="display:none"><div class="news-panel-header"><div class="news-ticker-label" id="news-panel-ticker">—</div><button class="news-close-btn" onclick="closeNewsPanel()">✕</button></div><div class="news-section-title">Recent Headlines</div><div id="news-headlines"></div></div>`);
+    el.insertAdjacentHTML('afterend', `<div id="news-panel" class="news-panel" style="display:none"><div class="news-panel-header"><div class="news-ticker-label" id="news-panel-ticker"></div><button class="news-close-btn" onclick="closeNewsPanel()">✕</button></div><div class="news-section-title">Recent Headlines</div><div id="news-headlines"></div></div>`);
   }
 }
 
@@ -9556,9 +9557,9 @@ function calcRent(){
 
   document.getElementById('rent-metrics').innerHTML = [
     ['Monthly Rent',      fmt(rent),                                    '',                         "The amount you're considering"],
-    ['% of Take-Home Pay',  rentPct!==null?rentPct.toFixed(1)+'%':'—',    rentPct===null?'':rentPct<=30?'pos':rentPct<=40?'neutral':'neg', '30% or less keeps room to save'],
-    ['Left After Rent',   totalIncome>0?fmt(leftAfterRent):'—',         totalIncome>0&&leftAfterRent>0?'pos':'neg', 'Income minus this rent'],
-    ['Monthly Savings',   monthlySaveable!==null?(monthlySaveable>0?'+':'')+fmt(monthlySaveable):'—',
+    ['% of Take-Home Pay',  rentPct!==null?rentPct.toFixed(1)+'%':'n/a',    rentPct===null?'':rentPct<=30?'pos':rentPct<=40?'neutral':'neg', '30% or less keeps room to save'],
+    ['Left After Rent',   totalIncome>0?fmt(leftAfterRent):'n/a',         totalIncome>0&&leftAfterRent>0?'pos':'neg', 'Income minus this rent'],
+    ['Monthly Savings',   monthlySaveable!==null?(monthlySaveable>0?'+':'')+fmt(monthlySaveable):'n/a',
                           monthlySaveable===null?'':monthlySaveable>0?'pos':'neg',                  'After rent + your current expenses'],
   ].map(([l,v,c,s])=>`<div class="rental-metric"><div class="rm-label">${l}</div><div class="rm-value ${c}">${v}</div><div class="rm-sub">${s}</div></div>`).join('');
 
@@ -9568,7 +9569,7 @@ function calcRent(){
       <div class="rvb-result-row"><span class="rvb-result-label">Your monthly income</span><span class="rvb-result-val pos">${fmt(totalIncome)}</span></div>
       <div class="rvb-result-row"><span class="rvb-result-label">This rent</span><span class="rvb-result-val neg">- ${fmt(rent)}</span></div>
       <div class="rvb-result-row"><span class="rvb-result-label">Other monthly expenses</span><span class="rvb-result-val neg">- ${fmt(nonHousingExp)}</span></div>
-      <div class="rvb-result-row" style="font-weight:700"><span class="rvb-result-label">Left over to save / invest</span><span class="rvb-result-val ${monthlySaveable>0?'pos':'neg'}">${monthlySaveable!==null?fmt(monthlySaveable):'—'}</span></div>`;
+      <div class="rvb-result-row" style="font-weight:700"><span class="rvb-result-label">Left over to save / invest</span><span class="rvb-result-val ${monthlySaveable>0?'pos':'neg'}">${monthlySaveable!==null?fmt(monthlySaveable):'n/a'}</span></div>`;
     if(dpGoal>0 && monthlySaveable!==null){
       breakdownHtml += `<div style="margin-top:0.8rem;padding-top:0.8rem;border-top:1px solid var(--border);font-size:0.85rem">
         ${monthlySaveable>0
@@ -9774,7 +9775,7 @@ function calcBuy(){
        At <strong>${appreciation}%</strong> annual appreciation, this <strong>${fmt(price)}</strong> home could be worth
       <strong style="color:var(--accent)">${fmt(Math.round(value5))}</strong> in 5 years.
       After paying down your mortgage, your estimated equity would be
-      <strong style="color:var(--accent)">${fmt(Math.round(equity5))}</strong> —
+      <strong style="color:var(--accent)">${fmt(Math.round(equity5))}</strong>,
       a gain of <strong style="color:var(--accent)">${fmt(Math.round(gainVsDown5))}</strong> on your
       <strong>${fmt(down)}</strong> down payment.
       <span style="color:var(--muted);display:block;margin-top:0.4rem;font-size:0.75rem">
@@ -13406,7 +13407,7 @@ function hqCelebrate(D){
 function hqText(D){
   const set=(id,h)=>{ const e=document.getElementById(id); if(e) e.innerHTML=h; };
   const pct=Math.round(D.prog*100), keys=D.stops[7].done;
-  set('hq-big', !D.price ? '—' : keys ? 'Keys ready' : `${pct}%`);
+  set('hq-big', !D.price ? 'n/a' : keys ? 'Keys ready' : `${pct}%`);
   set('hq-big-sub', !D.price ? 'Set a target home price to start your road' : keys ? `You can buy your ${fmtW(D.price)} home` : `of the way to your keys on a ${fmtW(D.price)} home`);
   set('hq-fhsa', D.hasFhsa ? `<b>${fmtW(D.fhsa)}</b><small>from your Investments page</small>` : `<b>$0</b><small>Add an FHSA on Investments</small>`);
   const n=D.next;
@@ -14213,7 +14214,7 @@ function lpOpenWorld(id){
       try{ if(sessionStorage.getItem('qs_nudged')) return; sessionStorage.setItem('qs_nudged','1'); }catch(e){}
       let n=document.getElementById('demo-nudge');
       if(!n){ n=document.createElement('div'); n.id='demo-nudge'; n.className='demo-nudge'; n.setAttribute('role','status');
-        n.innerHTML='<div><b>Like it? Set up your own in 2 minutes.</b><span>Free to start, no credit card.</span></div><button class="demo-btn" onclick="document.getElementById(\'demo-nudge\').classList.remove(\'show\');if(typeof qsEvent===\'function\')qsEvent(\'signup_open\');exitDemo()">Start for free</button><button class="demo-nudge-x" aria-label="Dismiss" onclick="document.getElementById(\'demo-nudge\').classList.remove(\'show\')">×</button>';
+        n.innerHTML='<div><b>Like it? Set up your own in 2 minutes.</b><span>Free forever for budgeting. No card, no bank login.</span></div><button class="demo-btn" onclick="document.getElementById(\'demo-nudge\').classList.remove(\'show\');if(typeof qsEvent===\'function\')qsEvent(\'signup_open\');exitDemo()">Start for free</button><button class="demo-nudge-x" aria-label="Dismiss" onclick="document.getElementById(\'demo-nudge\').classList.remove(\'show\')">×</button>';
         document.body.appendChild(n); }
       n.classList.add('show');
     },25000);

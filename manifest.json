@@ -1,7 +1,7 @@
 {
   "name": "Qualisight",
   "short_name": "Qualisight",
-  "description": "Budget, debt payoff and your TFSA, RRSP and FHSA in one place. Built for Canadians.",
+  "description": "Your money, as a game you can win. Budget, debt payoff and your TFSA, RRSP and FHSA, built for Canadians.",
   "start_url": "/",
   "scope": "/",
   "display": "standalone",
