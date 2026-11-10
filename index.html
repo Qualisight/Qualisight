@@ -418,6 +418,62 @@ header{
 .qi-t td{padding:0.4rem;border-bottom:1px solid var(--border);word-break:break-word}
 @media(max-width:700px){.qi-kpis{grid-template-columns:1fr 1fr}.qi-grid{grid-template-columns:1fr}.qi-sheet{padding:1.1rem}}
 
+/* Dashboard: home base */
+.db-hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:1rem;margin-bottom:1rem}
+.db-nw,.db-score{background:var(--card);border:1px solid var(--border2);border-radius:22px;padding:1.2rem 1.3rem;position:relative;overflow:hidden}
+.db-nw{background:radial-gradient(120% 90% at 100% 0%,rgba(74,222,128,0.10),transparent 60%),var(--card)}
+.db-greet{font-size:0.88rem;color:var(--muted);margin-bottom:0.6rem}
+.db-nw-label{font-size:0.78rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.07em;font-weight:600}
+.db-nw-val{font-family:var(--font-display);font-weight:800;font-size:3rem;line-height:1.02;letter-spacing:-0.045em;color:var(--text);font-variant-numeric:tabular-nums;margin-top:0.15rem}
+.db-nw-val.neg{color:var(--red)}
+.db-nw-delta{font-size:0.88rem;font-weight:700;margin-top:0.35rem;font-variant-numeric:tabular-nums}
+.db-nw-delta.up{color:#4ade80} .db-nw-delta.down{color:#f87171}
+.db-nw-delta span{color:var(--muted);font-weight:500}
+.db-spark{display:block;width:100%;height:64px;margin:0.6rem 0 0.5rem}
+.db-nw-split{display:flex;gap:1.1rem;flex-wrap:wrap;font-size:0.8rem;color:var(--muted)}
+.db-nw-split b{color:var(--text);font-variant-numeric:tabular-nums} .db-nw-split b.neg{color:var(--red)}
+.db-score{display:flex;gap:1.1rem;align-items:center}
+.db-ring{position:relative;width:128px;height:128px;flex-shrink:0}
+.db-ring svg{width:100%;height:100%}
+.db-ring-in{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.db-ring-in b{font-family:var(--font-display);font-size:2.3rem;font-weight:800;line-height:1;letter-spacing:-0.03em}
+.db-ring-in span{font-size:0.7rem;color:var(--muted);margin-top:0.15rem}
+.db-score-main{flex:1;min-width:0}
+.db-score-title{font-weight:700;font-size:0.98rem;margin-bottom:0.55rem;display:flex;gap:0.5rem;align-items:baseline;flex-wrap:wrap}
+.db-score-title span{font-size:0.8rem;font-weight:700}
+.db-part{display:grid;grid-template-columns:68px 1fr;gap:0.15rem 0.6rem;align-items:center;margin-bottom:0.42rem}
+.db-part>span{font-size:0.76rem;color:var(--text)}
+.db-part-bar{height:6px;border-radius:4px;background:rgba(255,255,255,0.07);overflow:hidden}
+.db-part-bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#4ade80,#a3e635)}
+.db-part em{grid-column:2;font-style:normal;font-size:0.68rem;color:var(--muted);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.db-h{font-weight:700;font-size:1rem;margin:0.4rem 0 0.6rem}
+.db-moves-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.7rem;margin-bottom:1rem}
+.db-move{display:flex;align-items:center;gap:0.75rem;text-align:left;background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:0.8rem 0.9rem;cursor:pointer;color:var(--text);font-family:var(--font-body);transition:transform .15s,border-color .15s}
+.db-move:hover{transform:translateY(-2px);border-color:rgba(74,222,128,0.45)}
+.db-move-ic{width:38px;height:38px;border-radius:12px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.db-move-main{flex:1;min-width:0;display:flex;flex-direction:column}
+.db-move-main b{font-size:0.88rem;line-height:1.3}
+.db-move-main span{font-size:0.76rem;color:var(--muted);line-height:1.35;margin-top:0.15rem}
+.db-move-go{font-size:1.4rem;color:var(--muted);line-height:1}
+.db-worlds-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.8rem;margin-bottom:1.2rem}
+.db-world{display:flex;flex-direction:column;text-align:left;padding:0;background:var(--card);border:1px solid var(--border2);border-radius:18px;overflow:hidden;cursor:pointer;color:var(--text);font-family:var(--font-body);transition:transform .15s,border-color .15s}
+.db-world:hover{transform:translateY(-3px);border-color:rgba(74,222,128,0.5)}
+.db-world-art{position:relative;height:138px;background:#141821}
+.db-world-art canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.db-world-txt{padding:0.75rem 0.9rem 0.85rem;display:flex;flex-direction:column;gap:0.12rem}
+.db-world-txt span{font-size:0.72rem;color:var(--muted);text-transform:uppercase;letter-spacing:0.06em;font-weight:600}
+.db-world-txt b{font-family:var(--font-display);font-size:1.2rem;font-weight:800;letter-spacing:-0.02em}
+.db-world-txt em{font-style:normal;font-size:0.76rem;color:var(--muted);line-height:1.35}
+.db-details{margin-top:1rem}
+.db-details>summary{cursor:pointer;list-style:none;font-weight:700;font-size:0.95rem;padding:0.85rem 1.1rem;background:var(--card);border:1px solid var(--border2);border-radius:14px;display:flex;justify-content:space-between;align-items:center}
+.db-details>summary::-webkit-details-marker{display:none}
+.db-details>summary::after{content:'Show';font-size:0.8rem;color:var(--accent);font-weight:600}
+.db-details[open]>summary::after{content:'Hide'}
+.db-details[open]>summary{margin-bottom:1rem}
+@media(max-width:900px){.db-hero{grid-template-columns:1fr}.db-moves-row{grid-template-columns:1fr}.db-worlds-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.db-nw-val{font-size:2.5rem}.db-ring{width:104px;height:104px}.db-ring-in b{font-size:1.9rem}.db-world-art{height:110px}.db-world-txt b{font-size:1.05rem}.db-score{padding:1rem}}
+@media (prefers-reduced-motion: reduce){.db-move,.db-world{transition:none}}
+
 /* Housing game: the road home */
 .hq{background:var(--card);border:1px solid var(--border2);border-radius:22px;overflow:hidden;margin-bottom:1.2rem}
 .hq-head{display:flex;justify-content:space-between;align-items:center;gap:1rem;padding:1.1rem 1.25rem 0.95rem}
@@ -3989,8 +4045,14 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 
 <!-- ═══════════ DASHBOARD ═══════════ -->
 <div id="page-dashboard" class="page active">
-  <div class="hero-title">Your Financial Command Centre</div>
-  <div class="hero-sub">Your budget, debt, TFSA, RRSP, and investments, tracked in one place.</div>
+  <!-- Net worth + Money Score -->
+  <div class="db-hero" id="db-hero"></div>
+
+  <!-- Next best moves -->
+  <div id="db-moves"></div>
+
+  <!-- The four money worlds -->
+  <div id="db-worlds"></div>
 
   <!-- Journey + streak -->
   <div class="journey-card">
@@ -4005,21 +4067,24 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
     <div class="journey-cta" id="journey-cta"></div>
   </div>
 
-  <div class="stat-row" id="dash-stats"></div>
-  <div class="two-col">
-    <div class="card">
-      <div class="card-title">Monthly Snapshot</div>
-      <div id="dash-monthly-snap"></div>
+  <details class="db-details">
+    <summary>All the numbers</summary>
+    <div class="stat-row" id="dash-stats"></div>
+    <div class="two-col">
+      <div class="card">
+        <div class="card-title">Monthly Snapshot</div>
+        <div id="dash-monthly-snap"></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Debt Overview</div>
+        <div id="dash-debt-snap"></div>
+      </div>
     </div>
-    <div class="card">
-      <div class="card-title">Debt Overview</div>
-      <div id="dash-debt-snap"></div>
+    <div style="margin-top:1rem" class="card">
+      <div class="card-title">Portfolio Quick View</div>
+      <div id="dash-portfolio-snap"></div>
     </div>
-  </div>
-  <div style="margin-top:1rem" class="card">
-    <div class="card-title">Portfolio Quick View</div>
-    <div id="dash-portfolio-snap"></div>
-  </div>
+  </details>
 </div>
 
 <!-- ═══════════ MONTHLY BUDGET ═══════════ -->
@@ -6418,7 +6483,7 @@ function bgCoin(ctx,x,y,r,shade){
 
 function bgDraw(dt){
   const ctx=_bg.ctx, S=_bg.S; if(!ctx||!S||!_bg.W) return;
-  const W=_bg.W, H=_bg.H, still=bgReduce, small=W<560;
+  const W=_bg.W, H=_bg.H, still=bgReduce||!!_bg.still, small=W<560;
   const k=Math.max(0.8,Math.min(1.3,H/330)), t=still?5:performance.now()/1000;
   ctx.clearRect(0,0,W,H);
   const happy = S.health==='thriving'||S.health==='track', bad=S.health==='over'||S.health==='tight';
@@ -12937,7 +13002,7 @@ function hqRoad(W,H,k){
 
 function hqDraw(dt){
   const ctx=_hq.ctx, D=_hq.D; if(!ctx||!D||!_hq.W) return;
-  const W=_hq.W, H=_hq.H, still=hqReduce, small=W<560;
+  const W=_hq.W, H=_hq.H, still=hqReduce||!!_hq.still, small=W<560;
   const k=Math.max(0.8,Math.min(1.3,H/340)), t=still?3:performance.now()/1000;
   const keys=D.stops[7].done;
   ctx.clearRect(0,0,W,H);
@@ -13058,6 +13123,160 @@ function hqCar(ctx,x,y,ang,s,t,moving,still,keys){
   ctx.restore();
 }
 
+// ══════════════════════════════════════════
+// DASHBOARD: home base for the four money worlds
+// ══════════════════════════════════════════
+function dbIsDemo(){ return !!(typeof currentUser!=='undefined' && currentUser && currentUser.isDemo); }
+function dbNetWorth(){
+  const port=(state.portfolio||[]).reduce((s,h)=>s+(+h.price||0)*(+h.shares||0),0);
+  const home=(state.homeFund&&state.homeFund.saved)||0;
+  const debt=(state.debts||[]).reduce((s,d)=>s+Math.max(0,d.balance||0),0);
+  return {nw:port+home-debt, port, home, debt};
+}
+function dbHistory(nw){
+  if(dbIsDemo()){ // a believable climb for the demo
+    const out=[]; for(let i=180;i>=0;i-=6){ const f=1-i/180; out.push([i, nw - 9200*(1-f) + Math.sin(i*0.35)*650 + Math.sin(i*0.11)*900]); }
+    out[out.length-1][1]=nw; return out.map(([i,v])=>({d:i,v}));
+  }
+  if(!Array.isArray(state.nwHistory)) state.nwHistory=[];
+  const today=todayStr(); const h=state.nwHistory;
+  if(!h.length || h[h.length-1][0]!==today){ h.push([today, Math.round(nw)]); if(h.length>400) h.splice(0,h.length-400); clearTimeout(window._dbSaveT); window._dbSaveT=setTimeout(()=>{ try{ save(); }catch(e){} },400); }
+  else h[h.length-1][1]=Math.round(nw);
+  return h.map(([d,v])=>({d,v}));
+}
+// Money Score: five parts, 100 points
+function dbScore(){
+  const parts=[];
+  let S=null; try{ S=bgMonthStats(); }catch(e){}
+  const budget = !S||!S.jars.length ? 0 : ({thriving:25,track:21,tight:12,over:5,setup:0})[S.health]||0;
+  parts.push({k:'Budget', v:budget, max:25, tip: !S||!S.jars.length?'Set spending goals':S.healthTxt});
+  const sr=S&&S.ti>0?S.sr:0; parts.push({k:'Saving', v:Math.round(Math.max(0,Math.min(1,sr/0.2))*20), max:20, tip:S&&S.ti>0?`${Math.round(sr*100)}% of income kept`:'Add your income'});
+  let debtPts=20, debtTip='No debt'; const debts=state.debts||[];
+  if(debts.some(d=>(d.balance||0)>0)){ try{ const D=pitData(); debtPts=Math.round(20*(1-D.r)*(D.plan.canFinish?1:0.5)); debtTip=`${Math.round((1-D.r)*100)}% paid off`; }catch(e){ debtPts=8; debtTip='Paying it down'; } }
+  parts.push({k:'Debt', v:debtPts, max:20, tip:debtTip});
+  const port=(state.portfolio||[]).reduce((s,h)=>s+(+h.price||0)*(+h.shares||0),0);
+  const monthlyExp=S&&S.te>0?S.te:2500;
+  const inv = port<=0 ? 0 : Math.round(8+12*Math.min(1,port/(monthlyExp*6)));
+  parts.push({k:'Investing', v:inv, max:20, tip: port>0?`${fmtW(port)} invested`:'Add your first holding'});
+  const st=typeof currentStreak==='function'?currentStreak():0;
+  parts.push({k:'Habit', v:Math.round(Math.min(15,st*1.5)), max:15, tip:`${st}-day logging streak`});
+  const total=parts.reduce((s,p)=>s+p.v,0);
+  const label = total>=85?'Excellent':total>=70?'Strong':total>=50?'Building':total>=30?'Getting started':'Just starting';
+  return {total,label,parts};
+}
+function dbMoves(){
+  const moves=[];
+  const go=(page)=>`showPage('${page}')`;
+  try{ if(!loggedToday()){ const s=currentStreak(); moves.push({ic:'flame', t:s>0?`Keep your ${s}-day streak alive`:'Start a logging streak', s:'Log something you spent today, or mark a no-spend day', on:go('monthly'), c:'#fb923c'}); } }catch(e){}
+  try{ const S=bgMonthStats(); if(!S.jars.length) moves.push({ic:'jar', t:'Fill your coin jars', s:'Set spending goals for 3 categories', on:'showQuickSetup()', c:'#fbbf24'});
+    else { const q=bgQuests(S).find(x=>!x.done); if(q) moves.push({ic:'quest', t:`Quest: ${q.name}`, s:`${q.desc} · ${q.label}`, on:go('monthly'), c:'#fbbf24'}); } }catch(e){}
+  try{ const D=pitData(); if(D.bal>0 && D.order[0]){ const f=D.order[0].d; moves.push({ic:'storm', t:`Shrink the ${f.name} cloud`, s:`${fmtW(f.balance)} left at ${f.rate}%. Every payment calms the storm`, on:go('debt'), c:'#60a5fa'}); } }catch(e){}
+  try{ const H=hqData(); if(!H.price) moves.push({ic:'home', t:'Plan your road home', s:'Set a target home price and see every stop to the keys', on:go('rental'), c:'#4ade80'});
+    else if(H.next && !H.stops[7].done) moves.push({ic:'home', t:`Next stop: ${H.next.name}`, s: H.next.kind==='money' ? `${fmtW(Math.max(0,H.next.amt-H.saved))} to go` : H.next.desc, on:go('rental'), c:'#4ade80'}); }catch(e){}
+  if(!(state.portfolio||[]).length) moves.push({ic:'tree', t:'Plant your money grove', s:'Add a TFSA, RRSP or FHSA holding', on:go('investments'), c:'#4ade80'});
+  return moves.slice(0,3);
+}
+const DB_IC={
+  flame:'<path d="M12.6 2.2c.4 3-1 4.7-2.5 6.4C8.6 10.3 7 12 7 14.8 7 18 9.3 21 12.2 21c3.2 0 5.3-2.6 5.3-5.8 0-2.4-1.1-4-2.2-5.3-.2 1.2-.8 2.2-1.7 2.8.5-3.6-.3-7.3-1-9.5z"/>',
+  jar:'<path d="M8 3h8"/><path d="M7 6h10"/><rect x="6" y="6" width="12" height="15" rx="3"/>',
+  quest:'<path d="m12 2 3 6.5 7 .9-5.1 4.8 1.3 7-6.2-3.4-6.2 3.4 1.3-7L2 9.4l7-.9z"/>',
+  storm:'<path d="M17.5 17H9a7 7 0 1 1 6.7-9h1.8a4.5 4.5 0 1 1 0 9Z"/><path d="m13 14-2 4h3l-2 4"/>',
+  home:'<path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1z"/><path d="M9 21v-7h6v7"/>',
+  tree:'<path d="M12 22v-6"/><path d="M12 16a6 6 0 1 0-6-6c0 1.5.5 2.8 1.4 3.8"/><path d="M12 16a6 6 0 0 0 4.6-9.8"/>',
+};
+
+function renderDashboardPlus(){
+  const hero=document.getElementById('db-hero'); if(!hero) return;
+  const N=dbNetWorth(), hist=dbHistory(N.nw), sc=dbScore();
+  const name=(typeof currentUser!=='undefined'&&currentUser&&currentUser.name&&!currentUser.isDemo)?String(currentUser.name).split(' ')[0]:'';
+  const hr=new Date().getHours(), greet=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
+  // change over the last ~30 days
+  let delta=null; if(hist.length>1){ const ref = dbIsDemo()? hist[Math.max(0,hist.length-6)] : (()=>{ const cut=new Date(); cut.setDate(cut.getDate()-30); const k=cut.toLocaleDateString('en-CA'); return hist.find(p=>p.d>=k)||hist[0]; })(); delta=N.nw-ref.v; }
+  // sparkline
+  const W=320, H=64, vs=hist.map(p=>p.v), mn=Math.min(...vs), mx=Math.max(...vs), rng=Math.max(1,mx-mn);
+  const pts=hist.length>1 ? hist.map((p,i)=>[i/(hist.length-1)*W, H-6-(p.v-mn)/rng*(H-12)]) : [[0,H/2],[W,H/2]];
+  const line=pts.map((p,i)=>(i?'L':'M')+p[0].toFixed(1)+' '+p[1].toFixed(1)).join(' ');
+  const up=delta==null||delta>=0;
+  const ring=2*Math.PI*44, dash=ring*sc.total/100;
+  const scCol=sc.total>=70?'#4ade80':sc.total>=50?'#a3e635':sc.total>=30?'#fbbf24':'#fb923c';
+  hero.innerHTML=`
+    <div class="db-nw">
+      <div class="db-greet">${greet}${name?`, ${escHtml(name)}`:''}</div>
+      <div class="db-nw-label">Net worth</div>
+      <div class="db-nw-val ${N.nw<0?'neg':''}">${N.nw<0?'−':''}${fmtW(Math.abs(N.nw))}</div>
+      ${delta!=null?`<div class="db-nw-delta ${up?'up':'down'}">${up?'▲':'▼'} ${fmtW(Math.abs(delta))} <span>${dbIsDemo()?'this month':'last 30 days'}</span></div>`:`<div class="db-nw-delta"><span>Your trend line starts today</span></div>`}
+      <svg class="db-spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+        <defs><linearGradient id="dbsg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${up?'#4ade80':'#f87171'}" stop-opacity="0.35"/><stop offset="1" stop-color="${up?'#4ade80':'#f87171'}" stop-opacity="0"/></linearGradient></defs>
+        <path d="${line} L ${W} ${H} L 0 ${H} Z" fill="url(#dbsg)"/>
+        <path d="${line}" fill="none" stroke="${up?'#4ade80':'#f87171'}" stroke-width="2.4" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>
+      </svg>
+      <div class="db-nw-split"><span>Invested <b>${fmtW(N.port)}</b></span>${N.home?`<span>Home fund <b>${fmtW(N.home)}</b></span>`:''}<span>Debt <b class="neg">${fmtW(N.debt)}</b></span></div>
+    </div>
+    <div class="db-score">
+      <div class="db-ring">
+        <svg viewBox="0 0 100 100" aria-hidden="true"><circle cx="50" cy="50" r="44" fill="none" stroke="rgba(255,255,255,0.07)" stroke-width="9"/>
+          <circle cx="50" cy="50" r="44" fill="none" stroke="${scCol}" stroke-width="9" stroke-linecap="round" stroke-dasharray="${dash.toFixed(1)} ${ring.toFixed(1)}" transform="rotate(-90 50 50)"/></svg>
+        <div class="db-ring-in"><b>${sc.total}</b><span>of 100</span></div>
+      </div>
+      <div class="db-score-main">
+        <div class="db-score-title">Money Score <span style="color:${scCol}">${sc.label}</span></div>
+        ${sc.parts.map(p=>`<div class="db-part" title="${p.tip}"><span>${p.k}</span><div class="db-part-bar"><i style="width:${p.v/p.max*100}%"></i></div><em>${p.tip}</em></div>`).join('')}
+      </div>
+    </div>`;
+  const mv=dbMoves(), mvEl=document.getElementById('db-moves');
+  if(mvEl) mvEl.innerHTML = mv.length ? `<div class="db-h">Your next best moves</div><div class="db-moves-row">${mv.map(m=>`<button type="button" class="db-move" onclick="${m.on}">
+      <span class="db-move-ic" style="color:${m.c};background:${m.c}1f"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${DB_IC[m.ic]}</svg></span>
+      <span class="db-move-main"><b>${m.t}</b><span>${m.s}</span></span><span class="db-move-go">›</span></button>`).join('')}</div>` : '';
+  dbRenderWorlds();
+}
+
+function dbRenderWorlds(){
+  const el=document.getElementById('db-worlds'); if(!el) return;
+  const cards=[];
+  // budget
+  let bS=null; try{ bS=bgMonthStats(); }catch(e){}
+  const lv = (()=>{ try{ const g=dbIsDemo()?{xp:640}:(state.bgame||{xp:0}); return bgLevel(g.xp); }catch(e){ return 1; } })();
+  cards.push({id:'budget', page:'monthly', title:'Coin jars', stat: bS&&bS.jars.length ? (bS.health==='over'?'Over budget':bS.healthTxt) : 'Set your goals', sub: bS&&bS.ti>0 ? `Saved ${fmtW(Math.max(0,bS.net))} this month · Level ${lv}` : `Level ${lv}`});
+  let dD=null; try{ dD=(state.debts||[]).length?pitData():null; }catch(e){}
+  cards.push({id:'debt', page:'debt', title:'Debt storm', stat: !dD ? 'No debt' : dD.bal<=0 ? 'Calm waters' : `${Math.max(0,Math.min(99,Math.floor((1-dD.r)*100)))}% paid off`, sub: !dD ? 'Clear skies' : dD.bal<=0 ? 'Every debt paid' : `Storm: ${dsLevel(dD.chaos)} · ${dD.plan.canFinish?`calm by ${pitShortDate(dD.plan.months)}`:'interest is winning'}`});
+  const port=(state.portfolio||[]).reduce((s,h)=>s+(+h.price||0)*(+h.shares||0),0), cost=(state.portfolio||[]).reduce((s,h)=>s+(+h.cost||0)*(+h.shares||0),0);
+  cards.push({id:'grove', page:'investments', title:'Money grove', stat: port>0?fmtW(port):'Nothing planted', sub: port>0?`${cost>0?`${port>=cost?'+':''}${((port-cost)/cost*100).toFixed(1)}% return`:''}`:'Add your first holding'});
+  let hD=null; try{ hD=hqData(); }catch(e){}
+  cards.push({id:'home', page:'rental', title:'Road home', stat: !hD||!hD.price ? 'Pick a target' : hD.stops[7].done ? 'Keys ready' : `${Math.round(hD.prog*100)}% to the keys`, sub: !hD||!hD.price ? 'Set a home price' : hD.next ? `Next: ${hD.next.name}` : 'At the front door'});
+  el.innerHTML = `<div class="db-h">Your money worlds</div><div class="db-worlds-grid">${cards.map(c=>`<button type="button" class="db-world" onclick="showPage('${c.page}')" aria-label="${c.title}: ${c.stat}. Open">
+      <div class="db-world-art"><canvas id="dbw-${c.id}"></canvas></div>
+      <div class="db-world-txt"><span>${c.title}</span><b>${c.stat}</b><em>${c.sub}</em></div></button>`).join('')}</div>`;
+  requestAnimationFrame(()=>{ ['budget','debt','grove','home'].forEach(id=>{ try{ dbThumb(id); }catch(e){ console.warn('dash thumb',id,e); } }); });
+}
+
+function dbThumb(id){
+  const cv=document.getElementById('dbw-'+id); if(!cv) return;
+  const w=cv.parentElement.clientWidth, h=cv.parentElement.clientHeight; if(!w||!h) return;
+  const dpr=Math.min(2,window.devicePixelRatio||1); cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
+  const ctx=cv.getContext('2d');
+  // each scene is drawn at a comfortable size, then scaled into the card
+  const draw=(sw,sh,fn)=>{ const s=Math.max(w/sw,h/sh); const tmp=document.createElement('canvas'); tmp.width=Math.round(sw*s*dpr); tmp.height=Math.round(sh*s*dpr); const tc=tmp.getContext('2d'); tc.setTransform(s*dpr,0,0,s*dpr,0,0); fn(tc,sw,sh); ctx.drawImage(tmp,(cv.width-tmp.width)/2,(cv.height-tmp.height)/2); };
+  if(id==='debt'){
+    draw(520,300,(tc,sw,sh)=>{ const keep={cv:_pit.cv,ctx:_pit.ctx,W:_pit.W,H:_pit.H,parts:_pit.parts,drops:_pit.drops,r:_pit.r,c:_pit.c,bx:_pit.bx,floats:_pit.floats,banner:_pit.banner,bolt:_pit.bolt,flash:_pit.flash,D:_pit.D,rT:_pit.rT,cT:_pit.cT};
+      try{ const D=pitData(); _pit.D=D; _pit.rT=D.r; _pit.cT=D.chaos; _pit.ctx=tc; _pit.W=sw; _pit.H=sh; _pit.share=true; _pit.r=D.r; _pit.c=D.chaos; _pit.bx=undefined; _pit.parts=[]; _pit.drops=[]; _pit.floats=[]; _pit.banner=null; _pit.bolt=null; _pit.flash=0; pitDraw(0); }
+      finally{ Object.assign(_pit,keep); _pit.share=false; } });
+  } else if(id==='budget'){
+    draw(520,300,(tc,sw,sh)=>{ const keep={ctx:_bg.ctx,W:_bg.W,H:_bg.H,parts:_bg.parts,floats:_bg.floats,banner:_bg.banner,confetti:_bg.confetti,S:_bg.S,burst:_bg.burst};
+      try{ _bg.S=bgMonthStats(); _bg.ctx=tc; _bg.W=sw; _bg.H=sh; _bg.parts=[]; _bg.floats=[]; _bg.banner=null; _bg.confetti=0; _bg.burst={}; _bg.still=true; bgDraw(0); }
+      finally{ Object.assign(_bg,keep); _bg.still=false; } });
+  } else if(id==='home'){
+    draw(560,300,(tc,sw,sh)=>{ const keep={ctx:_hq.ctx,W:_hq.W,H:_hq.H,parts:_hq.parts,floats:_hq.floats,banner:_hq.banner,confetti:_hq.confetti,D:_hq.D,lut:_hq.lut,carP:_hq.carP};
+      try{ _hq.D=hqData(); _hq.ctx=tc; _hq.W=sw; _hq.H=sh; _hq.parts=[]; _hq.floats=[]; _hq.banner=null; _hq.confetti=0; _hq.lut=null; _hq.carP=_hq.D.carP; _hq.still=true; hqDraw(0); }
+      finally{ Object.assign(_hq,keep); _hq.still=false; } });
+  } else if(id==='grove'){
+    if(!_grove.tot) _grove.tot=groveTotals();
+    const S=groveShareStats(); const p=S.plots.find(q=>q.kind==='tree' && (S.tot[q.id].value||0)>0) || S.plots.slice().sort((a,b)=>(S.tot[b.id].value||0)-(S.tot[a.id].value||0))[0];
+    if(!p){ ctx.fillStyle='#1d2b25'; ctx.fillRect(0,0,cv.width,cv.height); return; }
+    const sh=280, sw=Math.round(sh*w/h); const img=groveShareTile(p,sw,sh,{scale:Math.max(1,Math.ceil(dpr*h/sh))});
+    ctx.drawImage(img,0,0,cv.width,cv.height);
+  }
+}
+
 function renderAll(){
   renderDashboard();
   renderMonthly(); // renderYearly() is called inside renderMonthly
@@ -13069,6 +13288,7 @@ function renderAll(){
   calcPaycheck();
   if(document.getElementById('rent-amount')?.value) calcRent();
   try{ renderHomeQuest(); }catch(e){ console.warn('home quest', e); }
+  try{ renderDashboardPlus(); }catch(e){ console.warn('dash', e); }
 }
 
 // ══════════════════════════════════════════
