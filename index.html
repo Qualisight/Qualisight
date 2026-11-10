@@ -6,20 +6,22 @@
 <title>Qualisight: Canadian Budget, Debt and TFSA Planner</title>
 <meta name="description" content="Budget, debt payoff and your TFSA, RRSP and FHSA in one place, built for Canadians. Budgeting is free forever. Try investing, housing and the AI advisor free for 14 days, no card needed.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Qualisight","alternateName":"qualisight.ca","url":"https://qualisight.ca/"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Qualisight","url":"https://qualisight.ca/","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":"en-CA","description":"Canadian budget, debt payoff, TFSA, RRSP and FHSA planner that turns your money into a game.","offers":[{"@type":"Offer","name":"Free","price":"0","priceCurrency":"CAD"},{"@type":"Offer","name":"Premium","price":"12","priceCurrency":"CAD"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I need to connect my bank account?","acceptedAnswer":{"@type":"Answer","text":"No. Qualisight never asks for a bank login. You add only the numbers you want to track."}},{"@type":"Question","name":"Is Qualisight free?","acceptedAnswer":{"@type":"Answer","text":"Budgeting, debt payoff and the dashboard are free forever. Investing, housing and the AI advisor are free for 14 days, then $12 CAD a month."}},{"@type":"Question","name":"Is Qualisight built for Canada?","acceptedAnswer":{"@type":"Answer","text":"Yes. It tracks TFSA, RRSP and FHSA accounts and uses Canadian mortgage rules, including the stress test and CMHC insurance."}}]}</script>
 <link rel="canonical" href="https://qualisight.ca/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Qualisight">
 <meta property="og:url" content="https://qualisight.ca/">
-<meta property="og:title" content="Qualisight: your money, finally making sense">
-<meta property="og:description" content="Budget, debt payoff and your TFSA, RRSP and FHSA in one place. Built for Canadians. 14 days free, no card needed.">
+<meta property="og:title" content="Qualisight: your money, as a game you can win">
+<meta property="og:description" content="Watch your debt storm clear, your coin jars fill and your TFSA grow. Built on Canadian rules. Budgeting and debt payoff are free forever.">
 <meta property="og:image" content="https://qualisight.ca/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:image:alt" content="Qualisight: your money, finally making sense, with a money grove tree">
 <meta property="og:locale" content="en_CA">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Qualisight: your money, finally making sense">
-<meta name="twitter:description" content="Budget, debt payoff and your TFSA, RRSP and FHSA in one place. Built for Canadians.">
+<meta name="twitter:title" content="Qualisight: your money, as a game you can win">
+<meta name="twitter:description" content="Watch your debt storm clear, your coin jars fill and your TFSA grow. Built on Canadian rules. Free to start.">
 <meta name="twitter:image" content="https://qualisight.ca/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -2900,6 +2902,36 @@ select option{background:#fff;color:var(--ink)}
 .rvb-mode-btn{flex:none;white-space:nowrap}
 
 
+
+/* Site polish pass */
+.auth-box{position:relative}
+.auth-back + .auth-logo{margin-top:0.9rem}
+.auth-back{position:absolute;top:0.9rem;left:0.9rem;background:transparent;border:0;color:var(--muted);font:inherit;font-size:0.85rem;font-weight:500;cursor:pointer;padding:0.5rem 0.6rem;border-radius:8px;min-height:36px}
+.auth-back:hover{color:var(--text,#e8edf8);background:rgba(255,255,255,0.05)}
+.auth-perks{display:flex;flex-wrap:wrap;justify-content:center;gap:0.3rem 0.8rem;font-size:0.76rem;color:#4ade80;font-weight:600;margin-bottom:1.3rem}
+.db-spark--empty{display:none}
+.dt-empty-art{position:relative;height:170px;border-radius:14px;overflow:hidden;margin:1.1rem 0 1rem;background:#0b0f18;border:1px solid var(--border)}
+.dt-empty-art canvas{position:absolute;inset:0;width:100%;height:100%;display:block}
+.dt-empty-art span{position:absolute;left:10px;top:10px;font-size:0.7rem;font-weight:600;color:#e8edf8;background:rgba(11,13,18,0.7);border-radius:999px;padding:0.2rem 0.6rem}
+.dt-empty-steps{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.7rem;margin-bottom:1.1rem}
+.dt-empty-steps div{display:flex;gap:0.55rem;align-items:flex-start;font-size:0.85rem;color:var(--muted);line-height:1.4}
+.dt-empty-steps b{flex:none;width:22px;height:22px;border-radius:50%;background:rgba(74,222,128,0.14);color:#4ade80;display:grid;place-items:center;font-size:0.75rem}
+.dt-empty-btn{width:100%;max-width:320px;min-height:46px;font-size:0.98rem}
+.dt-empty-note{font-size:0.78rem;color:var(--muted);margin-top:0.7rem}
+.iv-jump{display:none}
+@media(max-width:760px){
+  .dt-empty-steps{grid-template-columns:1fr}
+  .dt-empty-btn{max-width:none}
+  .iv-jump{display:flex;gap:0.4rem;position:sticky;top:56px;z-index:20;margin:0 -0.2rem 0.9rem;padding:0.45rem 0.2rem;background:rgba(13,15,20,0.97)}
+  .iv-jump button{flex:1;min-height:38px;border-radius:999px;border:1px solid var(--border);background:var(--surface);color:var(--text,#e8edf8);font:inherit;font-size:0.82rem;font-weight:600;cursor:pointer}
+  /* comfortable tap targets */
+  .bm-goal-input{min-height:40px}
+  .iv-act-btn,.grove-share-btn,.grove-mini,.streak-nospend,.bm-cc-toggle,.dt-remove-link{min-height:36px}
+  .bm-cc-toggle,.dt-remove-link{display:inline-flex;align-items:center}
+  .bm-txn-btn,.iv-act-btn.del,.dt-txn-del,.bm-txn-btn.del,.bm-yeardelete,.btn-red{min-width:36px;min-height:36px;display:inline-flex;align-items:center;justify-content:center}
+  #page-investments .btn-ghost{min-height:36px}
+}
+
 /* Landing v2: live hero demo, four worlds, promises */
 #landing-page .lp-hero:not(.lp-hero--grove) .lp-preview-wrap{display:none}
 #landing-page .lp-hero--grove .lp-play{display:none}
@@ -3876,11 +3908,13 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 
 </div>
 <!-- ═══════════ AUTH SCREEN ═══════════ -->
+<noscript><div style="padding:2rem;max-width:560px;margin:0 auto;color:#e8edf8;font-family:system-ui,sans-serif"><h1>Qualisight</h1><p>A Canadian budget, debt payoff and TFSA, RRSP and FHSA planner. Budgeting is free forever. Please turn on JavaScript to use the app.</p></div></noscript>
 <div id="auth-screen">
   <div class="auth-box">
 
     <!-- SIGN IN -->
     <div id="auth-signin">
+      <button type="button" class="auth-back" onclick="lpBackHome()" aria-label="Back to the home page">← Back</button>
       <div class="auth-logo">Qualisight</div>
       <div class="auth-tagline">Budget & Wealth Planner for Canadians</div>
       <label class="auth-label">Email</label>
@@ -3932,8 +3966,10 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 
     <!-- CREATE ACCOUNT -->
     <div id="auth-create" style="display:none">
+      <button type="button" class="auth-back" onclick="lpBackHome()" aria-label="Back to the home page">← Back</button>
       <div class="auth-logo">Qualisight</div>
-      <div class="auth-tagline" style="margin-bottom:1.4rem">Free to start. No credit card needed.</div>
+      <div class="auth-tagline" style="margin-bottom:0.9rem">Create your free account. Takes about a minute.</div>
+      <div class="auth-perks"><span>✓ No credit card</span><span>✓ No bank login</span><span>✓ Free forever for budgeting</span></div>
       <label class="auth-label">First name</label>
       <input class="auth-input" id="cr-name" type="text" placeholder="e.g. Alex" maxlength="32" autocomplete="name"
         onkeydown="if(event.key==='Enter')document.getElementById('cr-email').focus()">
@@ -4356,6 +4392,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
   </div>
 
   <!-- Money grove: rendered by renderGrove() -->
+  <div class="iv-jump" role="navigation" aria-label="Jump to"><button type="button" onclick="ivJump('grove')">Grove</button><button type="button" onclick="ivJump('alloc-accounts')">Holdings</button><button type="button" onclick="ivJump('iv-trades')">Trades</button></div>
   <div id="grove" class="grove"></div>
 
   <!-- Hidden stat row kept for any legacy references (not displayed) -->
@@ -4457,8 +4494,8 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 <div id="page-trades" style="display:none"></div>
 <div id="page-rental" class="page">
   <div style="margin-bottom:1.2rem">
-    <div class="hero-title" style="font-size:1.3rem">Rent vs Buy</div>
-    <div class="hero-sub" style="margin:0">A decision tool built for young Canadians, based on your actual income and finances.</div>
+    <div class="hero-title" style="font-size:1.3rem">Housing</div>
+    <div class="hero-sub" style="margin:0">Your road to a first home, plus rent vs buy math on Canadian rules.</div>
   </div>
 
   <!-- Housing game: the road home -->
@@ -6555,7 +6592,7 @@ function bgDraw(dt){
     const sy=H*0.52; ctx.fillStyle='#7a5536'; bgRR(ctx,20*k,sy,areaR-30*k,9*k,2*k); ctx.fill();
     for(let i=0;i<3;i++){ const jx=40*k+i*70*k; bgJar(ctx,jx,sy,40*k,52*k,0,false,BG_LIDS[i],'',t,0,k); }
     ctx.font=`700 ${14*k}px ${BG_FONT}`; ctx.fillStyle='#f1f5f9'; ctx.textAlign='left'; ctx.fillText('Your jars are empty',24*k,H*0.2);
-    ctx.font=`500 ${12*k}px ${BG_FONT}`; ctx.fillStyle='rgba(241,245,249,0.7)'; ctx.fillText('Tap to set spending goals and fill them with coins.',24*k,H*0.2+20*k);
+    ctx.font=`500 ${12*k}px ${BG_FONT}`; ctx.fillStyle='rgba(241,245,249,0.7)'; ctx.fillText(small?'Set spending goals to fill them.':'Set spending goals below and fill them with coins.',24*k,H*0.2+20*k);
   } else {
     const perRow = small ? Math.min(n,3) : Math.min(n, Math.max(3,Math.ceil(n/2)));
     const rows=Math.ceil(n/perRow);
@@ -6845,8 +6882,8 @@ function renderMonthly(){
               const gi  = state.expenses.indexOf(r);
               const ccs = state.debts.map((d,di)=>({d,di})).filter(({d})=>d.type==='credit_card'||!d.type);
               const ccBtn = !r.linkedCard
-                ? `<button class="bm-txn-btn" onclick="showExpenseCC(${gi})" title="Charge to a credit card"></button>`
-                : `<span class="bm-txn-btn" title="Charged to ${escHtml(r.linkedCard)}" style="color:var(--accent);cursor:default"></span>`;
+                ? `<button class="bm-txn-btn" onclick="showExpenseCC(${gi})" title="Charge to a credit card" aria-label="Charge to a credit card"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></button>`
+                : `<span class="bm-txn-btn" title="Charged to ${escHtml(r.linkedCard)}" style="color:var(--accent);cursor:default"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>`;
               return `<div class="bm-txn">
                 <span class="bm-txn-name">${escHtml(r.name)}</span>
                 <span class="bm-txn-right">
@@ -7841,8 +7878,14 @@ function renderDebt(){
         <div class="dt-hero-main">
           <div class="dt-hero-eyebrow">Debt-free date</div>
           <div class="dt-hero-date">No debt tracked yet</div>
-          <div class="dt-hero-sub">Tap + Add debt to see your payoff plan and the date you'll be debt-free.</div>
+          <div class="dt-hero-sub">Add a debt to see the exact month you'll be debt-free, and watch your storm clear with every payment.</div>
+          <div class="dt-empty-art"><canvas id="dt-empty-cv" aria-hidden="true"></canvas><span>Sample storm</span></div>
+          <div class="dt-empty-steps"><div><b>1</b>Add each debt: balance, rate, minimum</div><div><b>2</b>Pick snowball or avalanche</div><div><b>3</b>Log payments and earn 10 badges</div></div>
+          <button class="btn btn-primary dt-empty-btn" onclick="addDebt()">+ Add your first debt</button>
+          <div class="dt-empty-note">No debt? Nice. Skip this page and head to Investing.</div>
         </div></div>`;
+      setTimeout(()=>{ try{ const cv=document.getElementById('dt-empty-cv'); if(!cv||typeof lpPath!=='function') return; const b=lpPath(200)[8];
+        lpWithState({debts:LP_DEBTS.map((d,i)=>({...d,balance:b[i]})), debtStrategy:'snowball'}, ()=>dbThumb('debt', cv)); }catch(e){ console.warn('debt empty art',e); } },60);
     } else if(totalDebt<=0){
       heroEl.innerHTML=`<div class="dt-hero-grid" style="grid-template-columns:1fr">
         <div class="dt-hero-main">
@@ -7877,6 +7920,7 @@ function renderDebt(){
   // ── DIG-OUT PIT ──
   try{ renderDebtPit(); }catch(e){ console.warn('pit', e); }
 
+  try{ window._dtPlan = pitSim(_pit.extra||0); }catch(e){ window._dtPlan=null; }
   // ── ATTACK-FIRST CALLOUT ──
   const attackEl=document.getElementById('dt-attack-mount');
   if(attackEl){
@@ -7885,9 +7929,9 @@ function renderDebt(){
       const reason = strat==='avalanche'
         ? `it has the <strong>highest interest rate</strong> at ${focus.rate}%, so it's costing you the most`
         : `it has the <strong>smallest balance</strong>, so you'll clear it fastest and build momentum`;
-      const focusPayoff = calcPayoffFull(focus.balance, focus.min, focus.rate);
-      const clearLine = focusPayoff.canPayOff
-        ? ` At ${fmt(focus.min)}/mo you'll clear it in about ${monthsToDuration(focusPayoff.months)}.`
+      const planNow = pitSim(_pit.extra||0), focusM = planNow.clearAt[order[0].idx];
+      const clearLine = (planNow.canFinish && focusM)
+        ? ` On your current plan it's gone in about ${monthsToDuration(focusM)}.`
         : '';
       attackEl.innerHTML=`<div class="dt-attack">
         <div class="dt-attack-icon"></div>
@@ -7949,8 +7993,9 @@ function renderDebt(){
       const interestSaved = pf.canPayOff ? Math.max(0, Math.round(pf.totalInterest - pfRec.totalInterest)) : null;
 
       // ── compact summary row ──
+      const planM = (window._dtPlan && window._dtPlan.canFinish) ? window._dtPlan.clearAt[(state.debts||[]).indexOf(d)] : null;
       const payoffChip = isPaid ? '✓ Paid off'
-        : (pf.canPayOff ? monthsToDuration(pf.months) : '∞');
+        : (planM ? monthsToDuration(planM) : pf.canPayOff ? monthsToDuration(pf.months) : '∞');
       const summary = `
         <div class="dt-card-summary" onclick="toggleDebtCard(this)">
           <span class="dt-card-chevron">▶</span>
@@ -10926,7 +10971,7 @@ async function groveRefSync(){
   }
   // 2. your own code and how many friends joined
   const { data, error } = await sb.rpc('my_referrals');
-  if(error){ console.warn('my_referrals', error.message); _grove.refError=true; groveRefRender(); return; }
+  if(error || !data){ console.warn('my_referrals', error?error.message:'no data'); _grove.refError=true; groveRefRender(); return; }
   _grove.refError=false;
   const prev=_grove.ref ? (_grove.ref.joined||0) : null;
   _grove.ref={ code:data.code, joined:+data.joined||0 };
@@ -13239,8 +13284,8 @@ function renderDashboardPlus(){
       <div class="db-greet">${greet}${name?`, ${escHtml(name)}`:''}</div>
       <div class="db-nw-label">Net worth</div>
       <div class="db-nw-val ${N.nw<0?'neg':''}">${N.nw<0?'−':''}${fmtW(Math.abs(N.nw))}</div>
-      ${delta!=null?`<div class="db-nw-delta ${up?'up':'down'}">${up?'▲':'▼'} ${fmtW(Math.abs(delta))} <span>${dbIsDemo()?'this month':'last 30 days'}</span></div>`:`<div class="db-nw-delta"><span>Your trend line starts today</span></div>`}
-      <svg class="db-spark" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
+      ${delta!=null?`<div class="db-nw-delta ${up?'up':'down'}">${up?'▲':'▼'} ${fmtW(Math.abs(delta))} <span>${dbIsDemo()?'this month':'last 30 days'}</span></div>`:`<div class="db-nw-delta"><span>Your trend line starts today. Check back tomorrow to see it move.</span></div>`}
+      <svg class="db-spark${hist.length<2?' db-spark--empty':''}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
         <defs><linearGradient id="dbsg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${up?'#4ade80':'#f87171'}" stop-opacity="0.35"/><stop offset="1" stop-color="${up?'#4ade80':'#f87171'}" stop-opacity="0"/></linearGradient></defs>
         <path d="${line} L ${W} ${H} L 0 ${H} Z" fill="url(#dbsg)"/>
         <path d="${line}" fill="none" stroke="${up?'#4ade80':'#f87171'}" stroke-width="2.4" vector-effect="non-scaling-stroke" stroke-linejoin="round" stroke-linecap="round"/>
@@ -13420,6 +13465,11 @@ function lpShowSignup(){
   document.getElementById('landing-page').classList.add('hidden');
   document.getElementById('auth-screen').style.display='flex';
   showCreate();
+}
+function ivJump(id){ const el=document.getElementById(id); if(!el) return; window.scrollTo({top:Math.max(0,el.getBoundingClientRect().top+window.scrollY-118), behavior: pitReduce?'auto':'smooth'}); }
+function lpBackHome(){
+  document.getElementById('auth-screen').style.display='none';
+  const lp=document.getElementById('landing-page'); lp.classList.remove('hidden'); lp.scrollTop=0;
 }
 function lpTryDemo(){
   document.getElementById('landing-page').classList.add('hidden');
