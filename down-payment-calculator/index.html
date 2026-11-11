@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Down Payment Calculator Canada 2026: Minimum Down Payment and Your Date | Qualisight</title>
+<meta name="description" content="Free Canadian down payment calculator. Enter a home price and what you save each month. See the minimum down payment, the mortgage insurance cost, and the month you will have it. No sign-up.">
+<link rel="canonical" href="https://qualisight.ca/down-payment-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="When will you have your down payment?">
+<meta property="og:description" content="See the minimum down payment for any Canadian home price and the month you will have it. Free, no sign-up.">
+<meta property="og:url" content="https://qualisight.ca/down-payment-calculator/">
+<meta property="og:image" content="https://qualisight.ca/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0d0f14">
+<link rel="icon" href="/icon-192.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Qualisight","item":"https://qualisight.ca/"},{"@type":"ListItem","position":2,"name":"Down payment calculator","item":"https://qualisight.ca/down-payment-calculator/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What is the minimum down payment in Canada?","acceptedAnswer":{"@type":"Answer","text":"5% of the first $500,000 of the price, plus 10% of any part above $500,000, for homes under $1.5 million. Homes priced at $1.5 million or more need at least 20% down."}},
+{"@type":"Question","name":"Do I need mortgage insurance?","acceptedAnswer":{"@type":"Answer","text":"Yes, if you put down less than 20%. The premium is a percentage of the mortgage, from 2.80% to 4.00% for down payments between 5% and 20%, and it is usually added to the mortgage."}},
+{"@type":"Question","name":"How much is the minimum down payment on a $600,000 home?","acceptedAnswer":{"@type":"Answer","text":"$35,000. That is 5% of the first $500,000 ($25,000) plus 10% of the other $100,000 ($10,000)."}},
+{"@type":"Question","name":"How much can I put in an FHSA?","acceptedAnswer":{"@type":"Answer","text":"$8,000 a year, up to $40,000 in total. Up to $8,000 of unused room carries forward to the next year once the account is open."}}]}</script>
+<style>
+:root{--bg:#0b0d12;--surface:#141821;--border:rgba(255,255,255,0.09);--text:#e8edf8;--muted:#97a2b8;--green:#4ade80;--red:#f87171;--amber:#fbbf24}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--green)}
+.wrap{max-width:860px;margin:0 auto;padding:0 1.1rem}
+header{display:flex;justify-content:space-between;align-items:center;padding:1rem 0}
+.logo{font-weight:800;font-size:1.15rem;color:var(--green);text-decoration:none;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 1.2rem;border-radius:12px;background:var(--green);color:#0b0d12;font-weight:700;text-decoration:none;border:0;font:inherit;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);min-height:40px;font-weight:600}
+h1{font-size:2rem;line-height:1.15;letter-spacing:-0.03em;margin:1.2rem 0 0.5rem}
+h2{font-size:1.35rem;letter-spacing:-0.02em;margin:2.4rem 0 0.6rem}
+h3{font-size:1.05rem;margin:1.4rem 0 0.3rem}
+p{margin:0.5rem 0;color:#c4ccdb}.lead{color:var(--muted);font-size:1.05rem;max-width:620px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:1.1rem;margin-top:1.2rem}
+table{width:100%;border-collapse:collapse}
+th{font-size:0.75rem;color:var(--muted);font-weight:600;text-align:left;padding:0 0.3rem 0.4rem}
+td{padding:0.25rem 0.3rem}
+input[type=text],input[type=number]{width:100%;background:#0e121a;border:1px solid var(--border);border-radius:10px;color:var(--text);font:inherit;padding:0.6rem 0.65rem;min-height:44px}
+input:focus{outline:2px solid var(--green);outline-offset:1px}
+input[type=number]{-moz-appearance:textfield;appearance:textfield}input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.x{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;width:40px;height:44px;cursor:pointer;font-size:1.1rem}
+.row{display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center;margin-top:0.9rem}
+.extra{flex:1;min-width:230px}
+.extra label{display:flex;justify-content:space-between;font-size:0.9rem;color:var(--muted)}
+.extra b{color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green);height:30px}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-weight:600;padding:0.5rem 1rem;border-radius:999px;cursor:pointer;min-height:40px}
+.seg button[aria-pressed=true]{background:var(--green);color:#0b0d12}
+.big{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.7rem;margin-top:1rem}
+.big div{border:1px solid var(--border);border-radius:14px;padding:0.8rem}
+.big span{display:block;font-size:0.75rem;color:var(--muted)}
+.big b{display:block;font-size:1.35rem;font-variant-numeric:tabular-nums;margin-top:0.1rem}
+.big em{display:block;font-style:normal;font-size:0.78rem;color:var(--green)}
+.warn{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);color:#f3d48a;border-radius:12px;padding:0.7rem 0.85rem;margin-top:0.9rem;font-size:0.92rem}
+.cmp{font-size:0.92rem;color:var(--muted);margin-top:0.8rem}.cmp b{color:var(--text)}
+svg{display:block;width:100%;height:auto;margin-top:0.9rem}
+.acts{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem}.acts .btn{font-size:0.92rem}
+textarea.code{width:100%;min-height:92px;background:#0e121a;border:1px solid var(--border);border-radius:10px;color:#c4ccdb;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:0.7rem;resize:vertical}
+.by{display:none;margin-top:0.8rem;font-size:0.85rem;color:var(--muted)}
+body.embed header,body.embed h1,body.embed .lead,body.embed .cta,body.embed .article,body.embed footer{display:none}body.embed .card{margin-top:0.6rem}body.embed .by{display:block}body.embed .wrap{padding:0 0.5rem}body.embed .noembed{display:none}
+ol.order{margin:0.6rem 0 0;padding-left:1.2rem;color:#c4ccdb}
+.cta{background:linear-gradient(135deg,rgba(74,222,128,0.14),rgba(74,222,128,0.03));border:1px solid rgba(74,222,128,0.4);border-radius:18px;padding:1.2rem;margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:0.9rem;align-items:center;justify-content:space-between}
+.cta p{margin:0;max-width:480px;color:var(--text)}.cta small{display:block;color:var(--muted)}
+details{border-top:1px solid var(--border);padding:0.7rem 0}summary{cursor:pointer;font-weight:600;min-height:32px}
+footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);color:var(--muted);font-size:0.85rem}
+@media(max-width:640px){h1{font-size:1.6rem}.big{grid-template-columns:1fr}}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.8rem}
+.f label{display:block;font-size:0.88rem;color:var(--muted);margin-bottom:0.25rem}.f small{display:block;font-size:0.78rem;color:var(--muted);margin-top:0.2rem}
+.chk{display:flex;gap:0.55rem;align-items:center;margin-top:0.9rem;min-height:44px;color:#c4ccdb;cursor:pointer}.chk input{width:22px;height:22px;accent-color:var(--green);flex:none}
+.yrs{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.4rem}
+.yrs button{min-width:64px;min-height:44px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text);font:inherit;font-weight:600;cursor:pointer}
+.yrs button[aria-pressed=true]{background:rgba(248,113,113,0.14);border-color:rgba(248,113,113,0.5);color:#fca5a5;text-decoration:line-through}
+.hero{margin-top:1.1rem;border:1px solid rgba(74,222,128,0.4);background:linear-gradient(135deg,rgba(74,222,128,0.12),rgba(74,222,128,0.02));border-radius:16px;padding:1rem}
+.hero span{display:block;color:var(--muted);font-size:0.9rem}.hero>b{display:block;font-size:2.4rem;letter-spacing:-0.03em;font-variant-numeric:tabular-nums;color:var(--green);line-height:1.15}
+.hero p{margin:0.35rem 0 0;font-size:0.92rem}.hero p b{color:var(--text)}
+.hero.neg{border-color:rgba(248,113,113,0.5);background:rgba(248,113,113,0.07)}.hero.neg>b{color:var(--red)}
+.ytab{margin-top:1rem;font-size:0.9rem;font-variant-numeric:tabular-nums}.ytab td,.ytab th{padding:0.4rem;border-bottom:1px solid var(--border)}.ytab td:not(:first-child),.ytab th:not(:first-child){text-align:right}
+.ytab tr.off td{color:var(--muted);text-decoration:line-through}
+.src{font-size:0.8rem;color:var(--muted);margin-top:0.8rem}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.hero>b{font-size:2rem}}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.8rem}
+.chips{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.4rem}.chips button{min-height:40px;padding:0 0.7rem;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--text);font:inherit;font-size:0.88rem;font-weight:600;cursor:pointer}
+.ytab td:last-child,.ytab th:last-child{text-align:right}
+@media(max-width:760px){.grid3{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><a class="logo" href="/">Qualisight</a><a class="btn ghost" href="/?utm_source=organic&utm_campaign=home_calculator">Open the app</a></header>
+
+<h1>Down payment calculator: when will you have it?</h1>
+<p class="lead">Enter a home price and what you can save. See the minimum down payment, what mortgage insurance would cost, and the month you will have enough. Uses Canadian rules. Free, no sign-up. Your numbers stay in your browser.</p>
+
+<section class="card" aria-label="Calculator">
+  <div class="grid3">
+    <div class="f"><label for="price">Home price ($)</label><input type="number" id="price" inputmode="numeric" min="0" step="5000" value="650000">
+      <div class="chips" id="pchips"><button type="button" data-v="400000">$400k</button><button type="button" data-v="650000">$650k</button><button type="button" data-v="850000">$850k</button><button type="button" data-v="1200000">$1.2M</button></div></div>
+    <div class="f"><label for="saved">Saved for it so far ($)</label><input type="number" id="saved" inputmode="numeric" min="0" step="500" value="12000"><small>Include any FHSA or TFSA money you will use.</small></div>
+    <div class="f"><label for="monthly">You can save each month ($)</label><input type="number" id="monthly" inputmode="numeric" min="0" step="50" value="900"><small>Zero is fine. We will show what a little does.</small></div>
+  </div>
+  <div id="out" aria-live="polite"></div>
+  <div class="acts" id="acts" hidden>
+    <button class="btn ghost" type="button" id="share">Share my date</button>
+    <button class="btn ghost noembed" type="button" id="ics">Add a monthly check-in to my calendar</button>
+  </div>
+  <p class="src">Minimum down payment and insurance premiums follow the federal rules and CMHC's premium table, checked November 2026. Estimates only, not financial advice. Your lender confirms the real numbers.</p>
+  <div class="by">Down payment calculator by <a href="https://qualisight.ca/down-payment-calculator/" target="_blank" rel="noopener">Qualisight</a>. Estimates only, not financial advice.</div>
+</section>
+
+<div class="cta"><p><b>Turn this date into a road you can drive.</b><small>Qualisight's road home shows every stop to the keys: your FHSA, the down payment, closing costs and the lender's stress test. The road home comes with a 14-day free trial, then $12 a month. Budgeting and debt payoff are free forever. No bank login.</small></p>
+  <a class="btn" target="_top" href="/?utm_source=organic&utm_campaign=home_calculator">Save this plan free</a></div>
+
+<div class="article">
+<h2>How the minimum down payment works</h2>
+<p>In Canada, the least you can put down depends on the price of the home:</p>
+<table class="ytab" aria-label="Minimum down payment by price"><thead><tr><th>Home price</th><th>Minimum down payment</th></tr></thead><tbody>
+<tr><td>$500,000 or less</td><td>5% of the price</td></tr>
+<tr><td>$500,000 to under $1.5 million</td><td>5% of the first $500,000, plus 10% of the rest</td></tr>
+<tr><td>$1.5 million or more</td><td>20% of the price</td></tr>
+</tbody></table>
+<p>The $1.5 million line moved up from $1 million in December 2024. Below 20% down, the mortgage must be insured, and the insurance is not available at $1.5 million or more.</p>
+
+<h3>A worked example</h3>
+<p>A $650,000 home needs $25,000 (5% of the first $500,000) plus $15,000 (10% of the other $150,000). That is <b>$40,000</b>, or about 6.2% of the price. With $12,000 saved and $900 a month going in, the gap of $28,000 takes 32 months. Those are the numbers the calculator starts with. Swap in your own.</p>
+
+<h2>What mortgage insurance costs</h2>
+<p>With less than 20% down, you pay a one-time premium. It is a percentage of the mortgage, not the price, and it is usually added to the mortgage so you pay it off over time.</p>
+<table class="ytab" aria-label="Mortgage insurance premiums"><thead><tr><th>Down payment</th><th>Premium on the mortgage</th></tr></thead><tbody>
+<tr><td>5% to under 10%</td><td>4.00%</td></tr>
+<tr><td>10% to under 15%</td><td>3.10%</td></tr>
+<tr><td>15% to under 20%</td><td>2.80%</td></tr>
+<tr><td>20% or more</td><td>None needed</td></tr>
+</tbody></table>
+<p>In Ontario, Quebec and Saskatchewan, provincial sales tax on the premium is due in cash at closing. It cannot be added to the mortgage. A 30-year amortization can add a small surcharge.</p>
+
+<h2>Do not forget closing costs</h2>
+<p>Land transfer tax, a lawyer, an inspection and moving often add 1.5% to 4% of the price. These are paid in cash and are not part of the down payment, so save for both. First-time buyers can get land transfer tax rebates in some provinces and cities.</p>
+
+<h2>Common questions</h2>
+<details><summary>What is the minimum down payment in Canada?</summary><p>5% of the first $500,000, plus 10% of any part above $500,000, for homes under $1.5 million. At $1.5 million or more it is 20%.</p></details>
+<details><summary>How much is the minimum on a $600,000 home?</summary><p>$35,000. That is $25,000 on the first $500,000 plus $10,000 on the other $100,000.</p></details>
+<details><summary>Is it worth waiting until I have 20%?</summary><p>Waiting saves the insurance premium, but home prices and rents can change while you wait. Neither choice is always right. The calculator shows both dates so you can see the trade.</p></details>
+<details><summary>How does an FHSA help?</summary><p>A First Home Savings Account lets you put in up to $8,000 a year, up to $40,000 in total. What you put in can lower your income tax, and money taken out for a qualifying first home is not taxed. Up to $8,000 of unused room carries forward to the next year once the account is open.</p></details>
+<details><summary>Can the down payment be a gift?</summary><p>Often yes, from a close family member, with a signed gift letter. Lenders have their own rules, so ask yours early.</p></details>
+
+<h2>What this calculator assumes</h2>
+<p>It uses the federal minimum down payment rules and CMHC's standard premium rates for an owner-occupied home with a 25-year amortization. It assumes your savings earn nothing and that the price stays the same. Lenders can ask for more than the minimum, and you also need to pass the stress test. This page is information, not financial advice.</p>
+
+<h2>Put this calculator on your site</h2>
+<p>Run a first-time buyer workshop, a newcomer program, or a student finance office? You can add this calculator to your own page for free. Copy the code below and paste it where you want it. It has no ads and collects nothing your visitors type.</p>
+<textarea class="code" id="embedCode" readonly aria-label="Embed code">&lt;iframe src="https://qualisight.ca/down-payment-calculator/?embed=1" title="Down payment calculator" style="width:100%;max-width:860px;height:950px;border:0" loading="lazy"&gt;&lt;/iframe&gt;</textarea>
+<div class="row"><button class="btn ghost" type="button" id="copyEmbed">Copy the code</button><span id="copied" style="color:var(--green);font-size:0.9rem" aria-live="polite"></span></div>
+<p style="margin-top:1.6rem">More free tools: the <a href="/debt-payoff-calculator/">debt payoff calculator</a> and the <a href="/tfsa-contribution-room-calculator/">TFSA room calculator</a>.</p>
+</div>
+
+<footer>Built by a solo founder in Ontario. Rules last checked November 2026. <a href="/">Qualisight</a> is a Canadian budgeting, debt and savings app that turns your money into a game.</footer>
+</div>
+<script>
+(function(){
+  var EMBED=/[?&]embed=1/.test(location.search); if(EMBED) document.body.className+=' embed';
+  // Anonymous page counts only. Nothing typed into the calculator is ever sent.
+  var track=(function(){
+    var ok=true, vid, sid, sent=0;
+    try{ if(localStorage.getItem('qs_notrack')==='1') ok=false; vid=localStorage.getItem('qs_vid'); if(!vid){ vid=Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4); localStorage.setItem('qs_vid',vid); }
+      sid=sessionStorage.getItem('qs_tab'); if(!sid){ sid=Math.random().toString(36).slice(2,10); sessionStorage.setItem('qs_tab',sid); } }catch(e){ vid=vid||'anon'; sid=sid||'anon'; }
+    if(/HeadlessChrome|bot|crawl|spider/i.test(navigator.userAgent||'')) ok=false;
+    return function(name,props){ if(!ok||sent>20) return; sent++; props=props||{}; props.embed=EMBED;
+      try{ fetch('https://bsjyqecneeptlfrsyesf.supabase.co/rest/v1/site_events',{method:'POST',keepalive:true,headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM','Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify([{vid:vid,sid:sid,name:name,props:props}])}).catch(function(){}); }catch(e){} };
+  })();
+
+  var CAP=1500000, edited=false, last=null;
+  function $(id){ return document.getElementById(id); }
+  function money(n){ return '$'+Math.round(n).toLocaleString('en-CA'); }
+  function num(id){ var v=parseFloat($(id).value); return isFinite(v)&&v>0?v:0; }
+  function monthOut(m){ var d=new Date(); d.setMonth(d.getMonth()+m); return d.toLocaleDateString('en-CA',{month:'long',year:'numeric'}); }
+  function dur(m){ var y=Math.floor(m/12), r=m%12; return (y?y+' year'+(y>1?'s':'')+(r?' ':''):'')+(r||!y?r+' month'+(r===1?'':'s'):''); }
+  function minDown(p){ if(p>=CAP) return p*0.20; if(p<=500000) return p*0.05; return 25000+(p-500000)*0.10; }
+  // CMHC standard premiums by loan-to-value, owner-occupied, 25-year amortization.
+  function premRate(ltv){ if(ltv<=0.80) return 0; if(ltv<=0.85) return 0.028; if(ltv<=0.90) return 0.031; if(ltv<=0.95) return 0.04; return null; }
+  function months(gap,mo){ return gap<=0?0:(mo>0?Math.ceil(gap/mo):null); }
+  function render(){
+    var p=num('price'), s=num('saved'), mo=num('monthly');
+    if(p<50000){ $('out').innerHTML='<div class="warn">Type a home price, for example 650000.</div>'; $('acts').hidden=true; last=null; return; }
+    var need=minDown(p), twenty=p*0.20, gap=Math.max(0,need-s), m1=months(gap,mo), m20=months(Math.max(0,twenty-s),mo);
+    var loan=p-need, rate=premRate(loan/p), prem=rate?loan*rate:0;
+    last={p:p,need:need,m1:m1};
+    var h='<div class="hero">';
+    if(gap<=0) h+='<span>Minimum down payment on a '+money(p)+' home</span><b>You have it</b><p>The least a lender accepts is <b>'+money(need)+'</b>, and you have saved <b>'+money(s)+'</b>. Next comes saving for closing costs.</p>';
+    else if(m1!==null) h+='<span>You could have the minimum down payment by</span><b>'+monthOut(m1)+'</b><p>That is <b>'+money(need)+'</b> on a '+money(p)+' home. You have <b>'+money(gap)+'</b> to go, about '+dur(m1)+' at '+money(mo)+' a month.</p>';
+    else h+='<span>Minimum down payment on a '+money(p)+' home</span><b>'+money(need)+'</b><p>You have <b>'+money(gap)+'</b> to go. Add a monthly amount to see your date.</p>';
+    h+='</div>';
+    h+='<div class="big"><div><span>Minimum down</span><b>'+money(need)+'</b><em>'+(need/p*100).toFixed(1)+'% of the price</em></div>';
+    h+='<div><span>20% down, no insurance</span><b>'+money(twenty)+'</b><em>'+(s>=twenty?'You have it':m20!==null?'by '+monthOut(m20):'add a monthly amount')+'</em></div>';
+    h+='<div><span>Closing costs to save too</span><b>'+money(p*0.015)+'+</b><em>often 1.5% to 4% of the price</em></div></div>';
+    if(p>=CAP) h+='<div class="warn">At '+money(CAP)+' or more, the minimum is 20% and mortgage insurance is not available.</div>';
+    else if(rate) h+='<p class="cmp">At the minimum down payment, the mortgage would be <b>'+money(loan)+'</b> and insurance would add about <b>'+money(prem)+'</b> ('+(rate*100).toFixed(2)+'%). It is usually added to the mortgage. In Ontario, Quebec and Saskatchewan, sales tax on it is paid in cash at closing.</p>';
+    if(gap>0){ var m2=months(gap,mo+200); h+='<p class="cmp">Save <b>$200 more</b> a month and you get there by <b>'+monthOut(m2)+'</b>'+(m1!==null&&m1-m2>0?', '+dur(m1-m2)+' sooner':'')+'.</p>'; }
+    $('out').innerHTML=h; $('acts').hidden=false;
+    $('share').hidden = !(gap>0 && m1!==null);
+  }
+  var t; function changed(){ if(!edited){ edited=true; track('home_edit'); } clearTimeout(t); t=setTimeout(render,80); }
+  ['price','saved','monthly'].forEach(function(id){ $(id).addEventListener('input',changed); });
+  $('pchips').addEventListener('click',function(e){ var b=e.target.closest('button[data-v]'); if(!b) return; $('price').value=b.getAttribute('data-v'); changed(); });
+  // Sign-up handoff: the plan waits in this browser so the app can offer to bring it in.
+  function stash(){ try{ localStorage.setItem('qs_home_plan', JSON.stringify({price:num('price'), saved:num('saved'), monthly:num('monthly'), at:Date.now()})); }catch(e){} }
+  var links=document.querySelectorAll('a[href*="utm_campaign=home_calculator"]');
+  for(var i=0;i<links.length;i++) links[i].addEventListener('click',function(){ if(edited&&num('price')>=50000) stash(); track('home_cta',{edited:edited}); });
+  function card(){
+    var c=document.createElement('canvas'); c.width=1200; c.height=630; var x=c.getContext('2d'), F='system-ui,-apple-system,Segoe UI,Roboto,sans-serif';
+    var g=x.createLinearGradient(0,0,1200,630); g.addColorStop(0,'#0b0d12'); g.addColorStop(1,'#10261a'); x.fillStyle=g; x.fillRect(0,0,1200,630);
+    x.fillStyle='rgba(74,222,128,0.10)'; x.beginPath(); x.arc(1010,120,260,0,7); x.fill();
+    x.fillStyle='#4ade80'; x.font='800 34px '+F; x.fillText('Qualisight',80,110);
+    x.fillStyle='#97a2b8'; x.font='500 40px '+F; x.fillText('My plan says I will have',80,255);
+    x.fillStyle='#e8edf8'; x.font='800 96px '+F; x.fillText('my down payment by',80,360);
+    x.fillStyle='#4ade80'; var t=monthOut(last.m1); x.font='800 '+(t.length>14?92:112)+'px '+F; x.fillText(t,80,485);
+    x.fillStyle='#97a2b8'; x.font='500 30px '+F; x.fillText('Make your own plan free at qualisight.ca/down-payment-calculator',80,565);
+    return c;
+  }
+  $('share').onclick=function(){ if(!last||last.m1===null) return; track('home_share');
+    card().toBlob(function(b){ if(!b) return; var f; try{ f=new File([b],'down-payment-date.png',{type:'image/png'}); }catch(e){}
+      if(f && navigator.canShare && navigator.canShare({files:[f]})){ navigator.share({files:[f], text:'My down payment date. Make yours at qualisight.ca/down-payment-calculator'}).catch(function(){}); return; }
+      var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='down-payment-date.png'; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },1500);
+    },'image/png'); };
+  $('ics').onclick=function(){ track('home_ics');
+    var d=new Date(); d.setMonth(d.getMonth()+1,1); function p2(n){ return (n<10?'0':'')+n; }
+    var ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Qualisight//Home//EN','BEGIN:VEVENT','UID:home-'+Date.now()+'@qualisight.ca','DTSTAMP:'+new Date().toISOString().replace(/[-:]|\.\d+/g,''),
+      'DTSTART:'+d.getFullYear()+p2(d.getMonth()+1)+'01T090000','DURATION:PT15M','RRULE:FREQ=MONTHLY;BYMONTHDAY=1','SUMMARY:Down payment check-in','DESCRIPTION:Fifteen minutes. Move this month\'s savings\\, then check your date. https://qualisight.ca/down-payment-calculator/','URL:https://qualisight.ca/down-payment-calculator/',
+      'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:Down payment check-in','TRIGGER:PT0M','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
+    var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'})); a.download='down-payment-check-in.ics'; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },1500); };
+  var ce=document.getElementById('copyEmbed'); if(ce) ce.onclick=function(){ var ta=document.getElementById('embedCode'); ta.select(); var done=function(){ document.getElementById('copied').textContent='Copied.'; track('home_embed_copy'); };
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(done,function(){ try{ document.execCommand('copy'); done(); }catch(e){} }); else { try{ document.execCommand('copy'); done(); }catch(e){} } };
+
+  var src=''; try{ src=(new URLSearchParams(location.search).get('utm_source')||'').slice(0,20); }catch(e){}
+  render(); track('home_view',{ref:(document.referrer||'').split('/')[2]||'', src:src});
+})();
+</script>
+</body>
+</html>

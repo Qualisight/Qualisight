@@ -4210,6 +4210,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
         <button class="lp-footer-link" onclick="lpScrollTo('lp-pricing')">Pricing</button>
         <a class="lp-footer-link" href="/debt-payoff-calculator/" style="text-decoration:none">Debt payoff calculator</a>
         <a class="lp-footer-link" href="/tfsa-contribution-room-calculator/" style="text-decoration:none">TFSA room calculator</a>
+        <a class="lp-footer-link" href="/down-payment-calculator/" style="text-decoration:none">Down payment calculator</a>
         <button class="lp-footer-link" onclick="showSignIn()">Sign in</button>
         <button class="lp-footer-link" onclick="showTerms()">Terms</button>
         <button class="lp-footer-link" onclick="showPrivacy()">Privacy Policy</button>
@@ -5588,7 +5589,7 @@ function obRender(){
       <div class="ob2-kicker">Welcome${first?', '+escHtml(first):''}</div>
       <h2 class="ob2-title">What do you want to win first?</h2>
       <p class="ob2-sub">Pick one. You can do all four later. This just decides where we start.</p>
-      ${(()=>{ const cp=(!(state.debts||[]).length && obCalcPlan()); return cp?`<button type="button" class="ob2-go ob2-import" onclick="obImportCalc()">Use the ${cp.debts.length===1?'debt':cp.debts.length+' debts'} I already typed in</button><div class="ob2-safe" style="margin:-0.2rem 0 0.9rem">Or pick a different place to start below.</div>`:''; })()}
+      ${(()=>{ const cp=(!(state.debts||[]).length && obCalcPlan()); return cp?`<button type="button" class="ob2-go ob2-import" onclick="obImportCalc()">Use the ${cp.debts.length===1?'debt':cp.debts.length+' debts'} I already typed in</button><div class="ob2-safe" style="margin:-0.2rem 0 0.9rem">Or pick a different place to start below.</div>`:(()=>{ const hp=(!(state.homeFund&&state.homeFund.price) && obHomePlan()); return hp?`<button type="button" class="ob2-go ob2-import" onclick="obImportHome()">Use my ${obMoney(hp.price)} home plan</button><div class="ob2-safe" style="margin:-0.2rem 0 0.9rem">Or pick a different place to start below.</div>`:''; })(); })()}
       <div class="ob2-quests">${OB_QUESTS.map(q=>`<button type="button" class="ob2-quest" onclick="obPick('${q.id}')">
         <span class="ob2-quest-art"><canvas id="obq-${q.id}"></canvas></span>
         <span class="ob2-quest-txt"><b>${q.title}</b><i>${q.sub}</i></span></button>`).join('')}</div>
@@ -5648,9 +5649,33 @@ function obCalcPlan(){
     const d=p.debts.filter(x=>x && +x.b>0 && +x.m>0).slice(0,8); return d.length ? {debts:d, method:p.method==='ava'?'avalanche':'snowball'} : null;
   }catch(e){ return null; }
 }
+function obHomePlan(){
+  try{ const p=JSON.parse(localStorage.getItem('qs_home_plan')||'null');
+    if(!p || !(+p.price>=50000) || Date.now()-(p.at||0) > 30*864e5) return null;
+    return {price:Math.round(+p.price), saved:Math.max(0,Math.round(+p.saved||0)), monthly:Math.max(0,Math.round(+p.monthly||0))};
+  }catch(e){ return null; }
+}
+function obImportHome(){
+  const hp=obHomePlan(); if(!hp) return;
+  _ob.quest='home'; _ob.step=2; obRender();
+  const set=(id,v)=>{ const el=document.getElementById(id); if(el) el.value=String(v); };
+  set('ob-a',hp.price); set('ob-b',hp.saved); set('ob-c',hp.monthly);
+  try{ localStorage.removeItem('qs_home_plan'); }catch(e){}
+  try{ QA.log('onb_import',{src:'home'}); }catch(e){}
+  if(!state.onb) state.onb={}; state.onb.fromHomeCalc=true;
+  obSubmit();
+}
 // Message match: someone arriving from the calculator sees their plan named in the first screen.
 function lpMatchCalc(){
-  const plan=obCalcPlan(); if(!plan) return;
+  const plan=obCalcPlan();
+  if(!plan){ const hp=obHomePlan(); if(!hp) return;
+    const h=document.getElementById('lp-h1'), sub=document.getElementById('lp-sub'), btn=document.querySelector('.lp-hero-actions .lp-btn-primary');
+    if(!h||!sub) return;
+    h.innerHTML='Your home plan is ready. <span class="grad">Save it free.</span>';
+    sub.textContent=`Save your ${obMoney(hp.price)} home plan and watch your down payment date get closer every month. No bank login. No card.`;
+    if(btn) btn.textContent='Save my plan free';
+    try{ QA.log('lp_match',{src:'home'}); }catch(e){}
+    return; }
   const h=document.getElementById('lp-h1'), sub=document.getElementById('lp-sub'), btn=document.querySelector('.lp-hero-actions .lp-btn-primary'), n=plan.debts.length;
   if(!h||!sub) return;
   h.innerHTML='Your debt plan is ready. <span class="grad">Save it free.</span>';
