@@ -225,7 +225,8 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
     var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'})); a.download='debt-check-in.ics'; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },1500); };
   var ce=document.getElementById('copyEmbed'); if(ce) ce.onclick=function(){ var ta=document.getElementById('embedCode'); ta.select(); var done=function(){ document.getElementById('copied').textContent='Copied.'; track('calc_embed_copy'); };
     if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(done,function(){ try{ document.execCommand('copy'); done(); }catch(e){} }); else { try{ document.execCommand('copy'); done(); }catch(e){} } };
-  rows(); render(); track('calc_view',{ref:(document.referrer||'').split('/')[2]||''});
+  var src=''; try{ src=(new URLSearchParams(location.search).get('utm_source')||'').slice(0,20); }catch(e){}
+  rows(); render(); track('calc_view',{ref:(document.referrer||'').split('/')[2]||'', src:src});
 })();
 </script>
 </body>
