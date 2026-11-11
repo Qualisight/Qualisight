@@ -4209,6 +4209,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
         <button class="lp-footer-link" onclick="lpScrollTo('lp-tips')">Tools</button>
         <button class="lp-footer-link" onclick="lpScrollTo('lp-pricing')">Pricing</button>
         <a class="lp-footer-link" href="/debt-payoff-calculator/" style="text-decoration:none">Debt payoff calculator</a>
+        <a class="lp-footer-link" href="/tfsa-contribution-room-calculator/" style="text-decoration:none">TFSA room calculator</a>
         <button class="lp-footer-link" onclick="showSignIn()">Sign in</button>
         <button class="lp-footer-link" onclick="showTerms()">Terms</button>
         <button class="lp-footer-link" onclick="showPrivacy()">Privacy Policy</button>
@@ -14519,8 +14520,9 @@ function lpOpenWorld(id){
 // ── Message match: the headline answers the ad they clicked ──
 (function(){
   let camp=''; try{ camp=(new URLSearchParams(location.search).get('utm_campaign')||sessionStorage.getItem('qs_camp')||'').toLowerCase(); }catch(e){}
-  if(!camp || /grove|invest|tfsa/.test(camp)) return;
-  const V = /debt|credit|loan|payoff/.test(camp) ? {h:'See the exact month <span class="grad">you\'ll be debt-free.</span>', s:'Add your debts and watch the storm clear with every payment. Snowball or avalanche, built on real interest math. Free forever.', t:'Your debt storm'}
+  if(!camp || /grove|invest/.test(camp)) return;
+  const V = /tfsa/.test(camp) ? {h:'You know your TFSA room. <span class="grad">Now watch it grow.</span>', s:'Your TFSA, RRSP and FHSA become trees that grow with every deposit. Budgeting and debt payoff are free forever. No bank login.', t:'Clear debt, then grow'}
+    : /debt|credit|loan|payoff/.test(camp) ? {h:'See the exact month <span class="grad">you\'ll be debt-free.</span>', s:'Add your debts and watch the storm clear with every payment. Snowball or avalanche, built on real interest math. Free forever.', t:'Your debt storm'}
     : /budget|spend|save|jar/.test(camp) ? {h:'Make budgeting feel like <span class="grad">a game you\'re winning.</span>', s:'Your spending goals become coin jars. Stay under and they stay full. What you save fills a treasure chest. Free forever.', t:'Watch debt clear as you budget'}
     : /home|house|fhsa|mortgage|condo/.test(camp) ? {h:'Your road to <span class="grad">your first home.</span>', s:'Your FHSA, minimum down payment, closing costs and the lender\'s stress test, all on one road. Built on Canadian rules.', t:'Clear debt, then buy sooner'}
     : null;

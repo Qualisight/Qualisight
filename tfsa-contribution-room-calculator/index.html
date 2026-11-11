@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TFSA Contribution Room Calculator 2026 (Canada) | Qualisight</title>
+<meta name="description" content="Free TFSA contribution room calculator for 2026. Enter your birth year, what you put in and took out, and see your estimated room. Uses the CRA yearly limits. No sign-up.">
+<link rel="canonical" href="https://qualisight.ca/tfsa-contribution-room-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="How much TFSA room do you have in 2026?">
+<meta property="og:description" content="Estimate your TFSA contribution room in a minute. Uses the CRA yearly limits. Free, no sign-up.">
+<meta property="og:url" content="https://qualisight.ca/tfsa-contribution-room-calculator/">
+<meta property="og:image" content="https://qualisight.ca/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0d0f14">
+<link rel="icon" href="/icon-192.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Qualisight","item":"https://qualisight.ca/"},{"@type":"ListItem","position":2,"name":"TFSA contribution room calculator","item":"https://qualisight.ca/tfsa-contribution-room-calculator/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What is the TFSA limit for 2026?","acceptedAnswer":{"@type":"Answer","text":"The CRA set the 2026 TFSA dollar limit at $7,000, the same as 2024 and 2025. It is added to your room on January 1."}},
+{"@type":"Question","name":"How much TFSA room do I have if I have never contributed?","acceptedAnswer":{"@type":"Answer","text":"It depends on the year you turned 18. Someone who was 18 or older and living in Canada every year since 2009 has $109,000 of room in 2026. If you turned 18 later, add up the yearly limits from the year you turned 18."}},
+{"@type":"Question","name":"When do TFSA withdrawals come back as room?","acceptedAnswer":{"@type":"Answer","text":"On January 1 of the next year. Money you take out in 2026 is added back to your room on January 1, 2027, not right away."}},
+{"@type":"Question","name":"What happens if I put in too much?","acceptedAnswer":{"@type":"Answer","text":"The CRA charges a tax of 1% per month on the highest amount over your room, for every month it stays over. Take the extra out as soon as you notice."}},
+{"@type":"Question","name":"Where do I find my exact TFSA room?","acceptedAnswer":{"@type":"Answer","text":"Sign in to CRA My Account. It shows your room as of January 1. It does not include contributions or withdrawals made this year, so add those yourself."}}]}</script>
+<style>
+:root{--bg:#0b0d12;--surface:#141821;--border:rgba(255,255,255,0.09);--text:#e8edf8;--muted:#97a2b8;--green:#4ade80;--red:#f87171;--amber:#fbbf24}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--green)}
+.wrap{max-width:860px;margin:0 auto;padding:0 1.1rem}
+header{display:flex;justify-content:space-between;align-items:center;padding:1rem 0}
+.logo{font-weight:800;font-size:1.15rem;color:var(--green);text-decoration:none;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 1.2rem;border-radius:12px;background:var(--green);color:#0b0d12;font-weight:700;text-decoration:none;border:0;font:inherit;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);min-height:40px;font-weight:600}
+h1{font-size:2rem;line-height:1.15;letter-spacing:-0.03em;margin:1.2rem 0 0.5rem}
+h2{font-size:1.35rem;letter-spacing:-0.02em;margin:2.4rem 0 0.6rem}
+h3{font-size:1.05rem;margin:1.4rem 0 0.3rem}
+p{margin:0.5rem 0;color:#c4ccdb}.lead{color:var(--muted);font-size:1.05rem;max-width:620px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:1.1rem;margin-top:1.2rem}
+table{width:100%;border-collapse:collapse}
+th{font-size:0.75rem;color:var(--muted);font-weight:600;text-align:left;padding:0 0.3rem 0.4rem}
+td{padding:0.25rem 0.3rem}
+input[type=text],input[type=number]{width:100%;background:#0e121a;border:1px solid var(--border);border-radius:10px;color:var(--text);font:inherit;padding:0.6rem 0.65rem;min-height:44px}
+input:focus{outline:2px solid var(--green);outline-offset:1px}
+input[type=number]{-moz-appearance:textfield;appearance:textfield}input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.x{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;width:40px;height:44px;cursor:pointer;font-size:1.1rem}
+.row{display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center;margin-top:0.9rem}
+.extra{flex:1;min-width:230px}
+.extra label{display:flex;justify-content:space-between;font-size:0.9rem;color:var(--muted)}
+.extra b{color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green);height:30px}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-weight:600;padding:0.5rem 1rem;border-radius:999px;cursor:pointer;min-height:40px}
+.seg button[aria-pressed=true]{background:var(--green);color:#0b0d12}
+.big{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.7rem;margin-top:1rem}
+.big div{border:1px solid var(--border);border-radius:14px;padding:0.8rem}
+.big span{display:block;font-size:0.75rem;color:var(--muted)}
+.big b{display:block;font-size:1.35rem;font-variant-numeric:tabular-nums;margin-top:0.1rem}
+.big em{display:block;font-style:normal;font-size:0.78rem;color:var(--green)}
+.warn{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);color:#f3d48a;border-radius:12px;padding:0.7rem 0.85rem;margin-top:0.9rem;font-size:0.92rem}
+.cmp{font-size:0.92rem;color:var(--muted);margin-top:0.8rem}.cmp b{color:var(--text)}
+svg{display:block;width:100%;height:auto;margin-top:0.9rem}
+.acts{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem}.acts .btn{font-size:0.92rem}
+textarea.code{width:100%;min-height:92px;background:#0e121a;border:1px solid var(--border);border-radius:10px;color:#c4ccdb;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:0.7rem;resize:vertical}
+.by{display:none;margin-top:0.8rem;font-size:0.85rem;color:var(--muted)}
+body.embed header,body.embed h1,body.embed .lead,body.embed .cta,body.embed .article,body.embed footer{display:none}body.embed .card{margin-top:0.6rem}body.embed .by{display:block}body.embed .wrap{padding:0 0.5rem}body.embed .noembed{display:none}
+ol.order{margin:0.6rem 0 0;padding-left:1.2rem;color:#c4ccdb}
+.cta{background:linear-gradient(135deg,rgba(74,222,128,0.14),rgba(74,222,128,0.03));border:1px solid rgba(74,222,128,0.4);border-radius:18px;padding:1.2rem;margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:0.9rem;align-items:center;justify-content:space-between}
+.cta p{margin:0;max-width:480px;color:var(--text)}.cta small{display:block;color:var(--muted)}
+details{border-top:1px solid var(--border);padding:0.7rem 0}summary{cursor:pointer;font-weight:600;min-height:32px}
+footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);color:var(--muted);font-size:0.85rem}
+@media(max-width:640px){h1{font-size:1.6rem}.big{grid-template-columns:1fr}}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.8rem}
+.f label{display:block;font-size:0.88rem;color:var(--muted);margin-bottom:0.25rem}.f small{display:block;font-size:0.78rem;color:var(--muted);margin-top:0.2rem}
+.chk{display:flex;gap:0.55rem;align-items:center;margin-top:0.9rem;min-height:44px;color:#c4ccdb;cursor:pointer}.chk input{width:22px;height:22px;accent-color:var(--green);flex:none}
+.yrs{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.4rem}
+.yrs button{min-width:64px;min-height:44px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text);font:inherit;font-weight:600;cursor:pointer}
+.yrs button[aria-pressed=true]{background:rgba(248,113,113,0.14);border-color:rgba(248,113,113,0.5);color:#fca5a5;text-decoration:line-through}
+.hero{margin-top:1.1rem;border:1px solid rgba(74,222,128,0.4);background:linear-gradient(135deg,rgba(74,222,128,0.12),rgba(74,222,128,0.02));border-radius:16px;padding:1rem}
+.hero span{display:block;color:var(--muted);font-size:0.9rem}.hero>b{display:block;font-size:2.4rem;letter-spacing:-0.03em;font-variant-numeric:tabular-nums;color:var(--green);line-height:1.15}
+.hero p{margin:0.35rem 0 0;font-size:0.92rem}.hero p b{color:var(--text)}
+.hero.neg{border-color:rgba(248,113,113,0.5);background:rgba(248,113,113,0.07)}.hero.neg>b{color:var(--red)}
+.ytab{margin-top:1rem;font-size:0.9rem;font-variant-numeric:tabular-nums}.ytab td,.ytab th{padding:0.4rem;border-bottom:1px solid var(--border)}.ytab td:not(:first-child),.ytab th:not(:first-child){text-align:right}
+.ytab tr.off td{color:var(--muted);text-decoration:line-through}
+.src{font-size:0.8rem;color:var(--muted);margin-top:0.8rem}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.hero>b{font-size:2rem}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><a class="logo" href="/">Qualisight</a><a class="btn ghost" href="/?utm_source=organic&utm_campaign=tfsa_calculator">Open the app</a></header>
+
+<h1>TFSA contribution room calculator (2026)</h1>
+<p class="lead">How much can you put in your TFSA this year without a penalty? Enter a few numbers and see your estimated room. Uses the CRA yearly limits. Free, no sign-up. Your numbers stay in your browser.</p>
+
+<section class="card" aria-label="Calculator">
+  <div class="grid">
+    <div class="f"><label for="by">Year you were born</label><input type="number" id="by" inputmode="numeric" min="1900" max="2030" value="1998"><small id="byHint"></small></div>
+    <div class="f"><label for="cin">Total you have ever put in ($)</label><input type="number" id="cin" inputmode="decimal" min="0" step="100" value="20000"><small>Every TFSA, every year, including this year.</small></div>
+    <div class="f"><label for="wout">Total you took out before this year ($)</label><input type="number" id="wout" inputmode="decimal" min="0" step="100" value="3000"><small>This money is already back in your room.</small></div>
+    <div class="f"><label for="wnow">Taken out so far this year ($)</label><input type="number" id="wnow" inputmode="decimal" min="0" step="100" value="0"><small>This comes back on January 1.</small></div>
+  </div>
+  <label class="chk"><input type="checkbox" id="nr"> I lived outside Canada for a whole year or more</label>
+  <div id="nrBox" hidden><p style="font-size:0.9rem;color:var(--muted);margin:0.3rem 0 0">Tap each year you were <b>not</b> a resident of Canada at any time. Those years add no room.</p><div class="yrs" id="yrs"></div></div>
+  <div id="out" aria-live="polite"></div>
+  <div class="acts" id="acts" hidden>
+    <button class="btn ghost noembed" type="button" id="ics">Remind me when new room arrives</button>
+    <button class="btn ghost" type="button" id="tbl" aria-expanded="false">Show year by year</button>
+  </div>
+  <div id="tblBox" hidden></div>
+  <p class="src">Yearly limits from the Canada Revenue Agency's TFSA dollar limit table, checked November 2026. The 2027 limit has not been announced. This is an estimate, not tax or financial advice. Your exact room is in <a href="https://www.canada.ca/en/revenue-agency/services/e-services/digital-services-individuals/account-individuals.html" target="_blank" rel="noopener">CRA My Account</a>.</p>
+  <div class="by">TFSA room calculator by <a href="https://qualisight.ca/tfsa-contribution-room-calculator/" target="_blank" rel="noopener">Qualisight</a>. Estimates only, not financial advice.</div>
+</section>
+
+<div class="cta"><p><b>Know your room. Now watch it grow.</b><small>In Qualisight your TFSA, RRSP and FHSA become trees that grow with every deposit. The money grove comes with a 14-day free trial, then $12 a month. Budgeting and debt payoff are free forever. No bank login.</small></p>
+  <a class="btn" target="_top" href="/?utm_source=organic&utm_campaign=tfsa_calculator">Start free</a></div>
+
+<div class="article">
+<h2>How TFSA room works</h2>
+<p>Your TFSA room is how much you can put in without paying a penalty. The CRA works it out like this:</p>
+<p><b>This year's limit + room you did not use in past years + what you took out last year, minus what you put in this year.</b></p>
+<p>You start getting room in the year you turn 18, as long as you live in Canada. You get the full year's limit even if your birthday is in December. Room you do not use never expires. It just carries forward.</p>
+
+<h2>TFSA limits by year</h2>
+<table class="ytab" aria-label="TFSA dollar limit by year"><thead><tr><th>Years</th><th>Limit each year</th></tr></thead><tbody>
+<tr><td>2009 to 2012</td><td>$5,000</td></tr>
+<tr><td>2013 and 2014</td><td>$5,500</td></tr>
+<tr><td>2015</td><td>$10,000</td></tr>
+<tr><td>2016 to 2018</td><td>$5,500</td></tr>
+<tr><td>2019 to 2022</td><td>$6,000</td></tr>
+<tr><td>2023</td><td>$6,500</td></tr>
+<tr><td>2024 to 2026</td><td>$7,000</td></tr>
+</tbody></table>
+<p>If you were 18 or older and living in Canada every year since 2009, that adds up to <b>$109,000</b> in 2026. The limit rises with inflation in steps of $500, so it does not change every year.</p>
+
+<h3>A worked example</h3>
+<p>Sam was born in 1998, so Sam turned 18 in 2016 and has room from 2016 on. That is $68,000 by 2026. Sam has put in $20,000 in total and took out $3,000 back in 2024. The $3,000 came back on January 1, 2025. So Sam's room is $68,000 minus $20,000 plus $3,000, which is <b>$51,000</b>. Those are the numbers the calculator starts with. Swap in your own.</p>
+
+<h2>Common questions</h2>
+<details><summary>What is the TFSA limit for 2026?</summary><p>$7,000, the same as 2024 and 2025. It is added to your room on January 1.</p></details>
+<details><summary>How much room do I have if I have never contributed?</summary><p>Add up the yearly limits from the year you turned 18 (or 2009, if you turned 18 before then). Someone eligible every year since 2009 has $109,000 in 2026.</p></details>
+<details><summary>When do withdrawals come back as room?</summary><p>On January 1 of the next year. If you take money out and put it back in the same year, it can push you over your room. This is the most common way people over-contribute.</p></details>
+<details><summary>What happens if I put in too much?</summary><p>The CRA charges a tax of 1% per month on the highest amount you are over, for each month it stays there. Take the extra out as soon as you notice, and check your room in CRA My Account.</p></details>
+<details><summary>Does moving money between my own TFSAs use up room?</summary><p>Not if the bank does a direct transfer for you. If you take the money out yourself and put it in the other TFSA, the deposit counts as a new contribution.</p></details>
+<details><summary>Why is my number different from CRA My Account?</summary><p>My Account shows your room as of January 1 and does not include anything you did this year. Banks can also take a few weeks to report. If the two disagree, trust your own records and call the CRA.</p></details>
+
+<h2>What this calculator assumes</h2>
+<p>It uses the yearly limits the CRA has published up to 2026. It counts the full limit for the year you turn 18 and for any year you lived in Canada for part of the year. It assumes you have a social insurance number and that all deposits were normal contributions. It does not know about money you put back the same year or any special cases, so use it as a check, not the final word. This page is information, not tax or investment advice.</p>
+
+<h2>Put this calculator on your site</h2>
+<p>Run a money workshop, a newcomer program, or a student finance office? You can add this calculator to your own page for free. Copy the code below and paste it where you want it to appear. It has no ads and collects nothing your visitors type.</p>
+<textarea class="code" id="embedCode" readonly aria-label="Embed code">&lt;iframe src="https://qualisight.ca/tfsa-contribution-room-calculator/?embed=1" title="TFSA contribution room calculator" style="width:100%;max-width:860px;height:900px;border:0" loading="lazy"&gt;&lt;/iframe&gt;</textarea>
+<div class="row"><button class="btn ghost" type="button" id="copyEmbed">Copy the code</button><span id="copied" style="color:var(--green);font-size:0.9rem" aria-live="polite"></span></div>
+<p style="margin-top:1.6rem">Paying off debt first? Try the free <a href="/debt-payoff-calculator/">debt payoff calculator</a>.</p>
+</div>
+
+<footer>Built by a solo founder in Ontario. Limits last checked November 2026. <a href="/">Qualisight</a> is a Canadian budgeting, debt and savings app that turns your money into a game.</footer>
+</div>
+<script>
+(function(){
+  var EMBED=/[?&]embed=1/.test(location.search); if(EMBED) document.body.className+=' embed';
+  // Anonymous page counts only. Nothing typed into the calculator is ever sent.
+  var track=(function(){
+    var ok=true, vid, sid, sent=0;
+    try{ if(localStorage.getItem('qs_notrack')==='1') ok=false; vid=localStorage.getItem('qs_vid'); if(!vid){ vid=Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4); localStorage.setItem('qs_vid',vid); }
+      sid=sessionStorage.getItem('qs_tab'); if(!sid){ sid=Math.random().toString(36).slice(2,10); sessionStorage.setItem('qs_tab',sid); } }catch(e){ vid=vid||'anon'; sid=sid||'anon'; }
+    if(/HeadlessChrome|bot|crawl|spider/i.test(navigator.userAgent||'')) ok=false;
+    return function(name,props){ if(!ok||sent>20) return; sent++; props=props||{}; props.embed=EMBED;
+      try{ fetch('https://bsjyqecneeptlfrsyesf.supabase.co/rest/v1/site_events',{method:'POST',keepalive:true,headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM','Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify([{vid:vid,sid:sid,name:name,props:props}])}).catch(function(){}); }catch(e){} };
+  })();
+
+  // CRA TFSA dollar limits. Add the new year here when the CRA announces it.
+  var LIMITS={2009:5000,2010:5000,2011:5000,2012:5000,2013:5500,2014:5500,2015:10000,2016:5500,2017:5500,2018:5500,2019:6000,2020:6000,2021:6000,2022:6000,2023:6500,2024:7000,2025:7000,2026:7000};
+  var LAST=2026, NOW=new Date().getFullYear(), YEAR=Math.min(NOW,LAST);
+  var off={}, edited=false, last=null;
+  function $(id){ return document.getElementById(id); }
+  function money(n){ return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-CA'); }
+  function num(id){ var v=parseFloat($(id).value); return isFinite(v)&&v>0?v:0; }
+  function startYear(){ var b=parseInt($('by').value,10); if(!(b>1900&&b<2100)) return null; return Math.max(2009,b+18); }
+  function drawYears(){
+    var s=startYear(), box=$('yrs'), h='';
+    if(s===null||s>YEAR){ box.innerHTML='<span style="color:var(--muted);font-size:0.9rem">No room years yet.</span>'; return; }
+    for(var y=s;y<=YEAR;y++) h+='<button type="button" data-y="'+y+'" aria-pressed="'+(!!off[y])+'">'+y+'</button>';
+    box.innerHTML=h;
+  }
+  function calc(){
+    var s=startYear(); if(s===null) return null;
+    var rows=[], earned=0;
+    for(var y=s;y<=YEAR;y++){ var on=!off[y]; if(on) earned+=LIMITS[y]; rows.push({y:y,lim:LIMITS[y],on:on,cum:earned}); }
+    var cin=num('cin'), wout=num('wout'), wnow=num('wnow');
+    return {start:s, rows:rows, earned:earned, cin:cin, wout:wout, wnow:wnow, room:earned+wout-cin};
+  }
+  function render(){
+    var b=parseInt($('by').value,10), s=startYear();
+    $('byHint').textContent = s===null ? 'Enter a 4-digit year.' : (b+18<2009 ? 'You turned 18 before 2009, so your room starts in 2009.' : 'You '+(b+18<=NOW?'turned':'turn')+' 18 in '+(b+18)+', so your room starts then.');
+    var r=calc(); last=r;
+    if(!r){ $('out').innerHTML=''; $('acts').hidden=true; return; }
+    if(r.start>YEAR){ $('out').innerHTML='<div class="hero"><span>Your TFSA room</span><b>$0 for now</b><p>You get your first room on January 1, '+r.start+', the year you turn 18. Until then, saving in a regular account still counts.</p></div>'; $('acts').hidden=true; $('tblBox').hidden=true; return; }
+    var neg=r.room<0, h='<div class="hero'+(neg?' neg':'')+'"><span>Estimated room you can still use in '+YEAR+'</span><b>'+(neg?money(-r.room)+' over':money(r.room))+'</b>';
+    if(neg) h+='<p>You may be over your room. The CRA charges 1% a month on the amount over. Check CRA My Account and take the extra out if it is right.</p>';
+    else h+='<p>You have earned <b>'+money(r.earned)+'</b> of room since '+r.start+(r.wout?', got <b>'+money(r.wout)+'</b> back from past withdrawals,':'')+' and put in <b>'+money(r.cin)+'</b>.</p>';
+    h+='</div>';
+    var nextNote = YEAR<LAST ? '' : 'On January 1, '+(YEAR+1)+' your room goes up by the '+(YEAR+1)+' limit (not announced yet)'+(r.wnow?' plus the <b>'+money(r.wnow)+'</b> you took out this year':'')+'.';
+    if(NOW>LAST) nextNote='This page has limits up to '+LAST+'. The '+NOW+' limit is not included yet, so your real room is higher. Check CRA My Account.';
+    if(r.wnow && !neg) h+='<div class="warn">Careful: the <b>'+money(r.wnow)+'</b> you took out this year is not room again until January 1, '+(YEAR+1)+'. Putting it back before then uses up the room shown above.</div>';
+    if(nextNote) h+='<p class="cmp">'+nextNote+'</p>';
+    $('out').innerHTML=h; $('acts').hidden=false;
+    if(!$('tblBox').hidden) drawTable();
+  }
+  function drawTable(){
+    var r=last; if(!r) return;
+    var h='<table class="ytab"><thead><tr><th>Year</th><th>Limit</th><th>Room earned so far</th></tr></thead><tbody>';
+    r.rows.forEach(function(x){ h+='<tr'+(x.on?'':' class="off"')+'><td>'+x.y+(x.on?'':' (not resident)')+'</td><td>'+money(x.lim)+'</td><td>'+money(x.cum)+'</td></tr>'; });
+    h+='</tbody></table>'; $('tblBox').innerHTML=h;
+  }
+  var t; function changed(){ if(!edited){ edited=true; track('tfsa_edit'); } clearTimeout(t); t=setTimeout(render,80); }
+  ['cin','wout','wnow'].forEach(function(id){ $(id).addEventListener('input',changed); });
+  $('by').addEventListener('input',function(){ off={}; drawYears(); changed(); });
+  $('nr').addEventListener('change',function(){ $('nrBox').hidden=!this.checked; if(!this.checked) off={}; drawYears(); render(); });
+  $('yrs').addEventListener('click',function(e){ var bt=e.target.closest('button[data-y]'); if(!bt) return; var y=+bt.getAttribute('data-y'); off[y]=!off[y]; bt.setAttribute('aria-pressed',String(!!off[y])); changed(); });
+  $('tbl').onclick=function(){ var box=$('tblBox'), open=box.hidden; box.hidden=!open; this.setAttribute('aria-expanded',String(open)); this.textContent=open?'Hide year by year':'Show year by year'; if(open){ drawTable(); track('tfsa_table'); } };
+  var links=document.querySelectorAll('a[href*="utm_campaign=tfsa_calculator"]');
+  for(var i=0;i<links.length;i++) links[i].addEventListener('click',function(){ track('tfsa_cta',{edited:edited}); });
+  $('ics').onclick=function(){ track('tfsa_ics');
+    var y=YEAR+1;
+    var ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Qualisight//TFSA//EN','BEGIN:VEVENT','UID:tfsa-'+Date.now()+'@qualisight.ca','DTSTAMP:'+new Date().toISOString().replace(/[-:]|\.\d+/g,''),
+      'DTSTART;VALUE=DATE:'+y+'0102','DURATION:P1D','RRULE:FREQ=YEARLY','SUMMARY:New TFSA room today','DESCRIPTION:Your new TFSA room arrived on January 1. Check it here: https://qualisight.ca/tfsa-contribution-room-calculator/','URL:https://qualisight.ca/tfsa-contribution-room-calculator/',
+      'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:New TFSA room today','TRIGGER:PT9H','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
+    var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'})); a.download='tfsa-new-room.ics'; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },1500); };
+  var ce=document.getElementById('copyEmbed'); if(ce) ce.onclick=function(){ var ta=document.getElementById('embedCode'); ta.select(); var done=function(){ document.getElementById('copied').textContent='Copied.'; track('tfsa_embed_copy'); };
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(done,function(){ try{ document.execCommand('copy'); done(); }catch(e){} }); else { try{ document.execCommand('copy'); done(); }catch(e){} } };
+
+  var src=''; try{ src=(new URLSearchParams(location.search).get('utm_source')||'').slice(0,20); }catch(e){}
+  drawYears(); render(); track('tfsa_view',{ref:(document.referrer||'').split('/')[2]||'', src:src});
+})();
+</script>
+</body>
+</html>
