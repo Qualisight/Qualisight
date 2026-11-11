@@ -5582,6 +5582,17 @@ function obCalcPlan(){
     const d=p.debts.filter(x=>x && +x.b>0 && +x.m>0).slice(0,8); return d.length ? {debts:d, method:p.method==='ava'?'avalanche':'snowball'} : null;
   }catch(e){ return null; }
 }
+// Message match: someone arriving from the calculator sees their plan named in the first screen.
+function lpMatchCalc(){
+  const plan=obCalcPlan(); if(!plan) return;
+  const h=document.getElementById('lp-h1'), sub=document.getElementById('lp-sub'), btn=document.querySelector('.lp-hero-actions .lp-btn-primary'), n=plan.debts.length;
+  if(!h||!sub) return;
+  h.innerHTML='Your debt plan is ready. <span class="grad">Save it free.</span>';
+  sub.textContent=`Bring in the ${n} debt${n===1?'':'s'} from your calculator and watch the storm clear with every payment. No bank login. No card.`;
+  if(btn) btn.textContent='Save my plan free';
+  try{ QA.log('lp_match',{src:'calc',n}); }catch(e){}
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(lpMatchCalc,0)); else setTimeout(lpMatchCalc,0);
 function obImportCalc(){
   const plan=obCalcPlan(); if(!plan) return;
   if(!state.onb) state.onb={};
