@@ -174,6 +174,22 @@ header{
 /* ═══ BUDGET PAGE 2.0 ═══ */
 
 /* This-month status bar */
+.bm-qs{grid-column:1/-1;padding:1.2rem 1.25rem;background:radial-gradient(120% 90% at 100% 0%,rgba(74,222,128,0.10),transparent 60%),var(--card,#141821);border-radius:inherit}
+.bm-qs b{display:block;font-size:1.05rem;color:var(--text);margin-bottom:0.3rem}
+.bm-qs p{margin:0 0 0.8rem;color:var(--muted);font-size:0.9rem;line-height:1.5}
+.bm-qs-row{display:flex;gap:0.5rem;align-items:stretch}
+.bm-qs-in{flex:1;min-width:0;display:flex;align-items:center;background:#0e121a;border:1px solid var(--border);border-radius:12px;padding:0 0.75rem;min-height:48px}
+.bm-qs-in:focus-within{border-color:#4ade80}
+.bm-qs-in em{font-style:normal;color:var(--muted);margin-right:0.3rem}
+.bm-qs-in input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--text);font:inherit;font-size:1.05rem;font-weight:600}
+.bm-qs-go{background:#4ade80;color:#0b0d12;border:0;border-radius:12px;padding:0 1.1rem;font:inherit;font-weight:700;cursor:pointer;min-height:48px;white-space:nowrap}
+.bm-qs-chips{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.6rem}
+.bm-qs-chips button{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:0.35rem 0.75rem;font:inherit;font-size:0.8rem;font-weight:600;cursor:pointer;min-height:34px}
+.bm-qs-err{color:#f87171;font-size:0.82rem;min-height:1em;margin-top:0.4rem}
+.bm-qs small{display:block;color:var(--faint,#5f6b82);font-size:0.75rem;margin-top:0.3rem}
+.ds-chips{display:flex;flex-wrap:wrap;gap:0.4rem;margin:0.55rem 0 0.15rem}
+.ds-chips button{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:0.35rem 0.8rem;font:inherit;font-size:0.8rem;font-weight:600;cursor:pointer;min-height:34px}
+.ds-chips button:hover{border-color:#4ade80;color:#4ade80}
 .bm-status{
   display:grid;grid-template-columns:repeat(4,1fr);gap:0;
   background:var(--card);border:1px solid var(--border);border-radius:16px;
@@ -219,6 +235,8 @@ header{
 @media(max-width:680px){
   .bm-log-row{grid-template-columns:1fr 1fr;}
   .bm-log-row .bm-field.full{grid-column:1/-1;}
+  .bm-log-row .bm-field:first-child{grid-column:1/-1;}
+  .bm-cat-count{display:none;}
   .bm-log-btn{grid-column:1/-1;width:100%;}
 }
 .bm-cc-link{margin-top:0.6rem;}
@@ -422,6 +440,7 @@ header{
 
 /* Dashboard: home base */
 .db-hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:1rem;margin-bottom:1rem}
+.db-nw-val.db-nw-date{color:var(--accent,#4ade80)}
 .db-nw,.db-score{background:var(--card);border:1px solid var(--border2);border-radius:22px;padding:1.2rem 1.3rem;position:relative;overflow:hidden}
 .db-nw{background:radial-gradient(120% 90% at 100% 0%,rgba(74,222,128,0.10),transparent 60%),var(--card)}
 .db-greet{font-size:0.88rem;color:var(--muted);margin-bottom:0.6rem}
@@ -968,7 +987,7 @@ select option{background:var(--card2)}
 @media(max-width:700px){
   .nav-tabs{display:none !important}
   .two-col{grid-template-columns:1fr}
-  .ai-panel{width:calc(100vw - 2rem);right:1rem}
+  .ai-panel{width:calc(100vw - 2rem);right:1rem;z-index:400;max-height:calc(100dvh - 4.5rem)}
   .stat-row{grid-template-columns:1fr 1fr}
   .page{padding-bottom:5rem}
   #app-header{padding:0.6rem 1rem}
@@ -2862,6 +2881,7 @@ select option{background:#fff;color:var(--ink)}
 #landing-page .lp-faq{margin:0;max-width:760px}
 #landing-page .lp-final{background:var(--ink);border-top:none;text-align:left}
 #landing-page .lp-final > *{max-width:1120px;margin-left:auto;margin-right:auto}
+#landing-page section.lp-section.lp-final{padding-left:max(1.5rem,calc((100% - 1120px) / 2));padding-right:max(1.5rem,calc((100% - 1120px) / 2))}
 #landing-page .lp-final h2{color:#fff;font-family:var(--font-display);letter-spacing:-0.045em}
 #landing-page .lp-final p{color:#9aa6bd;margin-left:auto;margin-right:auto}
 #landing-page .lp-final-actions{justify-content:flex-start}
@@ -3003,6 +3023,9 @@ details.iv-acct[open] .iv-acct-chev{transform:rotate(180deg)}
 .ob2-sub{color:var(--muted);font-size:0.98rem;line-height:1.55;margin:0 0 1.2rem;max-width:480px}
 .ob2-sub b{color:var(--text)}
 .ob2-import{margin-bottom:0.7rem}
+.ob2-cal{display:block;width:100%;margin:0.6rem 0 0;background:transparent;border:1px solid var(--border2,rgba(255,255,255,0.14));color:var(--text);border-radius:14px;padding:0.75rem 1rem;font:inherit;font-size:0.9rem;font-weight:600;cursor:pointer;min-height:46px}
+.ob2-cal:disabled{color:#4ade80;border-color:rgba(74,222,128,0.4);cursor:default}
+.toast-btn{display:inline-block;margin-top:0.5rem;background:#4ade80;color:#0b0d12;border:0;border-radius:10px;padding:0.5rem 0.8rem;font:inherit;font-size:0.85rem;font-weight:700;cursor:pointer;min-height:40px}
 .ob2-quests{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.8rem;width:100%;margin-bottom:1rem}
 .ob2-quest{display:flex;flex-direction:column;padding:0;border:1px solid var(--border);border-radius:18px;overflow:hidden;background:var(--surface);cursor:pointer;color:inherit;font:inherit;text-align:left;transition:border-color .15s,transform .15s}
 .ob2-quest:hover,.ob2-quest:focus-visible{border-color:#4ade80;transform:translateY(-2px)}
@@ -3209,7 +3232,24 @@ details.iv-acct[open] .iv-acct-chev{transform:rotate(180deg)}
 /* Landing v2: live hero demo, four worlds, promises */
 #landing-page .lp-hero:not(.lp-hero--grove) .lp-preview-wrap{display:none}
 #landing-page .lp-hero--grove .lp-play{display:none}
-#landing-page .lp-hero h1 .grad{color:#4ade80}
+#landing-page .lp-hero h1 .grad{color:#4ade80;white-space:nowrap}
+#landing-page .lp-mine{position:relative;width:100%;max-width:520px;margin:0 0 1.3rem;padding:0.9rem;background:var(--surface);border:1px solid rgba(74,222,128,0.35);border-radius:18px;text-align:left}
+#landing-page .lp-mine-row{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0.6rem}
+#landing-page .lp-mine-f{display:block;min-width:0}
+#landing-page .lp-mine *{box-sizing:border-box}
+#landing-page .lp-mine-f span{display:block;font-size:0.78rem;font-weight:600;color:var(--muted);margin-bottom:0.25rem}
+#landing-page .lp-mine-in{display:flex;align-items:center;background:#0e121a;border:1px solid var(--border);border-radius:12px;padding:0 0.7rem;min-height:48px}
+#landing-page .lp-mine-in:focus-within{border-color:#4ade80}
+#landing-page .lp-mine-in em{font-style:normal;color:var(--muted);margin-right:0.25rem}
+#landing-page .lp-mine-in input{flex:1;min-width:0;background:transparent;border:0;outline:0;color:var(--text);font:inherit;font-size:1.05rem;font-weight:600;padding:0.5rem 0}
+#landing-page .lp-mine-types{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.6rem}
+#landing-page .lp-mine-types button{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:999px;padding:0.38rem 0.7rem;font:inherit;font-size:0.78rem;font-weight:600;cursor:pointer;min-height:34px}
+#landing-page .lp-mine-types button.on{background:rgba(74,222,128,0.14);border-color:#4ade80;color:#4ade80}
+#landing-page .lp-mine-out{margin-top:0.7rem;font-size:0.95rem;line-height:1.45;color:var(--muted)}
+#landing-page .lp-mine-out b{color:#4ade80;font-weight:800}
+#landing-page .lp-mine-out strong{display:block;color:var(--text);font-size:1.3rem;font-weight:800;letter-spacing:-0.02em;margin-bottom:0.1rem}
+#landing-page .lp-mine-out small{display:block;margin-top:0.25rem;font-size:0.78rem;color:#5f6b82}
+#landing-page .lp-hero--grove .lp-mine{display:none}
 #landing-page .lp-play{width:100%;margin:1.6rem 0 1.4rem;background:var(--surface);border:1px solid var(--border);border-radius:20px;overflow:hidden;box-shadow:0 40px 80px -40px rgba(0,0,0,0.84)}
 #landing-page .lp-play-top{display:flex;justify-content:space-between;align-items:center;padding:0.7rem 1rem;font-size:0.92rem;color:var(--ink)}
 #landing-page .lp-play-live{display:inline-flex;align-items:center;gap:0.4rem;color:var(--muted);font-size:0.78rem}
@@ -3231,7 +3271,7 @@ details.iv-acct[open] .iv-acct-chev{transform:rotate(180deg)}
 #landing-page .lpp-read b{display:block;font-size:1.02rem;color:var(--ink);font-variant-numeric:tabular-nums}
 #landing-page .lpp-read em{display:block;font-style:normal;font-size:0.74rem;color:#4ade80;font-weight:600}
 @media(min-width:1000px){
-  #landing-page .lp-hero .lp-play{grid-column:2;grid-row:1 / span 6;margin:0;align-self:center}
+  #landing-page .lp-hero .lp-play{grid-column:2;grid-row:1 / span 9;margin:0;align-self:center}
   #landing-page .lp-play-stage{height:300px}
 }
 #landing-page .lp-worlds{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1.1rem;margin-top:2.2rem}
@@ -3760,8 +3800,18 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
     <div class="lp-hero-glow"></div>
     <div class="lp-hero-grid"></div>
     <span class="lp-badge"><span class="lp-badge-dot"></span>Free for Canadians. No bank login needed.</span>
-    <h1 id="lp-h1">Your money, as a game <span class="grad">you can win.</span></h1>
-    <p class="lp-hero-sub" id="lp-sub">Watch your debt storm clear, your coin jars fill and your TFSA grow. Built on Canadian rules. Free to start.</p>
+    <h1 id="lp-h1">See the month you'll be <span class="grad">debt-free.</span></h1>
+    <p class="lp-hero-sub" id="lp-sub">Type what you owe and watch your storm clear. Then fill coin jars, grow a TFSA tree and map the road to your first home. Canadian rules. No bank login.</p>
+
+    <!-- Their own number, before any sign-up -->
+    <div class="lp-mine" id="lp-mine">
+      <div class="lp-mine-row">
+        <label class="lp-mine-f"><span>I owe</span><div class="lp-mine-in"><em>$</em><input id="lpm-owe" type="text" inputmode="decimal" placeholder="5,000" autocomplete="off" aria-label="How much you owe"></div></label>
+        <label class="lp-mine-f"><span>I pay each month</span><div class="lp-mine-in"><em>$</em><input id="lpm-pay" type="text" inputmode="decimal" placeholder="150" autocomplete="off" aria-label="What you pay each month"></div></label>
+      </div>
+      <div class="lp-mine-types" id="lpm-types" role="group" aria-label="Type of debt"></div>
+      <div class="lp-mine-out" id="lpm-out" aria-live="polite">Try it: type a number and your debt-free month appears here.</div>
+    </div>
 
     <!-- Live demo: the visitor plays with the real thing in the first screen -->
     <div class="lp-play" id="lp-play">
@@ -4139,10 +4189,10 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
   <!-- FINAL CTA -->
   <section class="lp-section lp-final">
     <div class="lp-final-glow"></div>
-    <h2>Start your first<br>quest today.</h2>
-    <p>Set up your coin jars in about a minute. Free forever for budgeting and debt. No card, no bank login.</p>
+    <h2>Your debt-free month<br>is one minute away.</h2>
+    <p>Type what you owe and see the date. Budgeting and debt payoff are free forever. No card, no bank login.</p>
     <div class="lp-final-actions">
-      <button class="lp-btn-primary" onclick="lpShowSignup()">Start free, no card</button>
+      <button class="lp-btn-primary" onclick="lpToMine('final')">See my debt-free month</button>
       <button class="lp-btn-secondary" onclick="lpTryDemo()">Try it with sample numbers</button>
     </div>
   </section>
@@ -4256,9 +4306,12 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
       <div style="font-size:0.85rem;color:var(--muted);line-height:1.7;margin-bottom:1.6rem">
         We sent a confirmation link to<br>
         <strong id="verify-email-display" style="color:var(--text)"></strong><br><br>
-        Click the link in that email to activate your account, then come back here and sign in.
+        Tap the link in that email and you are in. It comes from <strong style="color:var(--text)">hello@qualisight.ca</strong> and can take a minute. If you do not see it, check your junk or promotions folder.
       </div>
-      <button class="auth-btn-ghost" onclick="showSignIn()">Back to sign in</button>
+      <button class="auth-btn" id="verify-resend" onclick="resendVerify()" style="margin-bottom:0.6rem">Send it again</button>
+      <div id="verify-msg" role="status" style="font-size:0.8rem;color:var(--accent);min-height:1.2em;margin-bottom:0.6rem"></div>
+      <button class="auth-btn-ghost" onclick="showCreate()" style="margin-bottom:0.5rem">I typed the wrong email</button>
+      <button class="auth-btn-ghost" onclick="showSignIn()">I clicked the link. Sign me in</button>
     </div>
 
   </div>
@@ -4427,19 +4480,16 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
       <div class="hero-title" style="font-size:1.3rem">Budget</div>
       <div class="hero-sub" style="margin:0">Log what you spend, see where you stand this month.</div>
     </div>
-    <button class="btn" onclick="showQuickSetup()">Quick Setup</button>
+    <button class="btn" id="bm-setup-btn" onclick="showQuickSetup()">Quick Setup</button>
   </div>
 
   <!-- Daily streak reinforcement -->
-  <div class="budget-streak-strip streak-mount"></div>
+  <div class="budget-streak-strip streak-mount" id="bm-streak"></div>
 
   <!-- This-month status bar -->
   <div class="bm-status" id="bm-status"></div>
 
-  <!-- Budget game: coin jars, XP, quests, badges -->
-  <div id="bg-game-mount"></div>
-
-  <!-- Quick log expense (the daily action — up top) -->
+  <!-- Quick log expense (the daily action, up top) -->
   <div class="bm-log-card">
     <div class="bm-section-head" style="margin-bottom:0.9rem">
       <div class="bm-section-title">Log an expense</div>
@@ -4481,7 +4531,10 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
     </div>
   </div>
 
-  <!-- Spending vs Goals — collapsible category cards -->
+  <!-- Budget game: coin jars, XP, quests, badges. Sits right under the log form so each entry visibly lands in a jar -->
+  <div id="bg-game-mount"></div>
+
+  <!-- Spending vs Goals: collapsible category cards -->
   <div class="bm-section-head">
     <div>
       <div class="bm-section-title">Spending vs goals</div>
@@ -4943,7 +4996,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
     <button class="ai-close" onclick="toggleAI()">✕</button>
   </div>
   <div class="ai-messages" id="ai-messages">
-    <div class="msg bot" id="ai-greeting">Hi! I'm the Qualisight AI Advisor. Ask me anything about your finances, I'm reading your actual numbers.</div>
+    <div class="msg bot" id="ai-greeting">Hi! I'm your Qualisight coach. I read the numbers you have entered here, so ask me anything about your budget, debt or savings. I explain and suggest. I do not give investment advice.</div>
   </div>
   <div class="ai-suggestions" id="ai-suggestions">
     <div class="suggestion" onclick="quickAsk('How is my budget looking this month, and where am I overspending?')">Where am I overspending?</div>
@@ -5215,8 +5268,8 @@ function showApp(){
   const greeting=document.createElement('div');
   greeting.className='msg bot';
   greeting.textContent = currentUser.isDemo
-    ? ' Hi! I\'m the Qualisight AI Advisor, reading your demo data. Ask about budgeting, debt, portfolio, TFSA/RRSP strategy, or Ontario real estate.'
-    : ` Hi ${currentUser.name}! I'm your Qualisight AI Advisor, reading your actual financial data. Ask me anything.`;
+    ? 'Hi! I\'m the Qualisight coach. I\'m reading the sample account on screen, so my answers use its real numbers. Tap a question or type your own.'
+    : `Hi ${String(currentUser.name||'').split(' ')[0]}! I'm your Qualisight coach. I read the numbers you have entered here, so ask me anything about your budget, debt or savings. I explain and suggest. I do not give investment advice.`;
   msgs.appendChild(greeting);
   // Restore the starter suggestions for a fresh session
   const sug=document.getElementById('ai-suggestions');
@@ -5376,9 +5429,20 @@ async function acceptTermsAndCreate(){
 
   // Email confirmation is ON — show the check inbox screen
   document.getElementById('verify-email-display').textContent=email;
+  try{ QA.log('verify_shown',{}); }catch(e){}
   showPanel('auth-verify');
 }
 
+async function resendVerify(){
+  const email=(document.getElementById('verify-email-display').textContent||'').trim(), msg=document.getElementById('verify-msg'), btn=document.getElementById('verify-resend');
+  if(!email) return;
+  if(btn){ btn.disabled=true; btn.textContent='Sending...'; }
+  try{ const { error } = await sb.auth.resend({ type:'signup', email });
+    if(msg) msg.textContent = error ? 'Could not send it just now. Wait a minute and try again.' : 'Sent. Give it a minute, and check junk too.';
+    try{ QA.log('verify_resend',{ok:!error}); }catch(e){}
+  }catch(e){ if(msg) msg.textContent='Could not send it just now. Wait a minute and try again.'; }
+  if(btn){ setTimeout(()=>{ btn.disabled=false; btn.textContent='Send it again'; }, 20000); btn.textContent='Sent'; }
+}
 // Kept as stub so any lingering references don't crash
 async function submitCreate(){ validateAndShowTos(); }
 
@@ -5523,7 +5587,7 @@ function obRender(){
       <div class="ob2-kicker">Welcome${first?', '+escHtml(first):''}</div>
       <h2 class="ob2-title">What do you want to win first?</h2>
       <p class="ob2-sub">Pick one. You can do all four later. This just decides where we start.</p>
-      ${(()=>{ const cp=(!(state.debts||[]).length && obCalcPlan()); return cp?`<button type="button" class="ob2-go ob2-import" onclick="obImportCalc()">Bring in my ${cp.debts.length} debt${cp.debts.length===1?'':'s'} from the calculator</button><div class="ob2-safe" style="margin:-0.2rem 0 0.9rem">Or pick a different place to start below.</div>`:''; })()}
+      ${(()=>{ const cp=(!(state.debts||[]).length && obCalcPlan()); return cp?`<button type="button" class="ob2-go ob2-import" onclick="obImportCalc()">Use the ${cp.debts.length===1?'debt':cp.debts.length+' debts'} I already typed in</button><div class="ob2-safe" style="margin:-0.2rem 0 0.9rem">Or pick a different place to start below.</div>`:''; })()}
       <div class="ob2-quests">${OB_QUESTS.map(q=>`<button type="button" class="ob2-quest" onclick="obPick('${q.id}')">
         <span class="ob2-quest-art"><canvas id="obq-${q.id}"></canvas></span>
         <span class="ob2-quest-txt"><b>${q.title}</b><i>${q.sub}</i></span></button>`).join('')}</div>
@@ -5572,6 +5636,7 @@ function obRender(){
     <p class="ob2-sub ob2-boost">${R.boost}</p>
     <div class="ob2-plan"><b>Your first three steps</b>${R.steps.map((t,i)=>`<div><i>${i+1}</i>${t}</div>`).join('')}</div>
     <button type="button" class="ob2-go" onclick="obFinish()">Start my quest</button>
+    <button type="button" class="ob2-cal" id="ob-cal" onclick="calCheckin();this.textContent='Added. See you on the 1st';this.disabled=true">Remind me monthly: add a check-in to my calendar</button>
     ${R.note?`<div class="ob2-safe">${R.note}</div>`:''}</div>`;
   setTimeout(()=>{ obDraw(q.world, document.getElementById('ob-now'), R.now); obDraw(q.world, document.getElementById('ob-then'), R.then); }, 60);
 }
@@ -5588,7 +5653,7 @@ function lpMatchCalc(){
   const h=document.getElementById('lp-h1'), sub=document.getElementById('lp-sub'), btn=document.querySelector('.lp-hero-actions .lp-btn-primary'), n=plan.debts.length;
   if(!h||!sub) return;
   h.innerHTML='Your debt plan is ready. <span class="grad">Save it free.</span>';
-  sub.textContent=`Bring in the ${n} debt${n===1?'':'s'} from your calculator and watch the storm clear with every payment. No bank login. No card.`;
+  sub.textContent=`Save the ${n===1?'debt':n+' debts'} you typed in and watch the storm clear with every payment. No bank login. No card.`;
   if(btn) btn.textContent='Save my plan free';
   try{ QA.log('lp_match',{src:'calc',n}); }catch(e){}
 }
@@ -5605,7 +5670,7 @@ function obImportCalc(){
   _ob.quest='debt';
   _ob.reveal={ head: p0.canFinish===false?`Your ${n} debt${n===1?' is':'s are'} in. Let us find a plan that finishes`:`You could be debt-free by <span>${obMonthOut(p0.months)}</span>`, thenLabel: p0.canFinish===false?'Debt-free':obMonthOut(p0.months),
     now:{debts:JSON.parse(JSON.stringify(state.debts)), debtStrategy:state.debtStrategy}, then:{debts:[], debtStrategy:'snowball'},
-    boost: sooner>0?`Your ${n} debt${n===1?'':'s'} from the calculator ${n===1?'is':'are'} saved. Add just $100 a month and you finish <b>${sooner} month${sooner===1?'':'s'} sooner</b>, keeping about <b>${obMoney(saved)}</b>.`:`Your ${n} debt${n===1?'':'s'} from the calculator ${n===1?'is':'are'} saved. Every extra dollar clears the storm sooner.`,
+    boost: sooner>0?`Your ${n===1?'debt is':n+' debts are'} saved. Add just $100 a month and you finish <b>${sooner} month${sooner===1?'':'s'} sooner</b>, keeping about <b>${obMoney(saved)}</b>.`:`Your ${n===1?'debt is':n+' debts are'} saved. Every extra dollar clears the storm sooner.`,
     steps:['Log your next payment and watch the storm calm','Put a monthly check-in in your calendar','Set up your coin jars to find extra money'],
     note:'These are the numbers you typed into the calculator. Change any of them on the Debt page.' };
   state.onb.quest='debt'; state.onb.at=new Date().toISOString(); state.onb.fromCalc=true;
@@ -5614,6 +5679,16 @@ function obImportCalc(){
   save(); _ob.step=3; obRender();
 }
 // A monthly check-in that lives in the person's own calendar. No email system needed.
+function nudgeCheckin(what){
+  try{
+    if(!currentUser || currentUser.isDemo) return false;
+    if(!state.onb) state.onb={};
+    if(state.onb.cal || state.onb.calAsked) return false;
+    state.onb.calAsked=true; save();
+    setTimeout(()=>{ if(typeof showToast==='function') showToast(`<strong>${what} That is how it starts.</strong><br>Want a nudge to come back each month?<br><button type="button" class="toast-btn" onclick="calCheckin()">Add a monthly check-in</button>`); try{ QA.log('cal_nudge',{}); }catch(e){} }, 1200);
+    return true;
+  }catch(e){ return false; }
+}
 function calCheckin(){
   const d=new Date(); d.setMonth(d.getMonth()+1, 1);
   const pad=n=>String(n).padStart(2,'0'), day=`${d.getFullYear()}${pad(d.getMonth()+1)}01`, now=new Date().toISOString().replace(/[-:]|\.\d+/g,'');
@@ -5626,6 +5701,34 @@ function calCheckin(){
   try{ QA.log('cal_add',{}); }catch(e){}
   save(); if(typeof renderDashboardPlus==='function') renderDashboardPlus();
   if(typeof showToast==='function') showToast('<strong>Check-in downloaded.</strong> Open the file to add it to your calendar. It repeats on the 1st of each month.');
+}
+// One take-home number becomes income plus nine starting jar goals. Existing goals are never overwritten.
+function obFillJars(a){
+  if(!Array.isArray(state.income)) state.income=[];
+  state.income.push({name:'Paycheque', actual:Math.round(a*100)/100});
+  const split={'Rent/Mortgage':0.30,'Food & Groceries':0.12,'Utilities':0.05,'Transportation':0.08,'Entertainment':0.05,'Shopping':0.05,'Insurance':0.04,'Debt Payment':0.06,'Other':0.05};
+  if(!Array.isArray(state.budgets)) state.budgets=[];
+  Object.entries(split).forEach(([cat,p])=>{ const g=Math.round(a*p/10)*10; const ex=state.budgets.find(x=>x.cat===cat); if(ex){ if(!(ex.goal>0)) ex.goal=g; } else state.budgets.push({cat,goal:g}); });
+}
+function bmStartHtml(){
+  return `<div class="bm-qs"><b>Start with one number</b>
+    <p>What lands in your bank account each month, after tax? We split it into nine coin jars as a starting point. Change any of them later.</p>
+    <div class="bm-qs-row"><label class="bm-qs-in"><em>$</em><input id="bm-qs-pay" type="text" inputmode="decimal" placeholder="3,500" autocomplete="off" aria-label="Monthly take-home pay" onkeydown="if(event.key==='Enter')bmQuickStart()" oninput="document.getElementById('bm-qs-err').textContent=''"></label>
+      <button type="button" class="bm-qs-go" onclick="bmQuickStart()">Fill my jars</button></div>
+    <div class="bm-qs-chips">${[2500,3500,4500,6000].map(v=>`<button type="button" onclick="document.getElementById('bm-qs-pay').value='${v.toLocaleString('en-CA')}'">${obMoney(v)}</button>`).join('')}</div>
+    <div class="bm-qs-err" id="bm-qs-err" role="alert"></div>
+    <small>A rough guess is fine. No bank login.</small></div>`;
+}
+function bmQuickStart(){
+  const el=document.getElementById('bm-qs-pay'), err=document.getElementById('bm-qs-err');
+  const a=Math.max(0, parseFloat(String(el&&el.value||'').replace(/[, $]/g,''))||0);
+  if(!(a>0) || a>1000000){ if(err) err.textContent='Type roughly what you take home each month, for example 3,500.'; return; }
+  obFillJars(a);
+  try{ recordActivity(); }catch(e){}
+  try{ QA.log('bm_quickstart',{}); }catch(e){}
+  save(); renderAll(); showPage('monthly');
+  if(typeof showToast==='function') showToast(`<strong>Your jars are ready.</strong> Keep about ${obMoney(a*0.2)} a month and your chest fills. Now log one thing you bought today.`);
+  setTimeout(()=>{ const n=document.getElementById('exp-name'); if(n){ try{ n.scrollIntoView({behavior:'smooth',block:'center'}); n.focus({preventScroll:true}); }catch(e){} } }, 400);
 }
 function obPick(id){ _ob.quest=id; _ob.step=2; try{ QA.log('onb_pick',{q:id}); }catch(e){} obRender(); }
 function obChip(id,v){ const el=document.getElementById(id); if(el){ el.value=Number(v).toLocaleString('en-CA'); obErr(''); } }
@@ -5651,10 +5754,7 @@ function obSubmit(){
   }
   if(q==='budget'){
     if(!(a>0)) return obErr('Type roughly what you take home each month.');
-    state.income.push({name:'Paycheque', actual:a});
-    const split={'Rent/Mortgage':0.30,'Food & Groceries':0.12,'Utilities':0.05,'Transportation':0.08,'Entertainment':0.05,'Shopping':0.05,'Insurance':0.04,'Debt Payment':0.06,'Other':0.05};
-    if(!Array.isArray(state.budgets)) state.budgets=[];
-    Object.entries(split).forEach(([cat,p])=>{ const g=Math.round(a*p/10)*10; const ex=state.budgets.find(x=>x.cat===cat); if(ex){ if(!(ex.goal>0)) ex.goal=g; } else state.budgets.push({cat,goal:g}); });
+    obFillJars(a);
     const keep=Math.round(a*0.20), nowS=JSON.parse(JSON.stringify(state));
     const thenS=JSON.parse(JSON.stringify(state)); thenS.expenses=[];
     _ob.reveal={ head:`Keep 20% and that is <span>${obMoney(keep*12)}</span> saved in a year`, thenLabel:'A full treasure chest',
@@ -5665,7 +5765,7 @@ function obSubmit(){
   }
   if(q==='home'){
     if(!(a>=50000)) return obErr('Type the price of a home you would like, for example 650,000.');
-    state.homeFund={price:a, saved:b, monthly:c, reached:[]};
+    state.homeFund={price:a, saved:b, monthly:c}; // no 'reached' list yet, so stops already true are not celebrated as new
     const need=minDownPayment(a), gap=Math.max(0,need-b), m=c>0?Math.ceil(gap/c):null, m2=Math.ceil(gap/((c||0)+200));
     const nowS=JSON.parse(JSON.stringify(state)), thenS=JSON.parse(JSON.stringify(state)); thenS.homeFund={price:a, saved:a, monthly:c, reached:[]};
     _ob.reveal={ head: gap<=0?`You already have the <span>minimum down payment</span>`: m?`Your minimum down payment by <span>${obMonthOut(m)}</span>`:`You need <span>${obMoney(need)}</span> to get started`, thenLabel:'Keys in hand',
@@ -5700,7 +5800,8 @@ function obFinish(){
   dismissOnboarding(true);
   try{ QA.log('onb_done',{q:_ob.quest}); }catch(e){}
   renderAll(); showPage(q?q.page:'dashboard'); window.scrollTo(0,0);
-  if(typeof showToast==='function') showToast('<strong>Your quest has started.</strong> Your next steps are waiting on the Dashboard.');
+  const first=(_ob.reveal&&_ob.reveal.steps&&_ob.reveal.steps[0])||'';
+  if(typeof showToast==='function') showToast(`<strong>Your quest has started.</strong>${first?` First step: ${first.charAt(0).toLowerCase()+first.slice(1)}.`:''} Your full checklist is on the Dashboard.`);
 }
 function obSkip(){ try{ QA.log('onb_skip',{step:_ob.step}); }catch(e){} if(!state.onb) state.onb={skipped:true}; dismissOnboarding(true); renderAll(); }
 
@@ -5709,7 +5810,7 @@ function obChecklist(){
   const o=state.onb||{}, q=o.quest;
   const hasJars=(state.income||[]).length>0 && (state.budgets||[]).some(b=>b.goal>0);
   const items=[ {t:'Pick your first quest', done:true} ];
-  if(q==='debt')  items.push({t:'Log a debt payment', done:(state.debts||[]).some(d=>(d.transactions||[]).length>0), go:"showPage('debt')"});
+  if(q==='debt')  items.push((state.debts||[]).length||o.noDebt ? {t:'Log a debt payment', done:(state.debts||[]).some(d=>(d.transactions||[]).length>0), go:"showPage('debt')"} : {t:'Add your debts', done:false, go:"showPage('debt')", alt:["I have none","obMark('noDebt')"]});
   if(q==='home')  items.push({t:'Visit the road home', done:!!o.sawHome, go:"obMark('sawHome');showPage('rental')"});
   if(q==='grow')  items.push({t:'Add your first holding', done:(state.portfolio||[]).length>0, go:"showPage('investments');addPortfolioEntry()"});
   items.push({t:'Fill your coin jars', done:hasJars, go:"showPage('monthly')"});
@@ -6712,6 +6813,7 @@ function addExpense(){
   recordActivity(); checkJourneyMilestone();
   save(); renderMonthly(); renderDebt(); renderDashboard();
   wtAutoAdvance(3);
+  if(state.expenses.length===1 && nudgeCheckin('First expense logged.')) return;
   if(!state.seenCCHint && !wtIsActive() && !currentUser?.isDemo){
     setTimeout(()=>{
       showToast(' Paid with a credit card? Tap the <strong></strong> button next to any expense to automatically track it on your debt.');
@@ -6813,7 +6915,8 @@ function bgQuests(S){
   q.push({id:'log10', name:'Coin counter', desc:'Log 10 expenses this month', prog:Math.min(1,S.expCount/10), label:`${Math.min(10,S.expCount)}/10`});
   q.push({id:'nospend3', name:'Quiet days', desc:'Have 3 no-spend days this month', prog:Math.min(1,S.nsThisMonth/3), label:`${Math.min(3,S.nsThisMonth)}/3`});
   if(q.length<3){
-    if(S.ti>0) q.push({id:'save20', name:'Fill the chest', desc:'Keep 20% of your income this month', prog:Math.max(0,Math.min(1,S.sr/0.2)), label:`${Math.max(0,Math.round(S.sr*100))}%/20%`});
+    // Only counts once there is real spending logged, so it is earned and not handed out on day one
+    if(S.ti>0) q.push({id:'save20', name:'Fill the chest', desc:'Keep 20% of your income this month, with 5 or more expenses logged', prog:Math.max(0,Math.min(1,S.sr/0.2))*Math.min(1,S.expCount/5), label:S.expCount<5?`${S.expCount}/5 logged`:`${Math.max(0,Math.round(S.sr*100))}%/20%`});
     else { const s=typeof currentStreak==='function'?currentStreak():0; q.push({id:'streak7', name:'Week of logging', desc:'Reach a 7-day logging streak', prog:Math.min(1,s/7), label:`${Math.min(7,s)}/7`}); }
   }
   return q.slice(0,3).map(x=>({...x, done:x.prog>=1}));
@@ -7174,6 +7277,7 @@ function renderMonthly(){
     const prev = catSel.value;
     catSel.innerHTML=state.budgets.map(b=>`<option value="${b.cat}">${b.cat}</option>`).join('');
     if(prev && [...catSel.options].some(o=>o.value===prev)) catSel.value=prev;
+    else { const day=[...catSel.options].find(o=>/food|grocer/i.test(o.value)); if(day) catSel.value=day.value; } // most first entries are everyday spending, not rent
     handleExpCatChange();
   }
 
@@ -7201,7 +7305,12 @@ function renderMonthly(){
 
   // ── This-month status bar ──
   const statusEl=document.getElementById('bm-status');
-  if(statusEl){
+  const fresh=!(ti>0) && !(tg>0);
+  // A brand-new budget shows one question, not a page of zeros
+  ['bm-setup-btn','bm-streak'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display=fresh?'none':''; });
+  if(statusEl && fresh){
+    statusEl.innerHTML=bmStartHtml();
+  } else if(statusEl){
     statusEl.innerHTML=`
       <div class="bm-stat">
         <div class="bm-stat-label">Income</div>
@@ -7214,14 +7323,14 @@ function renderMonthly(){
         <div class="bm-stat-sub">${tg>0?`of ${fmtW(tg)} budgeted`:'no goals set yet'}</div>
       </div>
       <div class="bm-stat">
-        <div class="bm-stat-label">${leftToSpend>=0?'Left to spend':'Over budget'}</div>
+        <div class="bm-stat-label">${tg>0&&leftToSpend<0?'Over budget':'Left to spend'}</div>
         <div class="bm-stat-val ${tg>0?(leftToSpend>=0?'pos':'neg'):''}">${tg>0?fmtW(Math.abs(leftToSpend)):'n/a'}</div>
         <div class="bm-stat-sub">${tg>0?'against your goals':'set goals below'}</div>
       </div>
       <div class="bm-stat highlight">
         <div class="bm-stat-label">Net saved</div>
-        <div class="bm-stat-val ${net>=0?'pos':'neg'}">${fmtW(net)}</div>
-        <div class="bm-stat-sub">${sr}% savings rate</div>
+        <div class="bm-stat-val ${ti>0?(net>=0?'pos':'neg'):''}">${ti>0?fmtW(net):'n/a'}</div>
+        <div class="bm-stat-sub">${ti>0?`${sr}% savings rate`:'add your income to see it'}</div>
       </div>`;
   }
 
@@ -7505,7 +7614,8 @@ function applyDebtTransaction(i, type){
     if(debt.balance === 0){
       showToast(`<strong>${escHtml(debt.name)} paid off!</strong><br>Congratulations, one less debt.`);
     } else {
-      showToast(`✓ Payment of ${fmt(amount)} applied. Balance: ${fmt(debt.balance)}.`);
+      const firstPay = state.debts.reduce((n,d)=>n+(d.transactions||[]).filter(t=>t.type==='payment').length,0)===1;
+      if(!(firstPay && nudgeCheckin('First payment logged.'))) showToast(`✓ Payment of ${fmt(amount)} applied. Balance: ${fmt(debt.balance)}.`);
     }
     // A debt payment counts as activity (streak) and may complete the debt-free stage
     recordActivity(); checkJourneyMilestone();
@@ -7807,6 +7917,7 @@ function renderDebtPit(){
         <div class="ds-slider">
           <label for="pit-extra"><span>Calm it faster: pay extra each month</span><b id="ds-extra">+$0</b></label>
           <input type="range" id="pit-extra" min="0" max="1000" step="25" value="${_pit.extra}">
+          <div class="ds-chips" role="group" aria-label="Try an extra amount">${[25,50,100,200].map(x=>`<button type="button" onclick="pitTry(${x})">+$${x}</button>`).join('')}</div>
           <div class="ds-msg" id="ds-msg"></div>
         </div>
       </div>
@@ -7825,6 +7936,11 @@ function renderDebtPit(){
   pitStart();
 }
 
+function pitTry(x){
+  const r=document.getElementById('pit-extra'); if(!r) return;
+  r.value=String(x); r.dispatchEvent(new Event('input'));
+  try{ QA.log('debt_try',{x}); }catch(e){}
+}
 function pitText(){
   const D = pitData(); _pit.D = D;
   _pit.rT = D.r; _pit.cT = D.chaos;
@@ -9192,6 +9308,7 @@ async function toggleAI(){
   // Demo mode — data already in state, ready immediately
   if(!currentUser || currentUser.isDemo){
     aiDataReady = true;
+    try{ aiSuggest(); }catch(e){}
     return;
   }
 
@@ -9214,6 +9331,7 @@ async function toggleAI(){
     aiDataReady = true;
   } finally {
     loadingMsg.remove();
+    try{ aiSuggest(); }catch(e){}
     setAIInputLocked(false);
   }
 }
@@ -9228,6 +9346,27 @@ function setAIInputLocked(locked){
   chips.forEach(c => c.style.opacity = locked ? '0.4' : '1');
 }
 
+// First questions that fit what this person has actually entered
+function aiSuggest(){
+  const box=document.getElementById('ai-suggestions'); if(!box || (typeof chatHistory!=='undefined' && chatHistory.length)) return;
+  const q=[];
+  try{
+    const hasDebt=(state.debts||[]).some(d=>d.balance>0), hasSpend=(state.expenses||[]).length>0, hasGoals=(state.budgets||[]).some(b=>b.goal>0);
+    const hasInc=(state.income||[]).length>0, hasHome=state.homeFund&&state.homeFund.price>0, hasPort=(state.portfolio||[]).length>0;
+    if(!hasDebt && !hasSpend && !hasInc && !hasPort) q.push(['Where should I start?','I have not entered much yet. What is the one thing I should set up first, and why?']);
+    if(hasDebt) q.push(['What would $100 extra do?','What would paying an extra $100 a month do to my debt-free date, and where could I find that $100?']);
+    if(hasDebt) q.push(['Which debt first?','Which debt should I attack first, and why?']);
+    if(hasSpend && hasGoals) q.push(['Where am I overspending?','How is my budget looking this month, and where am I overspending?']);
+    if(hasSpend && !hasGoals) q.push(['Set my spending goals','Based on what I have logged, suggest spending goals for my main categories.']);
+    if(hasInc && !hasDebt) q.push(['How much should I save?','Based on my income and spending, how much should I be saving each month?']);
+    if(hasHome) q.push(['Reach my down payment faster','How can I reach my minimum down payment sooner?']);
+    if(hasPort || hasInc) q.push(['TFSA, RRSP or FHSA?','Should I focus on a TFSA, RRSP or FHSA right now, given my situation?']);
+    q.push(['My top 3 moves','What are the top 3 things I should do this month to improve my finances?']);
+  }catch(e){}
+  if(!q.length) return;
+  box.innerHTML=q.slice(0,5).map(([label,ask])=>`<div class="suggestion" role="button" tabindex="0" onclick="quickAsk(this.dataset.q)" onkeydown="if(event.key==='Enter')quickAsk(this.dataset.q)" data-q="${escHtml(ask)}">${escHtml(label)}</div>`).join('');
+  box.style.display='';
+}
 function aiKeydown(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAI();} }
 function quickAsk(q){
   if(!aiDataReady) return;
@@ -9285,7 +9424,32 @@ function buildContext(){
       }).join('\n')
     : '  No holdings';
 
+  // The app's own payoff math, so the coach quotes real dates and never guesses at amortization
+  let planStr='  No debts with a balance.';
+  try{
+    if(state.debts.some(d=>d.balance>0)){
+      const P0=pitSim(0);
+      if(P0 && P0.canFinish!==false){
+        const line=(x)=>{ const P=pitSim(x); return `  Paying $${x} extra a month: debt-free ${obMonthOut(P.months)} (${P.months} months), total interest $${Math.round(P.interest)}${x?`, ${P0.months-P.months} months sooner and $${Math.round(Math.max(0,P0.interest-P.interest))} less interest`:''}`; };
+        planStr=[0,50,100,200].map(line).join('\n');
+      } else planStr='  At the current payments the debt never finishes: at least one payment does not cover its monthly interest. Raising that payment is the first fix.';
+    }
+  }catch(e){ planStr='  Not available.'; }
+  let homeStr='  No home goal set.';
+  try{ const hf=state.homeFund; if(hf && hf.price>0){ const need=minDownPayment(hf.price), gap=Math.max(0,need-(hf.saved||0));
+    homeStr=`  Target price $${Math.round(hf.price)} | saved $${Math.round(hf.saved||0)} | saving $${Math.round(hf.monthly||0)} a month\n  Minimum down payment (Canadian rules): $${Math.round(need)} | still needed: $${Math.round(gap)}${hf.monthly>0&&gap>0?` | about ${Math.ceil(gap/hf.monthly)} months at this pace`:''}`; } }catch(e){}
+  let habitStr=''; try{ habitStr=`Logging streak: ${typeof currentStreak==='function'?currentStreak():0} days. First goal picked at sign-up: ${(state.onb&&state.onb.quest)||'none'}.`; }catch(e){}
+  const entered = totalIncome>0 || state.expenses.length || state.debts.length || state.portfolio.length;
+
   return `=== FINANCIAL SNAPSHOT FOR ${currentUser?.name?.toUpperCase() || 'USER'} ===
+TODAY: ${new Date().toLocaleDateString('en-CA',{year:'numeric',month:'long',day:'numeric'})}
+${entered?'':'NOTE: This person has entered almost nothing yet. Help them start with one small step instead of analysing empty numbers.\n'}${habitStr}
+
+DEBT-FREE PLAN (calculated by the app with the user's chosen method; quote these exact dates and amounts):
+${planStr}
+
+FIRST HOME GOAL:
+${homeStr}
 
 MONTHLY INCOME: $${totalIncome.toFixed(2)}
 ${state.income.map(x=>`  ${x.name}: $${x.actual.toFixed(2)}`).join('\n') || '  None entered'}
@@ -9297,8 +9461,8 @@ INDIVIDUAL EXPENSE TRANSACTIONS:
 ${expStr}
 Total spent: $${totalExp.toFixed(2)}
 
-NET MONTHLY SAVINGS: $${netSavings.toFixed(2)} (${savingsRate}% savings rate)
-${parseFloat(savingsRate) < 10 ? '   Savings rate below 10%, attention needed' : parseFloat(savingsRate) >= 20 ? '  ✓ Healthy savings rate' : '  Moderate savings rate'}
+NET MONTHLY SAVINGS: ${totalIncome>0?`$${netSavings.toFixed(2)} (${savingsRate}% savings rate)`:'cannot be worked out yet, no income entered'}
+${totalIncome<=0 ? '  Do not comment on the savings rate until income is entered.' : parseFloat(savingsRate) < 10 ? '   Savings rate below 10%, attention needed' : parseFloat(savingsRate) >= 20 ? '  ✓ Healthy savings rate' : '  Moderate savings rate'}
 
 DEBTS (the user has chosen the ${stratLabel}, so this is their payoff priority order):
 ${debtsStr}
@@ -9338,23 +9502,68 @@ ${(() => {
 }
 
 // Scripted demo responses — no API cost. Tuned to feel like the real advisor.
-const DEMO_RESPONSES = [
-  { keywords:['budget','spending','expense','overspend','category','month'],
-    reply:`Here's your demo budget at a glance:\n\n Income: $4,000  ·   Spent: $2,989  ·   Net: $1,011 (25% savings rate, that's strong)\n\nTwo categories are over:\n• Dining is over by ~$10, small, but it adds up to ~$120/year\n• Watch entertainment creep too\n\nQuick win: redirect even $50/mo from dining toward your TD card at 19.99% and you'll save real interest. Want me to show the debt math?` },
-  { keywords:['debt','pay off','payoff','credit','loan','snowball','avalanche','interest'],
-    reply:`Your debt payoff plan (snowball, smallest balance first, for momentum):\n\n1.  TD Credit Card, $3,240 @ 19.99%  attack this first\n2. Student Line of Credit, $8,400 @ 6.45%\n3. Car Loan, $11,200 @ 7.9%\n\nThrow every extra dollar at the TD card while paying minimums on the rest. Clear it, then roll that whole payment onto the next. Prefer to save the most interest instead? Switch to Avalanche on the Debt page and I'll re-rank by rate.` },
-  { keywords:['portfolio','stock','invest','holding','return','etf','xeqt','vfv','aapl','btc'],
-    reply:`Your demo portfolio is doing well:\n\n TFSA core: XEQT, VFV, plus a BTC sleeve, diversified and on-target\n Overall return is positive (~+27%)\n\nThat ETF core is a textbook Canadian setup, broad, low-fee, tax-sheltered. General principle: if any single high-risk holding drifts well above your target weight, rebalancing back toward your plan is worth considering.\n\nFor investment decisions, please consult a registered financial advisor.` },
-  { keywords:['tfsa','rrsp','fhsa','registered','tax-free','contribution'],
-    reply:`Canadian account priority for a young earner like this demo profile:\n\n TFSA ($7,000/yr 2026 room), tax-free growth forever. Usually the best home for long-term ETFs.\n FHSA ($8,000/yr), if a home purchase is within ~5 years, this is priority #1: tax-deductible going in AND tax-free coming out.\n RRSP, shines once you're in a higher tax bracket (35%+).\n\nGeneral principles only, for specifics, consult a registered financial advisor.` },
-  { keywords:['save','saving','tips','improve','better','advice','help','do'],
-    reply:`Three high-impact moves from your demo numbers:\n\n1.  Automate savings on payday, pay yourself first before it gets spent.\n2.  Knock out the TD card (19.99%), that's a guaranteed ~20% "return" you can't beat safely.\n3.  Keep the savings rate above 20%, you're already there at 25%, so protect it.\n\nWant me to dig into any one of these?` },
-  { keywords:['rent','buy','mortgage','property','house','condo','afford'],
-    reply:`Rent vs buy, demo-style:\n\n Renting: at the 30%-of-income rule, comfortable rent here is well under a typical Toronto 1-bed, so a roommate or a cheaper market keeps you flexible.\n Buying: with this income you'd qualify for a modest mortgage, markets like Hamilton or Oshawa are more realistic entry points than downtown Toronto.\n\nBest move first: build the TFSA and FHSA aggressively for 2-3 years to grow the down payment tax-free. Try the Housing page to model real numbers.` },
-  { keywords:['streak','journey','goal','progress','stage'],
-    reply:`Love that you're thinking about momentum. \n\nYour journey runs Budget Debt-free Investing Home. Each stage unlocks when you hit a real milestone, and logging anything daily keeps your streak alive.\n\nThe demo's already on a 6-day streak with the Budget stage done and Debt in progress. In a real account, this is where it gets satisfying, watching the path fill as you actually pay things down.` },
-];
-const DEMO_FALLBACK = `Good question! In the demo I give a few scripted answers, but the real advisor reads your actual numbers and responds to anything you ask, your budget, debts, TFSA/RRSP strategy, or whether to rent or buy.\n\nTry asking about budgeting, debt payoff, your portfolio, or Canadian accounts. Or create a free account and I'll coach you on your real finances.`;
+// Sample-account coach: every answer is worked out from the numbers on screen, so it never contradicts them.
+// It follows the same rules as the real coach: plain words, one next step, no investment picks, no limits quoted from memory.
+function demoReply(msg){
+  const t=String(msg||'').toLowerCase(), $=n=>'$'+Math.round(Math.abs(n)).toLocaleString('en-CA');
+  const sum=(a,f)=>(a||[]).reduce((s,x)=>s+(+f(x)||0),0);
+  const inc=sum(state.income,x=>x.actual), spent=sum(state.expenses,x=>x.actual), net=inc-spent, rate=inc>0?Math.round(net/inc*100):0;
+  const goals=(state.budgets||[]).filter(b=>b.goal>0).map(b=>({cat:b.cat, goal:b.goal, spent:sum((state.expenses||[]).filter(e=>e.cat===b.cat),x=>x.actual)}));
+  const debts=(state.debts||[]).filter(d=>d.balance>0), owed=sum(debts,d=>d.balance);
+  const strat=state.debtStrategy==='avalanche'?'avalanche':'snowball';
+  const first=debts.length?[...debts].sort((a,b)=>strat==='avalanche'?(b.rate-a.rate)||(a.balance-b.balance):(a.balance-b.balance)||(b.rate-a.rate))[0]:null;
+  const tail='\n\n*This is the sample account. Make a free account and I will read your own numbers.*';
+  const debtPlan=(x)=>{ const P0=pitSim(0), P=pitSim(x); return {P0,P,sooner:Math.max(0,P0.months-P.months), saved:Math.max(0,P0.interest-P.interest)}; };
+  const amt=(()=>{ const m=t.match(/\$\s?(\d[\d,]*)/); const v=m?parseInt(m[1].replace(/,/g,''),10):0; return v>0&&v<100000?v:100; })();
+  const has=(...w)=>w.some(k=>t.includes(k));
+  const homeQ=has('down payment','home','house','condo','mortgage','afford'), saveQ=has('how much should i','should i be saving','savings rate');
+
+  if(!homeQ && debts.length && (has('extra','sooner','faster','debt-free','debt free','pay off','payoff','what if') || /\$\s?\d/.test(t))){
+    const D=debtPlan(amt);
+    if(D.P0.canFinish===false) return `At the current payments one debt never finishes, because its payment does not cover the interest. Raising that payment is step one.\n\n**Next step:** on the Debt page, raise the minimum on that debt and watch the date appear.${tail}`;
+    return `Right now you are debt-free by **${obMonthOut(D.P0.months)}**.\n\nAdd **${$(amt)} a month** and that becomes **${obMonthOut(D.P.months)}**: ${D.sooner} month${D.sooner===1?'':'s'} sooner, with about **${$(D.saved)} less interest**.\n\n${first?`With the ${strat} method that extra goes to **${first.name}** first. When it is gone, its payment rolls onto the next debt.`:''}${goals.length?`\n\nWhere to find it: your jars still have ${$(sum(goals,g=>Math.max(0,g.goal-g.spent)))} unspent this month. Moving part of that is the easiest start.`:''}\n\n**Next step:** on the Debt page, tap **+$${amt}** under the storm to see it.${tail}`;
+  }
+  if(!homeQ && !saveQ && debts.length && has('which debt','attack','order','avalanche','snowball','debt','loan','credit')){
+    const D=debtPlan(0);
+    return `You owe **${$(owed)}** across ${debts.length} debt${debts.length===1?'':'s'}, and at today's payments you are debt-free by **${obMonthOut(D.P0.months)}**.\n\nWith the **${strat}** method, attack **${first.name}** first (${$(first.balance)} at ${first.rate}%). ${strat==='snowball'?'It is the smallest, so it disappears fastest and frees up its payment.':'It has the highest rate, so every extra dollar there saves the most interest.'} Keep paying the minimums on the rest.\n\n${debts.some(d=>d.rate>=10)?'Anything above 10% interest is costly, so clearing it usually beats investing.\n\n':''}**Next step:** log your next payment on the Debt page and watch the storm calm.${tail}`;
+  }
+  if(!homeQ && !saveQ && has('budget','overspend','spending','spend','jar','categor','goal')){
+    if(!goals.length) return `There are no spending goals yet, so there is nothing to measure against.\n\n**Next step:** on the Budget page, type your take-home pay and tap **Fill my jars**.${tail}`;
+    const over=goals.filter(g=>g.spent>g.goal).sort((a,b)=>(b.spent-b.goal)-(a.spent-a.goal));
+    const close=goals.filter(g=>g.spent<g.goal && g.goal-g.spent<=g.goal*0.1 && g.goal>0);
+    let txt=`This month: **${$(inc)} in, ${$(spent)} out**, so you kept **${$(net)}** (${rate}% of income).\n\n`;
+    if(over.length) txt+=over.slice(0,2).map(g=>`- **${g.cat}** is ${$(g.spent-g.goal)} over its ${$(g.goal)} goal. Over a year that pace is about ${$((g.spent-g.goal)*12)}.`).join('\n')+'\n\n';
+    else txt+=`No jar is over its goal. That is the hard part, and you are doing it.\n\n`;
+    if(close.length) txt+=`Watch ${close.slice(0,2).map(g=>`**${g.cat}** (${$(g.goal-g.spent)} left)`).join(' and ')}.\n\n`;
+    return txt+`**Next step:** log today's spending on the Budget page so the jars stay true.${tail}`;
+  }
+  if(has('save','saving','how much')){
+    if(!(inc>0)) return `Add your income first, then I can show your savings rate.\n\n**Next step:** on the Budget page, type your take-home pay.${tail}`;
+    return `You are keeping **${$(net)} a month, ${rate}% of your income**. ${rate>=20?'That is strong. Most guides aim for 20%, and you are there.':rate>=10?'That is solid. Getting to 20% is the next milestone.':'Under 10% leaves little room for surprises, so small cuts in the biggest jars help most.'}\n\n${debts.some(d=>d.rate>=10)?`Before investing more, the ${debts.find(d=>d.rate>=10).name} at ${debts.find(d=>d.rate>=10).rate}% is costing more than most investments earn.\n\n`:''}**Next step:** pick one jar and set its goal a little lower this month.${tail}`;
+  }
+  if(homeQ || has('rent')){
+    const hf=state.homeFund;
+    if(!(hf&&hf.price>0)) return `No home goal is set yet.\n\n**Next step:** on the Housing page, type a price and see the minimum down payment.${tail}`;
+    const need=minDownPayment(hf.price), gap=Math.max(0,need-(hf.saved||0)), m=hf.monthly>0?Math.ceil(gap/hf.monthly):0;
+    return `For a **${$(hf.price)}** home the minimum down payment is **${$(need)}** under Canadian rules. You have ${$(hf.saved||0)}, so **${$(gap)}** to go${m?`, about ${m} months at ${$(hf.monthly)} a month`:''}.\n\nAn FHSA lets that saving grow tax-free and counts toward a first home. Check your room in CRA My Account.\n\n**Next step:** open the Housing page and drive the road to see the next stop.${tail}`;
+  }
+  if(has('tfsa','rrsp','fhsa','resp','registered','contribution')){
+    return `In general terms:\n\n- **TFSA:** growth and withdrawals are tax-free. Flexible for any goal.\n- **FHSA:** for a first home. Contributions are deductible and a qualifying withdrawal is tax-free.\n- **RRSP:** deductible now, taxed later. Usually worth more in a higher tax bracket.\n\nLimits change every year and your room depends on your history, so check **CRA My Account** for your numbers. This is education, not tax advice.\n\n**Next step:** add each account you have on the Investing page.${tail}`;
+  }
+  if(has('invest','portfolio','stock','etf','holding','return','grove','buy','sell','xeqt','vfv','crypto','bitcoin','shares')){
+    const val=sum(state.portfolio,h=>h.price*h.shares), cost=sum(state.portfolio,h=>h.cost*h.shares), r=cost>0?(val-cost)/cost*100:0;
+    if(!val) return `Nothing is invested yet.\n\n**Next step:** on the Investing page, add what you own and watch your grove grow.${tail}`;
+    return `Your holdings are worth **${$(val)}**, ${r>=0?'up':'down'} **${Math.abs(r).toFixed(1)}%** on what you paid (${$(cost)}).\n\nI can explain how your mix is spread, but I never tell anyone to buy or sell a specific investment. For investment decisions, please consult a registered financial advisor.\n\n**Next step:** open the Investing page to see each account's tree.${tail}`;
+  }
+  // general: the top moves, worked out from what is on screen
+  const moves=[];
+  if(debts.length){ const D=debtPlan(100); moves.push(`Put **$100 extra** on **${first.name}**: debt-free ${D.sooner} month${D.sooner===1?'':'s'} sooner and about ${$(D.saved)} less interest.`); }
+  const over=goals.filter(g=>g.spent>g.goal); if(over.length) moves.push(`Pull **${over[0].cat}** back under its goal. It is ${$(over[0].spent-over[0].goal)} over.`);
+  if(inc>0 && rate<20) moves.push(`Raise your savings rate from ${rate}% toward 20%.`);
+  if(state.homeFund&&state.homeFund.price>0) moves.push(`Keep feeding the home fund: ${$(Math.max(0,minDownPayment(state.homeFund.price)-(state.homeFund.saved||0)))} to the minimum down payment.`);
+  if(!moves.length) moves.push('Log what you spend for one week. Everything else gets easier once the numbers are real.');
+  return `Your top moves this month:\n\n${moves.slice(0,3).map((m,i)=>`${i+1}. ${m}`).join('\n')}\n\n**Next step:** start with the first one today.${tail}`;
+}
 
 let chatHistory = [];
 
@@ -9376,9 +9585,7 @@ async function sendAI(){
   // Demo mode — scripted responses, no API cost
   if(isDemo){
     await new Promise(r=>setTimeout(r, 600+Math.random()*400));
-    const msgLower = msg.toLowerCase();
-    const match = DEMO_RESPONSES.find(d=>d.keywords.some(k=>msgLower.includes(k)));
-    const reply = match ? match.reply : DEMO_FALLBACK;
+    let reply; try{ reply=demoReply(msg); }catch(e){ reply='I could not work that out from the sample numbers. Try asking about the budget, the debts or the home goal.'; }
     loading.remove();
     appendMsg(reply,'bot');
     chatHistory.push({role:'assistant', content:reply});
@@ -13480,7 +13687,8 @@ function hqCelebrate(D){
   if(fresh.length){
     const s=fresh[fresh.length-1];
     _hq.banner={txt: s.id==='keys' ? 'Ready for the keys!' : `Stop reached: ${s.name}`, life:3}; _hq.confetti = s.id==='keys'?4:2;
-    if(typeof showToast==='function') setTimeout(()=>showToast(`<strong>${s.id==='keys'?'You\'re ready for the keys!':`Stop reached: ${s.name}`}</strong><br>${s.desc}.`),600);
+    const nx=D.stops.find(x=>!x.done);
+    if(typeof showToast==='function') setTimeout(()=>showToast(`<strong>${s.id==='keys'?'You\'re ready for the keys!':`Stop reached: ${s.name}`}</strong>${nx?`<br>Next stop: ${nx.name}. ${nx.desc}.`:''}`),600);
     clearTimeout(_hq.saveT); _hq.saveT=setTimeout(()=>{ try{ save(); }catch(e){} },60);
   }
 }
@@ -13690,6 +13898,8 @@ function dbScore(){
   parts.push({k:'Budget', v:budget, max:25, tip: !S||!S.jars.length?'Set spending goals':S.healthTxt});
   const sr=S&&S.ti>0?S.sr:0; parts.push({k:'Saving', v:Math.round(Math.max(0,Math.min(1,sr/0.2))*20), max:20, tip:S&&S.ti>0?`${Math.round(sr*100)}% of income kept`:'Add your income'});
   let debtPts=20, debtTip='No debt'; const debts=state.debts||[];
+  // Someone who came here to get out of debt, but has not entered it yet, has not earned the "no debt" points
+  if(!debts.length && state.onb && state.onb.quest==='debt' && !state.onb.noDebt){ debtPts=0; debtTip='Add your debts'; }
   if(debts.some(d=>(d.balance||0)>0)){ try{ const D=pitData(); debtPts=Math.round(20*(1-D.r)*(D.plan.canFinish?1:0.5)); debtTip=`${Math.round((1-D.r)*100)}% paid off`; }catch(e){ debtPts=8; debtTip='Paying it down'; } }
   parts.push({k:'Debt', v:debtPts, max:20, tip:debtTip});
   const port=(state.portfolio||[]).reduce((s,h)=>s+(+h.price||0)*(+h.shares||0),0);
@@ -13727,6 +13937,8 @@ function renderDashboardPlus(){
   const hero=document.getElementById('db-hero'); if(!hero) return;
   try{ const oc=document.getElementById('ob-checklist'); if(oc) oc.innerHTML=obChecklistHtml(); }catch(e){ console.warn('starter quests', e); }
   const N=dbNetWorth(), hist=dbHistory(N.nw), sc=dbScore();
+  // Someone who owes more than they own sees their finish line first, not a negative number
+  let lead=null; try{ if(N.nw<0 && (state.debts||[]).some(d=>(d.balance||0)>0)){ const P=pitSim(0); if(P && P.canFinish!==false && P.months>0) lead={months:P.months}; } }catch(e){}
   const name=(typeof currentUser!=='undefined'&&currentUser&&currentUser.name&&!currentUser.isDemo)?String(currentUser.name).split(' ')[0]:'';
   const hr=new Date().getHours(), greet=hr<12?'Good morning':hr<18?'Good afternoon':'Good evening';
   // change over the last ~30 days
@@ -13741,9 +13953,11 @@ function renderDashboardPlus(){
   hero.innerHTML=`
     <div class="db-nw">
       <div class="db-greet">${greet}${name?`, ${escHtml(name)}`:''}</div>
-      <div class="db-nw-label">Net worth</div>
-      <div class="db-nw-val ${N.nw<0?(delta==null?'start':'neg'):''}">${N.nw<0?'−':''}${fmtW(Math.abs(N.nw))}</div>
-      ${delta!=null?`<div class="db-nw-delta ${up?'up':'down'}">${up?'▲':'▼'} ${fmtW(Math.abs(delta))} <span>${dbIsDemo()?'this month':'last 30 days'}</span></div>`:`<div class="db-nw-delta"><span>${N.nw<0?'This is your starting line. Every payment moves it up.':'Your trend line starts today. Check back tomorrow to see it move.'}</span></div>`}
+      <div class="db-nw-label">${lead?'Debt-free by':'Net worth'}</div>
+      ${lead?`<div class="db-nw-val db-nw-date">${obMonthOut(lead.months)}</div>
+      <div class="db-nw-delta"><span>${fmtW(N.debt)} left to pay. Net worth ${N.nw<0?'−':''}${fmtW(Math.abs(N.nw))}, and every payment moves it up.</span></div>`
+      :`<div class="db-nw-val ${N.nw<0?(delta==null?'start':'neg'):''}">${N.nw<0?'−':''}${fmtW(Math.abs(N.nw))}</div>`}
+      ${lead?'':delta!=null?`<div class="db-nw-delta ${up?'up':'down'}">${up?'▲':'▼'} ${fmtW(Math.abs(delta))} <span>${dbIsDemo()?'this month':'last 30 days'}</span></div>`:`<div class="db-nw-delta"><span>${N.nw<0?'This is your starting line. Every payment moves it up.':'Your trend line starts today. Check back tomorrow to see it move.'}</span></div>`}
       <svg class="db-spark${hist.length<2?' db-spark--empty':''}" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">
         <defs><linearGradient id="dbsg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${up?'#4ade80':'#f87171'}" stop-opacity="0.35"/><stop offset="1" stop-color="${up?'#4ade80':'#f87171'}" stop-opacity="0"/></linearGradient></defs>
         <path d="${line} L ${W} ${H} L 0 ${H} Z" fill="url(#dbsg)"/>
@@ -13762,7 +13976,10 @@ function renderDashboardPlus(){
         ${sc.parts.map(p=>`<div class="db-part" title="${p.tip}"><span>${p.k}</span><div class="db-part-bar"><i style="width:${p.v/p.max*100}%"></i></div><em>${p.tip}</em></div>`).join('')}
       </div>
     </div>`;
-  const mv=dbMoves(), mvEl=document.getElementById('db-moves');
+  // While the starter quests are open they are the one to-do list. The other two step aside.
+  const starting=(()=>{ const oc=document.getElementById('ob-checklist'); return !!(oc && oc.innerHTML.trim()); })();
+  const jc=document.getElementById('journey-cta'); if(jc) jc.style.display=starting?'none':'';
+  const mv=starting?[]:dbMoves(), mvEl=document.getElementById('db-moves');
   if(mvEl) mvEl.innerHTML = mv.length ? `<div class="db-h">Your next best moves</div><div class="db-moves-row">${mv.map(m=>`<button type="button" class="db-move" onclick="${m.on}">
       <span class="db-move-ic" style="color:${m.c};background:${m.c}1f"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${DB_IC[m.ic]}</svg></span>
       <span class="db-move-main"><b>${m.t}</b><span>${m.s}</span></span><span class="db-move-go">›</span></button>`).join('')}</div>` : '';
@@ -14165,8 +14382,8 @@ function lpWithPit(fn){
   finally{ window._lpMonthOff=0; LP_KEYS.forEach(k=>_lpp[k]=_pit[k]); LP_KEYS.forEach(k=>_pit[k]=keep[k]); }
 }
 // month-by-month balances for each debt (smallest first, freed-up minimums roll forward)
-function lpPath(extra){
-  const d=LP_DEBTS.map(x=>({...x})), out=[d.map(x=>x.balance)];
+function lpPath(extra, debts){
+  const d=(debts||LP_DEBTS).map(x=>({...x})), out=[d.map(x=>x.balance)];
   for(let m=0; m<240 && d.some(x=>x.balance>0.01); m++){
     let pool=extra;
     d.forEach(x=>{ if(x.balance<=0.01){ pool+=x.min; return; } x.balance+=x.balance*x.rate/1200; x.balance-=Math.min(x.min,x.balance); });
@@ -14177,10 +14394,11 @@ function lpPath(extra){
 }
 function lppUpdate(){
   const P=_lpp.path, m=Math.min(_lpp.m, P.length-1), bals=P[m];
-  _lpp.state={ debts:LP_DEBTS.map((d,i)=>({...d, balance:bals[i]})), debtStrategy:'snowball' };
+  const LD=_lpp.debts||LP_DEBTS;
+  _lpp.state={ debts:LD.map((d,i)=>({...d, balance:bals[i]})), debtStrategy:'snowball' };
   lpWithPit(()=>{ const D=pitData(); _pit.D=D; _pit.rT=D.r; _pit.cT=D.chaos; if(pitReduce){ _pit.r=D.r; _pit.c=D.chaos; } });
   if(_lpp.prevBals && m>0){
-    LP_DEBTS.forEach((d,i)=>{ if(_lpp.prevBals[i]>0.5 && bals[i]<=0.5){ _lpp.banner={txt: bals.every(b=>b<=0.5)?'Debt-free. Calm waters!':`${d.name} paid off!`, life:2.6}; _lpp.confetti=2; } });
+    LD.forEach((d,i)=>{ if(_lpp.prevBals[i]>0.5 && bals[i]<=0.5){ _lpp.banner={txt: bals.every(b=>b<=0.5)?'Debt-free. Calm waters!':`${d.name} paid off!`, life:2.6}; _lpp.confetti=2; } });
   }
   _lpp.prevBals=bals;
   const left=bals.reduce((s,b)=>s+b,0), months=P.length-1, sooner=(_lpp.base.length-1)-months;
@@ -14223,7 +14441,7 @@ function lppStart(){
   const range=document.getElementById('lpp-range'); range.max=_lpp.base.length-1;
   const chips=document.getElementById('lpp-chips');
   chips.innerHTML='<span>Pay extra each month:</span>'+[0,200,500].map(x=>`<button type="button" data-x="${x}">${x?'+'+lpFmt(x):'Just minimums'}</button>`).join('');
-  chips.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; lppTouch(); _lpp.extra=+b.dataset.x; _lpp.path=lpPath(_lpp.extra); _lpp.prevBals=null; lppUpdate(); if(pitReduce) lppStart(); });
+  chips.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; lppTouch(); _lpp.extra=+b.dataset.x; _lpp.path=lpPath(_lpp.extra,_lpp.debts); _lpp.prevBals=null; lppUpdate(); if(pitReduce) lppStart(); });
   range.addEventListener('input',()=>{ lppTouch(); _lpp.m=+range.value; lppUpdate(); if(pitReduce) lppStart(); });
   if(pitReduce) _lpp.auto=false;
   lppSize(); lppUpdate();
@@ -14231,6 +14449,44 @@ function lppStart(){
   if('ResizeObserver' in window) new ResizeObserver(()=>{ lppSize(); lpWithPit(()=>pitDraw(0)); }).observe(cv.parentElement);
   if('IntersectionObserver' in window) new IntersectionObserver(en=>{ _lpp.visible=en[0].isIntersecting; if(_lpp.visible) lppStart(); }).observe(cv.parentElement);
   lppStart();
+})();
+
+// Any "see my date" button below the fold brings the visitor back to the number box at the top
+function lpToMine(where){
+  try{ QA.log('cta',{where:where||'mine'}); }catch(e){}
+  const lp=document.getElementById('landing-page'), box=document.getElementById('lp-mine'), inp=document.getElementById('lpm-owe');
+  if(!box) return lpShowSignup();
+  try{ box.scrollIntoView({behavior:'smooth', block:'center'}); }catch(e){ if(lp) lp.scrollTop=0; }
+  setTimeout(()=>{ try{ inp && inp.focus({preventScroll:true}); }catch(e){} }, 550);
+}
+// ── "Your number": one debt typed into the first screen drives the storm and the sign-up ──
+const _lpm={type:0, logged:false};
+function lpMineUpdate(){
+  const el=id=>document.getElementById(id), out=el('lpm-out'); if(!out) return;
+  const num=id=>Math.max(0,parseFloat(String(el(id).value).replace(/[, $]/g,''))||0);
+  const owe=Math.min(num('lpm-owe'),5000000), payIn=num('lpm-pay'), T=OB_DEBT_TYPES[_lpm.type]||OB_DEBT_TYPES[0];
+  const btn=document.querySelector('.lp-hero-actions .lp-btn-primary'), range=el('lpp-range'), title=el('lpp-title');
+  const apply=(debts)=>{ _lpp.debts=debts; _lpp.extra=0; _lpp.base=lpPath(0,debts); _lpp.path=_lpp.base; _lpp.m=0; _lpp.prevBals=null; _lpp.tick=0;
+    if(range){ range.max=_lpp.base.length-1; range.value=0; } if(!pitReduce) _lpp.auto=true; try{ lppUpdate(); if(pitReduce) lppStart(); }catch(e){} };
+  const unstash=()=>{ try{ const p=JSON.parse(localStorage.getItem('qs_calc_plan')||'null'); if(p&&p.src==='hero') localStorage.removeItem('qs_calc_plan'); }catch(e){} };
+  if(!(owe>0)){ out.innerHTML='Try it: type a number and your debt-free month appears here.'; if(_lpp.debts){ apply(null); if(title) title.textContent='Your debt storm'; } unstash(); if(btn&&btn.dataset.mine){ btn.textContent='Start free, no card'; delete btn.dataset.mine; } return; }
+  const interest=owe*T[2]/1200, pay=payIn>0?payIn:Math.max(25,Math.round(owe*0.03));
+  if(pay<=interest+1){ out.innerHTML=`At about ${T[2]}% interest, ${obMoney(owe)} grows by ${obMoney(interest)} a month. Type a payment above that and the plan can finish.`; unstash(); return; }
+  const debts=[{name:T[1], type:T[0]==='car_loan'?'auto':T[0], balance:owe, origBalance:owe, min:pay, rate:T[2], transactions:[]}];
+  apply(debts); if(title) title.textContent='Your storm';
+  const months=_lpp.base.length-1, m50=lpPath(50,debts).length-1, capped=months>=240;
+  out.innerHTML = capped ? `<strong>More than 20 years</strong>At ${obMoney(pay)} a month this takes a very long time. Try a bigger payment and watch the date move.`
+    : `<strong>Debt-free by <b>${obMonthOut(months)}</b></strong>${months-m50>0?`Add $50 a month and it becomes <b>${obMonthOut(m50)}</b>, ${months-m50} month${months-m50===1?'':'s'} sooner.`:'You are on a fast plan already.'}<small>Estimate at about ${T[2]}% interest${payIn>0?'':`, paying ${obMoney(pay)} a month`}. Change it any time.</small>`;
+  try{ localStorage.setItem('qs_calc_plan', JSON.stringify({debts:[{n:T[1], b:owe, r:T[2], m:pay}], extra:0, method:'snow', at:Date.now(), src:'hero'})); }catch(e){}
+  if(btn){ btn.textContent='Save my plan free'; btn.dataset.mine='1'; }
+  if(!_lpm.logged){ _lpm.logged=true; try{ QA.log('hero_mine',{type:T[0]}); QA.reach('tapped'); }catch(e){} }
+}
+(function(){
+  const box=document.getElementById('lpm-types'); if(!box) return;
+  box.innerHTML=OB_DEBT_TYPES.map((t,i)=>`<button type="button" data-i="${i}" class="${i===0?'on':''}" aria-pressed="${i===0}">${t[1]}</button>`).join('');
+  box.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; _lpm.type=+b.dataset.i; box.querySelectorAll('button').forEach(x=>{ const on=x===b; x.classList.toggle('on',on); x.setAttribute('aria-pressed',on); }); lpMineUpdate(); });
+  ['lpm-owe','lpm-pay'].forEach(id=>{ const i=document.getElementById(id); if(!i) return; let t; i.addEventListener('input',()=>{ clearTimeout(t); t=setTimeout(lpMineUpdate,180); });
+    i.addEventListener('blur',()=>{ const v=parseFloat(String(i.value).replace(/[, $]/g,'')); if(v>0) i.value=Math.round(v).toLocaleString('en-CA'); }); });
 })();
 
 // ── The four worlds: real scenes from the sample account ──

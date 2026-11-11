@@ -16,7 +16,7 @@ const ALLOWED_ORIGINS = [
 const TRIAL_DAYS = 14;
 const DAILY_LIMIT = Number(Deno.env.get("AI_DAILY_LIMIT") ?? "30");
 const MODEL = Deno.env.get("ANTHROPIC_MODEL") ?? "claude-haiku-5-5";
-const MAX_TOKENS = 700;
+const MAX_TOKENS = 1000; // newer models use about 30% more tokens for the same text
 const MAX_CONTEXT_CHARS = 12000;
 const MAX_MESSAGE_CHARS = 2000;
 const MAX_MESSAGES = 12;
@@ -42,17 +42,36 @@ function buildSystemPrompt(name: string, strategy: string, context: string): str
   const strat = strategy === "avalanche"
     ? "AVALANCHE method (highest interest rate first)"
     : "SNOWBALL method (smallest balance first)";
-  return `You are the Qualisight AI Advisor, a sharp, encouraging personal finance coach built specifically for Canadians. You're talking with ${name || "the user"}.
+  const today = new Date().toLocaleDateString("en-CA", {
+    timeZone: "America/Toronto", year: "numeric", month: "long", day: "numeric",
+  });
+  return `You are the Qualisight coach, a sharp, encouraging personal finance coach built specifically for Canadians. You're talking with ${name || "the user"}. Today is ${today}.
 
-YOUR PERSONALITY:
-- Direct, warm, and genuinely helpful, like a money-savvy friend, not a stiff bank chatbot.
-- Specific over generic. Always cite their actual numbers (real debt names, balances, rates, categories).
-- Encouraging without being fake. Celebrate wins, name problems honestly, always give a concrete next step.
-- Concise. Keep most answers under 150 words. Lead with the answer, then the why.
+HOW YOU SOUND:
+- Direct, warm and plain spoken, like a money-savvy friend, not a stiff bank chatbot. Aim for about a grade 7 reading level.
+- Specific over generic. Use their actual numbers (real debt names, balances, rates, categories).
+- Never shame. Do not suggest anyone is bad with money. Name the problem honestly, then show the way out.
+- Encouraging without being fake. When they are doing well, say so plainly. People stick with tools that make them feel capable, not lectured.
+- Concise. Keep most answers under 130 words. Lead with the answer, then the why.
+- Do not use em dashes.
+
+END EVERY ANSWER WITH ONE NEXT STEP they can take in the app today, and say where: the Budget page (log spending, set coin jar goals), the Debt page (log a payment, try the extra payment slider), the Investing page, or the Housing page. One step, not a list of steps.
+
+USE THE APP'S OWN NUMBERS:
+- The data includes a DEBT-FREE PLAN block that the app calculated. For any question about payoff dates, what an extra payment would do, or total interest, quote those exact dates and amounts. Do not do your own loan math when a figure is provided.
+- If they ask about an extra amount that is not listed, estimate between the listed ones, say it is an estimate, and tell them the slider on the Debt page gives the exact date.
+- If the data says almost nothing has been entered, do not analyse empty numbers. Suggest the single thing to enter first for their goal and say what it will show them.
+- Do not comment on a savings rate when no income has been entered.
 
 SCOPE:
 - You only help with personal finance: budgeting, debt, saving, Canadian accounts, housing, and understanding their own numbers.
-- If asked for something unrelated (coding, essays, general trivia), politely say you're a personal finance advisor and steer back.
+- If asked for something unrelated (coding, essays, general trivia), politely say you're a personal finance coach and steer back.
+
+CANADIAN FACTS:
+- Explain how the TFSA, RRSP, FHSA, RESP, the mortgage stress test and down payment rules work in general terms.
+- Do not state this year's contribution limits, tax brackets, interest rates or qualifying rates from memory. They change. Say the current figure should be checked on the CRA or Government of Canada website.
+- Never state how much contribution room this person has. Point them to their CRA My Account.
+- This is education, not tax or legal advice.
 
 INVESTMENT RESTRICTIONS (FOLLOW AT ALL TIMES):
 1. Never recommend buying, selling, or holding any specific named stock, ETF, crypto, or security.
@@ -63,12 +82,16 @@ INVESTMENT RESTRICTIONS (FOLLOW AT ALL TIMES):
 6. End any response that gives investment guidance with: "For investment decisions, please consult a registered financial advisor."
 
 HOW TO ADVISE:
-- DEBT: The user has chosen the ${strat}. Respect their choice and recommend attacking debts in that order. Always flag any high-interest debt (>10% APR) as urgent, and note that clearing high-interest debt usually beats investing.
-- BUDGET: Call out any category marked OVER BUDGET by name. Translate overspending into real terms (e.g. "$61 over on dining is ~$730/year").
-- SAVINGS RATE: Under 10% = flag it kindly and give 2-3 fixes. 10-20% = solid, suggest one improvement. Over 20% = affirm it, point to the next milestone.
-- PORTFOLIO: Describe holdings and performance by name; never recommend buying/selling specific securities.
-- CANADIAN ACCOUNTS: Explain principles. TFSA for tax-free growth, FHSA if buying a home within 5 years, RRSP once in a higher tax bracket. No specific amounts or tickers.
-- When they're doing well, say so plainly. People stick with tools that make them feel capable, not lectured.
+- DEBT: The user has chosen the ${strat}. Respect their choice and recommend attacking debts in that order. Flag any high-interest debt (over 10% APR) as the priority, and note that clearing high-interest debt usually beats investing. The most persuasive thing you can show is what a small extra payment does to their debt-free date, using the plan block.
+- BUDGET: Call out any category marked OVER BUDGET by name, kindly. Translate overspending into real terms (for example "$61 over on dining is about $730 a year").
+- SAVINGS RATE: Under 10% = flag it kindly and give 2 or 3 fixes. 10 to 20% = solid, suggest one improvement. Over 20% = affirm it and point to the next milestone.
+- PORTFOLIO: Describe holdings and performance by name; never recommend buying or selling specific securities.
+- CANADIAN ACCOUNTS: Explain principles. TFSA for tax-free growth, FHSA if buying a first home is a goal, RRSP usually matters more in a higher tax bracket. No specific amounts or tickers.
+- HOME: Use the FIRST HOME GOAL block when it is filled in.
+
+WHEN SOMEONE IS STRUGGLING:
+- If they say they cannot make minimum payments, are getting collection calls, or feel overwhelmed by debt: stay calm and kind, say this is common and can be worked through, and suggest speaking with a free non-profit credit counselling service in Canada as a next step alongside the app. Do not recommend specific loans, lenders, debt settlement companies or any service that charges fees.
+- If they mention thoughts of suicide or self-harm: stop the finance talk. Respond with care, tell them they can call or text 9-8-8 (Canada's Suicide Crisis Helpline) at any time, or 911 in an emergency, and encourage them to reach out to someone they trust. Do not return to money topics unless they do.
 
 FORMAT: Short paragraphs or tight bullet points. Use their name occasionally. Never a wall of text.
 
@@ -155,24 +178,49 @@ Deno.serve(async (req) => {
     return json({ error: "The advisor is unavailable right now." }, 500, headers);
   }
 
-  const r = await fetch("https://api.anthropic.com/v1/messages", {
-    method: "POST",
-    headers: {
-      "x-api-key": apiKey,
-      "anthropic-version": "2023-06-01",
-      "content-type": "application/json",
-    },
-    body: JSON.stringify({
-      model: MODEL,
-      max_tokens: MAX_TOKENS,
-      system: buildSystemPrompt(name, strategy, context),
-      messages,
-    }),
-  });
+  // Anthropic sometimes returns short-lived errors (overloaded, rate limited).
+  // Retry those quietly with a growing wait, then try a backup model if one is set.
+  const RETRYABLE = new Set([408, 409, 429, 500, 502, 503, 504, 529]);
+  // Retired models (like claude-sonnet-4-20250514) fail with not_found, so they're never tried even if a secret still names one.
+  const RETIRED = /^claude-(3|sonnet-4-2025|opus-4-2025)/;
+  const pick = (m: string | undefined, dflt: string) => (m && !RETIRED.test(m) ? m : dflt);
+  const models = [...new Set([pick(MODEL, "claude-haiku-5-5"), pick(Deno.env.get("ANTHROPIC_FALLBACK_MODEL"), "claude-sonnet-5-5")])];
+  // Short chat answers don't need extended thinking (it would also eat into max_tokens).
+  // Haiku 5.5 turns it off with "disabled"; Sonnet 5.5 rejects that and uses "between_tools" instead.
+  const thinkingFor = (m: string) => m.startsWith("claude-haiku-5") ? { type: "disabled" }
+    : m.startsWith("claude-sonnet-5") ? { type: "between_tools" } : undefined;
+  const system = buildSystemPrompt(name, strategy, context);
+  let r: Response | null = null;
+  let lastStatus = 0;
+  outer: for (const model of models) {
+    for (let attempt = 0; attempt < 3; attempt++) {
+      r = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "x-api-key": apiKey,
+          "anthropic-version": "2023-06-01",
+          "content-type": "application/json",
+        },
+        body: JSON.stringify({ model, max_tokens: MAX_TOKENS, system, messages, ...(thinkingFor(model) ? { thinking: thinkingFor(model) } : {}) }),
+      });
+      if (r.ok) break outer;
+      lastStatus = r.status;
+      const detail = await r.text();
+      console.error("anthropic error", { model, attempt, status: r.status, detail: detail.slice(0, 500) });
+      if (!RETRYABLE.has(r.status)) break; // e.g. bad key or bad model name: retrying won't help
+      const retryAfter = Number(r.headers.get("retry-after"));
+      const wait = retryAfter > 0 ? Math.min(retryAfter * 1000, 8000) : 800 * Math.pow(2, attempt) + Math.random() * 400;
+      await new Promise((res) => setTimeout(res, wait));
+    }
+  }
 
-  if (!r.ok) {
-    console.error("anthropic error", r.status, await r.text());
-    return json({ error: "The advisor is unavailable right now. Try again in a minute." }, 502, headers);
+  if (!r || !r.ok) {
+    // Hand back the daily question the user didn't get an answer for
+    await admin.rpc("refund_ai_usage", { p_user_id: user.id }).then(() => {}, () => {});
+    const msg = lastStatus === 429 || lastStatus === 529
+      ? "The advisor is busy right now. Give it a minute and ask again."
+      : "The advisor is unavailable right now. Try again in a minute.";
+    return json({ error: msg }, 502, headers);
   }
 
   const data = await r.json();
