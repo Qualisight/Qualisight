@@ -58,6 +58,10 @@ input[type=range]{width:100%;accent-color:var(--green);height:30px}
 .warn{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);color:#f3d48a;border-radius:12px;padding:0.7rem 0.85rem;margin-top:0.9rem;font-size:0.92rem}
 .cmp{font-size:0.92rem;color:var(--muted);margin-top:0.8rem}.cmp b{color:var(--text)}
 svg{display:block;width:100%;height:auto;margin-top:0.9rem}
+.acts{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem}.acts .btn{font-size:0.92rem}
+textarea.code{width:100%;min-height:92px;background:#0e121a;border:1px solid var(--border);border-radius:10px;color:#c4ccdb;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:0.7rem;resize:vertical}
+.by{display:none;margin-top:0.8rem;font-size:0.85rem;color:var(--muted)}
+body.embed header,body.embed h1,body.embed .lead,body.embed .cta,body.embed .article,body.embed footer{display:none}body.embed .card{margin-top:0.6rem}body.embed .by{display:block}body.embed .wrap{padding:0 0.5rem}body.embed .noembed{display:none}
 ol.order{margin:0.6rem 0 0;padding-left:1.2rem;color:#c4ccdb}
 .cta{background:linear-gradient(135deg,rgba(74,222,128,0.14),rgba(74,222,128,0.03));border:1px solid rgba(74,222,128,0.4);border-radius:18px;padding:1.2rem;margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:0.9rem;align-items:center;justify-content:space-between}
 .cta p{margin:0;max-width:480px;color:var(--text)}.cta small{display:block;color:var(--muted)}
@@ -71,7 +75,7 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
 <header><a class="logo" href="/">Qualisight</a><a class="btn ghost" href="/?utm_source=organic&utm_campaign=debt_calculator">Open the app</a></header>
 
 <h1>Debt payoff calculator: snowball vs avalanche</h1>
-<p class="lead">Enter your debts and what you can pay. See the month you will be debt-free, how much interest you will pay, and which method wins for you. Free, no sign-up, nothing is saved or sent anywhere.</p>
+<p class="lead">Enter your debts and what you can pay. See the month you will be debt-free, how much interest you will pay, and which method wins for you. Free, no sign-up. Your numbers stay in your browser.</p>
 
 <section class="card" aria-label="Calculator">
   <table id="debts"><thead><tr><th>Name</th><th>Balance ($)</th><th>Interest (%)</th><th>Monthly payment ($)</th><th></th></tr></thead><tbody></tbody></table>
@@ -80,11 +84,17 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
   <div class="row"><div class="seg" role="group" aria-label="Method"><button type="button" id="mSnow" aria-pressed="true">Snowball</button><button type="button" id="mAva" aria-pressed="false">Avalanche</button></div>
     <span id="mHint" style="color:var(--muted);font-size:0.9rem"></span></div>
   <div id="out" aria-live="polite"></div>
+  <div class="acts" id="acts" hidden>
+    <button class="btn ghost" type="button" id="share">Share my debt-free date</button>
+    <button class="btn ghost noembed" type="button" id="ics">Add a monthly check-in to my calendar</button>
+  </div>
+  <div class="by">Debt payoff calculator by <a href="https://qualisight.ca/debt-payoff-calculator/" target="_blank" rel="noopener">Qualisight</a>. Estimates only, not financial advice.</div>
 </section>
 
 <div class="cta"><p><b>Want to watch your debt clear like a storm?</b><small>Qualisight turns this plan into a storm that calms with every payment, with badges along the way. Budgeting and debt payoff are free forever. No card, no bank login.</small></p>
-  <a class="btn" href="/?utm_source=organic&utm_campaign=debt_calculator">Save this plan free</a></div>
+  <a class="btn" target="_top" href="/?utm_source=organic&utm_campaign=debt_calculator">Save this plan free</a></div>
 
+<div class="article">
 <h2>How the two methods work</h2>
 <p>Both methods start the same way: you pay at least the monthly payment on every debt. The difference is where your <b>extra</b> money goes.</p>
 <h3>Snowball: smallest balance first</h3>
@@ -103,10 +113,27 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
 <h2>What this calculator assumes</h2>
 <p>Interest is added once a month at one twelfth of the yearly rate, rates stay the same, you make every payment, and you add no new debt. Real lenders can calculate interest daily and change rates, so treat the dates as close estimates. This page is information, not financial advice. If your debts feel unmanageable, a non-profit credit counsellor can talk through your options for free.</p>
 
+<h2>Put this calculator on your site</h2>
+<p>Run a money workshop, a student finance office, or a coaching practice? You can add this calculator to your own page for free. Copy the code below and paste it where you want it to appear. It has no ads and collects nothing your visitors type.</p>
+<textarea class="code" id="embedCode" readonly aria-label="Embed code">&lt;iframe src="https://qualisight.ca/debt-payoff-calculator/?embed=1" title="Debt payoff calculator" style="width:100%;max-width:860px;height:1100px;border:0" loading="lazy"&gt;&lt;/iframe&gt;</textarea>
+<div class="row"><button class="btn ghost" type="button" id="copyEmbed">Copy the code</button><span id="copied" style="color:var(--green);font-size:0.9rem" aria-live="polite"></span></div>
+</div>
+
 <footer>Built by a solo founder in Ontario. Last checked November 2026. <a href="/">Qualisight</a> is a Canadian budgeting, debt and savings app that turns your money into a game.</footer>
 </div>
 <script>
 (function(){
+  var EMBED=/[?&]embed=1/.test(location.search); if(EMBED) document.body.className+=' embed';
+  // Anonymous page counts only. Nothing typed into the calculator is ever sent.
+  var track=(function(){
+    var ok=true, vid, sid, sent=0;
+    try{ if(localStorage.getItem('qs_notrack')==='1') ok=false; vid=localStorage.getItem('qs_vid'); if(!vid){ vid=Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4); localStorage.setItem('qs_vid',vid); }
+      sid=sessionStorage.getItem('qs_tab'); if(!sid){ sid=Math.random().toString(36).slice(2,10); sessionStorage.setItem('qs_tab',sid); } }catch(e){ vid=vid||'anon'; sid=sid||'anon'; }
+    if(/HeadlessChrome|bot|crawl|spider/i.test(navigator.userAgent||'')) ok=false;
+    return function(name,props){ if(!ok||sent>20) return; sent++; props=props||{}; props.embed=EMBED;
+      try{ fetch('https://bsjyqecneeptlfrsyesf.supabase.co/rest/v1/site_events',{method:'POST',keepalive:true,headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM','Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify([{vid:vid,sid:sid,name:name,props:props}])}).catch(function(){}); }catch(e){} };
+  })();
+  var edited=false, last=null;
   var debts=[{n:'Credit card',b:6800,r:20.99,m:200},{n:'Line of credit',b:4200,r:9.5,m:110},{n:'Car loan',b:14500,r:7.9,m:330}], method='snow';
   var tb=document.querySelector('#debts tbody'), out=document.getElementById('out'), extra=document.getElementById('extra');
   function money(n){ return '$'+Math.round(n).toLocaleString('en-CA'); }
@@ -148,6 +175,7 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
     var live=debts.filter(function(d){return d.b>0;});
     if(!live.length){ out.innerHTML='<p class="cmp">Add a debt with a balance to see your plan.</p>'; return; }
     var s=plan('snow',ex), a=plan('ava',ex), cur=method==='snow'?s:a, oth=method==='snow'?a:s, base=plan(method,0);
+    last=cur.ok?{months:cur.months,interest:cur.interest}:null; document.getElementById('acts').hidden=!cur.ok;
     if(!cur.ok){
       var bad=live.filter(function(d){ return d.m<=d.b*d.r/1200; }).map(function(d){ return esc(d.n)+' (interest is about '+money(d.b*d.r/1200)+' a month)'; });
       out.innerHTML='<div class="warn"><b>This plan never finishes.</b> '+(bad.length?'The payment on '+bad.join(' and ')+' does not cover the interest, so the balance grows. ':'')+'Raise a payment or add extra each month.</div>'; return;
@@ -163,13 +191,41 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
         :(method==='snow'?'Avalanche':'Snowball')+' would finish in <b>'+monthOut(oth.months)+'</b> with <b>'+money(oth.interest)+'</b> of interest, '+(diff>0?money(diff)+' more':money(-diff)+' less')+' than this plan.')+'</p>'
       +'<h3 style="margin-top:1rem">The order your debts disappear</h3><ol class="order">'+cur.order.map(function(o){ return '<li><b>'+esc(o.n)+'</b> is gone in '+monthOut(o.at)+'</li>'; }).join('')+'</ol>';
   }
-  tb.addEventListener('input',function(e){ var t=e.target, i=+t.dataset.i, k=t.dataset.k; if(k==null) return; debts[i][k]= k==='n' ? t.value : Math.max(0,parseFloat(t.value)||0); render(); });
+  tb.addEventListener('input',function(e){ if(!edited){ edited=true; track('calc_edit'); } var t=e.target, i=+t.dataset.i, k=t.dataset.k; if(k==null) return; debts[i][k]= k==='n' ? t.value : Math.max(0,parseFloat(t.value)||0); render(); });
   tb.addEventListener('click',function(e){ var d=e.target.dataset.del; if(d==null) return; debts.splice(+d,1); rows(); render(); });
   document.getElementById('add').onclick=function(){ if(debts.length>=8) return; debts.push({n:'Debt '+(debts.length+1),b:1000,r:19.99,m:50}); rows(); render(); };
   extra.addEventListener('input',render);
   document.getElementById('mSnow').onclick=function(){ method='snow'; render(); };
   document.getElementById('mAva').onclick=function(){ method='ava'; render(); };
-  rows(); render();
+  // Sign-up handoff: the plan waits in this browser so the app can offer to bring it in.
+  function stash(){ try{ localStorage.setItem('qs_calc_plan', JSON.stringify({debts:debts.filter(function(d){return d.b>0;}), extra:+extra.value, method:method, at:Date.now()})); }catch(e){} }
+  var links=document.querySelectorAll('a[href*="utm_campaign=debt_calculator"]');
+  for(var i=0;i<links.length;i++) links[i].addEventListener('click',function(){ if(edited) stash(); track('calc_cta',{edited:edited}); });
+  function card(){
+    var c=document.createElement('canvas'); c.width=1200; c.height=630; var x=c.getContext('2d');
+    var g=x.createLinearGradient(0,0,1200,630); g.addColorStop(0,'#0b0d12'); g.addColorStop(1,'#10261a'); x.fillStyle=g; x.fillRect(0,0,1200,630);
+    x.fillStyle='rgba(74,222,128,0.10)'; x.beginPath(); x.arc(1010,120,260,0,7); x.fill();
+    x.fillStyle='#4ade80'; x.font='800 34px system-ui,-apple-system,Segoe UI,Roboto,sans-serif'; x.fillText('Qualisight',80,110);
+    x.fillStyle='#97a2b8'; x.font='500 40px system-ui,-apple-system,Segoe UI,Roboto,sans-serif'; x.fillText('My plan says I will be',80,255);
+    x.fillStyle='#e8edf8'; x.font='800 104px system-ui,-apple-system,Segoe UI,Roboto,sans-serif'; x.fillText('debt-free by',80,365);
+    x.fillStyle='#4ade80'; var t=monthOut(last.months); x.font='800 '+(t.length>14?92:112)+'px system-ui,-apple-system,Segoe UI,Roboto,sans-serif'; x.fillText(t,80,485);
+    x.fillStyle='#97a2b8'; x.font='500 30px system-ui,-apple-system,Segoe UI,Roboto,sans-serif'; x.fillText('Make your own plan free at qualisight.ca/debt-payoff-calculator',80,565);
+    return c;
+  }
+  document.getElementById('share').onclick=function(){ if(!last) return; track('calc_share');
+    card().toBlob(function(b){ if(!b) return; var f; try{ f=new File([b],'debt-free-date.png',{type:'image/png'}); }catch(e){}
+      if(f && navigator.canShare && navigator.canShare({files:[f]})){ navigator.share({files:[f], text:'My debt-free date. Make yours at qualisight.ca/debt-payoff-calculator'}).catch(function(){}); return; }
+      var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='debt-free-date.png'; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },1500);
+    },'image/png'); };
+  document.getElementById('ics').onclick=function(){ track('calc_ics');
+    var d=new Date(); d.setMonth(d.getMonth()+1,1); function p2(n){ return (n<10?'0':'')+n; }
+    var ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Qualisight//Check-in//EN','BEGIN:VEVENT','UID:calc-'+Date.now()+'@qualisight.ca','DTSTAMP:'+new Date().toISOString().replace(/[-:]|\.\d+/g,''),
+      'DTSTART:'+d.getFullYear()+p2(d.getMonth()+1)+'01T090000','DURATION:PT15M','RRULE:FREQ=MONTHLY;BYMONTHDAY=1','SUMMARY:Debt check-in','DESCRIPTION:Fifteen minutes. Make your payments\\, then check your debt-free date. https://qualisight.ca/debt-payoff-calculator/','URL:https://qualisight.ca/debt-payoff-calculator/',
+      'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:Debt check-in','TRIGGER:PT0M','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
+    var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'})); a.download='debt-check-in.ics'; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },1500); };
+  var ce=document.getElementById('copyEmbed'); if(ce) ce.onclick=function(){ var ta=document.getElementById('embedCode'); ta.select(); var done=function(){ document.getElementById('copied').textContent='Copied.'; track('calc_embed_copy'); };
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(done,function(){ try{ document.execCommand('copy'); done(); }catch(e){} }); else { try{ document.execCommand('copy'); done(); }catch(e){} } };
+  rows(); render(); track('calc_view',{ref:(document.referrer||'').split('/')[2]||''});
 })();
 </script>
 </body>
