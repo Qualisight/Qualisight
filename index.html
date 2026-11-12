@@ -468,6 +468,27 @@ header{
 .db-part-bar i{display:block;height:100%;border-radius:4px;background:linear-gradient(90deg,#4ade80,#a3e635)}
 .db-part em{grid-column:2;font-style:normal;font-size:0.68rem;color:var(--muted);line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .db-h{font-weight:700;font-size:1rem;margin:0.4rem 0 0.6rem}
+.db-start{background:radial-gradient(120% 90% at 100% 0%,rgba(74,222,128,0.12),transparent 60%),var(--card);border:1px solid var(--border2);border-radius:22px;padding:1.4rem 1.3rem 1.2rem;margin-bottom:1.1rem}
+.db-start h2{font-family:var(--font-display);font-size:1.7rem;line-height:1.1;letter-spacing:-0.03em;margin:0.2rem 0 0.4rem}
+.db-start>p{color:var(--muted);font-size:0.92rem;margin:0 0 1rem;line-height:1.45}
+.db-start-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.7rem}
+.db-start-go{display:flex;flex-direction:column;align-items:flex-start;gap:0.3rem;text-align:left;background:var(--surface);border:1px solid var(--border2);border-radius:16px;padding:1rem;cursor:pointer;color:var(--text);font:inherit;min-height:44px;transition:border-color .15s,transform .15s}
+.db-start-go:hover,.db-start-go:focus-visible{border-color:rgba(74,222,128,0.55);transform:translateY(-2px)}
+.db-start-go.pick{border-color:rgba(74,222,128,0.6);box-shadow:0 0 0 1px rgba(74,222,128,0.3)}
+.db-start-go b{font-size:1rem;line-height:1.25}
+.db-start-go span{font-size:0.82rem;color:var(--muted);line-height:1.4}
+.db-start-go i{font-style:normal;font-size:0.82rem;font-weight:700;color:var(--accent,#4ade80);margin-top:0.3rem}
+.db-start-foot{display:flex;flex-wrap:wrap;gap:0.4rem 1rem;align-items:center;margin-top:0.9rem;font-size:0.8rem;color:var(--muted)}
+.db-start-foot button{background:none;border:0;color:var(--text);text-decoration:underline;font:inherit;cursor:pointer;min-height:44px;padding:0}
+.db-fresh .journey-card,.db-fresh .db-details{display:none}
+.db-boost{font-size:0.84rem;color:var(--muted);line-height:1.4;margin:0.1rem 0 0.5rem}
+.db-boost b{color:var(--text)}
+.db-parts summary,.db-more summary{cursor:pointer;font-size:0.8rem;font-weight:600;color:var(--accent,#4ade80);min-height:32px;display:flex;align-items:center;list-style:none}
+.db-parts summary::-webkit-details-marker,.db-more summary::-webkit-details-marker{display:none}
+.db-parts[open] summary{margin-bottom:0.4rem}
+.db-more{margin:-0.4rem 0 1rem}
+.db-more .db-moves-row{margin:0.5rem 0 0}
+@media(max-width:700px){.db-start-grid{grid-template-columns:1fr}.db-start h2{font-size:1.5rem}}
 .db-moves-row{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.7rem;margin-bottom:1rem}
 .db-move{display:flex;align-items:center;gap:0.75rem;text-align:left;background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:0.8rem 0.9rem;cursor:pointer;color:var(--text);font-family:var(--font-body);transition:transform .15s,border-color .15s}
 .db-move:hover{transform:translateY(-2px);border-color:rgba(74,222,128,0.45)}
@@ -15307,7 +15328,7 @@ function dbScore(){
   const budget = !S||!S.jars.length ? 0 : ({thriving:25,track:21,tight:12,over:5,setup:0})[S.health]||0;
   parts.push({k:'Budget', v:budget, max:25, tip: !S||!S.jars.length?'Set spending goals':S.healthTxt});
   const sr=S&&S.ti>0?S.sr:0; parts.push({k:'Saving', v:Math.round(Math.max(0,Math.min(1,sr/0.2))*20), max:20, tip:S&&S.ti>0?`${Math.round(sr*100)}% of income kept`:'Add your income'});
-  let debtPts=20, debtTip='No debt'; const debts=state.debts||[];
+  let debtPts=20, debtTip=(state.onb&&state.onb.noDebt)?'No debt':'No debts added'; const debts=state.debts||[];
   // Someone who came here to get out of debt, but has not entered it yet, has not earned the "no debt" points
   if(!debts.length && state.onb && state.onb.quest==='debt' && !state.onb.noDebt){ debtPts=0; debtTip='Add your debts'; }
   if(debts.some(d=>(d.balance||0)>0)){ try{ const D=pitData(); debtPts=Math.round(20*(1-D.r)*(D.plan.canFinish?1:0.5)); debtTip=`${Math.round((1-D.r)*100)}% paid off`; }catch(e){ debtPts=8; debtTip='Paying it down'; } }
@@ -15343,8 +15364,42 @@ const DB_IC={
   tree:'<path d="M12 22v-6"/><path d="M12 16a6 6 0 1 0-6-6c0 1.5.5 2.8 1.4 3.8"/><path d="M12 16a6 6 0 0 0 4.6-9.8"/>',
 };
 
+function dbFresh(){
+  if(typeof currentUser!=='undefined' && currentUser && currentUser.isDemo) return false;
+  return !(state.income||[]).some(x=>(+x.actual||0)>0) && !(state.expenses||[]).length && !(state.debts||[]).length
+    && !(state.portfolio||[]).length && !(state.homeFund&&state.homeFund.price>0) && !(state.budgets||[]).some(b=>b.goal>0);
+}
+function dbStartGo(k){
+  try{ QA.log('dash_start',{pick:k}); }catch(e){}
+  const focus=id=>setTimeout(()=>{ const i=document.getElementById(id); if(i){ i.scrollIntoView({block:'center'}); i.focus(); } },250);
+  if(k==='debt'){ showPage('debt'); setTimeout(()=>{ try{ addDebt(); }catch(e){} focus('d-name'); },150); }
+  else if(k==='budget'){ showPage('monthly'); focus('bm-qs-pay'); }
+  else if(k==='home'){ showPage('rental'); focus('hq-price'); }
+  else showPage('investments');
+}
+function dbStartHtml(name){
+  const q=(state.onb&&state.onb.quest)||'';
+  const T=[['debt','When will I be debt-free?','Type in a balance and see the exact month it is gone.','See my month'],
+           ['budget','Where does my money go?','One number, your take-home pay, fills nine spending jars.','Fill my jars'],
+           ['home','What do I need for a home?','Pick a price and see your minimum down payment and every step.','See my road']];
+  const pickKey=q==='home'?'home':q==='debt'?'debt':'';
+  return `<div class="db-start"><div class="db-greet">Welcome${name?`, ${escHtml(name)}`:''}</div>
+    <h2>Pick one place to start</h2>
+    <p>Each one gives you a real number about your own money in under a minute. You can do the rest later.</p>
+    <div class="db-start-grid">${T.map(([k,t,d,c])=>`<button type="button" class="db-start-go${k===pickKey?' pick':''}" onclick="dbStartGo('${k}')"><b>${t}</b><span>${d}</span><i>${c}</i></button>`).join('')}</div>
+    <div class="db-start-foot"><span>Free. No bank login. Nothing you type is sold.</span><button type="button" onclick="dbStartGo('invest')">I want to track my TFSA or RRSP</button></div></div>`;
+}
 function renderDashboardPlus(){
   const hero=document.getElementById('db-hero'); if(!hero) return;
+  const fresh=dbFresh(), pg=document.getElementById('page-dashboard'); if(pg) pg.classList.toggle('db-fresh',fresh);
+  if(fresh){
+    const nm=(typeof currentUser!=='undefined'&&currentUser&&currentUser.name)?String(currentUser.name).split(' ')[0]:'';
+    const oc=document.getElementById('ob-checklist'); if(oc) oc.innerHTML='';
+    hero.style.display='block'; hero.innerHTML=dbStartHtml(nm);
+    const mvEl=document.getElementById('db-moves'); if(mvEl) mvEl.innerHTML='';
+    dbRenderWorlds(true); return;
+  }
+  hero.style.display='';
   try{ const oc=document.getElementById('ob-checklist'); if(oc) oc.innerHTML=obChecklistHtml(); }catch(e){ console.warn('starter quests', e); }
   const N=dbNetWorth(), hist=dbHistory(N.nw), sc=dbScore();
   // Someone who owes more than they own sees their finish line first, not a negative number
@@ -15383,33 +15438,36 @@ function renderDashboardPlus(){
       </div>
       <div class="db-score-main">
         <div class="db-score-title">Money Score <span style="color:${scCol}">${sc.label}</span></div>
-        ${sc.parts.map(p=>`<div class="db-part" title="${p.tip}"><span>${p.k}</span><div class="db-part-bar"><i style="width:${p.v/p.max*100}%"></i></div><em>${p.tip}</em></div>`).join('')}
+        ${(()=>{ const P=['Budget','Debt','Saving','Habit','Investing'], g=P.map(k=>sc.parts.find(x=>x.k===k)).find(x=>x&&x.max-x.v>x.max*0.3)||sc.parts.slice().sort((a,b)=>(b.max-b.v)-(a.max-a.v))[0]; return g&&g.max-g.v>0?`<div class="db-boost">Biggest boost: <b>${g.k}</b>. ${escHtml(/^(Add|Set)/.test(g.tip)?g.tip:({Budget:'Stay inside your spending goals',Debt:'Make a payment on your first debt',Saving:'Try to keep 20% of your income',Habit:'Log something each day to build your streak',Investing:'Add a TFSA, RRSP or FHSA holding'})[g.k])}.</div>`:`<div class="db-boost">Every part is full. Nice.</div>`; })()}
+        <details class="db-parts"><summary>See all 5 parts</summary>
+        ${sc.parts.map(p=>`<div class="db-part" title="${p.tip}"><span>${p.k}</span><div class="db-part-bar"><i style="width:${p.v/p.max*100}%"></i></div><em>${p.tip}</em></div>`).join('')}</details>
       </div>
     </div>`;
   // While the starter quests are open they are the one to-do list. The other two step aside.
   const starting=(()=>{ const oc=document.getElementById('ob-checklist'); return !!(oc && oc.innerHTML.trim()); })();
   const jc=document.getElementById('journey-cta'); if(jc) jc.style.display=starting?'none':'';
   const mv=starting?[]:dbMoves(), mvEl=document.getElementById('db-moves');
-  if(mvEl) mvEl.innerHTML = mv.length ? `<div class="db-h">Your next best moves</div><div class="db-moves-row">${mv.map(m=>`<button type="button" class="db-move" onclick="${m.on}">
+  const mvHtml=m=>`<button type="button" class="db-move" onclick="${m.on}">
       <span class="db-move-ic" style="color:${m.c};background:${m.c}1f"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${DB_IC[m.ic]}</svg></span>
-      <span class="db-move-main"><b>${m.t}</b><span>${m.s}</span></span><span class="db-move-go">›</span></button>`).join('')}</div>` : '';
+      <span class="db-move-main"><b>${m.t}</b><span>${m.s}</span></span><span class="db-move-go">›</span></button>`;
+  if(mvEl) mvEl.innerHTML = mv.length ? `<div class="db-h">Your next best move</div><div class="db-moves-row" style="grid-template-columns:1fr">${mvHtml(mv[0])}</div>${mv.length>1?`<details class="db-more"><summary>${mv.length-1} more move${mv.length>2?'s':''}</summary><div class="db-moves-row">${mv.slice(1).map(mvHtml).join('')}</div></details>`:''}` : '';
   dbRenderWorlds();
 }
 
-function dbRenderWorlds(){
+function dbRenderWorlds(fresh){
   const el=document.getElementById('db-worlds'); if(!el) return;
   const cards=[];
   // budget
   let bS=null; try{ bS=bgMonthStats(); }catch(e){}
   const lv = (()=>{ try{ const g=dbIsDemo()?{xp:640}:(state.bgame||{xp:0}); return bgLevel(g.xp); }catch(e){ return 1; } })();
-  cards.push({id:'budget', page:'monthly', title:'Coin jars', stat: bS&&bS.jars.length ? (bS.health==='over'?'Over budget':bS.healthTxt) : 'Set your goals', sub: bS&&bS.ti>0 ? `Saved ${fmtW(Math.max(0,bS.net))} this month · Level ${lv}` : `Level ${lv}`});
+  cards.push({id:'budget', page:'monthly', title:'Coin jars', stat: bS&&bS.jars.length ? (bS.health==='over'?'Over budget':bS.healthTxt) : 'Set your goals', sub: bS&&bS.ti>0&&(state.expenses||[]).length ? `Saved ${fmtW(Math.max(0,bS.net))} this month, level ${lv}` : bS&&bS.ti>0 ? 'Log your first expense' : `Level ${lv}`});
   let dD=null; try{ dD=(state.debts||[]).length?pitData():null; }catch(e){}
-  cards.push({id:'debt', page:'debt', title:'Debt storm', stat: !dD ? 'No debt' : dD.bal<=0 ? 'Calm waters' : `${Math.max(0,Math.min(99,Math.floor((1-dD.r)*100)))}% paid off`, sub: !dD ? 'Clear skies' : dD.bal<=0 ? 'Every debt paid' : `Storm: ${dsLevel(dD.chaos)} · ${dD.plan.canFinish?`calm by ${pitShortDate(dD.plan.months)}`:'interest is winning'}`});
+  cards.push({id:'debt', page:'debt', title:'Debt storm', stat: !dD ? (fresh?'See your storm':'No debt') : dD.bal<=0 ? 'Calm waters' : `${Math.max(0,Math.min(99,Math.floor((1-dD.r)*100)))}% paid off`, sub: !dD ? (fresh?'Add a debt to start':'Clear skies') : dD.bal<=0 ? 'Every debt paid' : `Storm: ${dsLevel(dD.chaos)} · ${dD.plan.canFinish?`calm by ${pitShortDate(dD.plan.months)}`:'interest is winning'}`});
   const port=(state.portfolio||[]).reduce((s,h)=>s+(+h.price||0)*(+h.shares||0),0), cost=(state.portfolio||[]).reduce((s,h)=>s+(+h.cost||0)*(+h.shares||0),0);
   cards.push({id:'grove', page:'investments', title:'Money grove', stat: port>0?fmtW(port):'Nothing planted', sub: port>0?`${cost>0?`${port>=cost?'+':''}${((port-cost)/cost*100).toFixed(1)}% return`:''}`:'Add your first holding'});
   let hD=null; try{ hD=hqData(); }catch(e){}
   cards.push({id:'home', page:'rental', title:'Road home', stat: !hD||!hD.price ? 'Pick a target' : hD.stops[7].done ? 'Keys ready' : `${Math.round(hD.prog*100)}% to the keys`, sub: !hD||!hD.price ? 'Set a home price' : hD.next ? `Next: ${hD.next.name}` : 'At the front door'});
-  el.innerHTML = `<div class="db-h">Your money worlds</div><div class="db-worlds-grid">${cards.map(c=>`<button type="button" class="db-world" onclick="showPage('${c.page}')" aria-label="${c.title}: ${c.stat}. Open">
+  el.innerHTML = `<div class="db-h">${fresh?'What is inside':'Your money worlds'}</div><div class="db-worlds-grid">${cards.map(c=>`<button type="button" class="db-world" onclick="showPage('${c.page}')" aria-label="${c.title}: ${c.stat}. Open">
       <div class="db-world-art"><canvas id="dbw-${c.id}"></canvas></div>
       <div class="db-world-txt"><span>${c.title}</span><b>${c.stat}</b><em>${c.sub}</em></div></button>`).join('')}</div>`;
   requestAnimationFrame(()=>{ ['budget','debt','grove','home'].forEach(id=>{ try{ dbThumb(id); }catch(e){ console.warn('dash thumb',id,e); } }); });
