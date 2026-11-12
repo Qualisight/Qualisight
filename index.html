@@ -4816,10 +4816,12 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
             </div>
           </div>
         </div>
+        <div id="t-err" role="alert" style="color:var(--red,#f87171);font-size:0.85rem;margin:-0.4rem 0 0.8rem"></div>
+        <div style="overflow-x:auto">
         <table class="tbl">
           <thead><tr><th>Date</th><th>Symbol</th><th>Bought</th><th>Sold</th><th>P/L</th><th>W/L</th><th></th></tr></thead>
           <tbody id="trade-body-inline"><tr><td colspan="7" class="empty-state">No trades logged yet.</td></tr></tbody>
-        </table>
+        </table></div>
       </div>
     </div>
   </div>
@@ -8856,7 +8858,7 @@ async function refreshAllPrices(){
   }
 
   save(); renderPortfolio(); renderAllocator();
-  btn.textContent='⟳ Refresh Prices'; btn.disabled=false;
+  btn.textContent='⟳ Refresh prices'; btn.disabled=false;
 
   // Update last-updated line
   const now = new Date().toLocaleTimeString('en-CA',{hour:'2-digit',minute:'2-digit'});
@@ -8864,11 +8866,27 @@ async function refreshAllPrices(){
     `Last refreshed ${now} · ${refreshed} updated${failed?' · '+failed+' skipped (market closed / crypto)':''}`;
 }
 
+// ── Undo for deletes on the investing page: one tap brings back exactly what was removed ──
+let _ivUndo=null;
+function ivSnap(){ return { portfolio:JSON.parse(JSON.stringify(state.portfolio||[])), accounts:JSON.parse(JSON.stringify(state.accounts||[])), trades:JSON.parse(JSON.stringify(state.trades||[])) }; }
+function ivUndoOffer(msg, snap){
+  _ivUndo=snap;
+  if(typeof showToast==='function') showToast(`${msg} <button type="button" onclick="ivUndo()" style="margin-left:0.5rem;background:none;border:1px solid currentColor;color:inherit;border-radius:8px;padding:0.25rem 0.7rem;font:inherit;font-weight:700;cursor:pointer;min-height:32px">Undo</button>`);
+}
+function ivUndo(){
+  if(!_ivUndo) return;
+  state.portfolio=_ivUndo.portfolio; state.accounts=_ivUndo.accounts; state.trades=_ivUndo.trades; _ivUndo=null;
+  save(); renderPortfolio(); renderAllocator(); try{ renderTrades(); }catch(e){}
+  try{ QA.log('iv_undo',{}); }catch(e){}
+  if(typeof showToast==='function') showToast('<strong>Restored.</strong> Everything is back.');
+}
 function removeHolding(ticker, accountId){
+  const snap=ivSnap();
   state.portfolio = accountId
     ? state.portfolio.filter(h=>!(h.ticker===ticker && h.accountId===accountId))
     : state.portfolio.filter(h=>h.ticker!==ticker);
   save(); renderPortfolio(); renderAllocator();
+  ivUndoOffer(`<strong>Removed ${escHtml(ticker)}.</strong>`, snap);
 }
 
 function renderPortfolio(){
@@ -8945,7 +8963,12 @@ function formatNewsDate(str){
   return `${y}-${mo}-${d}`;
 }
 
+const _ivNews={};
 async function fetchNewsForTicker(ticker){
+  if(_ivNews[ticker]) return _ivNews[ticker];
+  const r=await fetchNewsForTickerRaw(ticker); if(r.length) _ivNews[ticker]=r; return r;
+}
+async function fetchNewsForTickerRaw(ticker){
   const url = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${encodeURIComponent(ticker)}&limit=5&sort=LATEST&apikey=${AV_KEY}`;
   try{
     const res  = await fetch(url);
@@ -8958,9 +8981,14 @@ async function fetchNewsForTicker(ticker){
 async function toggleNewsPanel(ticker){
   const panel = document.getElementById('news-panel');
 
-  if(_activenewsTicker === ticker && panel.classList.contains('open')){
+  const _srcBtn=(window.event && window.event.currentTarget && window.event.currentTarget.closest) ? window.event.currentTarget : null;
+  const _row=_srcBtn && _srcBtn.closest('.iv-holding');
+  const _rowIdx=_row ? [...document.querySelectorAll('#alloc-accounts .iv-holding')].indexOf(_row) : -1;
+  if(_activenewsTicker === ticker && panel.classList.contains('open') && (_rowIdx<0 || _rowIdx===window._ivNewsRow)){
     closeNewsPanel(); return;
   }
+  window._ivNewsRow = _rowIdx>=0 ? _rowIdx : [...document.querySelectorAll('#alloc-accounts .iv-holding')].findIndex(r=>r.querySelector('#newsbtn-'+CSS.escape(ticker)));
+  try{ QA.log('iv_news',{}); }catch(e){}
   if(_activenewsTicker){
     const prev = document.getElementById('newsbtn-'+_activenewsTicker);
     if(prev) prev.classList.remove('active');
@@ -8972,7 +9000,7 @@ async function toggleNewsPanel(ticker){
 
   document.getElementById('news-panel-ticker').textContent = ticker + ', Recent News';
   document.getElementById('news-headlines').innerHTML = '<div class="news-loading">Fetching headlines...</div>';
-  panel.classList.add('open');
+  panel.classList.add('open'); ivNewsPlace();
   panel.scrollIntoView({behavior:'smooth', block:'nearest'});
 
   const articles = await fetchNewsForTicker(ticker);
@@ -8980,7 +9008,7 @@ async function toggleNewsPanel(ticker){
 
   const headlinesEl = document.getElementById('news-headlines');
   if(!articles.length){
-    headlinesEl.innerHTML = '<div style="font-size:0.85rem;color:var(--muted)">No recent news found. Alpha Vantage free tier has limited coverage, try again later or check your daily quota.</div>';
+    headlinesEl.innerHTML = `<div style="font-size:0.85rem;color:var(--muted)">No headlines for ${escHtml(ticker)} right now. News covers bigger companies and funds best. Try again later.</div>`;
   } else {
     headlinesEl.innerHTML = articles.map(a=>{
       const tickerSentData = (a.ticker_sentiment||[]).find(t=>t.ticker===ticker);
@@ -8989,7 +9017,7 @@ async function toggleNewsPanel(ticker){
       const date = formatNewsDate(a.time_published);
       return `<div class="headline-item">
         <div class="headline-title">
-          <a href="${a.url}" target="_blank" rel="noopener">${escHtml(a.title||'Untitled')}</a>
+          <a href="${/^https?:\/\//i.test(a.url||'')?escHtml(a.url):'#'}" target="_blank" rel="noopener noreferrer">${escHtml(a.title||'Untitled')}</a>
         </div>
         <div class="headline-meta">
           <span class="sentiment-badge sent-${sentCls}">${sentText}</span>
@@ -8999,10 +9027,11 @@ async function toggleNewsPanel(ticker){
       </div>`;
     }).join('');
   }
+  window._ivNewsHTML = headlinesEl.innerHTML;
 }
 
 function closeNewsPanel(){
-  document.getElementById('news-panel').classList.remove('open');
+  document.getElementById('news-panel').classList.remove('open'); window._ivNewsRow=null; window._ivNewsHTML='';
   if(_activenewsTicker){
     const btn = document.getElementById('newsbtn-'+_activenewsTicker);
     if(btn) btn.classList.remove('active');
@@ -9038,13 +9067,18 @@ function saveAccount(){
   });
   document.getElementById('alloc-add-form').style.display='none';
   document.getElementById('ac-name').value='';
-  save(); renderAllocator();
+  save(); renderPortfolio(); renderAllocator();
+  if(typeof showToast==='function') showToast(`<strong>Added ${escHtml(name)}.</strong> Now add what it holds with + Add holding.`);
   wtAutoAdvance(6);
 }
 
 function removeAccount(id){
+  const snap=ivSnap(), acc=(state.accounts||[]).find(a=>a.id===id); if(!acc) return;
+  const n=(state.portfolio||[]).filter(h=>h.accountId===id).length;
   state.accounts = state.accounts.filter(a=>a.id!==id);
-  save(); renderAllocator();
+  state.portfolio = (state.portfolio||[]).filter(h=>h.accountId!==id); // no orphaned holdings left behind
+  save(); renderPortfolio(); renderAllocator();
+  ivUndoOffer(`<strong>Removed ${escHtml(acc.name||acc.type||'the account')}</strong>${n?` and its ${n} holding${n===1?'':'s'}`:''}.`, snap);
 }
 
 // Calculate account balance as sum of shares × price for all holdings
@@ -9198,9 +9232,23 @@ function renderAllocator(){
   }).join('');
   try{ if(_ck.open) ckRender(); }catch(e){ console.warn('check-up', e); }
   // Ensure news panel is always in DOM
+  const _newsWasOpen = !!(_activenewsTicker && window._ivNewsRow!=null && !document.getElementById('news-panel'));
   if(!document.getElementById('news-panel')){
-    el.insertAdjacentHTML('afterend', `<div id="news-panel" class="news-panel" style="display:none"><div class="news-panel-header"><div class="news-ticker-label" id="news-panel-ticker"></div><button class="news-close-btn" onclick="closeNewsPanel()">✕</button></div><div class="news-section-title">Recent Headlines</div><div id="news-headlines"></div></div>`);
+    el.insertAdjacentHTML('afterend', `<div id="news-panel" class="news-panel"><div class="news-panel-header"><div class="news-ticker-label" id="news-panel-ticker"></div><button class="news-close-btn" onclick="closeNewsPanel()">✕</button></div><div class="news-section-title">Recent Headlines</div><div id="news-headlines"></div></div>`);
   }
+  if(_newsWasOpen) ivNewsRemount();
+}
+// The news panel opens right under the holding whose News button was tapped
+function ivNewsPlace(){
+  const panel=document.getElementById('news-panel'), rows=[...document.querySelectorAll('#alloc-accounts .iv-holding')];
+  const row=rows[window._ivNewsRow]; if(panel && row) row.after(panel);
+}
+function ivNewsRemount(){
+  const panel=document.getElementById('news-panel'); if(!panel) return;
+  document.getElementById('news-panel-ticker').textContent=_activenewsTicker+', Recent News';
+  document.getElementById('news-headlines').innerHTML=window._ivNewsHTML||'';
+  panel.classList.add('open'); ivNewsPlace();
+  const btn=document.querySelectorAll('#alloc-accounts .iv-holding')[window._ivNewsRow]?.querySelector('[id^="newsbtn-"]'); if(btn) btn.classList.add('active');
 }
 
 // Quick helper: open Add Holding form pre-selecting a specific account
@@ -9281,22 +9329,26 @@ function saveTrade(){
   const buy=parseFloat(document.getElementById('t-buy').value)||0;
   const sell=parseFloat(document.getElementById('t-sell').value)||0;
   const shares=parseFloat(document.getElementById('t-shares').value)||0;
-  if(!date||!sym||!buy||!shares) return;
+  const err=document.getElementById('t-err'); if(err) err.textContent='';
+  const miss=!date?'the date':!sym?'the symbol':!(buy>0)?'the price you bought at':!(sell>0)?'the price you sold at':!(shares>0)?'how many shares or units':'';
+  if(miss){ if(err) err.textContent=`Add ${miss}. The trade log is for trades you have closed, so it needs both prices.`; return; }
   const profit=(sell-buy)*shares;
+  if(!state.trades) state.trades=[];
   state.trades.push({date,sym,buy,sell,shares,profit,wl:profit>=0?'W':'L'});
+  if(typeof showToast==='function') showToast(`<strong>Logged ${escHtml(sym)}.</strong> ${profit>=0?'A gain':'A loss'} of ${fmtPlain(Math.abs(profit))}.`);
   document.getElementById('trade-form').style.display='none';
   ['t-date','t-sym','t-buy','t-sell','t-shares'].forEach(id=>document.getElementById(id).value='');
   save(); renderTrades();
 }
 
-function removeTrade(i){ state.trades.splice(i,1); save(); renderTrades(); }
+function removeTrade(i){ const snap=ivSnap(), t=(state.trades||[])[i]; if(!t) return; state.trades.splice(i,1); save(); renderTrades(); ivUndoOffer(`<strong>Removed the ${escHtml(t.sym||t.ticker||'')} trade.</strong>`, snap); }
 
 function renderTrades(){
   const tbody = document.getElementById('trade-body-inline');
   if(!tbody) return;
 
   const sorted = [...state.trades].sort((a,b)=>new Date(b.date)-new Date(a.date));
-  const recent = sorted.slice(0, 5);
+  const recent = sorted.slice(0, 50);
 
   if(!state.trades.length){
     tbody.innerHTML='<tr><td colspan="7" class="empty-state">No trades logged yet.</td></tr>';
@@ -9305,7 +9357,7 @@ function renderTrades(){
       const ri = state.trades.indexOf(t);
       return `<tr>
         <td style="color:var(--muted)">${t.date}</td>
-        <td><strong>${t.sym}</strong></td>
+        <td><strong>${escHtml(t.sym)}</strong></td>
         <td>${fmt(t.buy)}</td>
         <td>${fmt(t.sell)}</td>
         <td class="${t.profit>=0?'pos':'neg'}">${t.profit>=0?'+':''}${fmt(t.profit)}</td>
@@ -13002,12 +13054,18 @@ function groveMaybeSyncPrices(){
 // If the feed isn't set up yet, it falls back to the old Alpha Vantage lookup.
 const _qsRefreshAV = refreshAllPrices;
 refreshAllPrices = async function(){
-  if(!currentUser || currentUser.isDemo) return _qsRefreshAV.apply(this, arguments);
+  if(!currentUser || currentUser.isDemo){
+    const el=document.getElementById('port-last-updated');
+    if(el) el.textContent='These are sample prices. In your own account, prices update on their own every day.';
+    if(typeof showToast==='function') showToast('<strong>Sample prices.</strong> In your own account, prices update on their own every day, including crypto and metals.');
+    return;
+  }
   const btn=document.getElementById('refresh-btn');
   if(btn){ btn.textContent='Refreshing...'; btn.disabled=true; }
   let res=null; try{ res=await groveSyncPrices({force:true}); }catch(e){ res=null; }
   if(btn){ btn.textContent='⟳ Refresh prices'; btn.disabled=false; }
-  if(!res || res.error || !res.found) return _qsRefreshAV.apply(this, arguments);
+  if(!res || res.error) return _qsRefreshAV.apply(this, arguments);
+  if(!res.keys){ const el=document.getElementById('port-last-updated'); if(el) el.textContent='Add a holding with a ticker and its price will update on its own.'; return; }
   const el=document.getElementById('port-last-updated');
   if(el){
     const miss=res.keys-res.found, when=res.newest ? new Date(res.newest+'T12:00:00Z').toLocaleDateString('en-CA',{month:'short',day:'numeric'}) : 'today';
@@ -13298,7 +13356,7 @@ async function invSave(){
     if(!q){ err.textContent=`Enter how many ${INV_CLASS[_inv.cls].qty.toLowerCase()} you have.`; return; }
     if(!cost){ err.textContent='Enter the price you paid for each one.'; return; }
     const btn=document.getElementById('inv-save');
-    if(!px && INV_CLASS[_inv.cls].fetch && typeof fetchLivePrice==='function'){ btn.textContent='Looking up price…'; btn.disabled=true; try{ px=await fetchLivePrice(t)||0; }catch(e){ px=0; } btn.disabled=false; }
+    const wantFeed = !px && INV_CLASS[_inv.cls].fetch && currentUser && !currentUser.isDemo; if(wantFeed) _inv.feed=true;
     rec={ ticker:t, type:_inv.cls, shares:q, cost, price:px>0?px:cost, live:px>0, lastRefreshed:px>0?new Date().toISOString():null };
   }
   if(needNew){ acc={ id:'acc-'+Date.now(), type:accDef.type, name:accDef.type==='Cash'?'Taxable account':accDef.type==='Gold'?'Precious metals':accDef.type==='Crypto'?'Crypto wallet':accDef.label, holdings:[] }; state.accounts.push(acc); }
@@ -13314,10 +13372,13 @@ async function invSave(){
   }
   if(rec.type==='Gold' && invVal('inv-price')>0) state.portfolio.forEach(h=>{ if(h.type==='Gold' && (h.metal||'gold')===rec.metal) h.price=rec.price; });
   closeInvest(); save(); renderPortfolio(); renderAllocator();
+  if(_inv.feed){ _inv.feed=false; try{ groveSyncPrices({force:true}).catch(()=>{}); }catch(e){} }
   if(typeof showToast==='function') showToast(merged ? `<strong>Added to your ${escHtml(merged.ticker)}.</strong> You now hold ${+merged.shares.toFixed(4)} at an average cost of $${merged.cost.toFixed(2)} each.` : `<strong>${_inv.edit?'Saved':'Added'}.</strong> ${escHtml(rec.ticker)} is in your ${accDef.label}.`);
 }
 function invRemove(){
   if(!_inv.edit) return;
+  const snap=ivSnap(), tk=_inv.edit.ticker;
+  setTimeout(()=>ivUndoOffer(`<strong>Removed ${escHtml(tk)}.</strong>`, snap), 0);
   state.portfolio=state.portfolio.filter(h=>!(h.accountId===_inv.edit.accountId && h.ticker===_inv.edit.ticker));
   closeInvest(); save(); renderPortfolio(); renderAllocator();
 }
