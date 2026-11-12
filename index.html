@@ -14414,7 +14414,7 @@ function ivTodayRender(){
     const open=ivMarketOpen(), lt=ivLastPriceTime(), d=lt?new Date(lt):null;
     const when=d ? d.toLocaleTimeString('en-CA',{hour:'numeric',minute:'2-digit'})+(d.toDateString()===new Date().toDateString()?'':', '+d.toLocaleDateString('en-CA',{month:'short',day:'numeric'})) : '';
     live = open ? `<span><i class="iv-live-dot on"></i>Markets open. Prices update about every 20 minutes${when?`, last at ${when}`:''}</span>`
-                : `<span><i class="iv-live-dot"></i>Markets closed${when?`. Last prices ${when}`:''}. Crypto keeps moving</span>`;
+                : `<span><i class="iv-live-dot"></i>Markets closed${when?`. Last prices ${when}`:''}. Prices update again when markets open</span>`;
   }
   el.innerHTML=(T?`<b class="${T.chg>=0?'up':'down'}">${T.chg>=0?'+':'-'}${fmt(Math.abs(T.chg))} (${T.chg>=0?'+':''}${T.pct.toFixed(2)}%) today</b>`:'')+live;
 }
