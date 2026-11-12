@@ -486,6 +486,22 @@ header{
 .bg-more{border-top:1px solid var(--border2)}
 .bm-idle>summary{cursor:pointer;list-style:none;padding:0.9rem 1rem;font-size:0.86rem;font-weight:600;color:var(--accent,#4ade80);min-height:44px;display:flex;align-items:center}
 .bm-idle>summary::-webkit-details-marker{display:none}
+.hq-fresh .hq-dep,.hq-fresh .hq-stops,.hq-fresh .hq-next-pill{display:none}
+.rvb-wrap{margin-top:1.2rem;background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:0 1.1rem}
+.rvb-wrap>summary{cursor:pointer;list-style:none;padding:1.05rem 0;display:flex;align-items:center;gap:1rem;min-height:44px}
+.rvb-wrap>summary::-webkit-details-marker{display:none}
+.rvb-wrap>summary span{flex:1}
+.rvb-wrap>summary b{display:block;font-size:1rem}
+.rvb-wrap>summary small{display:block;color:var(--muted);font-size:0.84rem;line-height:1.4;margin-top:0.2rem}
+.rvb-wrap>summary::after{content:'Open';font-size:0.82rem;font-weight:700;color:var(--accent,#4ade80)}
+.rvb-wrap[open]>summary::after{content:'Close'}
+.rvb-wrap[open]{padding-bottom:1.1rem}
+.iv-fresh #iv-hero-mini,.iv-fresh #iv-glance,.iv-fresh .iv-tabs,.iv-fresh #grove,.iv-fresh #iv-analysis{display:none}
+.iv-start{margin-top:1rem;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.6rem}
+.iv-start div{background:var(--surface);border:1px solid var(--border2);border-radius:14px;padding:0.85rem 0.9rem;font-size:0.82rem;color:var(--muted);line-height:1.45}
+.iv-start b{display:block;color:var(--text);font-size:0.95rem;margin-bottom:0.2rem}
+.iv-start-note{font-size:0.78rem;color:var(--muted);margin-top:0.7rem}
+@media(max-width:700px){.iv-start{grid-template-columns:1fr}}
 .bg-more>summary{cursor:pointer;list-style:none;padding:0.95rem 1.1rem;font-weight:700;font-size:0.92rem;display:flex;align-items:center;justify-content:space-between;min-height:44px}
 .bg-more>summary::-webkit-details-marker{display:none}
 .bg-more>summary::after{content:'Show';font-size:0.8rem;color:var(--accent,#4ade80);font-weight:600}
@@ -3695,6 +3711,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 .dh:not(.open) .dh-inner{display:none}
 @media (max-width:600px){.dh-body{padding:1.1rem 1rem 1.3rem}.dh-stay{columns:1}.dh-opt-w{display:none}}
 .ds-sos{display:flex;gap:.9rem;align-items:center;flex-wrap:wrap;margin:0;padding:.95rem 1.1rem;background:#1a1416;border-top:1px solid #4a2a2e;border-left:4px solid #f87171;color:#e6d6d8;font-size:.88rem;line-height:1.45}
+.ds-sos[hidden],.dh[hidden]{display:none}
 .ds-sos.v2{background:#1b1812;border-top-color:#4a3a1e;border-left-color:#fbbf24}
 .ds-sos b{color:#fff;display:block;margin-bottom:.1rem}
 .ds-sos button{margin-left:auto;min-height:44px;padding:0 1rem;border-radius:10px;border:1px solid #6b4a4e;background:#2a1d20;color:#fff;font:inherit;font-weight:600;cursor:pointer}
@@ -5025,6 +5042,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
       </div>
     </div>
     <div class="iv-hero-mini" id="iv-hero-mini"></div>
+    <div id="iv-start"></div>
     <div class="iv-glance" id="iv-glance" aria-label="Your grove at a glance"></div>
   </div>
 
@@ -5148,6 +5166,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
   <div id="hq-mount"></div>
   <div class="coach-ask" id="ca-rental" hidden style="margin-top:0.8rem"></div>
 
+  <details class="rvb-wrap" id="rvb-wrap" ontoggle="if(this.open){try{QA.log('rvb_open',{})}catch(e){}}"><summary><span><b>Rent or buy?</b><small>Two quick calculators on Canadian rules: what a rent leaves you, and what owning really costs each month.</small></span></summary>
   <!-- Mode toggle -->
   <div class="rvb-mode-row" id="rvb-mode-row">
     <button class="rvb-mode-btn active" id="rvb-rent-tab" onclick="rvbSetMode('rent')">Should I Rent?</button>
@@ -5293,6 +5312,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
       <button class="rental-ai-btn" onclick="askRentVsBuy()">Should I rent or buy based on my finances?</button>
     </div>
   </div>
+  </details>
 </div>
 
 <!-- ═══════════ ADD VS REPLACE MODAL ═══════════ -->
@@ -10167,6 +10187,15 @@ function renderPortfolio(){
     }
   }
 
+  // Brand-new investors see what each account is for, not a row of zeros
+  { const fresh=!state.portfolio.length && !(state.accounts||[]).length && !(currentUser&&currentUser.isDemo);
+    const pg=document.getElementById('page-investments'); if(pg) pg.classList.toggle('iv-fresh',fresh);
+    const st=document.getElementById('iv-start');
+    if(st) st.innerHTML=fresh?`<div class="iv-start">
+      <div><b>TFSA</b>Money grows tax-free, and you can take it out without paying tax.<br><button type="button" class="grove-btn" style="margin-top:0.6rem" onclick="groveAddAccount('TFSA')">Open a TFSA plot</button></div>
+      <div><b>RRSP</b>What you put in lowers your taxable income. You pay tax when you take it out.<br><button type="button" class="grove-btn" style="margin-top:0.6rem" onclick="groveAddAccount('RRSP')">Open an RRSP plot</button></div>
+      <div><b>FHSA</b>For your first home. Put-ins lower your taxable income, and a first-home withdrawal is tax-free.<br><button type="button" class="grove-btn" style="margin-top:0.6rem" onclick="groveAddAccount('FHSA')">Open an FHSA plot</button></div>
+    </div><div class="iv-start-note">Pick the account you already have. Each one becomes a plot in your money grove. General info only, not advice on what to buy.</div>`:''; }
   // Mini stats
   const miniEl=document.getElementById('iv-hero-mini');
   if(miniEl){
@@ -15138,10 +15167,11 @@ function hqCelebrate(D){
   }
 }
 function hqText(D){
+  { const m=document.getElementById('hq-mount'); if(m) m.classList.toggle('hq-fresh', !D.price); }
   const set=(id,h)=>{ const e=document.getElementById(id); if(e) e.innerHTML=h; };
   const pct=Math.round(D.prog*100), keys=D.stops[7].done;
-  set('hq-big', !D.price ? 'n/a' : keys ? 'Keys ready' : `${pct}%`);
-  set('hq-big-sub', !D.price ? 'Set a target home price to start your road' : keys ? `You can buy your ${fmtW(D.price)} home` : `of the way to your keys on a ${fmtW(D.price)} home`);
+  set('hq-big', !D.price ? 'Pick a price' : keys ? 'Keys ready' : `${pct}%`);
+  set('hq-big-sub', !D.price ? 'Type the home price you want below. Your road and every stop on it appear.' : keys ? `You can buy your ${fmtW(D.price)} home` : `of the way to your keys on a ${fmtW(D.price)} home`);
   set('hq-fhsa', D.hasFhsa ? `<b>${fmtW(D.fhsa)}</b><small>from your Investments page</small>` : `<b>$0</b><small>Add an FHSA on Investments</small>`);
   const n=D.next;
   set('hq-next-pill', !D.price ? '' : keys ? '<span class="hq-np done">At the front door</span>' : `<span class="hq-np"><small>Next stop</small>${n.short}</span>`);
