@@ -3500,6 +3500,41 @@ details.iv-acct[open] .iv-acct-chev{transform:rotate(180deg)}
 .bm-goal-tools{display:flex;flex-wrap:wrap;gap:0.5rem;margin:0.2rem 0 0.8rem}
 .bm-goal-tools button{min-height:38px;padding:0 0.85rem;border-radius:999px;border:1px solid rgba(74,222,128,0.45);background:transparent;color:#4ade80;font:inherit;font-size:0.84rem;font-weight:600;cursor:pointer}
 
+/* ── Today, this week, last month ── */
+#page-monthly #bm-streak{display:none}
+.bm-today{display:flex;flex-wrap:wrap;align-items:center;gap:0.7rem 1rem;background:var(--card);border:1px solid var(--border);border-radius:16px;padding:0.9rem 1rem;margin-bottom:1rem}
+.bm-today.done{padding:0.65rem 1rem}
+.bmt-flame{width:40px;height:40px;border-radius:12px;display:grid;place-items:center;background:rgba(251,146,60,0.12);color:#fb923c;flex:none}
+.bmt-flame.off{background:rgba(255,255,255,0.05);color:var(--muted)}
+.bmt-main{flex:1;min-width:180px}
+.bmt-main b{font-family:var(--font-display);font-size:1.05rem}
+.bmt-main div{font-size:0.86rem;color:var(--muted);margin-top:0.1rem}
+.bmt-acts{display:flex;flex-wrap:wrap;gap:0.45rem}
+.bmt-acts button{min-height:42px;padding:0 0.95rem;border-radius:12px;font:inherit;font-size:0.88rem;font-weight:700;cursor:pointer}
+.bmt-acts .pri{border:0;background:var(--green);color:#06140b}.bmt-acts .sec{border:1px solid var(--border);background:transparent;color:var(--text)}
+.bmt-catch{flex-basis:100%;display:flex;flex-wrap:wrap;align-items:center;gap:0.45rem;padding-top:0.7rem;border-top:1px solid var(--border);font-size:0.86rem;color:var(--muted)}
+.bmt-catch button{min-height:36px;padding:0 0.8rem;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text);font:inherit;font-size:0.84rem;font-weight:600;cursor:pointer}
+.bmt-shield{display:inline-flex;align-items:center;gap:0.25rem;font-size:0.78rem;color:#93c5fd;margin-left:0.35rem}
+.bm-week{background:linear-gradient(0deg,var(--card),var(--card));border:1px solid rgba(96,165,250,0.35);border-radius:16px;padding:1rem 1.1rem;margin-bottom:1rem}
+.bm-week h4{margin:0 0 0.4rem;font-family:var(--font-display);font-size:1.02rem}
+.bm-week p{margin:0.2rem 0;font-size:0.9rem;color:var(--muted);line-height:1.45}.bm-week p b{color:var(--text);font-variant-numeric:tabular-nums}
+.bm-week .r{display:flex;flex-wrap:wrap;gap:0.45rem;margin-top:0.75rem}
+.bm-week button{min-height:40px;padding:0 0.9rem;border-radius:10px;font:inherit;font-size:0.86rem;font-weight:700;cursor:pointer;border:1px solid var(--border);background:transparent;color:var(--text)}
+.bm-week button.pri{border:0;background:#60a5fa;color:#071426}
+.bmh-hist{margin-top:0.9rem}
+.bmh-hist-l{font-size:0.78rem;color:var(--muted);margin-bottom:0.35rem}
+.bmh-hist-bars{position:relative;display:flex;align-items:flex-end;gap:6px;height:56px}
+.bmh-hist-bars div{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:3px;font-size:0.66rem;color:var(--muted)}
+.bmh-hist-bars i{display:block;width:100%;max-width:38px;border-radius:4px 4px 2px 2px;background:#64748b}
+.bmh-hist-bars i.ok{background:rgba(74,222,128,0.75)}.bmh-hist-bars i.ov{background:rgba(248,113,113,0.8)}.bmh-hist-bars i.now{background:repeating-linear-gradient(135deg,rgba(203,213,225,0.8) 0 3px,rgba(203,213,225,0.35) 3px 6px)}
+.wrap-hero{display:flex;align-items:center;gap:1rem;padding:1.2rem 1.2rem 0.4rem}
+.wrap-hero canvas{width:64px;height:72px;flex:none}
+.wrap-hero h3{margin:0;font-family:var(--font-display);font-size:1.45rem;letter-spacing:-0.02em}
+.wrap-hero p{margin:0.25rem 0 0;color:var(--muted);font-size:0.9rem}
+.wrap-list{padding:0.4rem 1.2rem 0.8rem}
+.wrap-list div{display:flex;justify-content:space-between;gap:1rem;padding:0.55rem 0;border-top:1px solid var(--border);font-size:0.92rem}
+.wrap-list span{color:var(--muted)}.wrap-list b{font-variant-numeric:tabular-nums;text-align:right}
+
 /* ═══ Dark (black + green) adjustments ═══ */
 /* Text on bright fills is dark, like the original Q icon */
 .btn,.bm-log-btn,.bm-save-btn,.jc-btn,.ob-fi-btn,.ob-primary-btn,.auth-btn,.tos-accept-btn,.modal-submit,.paywall-btn,.pp-footer-btn,.ai-send,
@@ -4660,6 +4695,8 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
   <!-- This month: one sentence, one money bar, a strip of days -->
   <div class="bm-status" id="bm-status"></div>
   <div class="bm-pace" id="bm-pace"></div>
+  <div id="bm-week"></div>
+  <div id="bm-today"></div>
   <div class="coach-ask" id="ca-monthly" hidden></div>
 
   <!-- Quick log expense (the daily action, up top) -->
@@ -5727,6 +5764,15 @@ function checkAndRollover(){
     if(tier){ g.trophies=(g.trophies||[]).filter(t=>t.mk!==lastKey); g.trophies.push({mk:lastKey, tier}); g.xp=(g.xp||0)+({gold:150,silver:100,bronze:50}[tier]);
       trophyMsg=` You earned a ${tier} trophy for ${archiveMonthName}.`; }
   }catch(e){}
+  // A wrap-up of the month that just ended, shown once the next time the budget opens
+  try{
+    const S=bgMonthStats(), byCat={};
+    (state.expenses||[]).forEach(e=>{ byCat[e.cat]=(byCat[e.cat]||0)+e.actual; });
+    const pm=(archiveMonthIdx+11)%12, py=archiveMonthIdx===0?archiveYear-1:archiveYear;
+    const prevTe=(state.yearly||[]).filter(r=>r.type==='Expense' && (r.year||py)===py).reduce((t,r)=>t+(+(r.monthly||[])[pm]||0),0);
+    const tier=((state.bgame||{}).trophies||[]).find(t=>t.mk===lastKey)?.tier||null;
+    state.wrap={mk:lastKey, name:archiveMonthName, next:nowName0(now), te:S.te, tg:S.tg, ti:S.ti, net:S.net, sr:S.sr, tier, top:Object.entries(byCat).sort((a,b)=>b[1]-a[1]).slice(0,3), prevTe, n:S.expCount, streak:state.longestStreak||0, seen:false};
+  }catch(e){}
   // Reset monthly income and expenses, keep budget goals. Income marked "every month" carries over.
   const carried = state.income.filter(x=>x.rec!==false).map(x=>({name:x.name, actual:x.actual, rec:true}));
   state.income    = carried;
@@ -6584,11 +6630,17 @@ function recordActivity(){
   const today=todayStr();
   const last=state.lastActivityDate;
   if(last===today) return; // already counted today
-  if(last && dayDiff(last,today)===1){
+  const gap = last ? dayDiff(last,today) : 99, missed=gap-1, sh=state.shields||0;
+  if(last && gap===1){
     state.streakCount=(state.streakCount||0)+1;   // consecutive day
+  } else if(last && missed>=1 && missed<=sh && (state.streakCount||0)>0){
+    state.shields=sh-missed; state.streakCount=(state.streakCount||0)+1;  // a shield covered the missed day(s)
+    setTimeout(()=>showToast(`<strong>${missed===1?'A streak shield':'Two streak shields'} saved your ${state.streakCount-1}-day streak.</strong> ${state.shields?`You have ${state.shields} left.`:'Log 7 days in a row to earn another.'}`),2600);
   } else {
     state.streakCount=1;                          // streak reset / first ever
   }
+  if(state.streakCount>0 && state.streakCount%7===0 && (state.shields||0)<2){ state.shields=(state.shields||0)+1;
+    setTimeout(()=>showToast(`<strong>You earned a streak shield.</strong> If you miss a day, it keeps your streak alive. You have ${state.shields}.`),1400); }
   state.lastActivityDate=today;
   if(state.streakCount>(state.longestStreak||0)) state.longestStreak=state.streakCount;
   checkStreakMilestone();
@@ -6615,6 +6667,7 @@ function currentStreak(){
   if(!state.lastActivityDate) return 0;
   const gap=dayDiff(state.lastActivityDate, todayStr());
   if(gap<=1) return state.streakCount||0; // today or yesterday still alive
+  if(gap-2 < (state.shields||0)) return state.streakCount||0; // a shield will cover the gap when they log today
   return 0; // missed a day broken
 }
 function loggedToday(){
@@ -7776,6 +7829,7 @@ function renderMonthly(){
 
   try{ bmPaceRender(ti,te,tg,fresh); }catch(e){ console.warn('pace',e); }
   try{ qlChipsRender(); if(!document.getElementById('ql-in')?.value) qlPreview(); bmGoalToolsRender(); }catch(e){ console.warn('quick log',e); }
+  try{ bmTodayRender(); bmWeekRender(); bmWrapMaybe(); }catch(e){ console.warn('retention',e); }
   try{ bmBillsRender(); }catch(e){ console.warn('bills',e); }
   try{ const dl=document.getElementById('exp-names'); if(dl){ const names=[...new Set([...(state.expenses||[]).map(x=>x.name), ...(state.bills||[]).map(x=>x.name)].filter(Boolean))].slice(-40); dl.innerHTML=names.map(n=>`<option value="${escHtml(n)}"></option>`).join(''); } }catch(e){}
   if(window._bmFlash){ const c=window._bmFlash; window._bmFlash=null; setTimeout(()=>{ const el=[...document.querySelectorAll('#expense-cats .bm-cat')].find(x=>x.getAttribute('data-cat')===c); if(el){ el.classList.remove('bm-hit'); void el.offsetWidth; el.classList.add('bm-hit'); } },30); }
@@ -7893,6 +7947,7 @@ function renderMonthly(){
 // Budget page collapse toggles
 window._bmOpenCats = window._bmOpenCats || {};
 // ── Budget helpers: dates, undo, monthly bills, spending pace ──
+function nowName0(key){ try{ return MONTH_NAMES[monthIndexFromKey(key)]; }catch(e){ return ''; } }
 function bmToday(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 function bmDayLabel(iso){ const t=bmToday(); if(iso===t) return 'Today'; const y=new Date(); y.setDate(y.getDate()-1);
   const ys=y.getFullYear()+'-'+String(y.getMonth()+1).padStart(2,'0')+'-'+String(y.getDate()).padStart(2,'0'); if(iso===ys) return 'Yesterday';
@@ -7989,6 +8044,7 @@ function bmHeroHtml(ti,te,tg,net,sr){
   const paceLine = per>0 ? `<div class="bmh-pace" style="bottom:${(per/maxv*100).toFixed(1)}%"><span>Plan: ${fmtW(per)} a day</span></div>` : '';
   const cap = !dated ? 'Each day fills in as you log everyday spending.' : undated ? 'Expenses logged before dates were added are not shown by day.' : 'Everyday spending per day. Rent, bills and debt payments are left out.';
   const total=byDay.reduce((a,b)=>a+b,0);
+  const hist=bmHistHtml(te,tg);
   return `
     <div class="bmh-month">${month} so far</div>
     <div class="bmh-line${over?' over':''}">${line}</div>
@@ -7998,7 +8054,7 @@ function bmHeroHtml(ti,te,tg,net,sr){
     <div class="bmh-days" role="img" aria-label="Everyday spending each day this ${month}: ${fmtW(total)} so far${per>0?`, about ${fmtW(per)} a day planned`:''}">${cols}${paceLine}</div>
     <div class="bmh-dnums" aria-hidden="true">${nums}</div>
     <div class="bmh-cap">${cap}</div>
-    <div class="bmh-foot"><span>Income <b>${ti>0?fmtW(ti):'not added yet'}</b></span><span>Net saved <b class="${ti>0?(net>=0?'pos':'neg'):''}">${ti>0?fmtW(net):'n/a'}</b>${ti>0?`, a ${sr}% savings rate`:''}</span></div>`;
+    <div class="bmh-foot"><span>Income <b>${ti>0?fmtW(ti):'not added yet'}</b></span><span>Net saved <b class="${ti>0?(net>=0?'pos':'neg'):''}">${ti>0?fmtW(net):'n/a'}</b>${ti>0?`, a ${sr}% savings rate`:''}</span></div>${hist}`;
 }
 function bmPaceRender(ti,te,tg,fresh){
   const el=document.getElementById('bm-pace'); if(!el) return;
@@ -8056,7 +8112,7 @@ function qlPreview(){
   if(!_ql.picked) _ql.cat=qlGuess(P.name||'');
   const opts=qlCats().map(c=>`<option${c===_ql.cat?' selected':''}>${escHtml(c)}</option>`).join('');
   el.innerHTML = P.amt>0
-    ? `Logs <b>${fmtC(P.amt)}</b>${P.name?` for <b>${escHtml(P.name)}</b>`:''} in <select id="ql-cat" aria-label="Category" onchange="_ql.cat=this.value;_ql.picked=true">${opts}</select>`
+    ? `Logs <b>${fmtC(P.amt)}</b>${_ql.d?` for <b>${bmDayLabel(_ql.d).toLowerCase()}</b>`:''}${P.name?` for <b>${escHtml(P.name)}</b>`:''} in <select id="ql-cat" aria-label="Category" onchange="_ql.cat=this.value;_ql.picked=true">${opts}</select>`
     : `<span>Add the amount, like <b>${escHtml(P.name||'coffee')} 4.50</b>.</span>`;
 }
 function qlSubmit(){
@@ -8064,8 +8120,8 @@ function qlSubmit(){
   if(!P || !(P.amt>0)){ const el=document.getElementById('ql-prev'); if(el) el.innerHTML=`<span class="err">Add how much it was, for example <b>${escHtml((P&&P.name)||'coffee')} 4.50</b>.</span>`; inp&&inp.focus(); return; }
   const cat=_ql.cat||qlGuess(P.name||''), name=P.name||cat;
   if(_ql.picked && P.name){ (state.catMap=state.catMap||{})[qlKey(P.name)]=cat; }
-  inp.value=''; _ql.picked=false; _ql.cat=null;
-  bmLog(cat,name,P.amt,'quick');
+  const day=_ql.d||null; inp.value=''; _ql.picked=false; _ql.cat=null; _ql.d=null; inp.placeholder='Coffee 4.50';
+  bmLog(cat,name,P.amt,day?'catchup':'quick',day);
   inp.focus();
 }
 function qlRemember(name,cat,amt){
@@ -8086,12 +8142,13 @@ function qlChipsRender(){
 }
 function qlRepeat(i){ const h=(state.qlHist||[])[i]; if(!h) return; bmLog(h.cat,h.name,h.amt,'chip'); }
 // one place every quick entry goes through: saves, remembers, celebrates, offers undo
-function bmLog(cat,name,amt,src){
+function bmLog(cat,name,amt,src,day){
   amt=Math.round((+amt||0)*100)/100; if(!(amt>0)) return null;
-  const snap=bmSnap();
-  const e={cat,name,actual:amt,d:bmToday()}; state.expenses.push(e); qlRemember(name,cat,amt);
+  const snap=bmSnap(), d=day||bmToday();
+  const e={cat,name,actual:amt,d}; state.expenses.push(e); qlRemember(name,cat,amt);
   window._bmFlash=cat; _bg.walkTo=cat;
-  recordActivity(); try{ checkJourneyMilestone(); }catch(_){}
+  if(d===bmToday()) recordActivity(); else bmCreditDay(d);
+  try{ checkJourneyMilestone(); }catch(_){}
   save(); renderMonthly(); try{ renderDashboard(); }catch(_){}
   try{ QA.log('bm_log',{src}); }catch(_){}
   const j=(bgMonthStats().jars||[]).find(x=>x.cat===cat);
@@ -8237,6 +8294,104 @@ function impGo(){
   recordActivity(); impClose(); save(); renderMonthly(); try{ renderDashboard(); }catch(e){}
   bmUndoOffer(`<strong>Imported ${on.length} purchase${on.length===1?'':'s'}</strong> (${fmt(on.reduce((t,x)=>t+x.amt,0))}).`, snap);
 }
+
+// ══ Coming back: today, this week, last month ══
+function bmYesterday(){ const y=new Date(); y.setDate(y.getDate()-1); return y.getFullYear()+'-'+String(y.getMonth()+1).padStart(2,'0')+'-'+String(y.getDate()).padStart(2,'0'); }
+function bmDayHasLog(d){ return (state.expenses||[]).some(e=>e.d===d) || (state.noSpendDays||[]).includes(d); }
+// counting a day you fill in late (only ever yesterday) toward your streak
+function bmCreditDay(d){
+  ensureEngagementFields(); const last=state.lastActivityDate, today=todayStr();
+  if(d!==bmYesterday() || last===d || last===today) return;
+  state.streakCount = last && dayDiff(last,d)===1 ? (state.streakCount||0)+1 : 1;
+  state.lastActivityDate=d; if(state.streakCount>(state.longestStreak||0)) state.longestStreak=state.streakCount;
+}
+function bmNoSpend(which){
+  if(which==='yesterday'){ const y=bmYesterday(); if(!state.noSpendDays.includes(y)) state.noSpendDays.push(y); bmCreditDay(y);
+    try{ QA.log('bm_catchup',{kind:'nospend'}); }catch(e){} save(); renderStreak(); renderMonthly(); showToast('<strong>Yesterday is filled in.</strong> A day with no spending counts too.'); return; }
+  try{ QA.log('bm_nospend',{}); }catch(e){}
+  _bg.cheer=1; markNoSpendDay(); renderMonthly();
+}
+function bmLogFor(which){
+  const inp=document.getElementById('ql-in'); if(!inp) return;
+  _ql.d = which==='yesterday' ? bmYesterday() : null;
+  inp.placeholder = which==='yesterday' ? 'What did you spend yesterday? Coffee 4.50' : 'Coffee 4.50';
+  inp.scrollIntoView({block:'center',behavior:'smooth'}); setTimeout(()=>inp.focus(),250); qlPreview();
+}
+function bmTodayRender(){
+  const el=document.getElementById('bm-today'); if(!el) return;
+  ensureEngagementFields();
+  const s=currentStreak(), sh=state.shields||0, today=todayStr(), y=bmYesterday(), logged=loggedToday();
+  const shield=sh?`<span class="bmt-shield" title="Streak shields keep your streak alive if you miss a day"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2 4 5v6c0 5 3.4 9.4 8 11 4.6-1.6 8-6 8-11V5z"/></svg>${sh} shield${sh===1?'':'s'}</span>`:'';
+  const flame=`<div class="bmt-flame${s?'':' off'}" aria-hidden="true"><svg width="22" height="22" viewBox="0 0 24 24"><path fill="currentColor" d="M12.6 2.2c.4 3-1 4.7-2.5 6.4C8.6 10.3 7 12 7 14.8 7 18 9.3 21 12.2 21c3.2 0 5.3-2.6 5.3-5.8 0-2.4-1.1-4-2.2-5.3-.2 1.2-.8 2.2-1.7 2.8.5-3.6-.3-7.3-1-9.5z"/></svg></div>`;
+  // yesterday can be filled in late, if the month has started and the account existed then
+  const startD=currentUser&&currentUser.createdAt?String(currentUser.createdAt).slice(0,10):'';
+  const canCatch = !currentUser?.isDemo && !bmDayHasLog(y) && y.slice(0,7)===today.slice(0,7) && (!startD || y>=startD) && (state.expenses||[]).length+(state.noSpendDays||[]).length>0;
+  if(logged && !canCatch){
+    el.innerHTML=`<div class="bm-today done">${flame}<div class="bmt-main"><b>${s} day streak</b>${shield}<div>Today is counted.${state.longestStreak>s?` Your best is ${state.longestStreak}.`:''}</div></div></div>`; return; }
+  el.innerHTML=`<div class="bm-today">${flame}
+    <div class="bmt-main"><b>${logged?`${s} day streak`:s?`Keep your ${s} day streak`:'Start a streak today'}</b>${shield}<div>${logged?'Today is counted.':'Nothing logged today yet. Even a day with no spending counts.'}</div></div>
+    ${logged?'':`<div class="bmt-acts"><button type="button" class="pri" onclick="bmNoSpend()">I spent nothing today</button><button type="button" class="sec" onclick="bmLogFor('today')">Log something</button></div>`}
+    ${canCatch?`<div class="bmt-catch"><span>Yesterday is empty.</span><button type="button" onclick="bmNoSpend('yesterday')">Nothing yesterday</button><button type="button" onclick="bmLogFor('yesterday')">Log for yesterday</button></div>`:''}
+  </div>`;
+}
+// last week in four lines, once a week
+function bmWeekRange(){ const n=new Date(); n.setHours(12,0,0,0); const mon=new Date(n); mon.setDate(n.getDate()-((n.getDay()+6)%7)); const a=new Date(mon); a.setDate(mon.getDate()-7); const b=new Date(mon); b.setDate(mon.getDate()-1);
+  const iso=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); return {a:iso(a), b:iso(b), A:a, B:b}; }
+function bmWeekRender(){
+  const el=document.getElementById('bm-week'); if(!el) return;
+  const W=bmWeekRange(); if(state.weekSeen===W.a){ el.innerHTML=''; return; }
+  const inW=d=>d && d>=W.a && d<=W.b, ev=(state.expenses||[]).filter(e=>inW(e.d) && !BM_FIXED.test(e.cat));
+  const days=new Set([...(state.expenses||[]).filter(e=>inW(e.d)).map(e=>e.d), ...(state.noSpendDays||[]).filter(inW)]).size;
+  if(!days){ el.innerHTML=''; return; }
+  const tot=ev.reduce((t,e)=>t+e.actual,0), byCat={}; ev.forEach(e=>{ byCat[e.cat]=(byCat[e.cat]||0)+e.actual; });
+  const big=Object.entries(byCat).sort((a,b)=>b[1]-a[1])[0];
+  const n=new Date(), dim=new Date(n.getFullYear(),n.getMonth()+1,0).getDate(); let evGoal=0; (state.budgets||[]).forEach(b=>{ if(b.goal>0 && !BM_FIXED.test(b.cat)) evGoal+=b.goal; });
+  const plan=evGoal/dim*7, diff=tot-plan;
+  const fmtD=d=>d.toLocaleDateString('en-CA',{month:'short',day:'numeric'});
+  el.innerHTML=`<div class="bm-week" role="region" aria-label="Last week">
+    <h4>Your week, ${fmtD(W.A)} to ${fmtD(W.B)}</h4>
+    <p><b>${fmtW(tot)}</b> on everyday spending, about ${fmtC(tot/7)} a day.${evGoal>0?` ${Math.abs(diff)<5?'Right on your plan.':diff>0?`That is <b>${fmtW(diff)} over</b> your plan of ${fmtW(plan)}.`:`That is <b>${fmtW(-diff)} under</b> your plan of ${fmtW(plan)}.`}`:''}</p>
+    <p>You checked in on <b>${days} of 7</b> days.${big?` Most went to ${escHtml(big[0])} (${fmtW(big[1])}).`:''}</p>
+    <div class="r"><button type="button" class="pri" onclick="bmWeekDone()">Got it</button>${typeof coachAllowed==='function'&&coachAllowed()?`<button type="button" onclick="bmWeekDone(true)">Ask the coach about my week</button>`:''}</div></div>`;
+}
+function bmWeekDone(ask){ state.weekSeen=bmWeekRange().a; try{ QA.log('bm_week',{ask:!!ask}); }catch(e){} save(); bmWeekRender();
+  if(ask) askCoach('Look at what I spent last week compared with my plan. In plain words, what went well and what is one thing to change this week?','week'); }
+// a few months side by side, so this month has a story
+function bmHistHtml(te,tg){
+  const n=new Date(), cols=[];
+  for(let i=5;i>=1;i--){ const d=new Date(n.getFullYear(),n.getMonth()-i,1), y=d.getFullYear(), m=d.getMonth();
+    const v=(state.yearly||[]).filter(r=>r.type==='Expense' && (r.year||n.getFullYear())===y).reduce((t,r)=>t+(+(r.monthly||[])[m]||0),0);
+    if(v>0) cols.push({l:d.toLocaleDateString('en-CA',{month:'short'}), v}); }
+  if(!cols.length) return '';
+  cols.push({l:'Now', v:te, now:true});
+  const max=Math.max(tg, ...cols.map(c=>c.v), 1);
+  return `<div class="bmh-hist"><div class="bmh-hist-l">Your months${tg>0?`, against goals of ${fmtW(tg)}`:''}</div>
+    <div class="bmh-hist-bars" role="img" aria-label="${cols.map(c=>`${c.l}: ${fmtW(c.v)}`).join(', ')}">${cols.map(c=>`<div title="${c.l}: ${fmtW(c.v)}"><i class="${c.now?'now':tg>0?(c.v<=tg?'ok':'ov'):''}" style="height:${Math.max(4,c.v/max*40).toFixed(1)}px"></i>${c.l}</div>`).join('')}</div></div>`;
+}
+// month wrap-up
+function bmWrapMaybe(){ const w=state.wrap; if(!w || w.seen || window._lpSandbox || !currentUser || currentUser.isDemo || document.getElementById('wrap-ov') || window._wrapShown) return; window._wrapShown=true; setTimeout(bmWrapShow, 900); }
+function bmWrapShow(){
+  const w=state.wrap; if(!w) return;
+  document.getElementById('wrap-ov')?.remove();
+  const ov=document.createElement('div'); ov.className='imp-ov'; ov.id='wrap-ov';
+  const vs = w.prevTe>0 ? (w.te<=w.prevTe?`${fmtW(w.prevTe-w.te)} less than the month before`:`${fmtW(w.te-w.prevTe)} more than the month before`) : '';
+  const head = w.tier ? `You earned a ${w.tier} trophy.` : w.tg>0 && w.te>w.tg ? 'A tough one. Next month starts fresh.' : 'Here is how it went.';
+  ov.innerHTML=`<div class="imp-box" role="dialog" aria-modal="true" aria-labelledby="wrap-t">
+    <div class="wrap-hero"><canvas id="wrap-cv" width="128" height="144" aria-hidden="true"></canvas><div><h3 id="wrap-t">${escHtml(w.name)}, wrapped</h3><p>${head}</p></div></div>
+    <div class="wrap-list">
+      <div><span>Spent</span><b>${fmtW(w.te)}${w.tg>0?` of ${fmtW(w.tg)}`:''}</b></div>
+      ${w.ti>0?`<div><span>${w.net>=0?'Saved':'Spent more than you earned'}</span><b>${fmtW(Math.abs(w.net))}${w.net>=0?`, ${Math.round(w.sr*100)}% of income`:''}</b></div>`:''}
+      ${w.top.length?`<div><span>Most went to</span><b>${w.top.map(([c,v])=>`${escHtml(bgShort(c))} ${fmtW(v)}`).join(', ')}</b></div>`:''}
+      ${vs?`<div><span>Compared with before</span><b>${vs}</b></div>`:''}
+      <div><span>Things logged</span><b>${w.n}</b></div>
+    </div>
+    <div class="imp-foot"><button type="button" class="x" onclick="bmWrapClose(true)">Adjust my goals</button><button type="button" class="go" onclick="bmWrapClose()">Keep my goals for ${escHtml(w.next||'this month')}</button></div></div>`;
+  document.body.appendChild(ov);
+  try{ const c=document.getElementById('wrap-cv').getContext('2d'); c.scale(2,2); if(w.tier) bgCup(c,32,66,3.4,w.tier); else document.getElementById('wrap-cv').style.display='none'; }catch(e){}
+  try{ QA.log('bm_wrap',{tier:w.tier||''}); }catch(e){}
+}
+function bmWrapClose(adjust){ if(state.wrap) state.wrap.seen=true; save(); document.getElementById('wrap-ov')?.remove();
+  if(adjust){ const st=document.getElementById('bm-setup'); if(st){ st.classList.add('open'); st.scrollIntoView({behavior:'smooth',block:'start'}); } } }
 
 function toggleBudgetCat(el){
   const card=el.closest('.bm-cat');
