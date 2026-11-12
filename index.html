@@ -3448,6 +3448,58 @@ details.iv-acct[open] .iv-acct-chev{transform:rotate(180deg)}
 .bm-cat-tick{position:absolute;top:-3px;bottom:-3px;width:2px;margin-left:-1px;background:rgba(232,237,248,0.75);border-radius:1px;pointer-events:none}
 @media(max-width:640px){.bmh-line{font-size:2rem}.bmh-days{height:70px;gap:2px}.bmh-dnums{gap:2px}#bm-status.bmh-wrap{padding:1.1rem 1rem 1rem}}
 
+/* ── Quick log: one line, one tap ── */
+.ql-row{display:flex;gap:0.5rem}
+.ql-in{flex:1;min-width:0;min-height:52px;font:inherit;font-size:1.08rem;padding:0 1rem;border-radius:12px;border:1px solid var(--border);background:var(--card2);color:var(--text)}
+.ql-in:focus{outline:2px solid rgba(74,222,128,0.55);outline-offset:1px;border-color:transparent}
+.ql-go{min-height:52px;min-width:76px;border:0;border-radius:12px;background:var(--green);color:#06140b;font:inherit;font-weight:800;font-size:1rem;cursor:pointer}
+.ql-prev{display:flex;flex-wrap:wrap;align-items:center;gap:0.4rem;min-height:2.1rem;margin-top:0.55rem;font-size:0.9rem;color:var(--muted)}
+.ql-prev b{color:var(--text);font-variant-numeric:tabular-nums}
+.ql-prev select{font:inherit;font-size:0.86rem;color:var(--text);background:var(--card2);border:1px solid var(--border);border-radius:8px;padding:0.3rem 0.5rem;min-height:34px}
+.ql-prev .err{color:var(--red)}
+.ql-chips{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.35rem}
+.ql-chip{display:inline-flex;align-items:center;gap:0.4rem;min-height:40px;padding:0 0.85rem;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--text);font:inherit;font-size:0.86rem;cursor:pointer}
+.ql-chip b{color:var(--muted);font-weight:600;font-variant-numeric:tabular-nums}
+.ql-chip:hover,.ql-chip:focus-visible{border-color:var(--green)}
+.ql-chip:active{transform:scale(0.97)}
+.ql-tools{display:flex;flex-wrap:wrap;gap:0.4rem 1.2rem;margin-top:0.9rem;padding-top:0.8rem;border-top:1px solid var(--border)}
+.ql-link{background:none;border:0;padding:0.35rem 0;color:var(--green);font:inherit;font-size:0.88rem;font-weight:600;cursor:pointer;min-height:36px}
+.ql-more>summary{list-style:none;cursor:pointer;color:var(--muted);font-size:0.88rem;font-weight:600;padding:0.35rem 0;min-height:36px;display:flex;align-items:center}
+.ql-more>summary::-webkit-details-marker{display:none}
+.ql-more[open]>summary{color:var(--text);margin-bottom:0.6rem}
+.ql-more-wrap{flex-basis:100%}
+.ql-lab{font-size:0.8rem;color:var(--muted);margin:0.9rem 0 0.15rem}
+/* jar popover */
+.bg-pop{position:absolute;z-index:5;width:min(280px,calc(100% - 16px));background:#f8fafc;color:#0f172a;border-radius:14px;padding:0.85rem;box-shadow:0 10px 30px rgba(0,0,0,0.45)}
+.bg-pop h4{margin:0;font-size:0.98rem}.bg-pop p{margin:0.15rem 0 0.6rem;font-size:0.82rem;color:#475569}
+.bg-pop input{width:100%;box-sizing:border-box;min-height:44px;border:1px solid #cbd5e1;border-radius:10px;padding:0 0.7rem;font:inherit;font-size:1rem;margin-bottom:0.45rem;color:#0f172a;background:#fff}
+.bg-pop .r{display:flex;gap:0.45rem}.bg-pop button{min-height:44px;border-radius:10px;font:inherit;font-weight:700;cursor:pointer}
+.bg-pop .go{flex:1;border:0;background:#16a34a;color:#fff}.bg-pop .x{border:1px solid #cbd5e1;background:#fff;color:#334155;padding:0 0.8rem}
+.bg-pop .er{color:#dc2626;font-size:0.8rem;min-height:1em;margin-bottom:0.3rem}
+/* import review */
+.imp-ov{position:fixed;inset:0;z-index:600;background:rgba(5,7,10,0.72);display:flex;align-items:flex-end;justify-content:center}
+@media(min-width:700px){.imp-ov{align-items:center}}
+.imp-box{background:var(--card);border:1px solid var(--border);border-radius:18px 18px 0 0;width:min(720px,100%);max-height:88dvh;display:flex;flex-direction:column}
+@media(min-width:700px){.imp-box{border-radius:18px}}
+.imp-head{padding:1.1rem 1.2rem 0.6rem}.imp-head h3{margin:0;font-family:var(--font-display);font-size:1.25rem}.imp-head p{margin:0.3rem 0 0;color:var(--muted);font-size:0.86rem;line-height:1.45}
+.imp-list{overflow:auto;padding:0 1.2rem;flex:1}
+.imp-row{display:grid;grid-template-columns:24px 1fr auto;gap:0.3rem 0.7rem;align-items:center;padding:0.6rem 0;border-top:1px solid var(--border)}
+.imp-row input[type=checkbox]{width:20px;height:20px;accent-color:#4ade80}
+.imp-row .n{font-size:0.9rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.imp-row .n small{display:block;color:var(--muted);font-size:0.74rem}
+.imp-row .a{font-variant-numeric:tabular-nums;font-weight:600}
+.imp-row select{grid-column:2/4;font:inherit;font-size:0.84rem;background:var(--card2);color:var(--text);border:1px solid var(--border);border-radius:8px;padding:0.3rem 0.5rem;min-height:34px}
+.imp-row.off .n,.imp-row.off .a{opacity:0.45}
+.imp-foot{display:flex;gap:0.6rem;justify-content:flex-end;padding:0.9rem 1.2rem;border-top:1px solid var(--border)}
+.imp-foot button{min-height:46px;padding:0 1.1rem;border-radius:12px;font:inherit;font-weight:700;cursor:pointer}
+.imp-foot .go{border:0;background:var(--green);color:#06140b}.imp-foot .x{background:transparent;border:1px solid var(--border);color:var(--text)}
+/* bill row controls */
+.bm-bill-meta{display:flex;align-items:center;gap:0.35rem;margin-top:0.2rem;font-size:0.74rem;color:var(--muted)}
+.bm-bill-meta select{font:inherit;font-size:0.74rem;background:transparent;color:var(--muted);border:1px solid var(--border);border-radius:6px;padding:0.05rem 0.2rem;min-height:26px}
+.bm-bill-auto{font:inherit;font-size:0.72rem;font-weight:700;border-radius:999px;padding:0.1rem 0.55rem;min-height:26px;cursor:pointer;background:transparent;border:1px solid var(--border);color:var(--muted)}
+.bm-bill-auto.on{border-color:rgba(74,222,128,0.5);color:#4ade80}
+.bm-goal-tools{display:flex;flex-wrap:wrap;gap:0.5rem;margin:0.2rem 0 0.8rem}
+.bm-goal-tools button{min-height:38px;padding:0 0.85rem;border-radius:999px;border:1px solid rgba(74,222,128,0.45);background:transparent;color:#4ade80;font:inherit;font-size:0.84rem;font-weight:600;cursor:pointer}
+
 /* ═══ Dark (black + green) adjustments ═══ */
 /* Text on bright fills is dark, like the original Q icon */
 .btn,.bm-log-btn,.bm-save-btn,.jc-btn,.ob-fi-btn,.ob-primary-btn,.auth-btn,.tos-accept-btn,.modal-submit,.paywall-btn,.pp-footer-btn,.ai-send,
@@ -4612,9 +4664,20 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 
   <!-- Quick log expense (the daily action, up top) -->
   <div class="bm-log-card">
-    <div class="bm-section-head" style="margin-bottom:0.9rem">
-      <div class="bm-section-title">Log an expense</div>
+    <div class="bm-section-head" style="margin-bottom:0.7rem">
+      <div class="bm-section-title">Log spending</div>
     </div>
+    <div class="ql-row">
+      <input id="ql-in" class="ql-in" placeholder="Coffee 4.50" autocomplete="off" enterkeyhint="done" aria-label="What did you spend? Type what it was and the amount" oninput="qlPreview()" onkeydown="if(event.key==='Enter'){event.preventDefault();qlSubmit();}">
+      <button type="button" class="ql-go" onclick="qlSubmit()">Log</button>
+    </div>
+    <div class="ql-prev" id="ql-prev" aria-live="polite"></div>
+    <div class="ql-lab" id="ql-lab" hidden>Log again in one tap</div>
+    <div class="ql-chips" id="ql-chips"></div>
+    <div class="ql-tools">
+      <button type="button" class="ql-link" onclick="impOpen()">Import from your bank (CSV file)</button>
+      <input type="file" id="imp-file" accept=".csv,text/csv" hidden onchange="impFile(this)">
+      <details class="ql-more ql-more-wrap" id="ql-more"><summary>More options: card, debt payment, monthly bill</summary>
     <div class="bm-log-row">
       <div class="bm-field">
         <label>Category</label>
@@ -4651,6 +4714,8 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
         <button class="btn-ghost" style="font-size:0.8rem;padding:0.4rem 0.8rem" onclick="addExpenseWithCC()">Confirm &amp; Log</button>
         <button onclick="toggleExpCC()" class="bm-cc-toggle">Cancel</button>
       </div>
+    </div>
+      </details>
     </div>
   </div>
 
@@ -4697,6 +4762,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 
         <!-- Goals -->
         <div class="bm-subhead">Monthly spending goals</div>
+        <div class="bm-goal-tools" id="bm-goal-tools"></div>
         <div class="bm-goals-grid" id="budget-goals-grid"></div>
         <button class="bm-save-btn" onclick="saveBudgetGoals()">Save goals</button>
 
@@ -6967,7 +7033,7 @@ function addExpense(){
   const actual= Math.round((parseFloat(document.getElementById('exp-amt').value)||0)*100)/100;
   const err=document.getElementById('exp-err'); if(err) err.textContent='';
   if(!(actual>0)){ if(err) err.textContent='Enter how much it was, for example 45.20.'; document.getElementById('exp-amt')?.focus(); return; }
-  state.expenses.push({cat, name, actual, d:bmToday()});
+  state.expenses.push({cat, name, actual, d:bmToday()}); qlRemember(name,cat,actual);
   const _recBox=document.getElementById('exp-rec');
   if(_recBox && _recBox.checked){ const b=bmAddBill(cat,name,actual); if(b){ state.expenses[state.expenses.length-1].billId=b.id;
     if(cat==='Debt Payment'){ const sel=document.getElementById('exp-debt-sel'); const di=sel&&sel.value!==''?parseInt(sel.value):NaN; if(!isNaN(di)&&state.debts[di]) b.debt=state.debts[di].name; } } }
@@ -7015,7 +7081,7 @@ function addExpenseWithCC(){
   if(!name||!actual){ return; }
   if(!ccIdx){ addExpense(); return; } // nothing selected, just log normally
 
-  state.expenses.push({cat, name, actual, d:bmToday()});
+  state.expenses.push({cat, name, actual, d:bmToday()}); qlRemember(name,cat,actual);
   window._bmFlash=cat;
 
   const debt = state.debts[parseInt(ccIdx)];
@@ -7553,7 +7619,7 @@ function bgTips(S){
   const over=S.jars.filter(j=>j.over).sort((a,b)=>(b.spent-b.goal)-(a.spent-a.goal));
   if(over.length) tips.push(`The ${bgShort(over[0].cat)} jar cracked. It is ${fmtW(over[0].spent-over[0].goal)} over this month.`);
   const ev=S.jars.filter(j=>!BM_FIXED.test(j.cat) && !j.over).sort((a,b)=>a.frac-b.frac);
-  if(ev.length && ev[0].frac<0.35) tips.push(`${bgShort(ev[0].cat)} has ${fmtW(Math.max(0,ev[0].left))} left for ${left} day${left===1?'':'s'}. That is about ${fmtW(Math.max(0,ev[0].left)/left)} a day.`);
+  if(ev.length && ev[0].frac<0.35) tips.push(`${bgShort(ev[0].cat)} has ${fmtW(Math.max(0,ev[0].left))} left for ${left} day${left===1?'':'s'}. That is about ${fmtC(Math.max(0,ev[0].left)/left)} a day.`);
   const due=(state.bills||[]).filter(b=>!bmBillPaid(b)); if(due.length) tips.push(`${due[0].name} (${fmtW(due[0].amt)}) is still to pay this month.`);
   const st=typeof currentStreak==='function'?currentStreak():0, today=bmToday();
   const logged=(state.expenses||[]).some(e=>e.d===today) || (state.noSpendDays||[]).includes(today);
@@ -7571,9 +7637,10 @@ function bgClick(e){
   const hit=(_bg.hits||[]).slice().reverse().find(h=>x>=h.x && x<=h.x+h.w && y>=h.y && y<=h.y+h.h);
   if(!hit) return;
   const left=bgDaysLeft(); let txt='', ax=hit.ax, ay=hit.ay;
+  if(hit.kind==='jar'){ const j=S.jars.find(q=>q.cat===hit.cat); if(j){ _bg.sel={cat:j.cat, life:1.2}; bgPopOpen(j, hit, e.currentTarget); try{ QA.log('bg_tap',{kind:'jar'}); }catch(_){} return; } }
   if(hit.kind==='jar'){ const j=S.jars.find(q=>q.cat===hit.cat); if(!j) return;
     const last=(state.expenses||[]).filter(q=>q.cat===j.cat).slice(-1)[0];
-    txt=`${j.cat}: ${fmtW(j.spent)} of ${fmtW(j.goal)}. `+(j.over?`${fmtW(j.spent-j.goal)} over.`:`${fmtW(j.left)} left${BM_FIXED.test(j.cat)?'.':`, about ${fmtW(j.left/left)} a day.`}`)+(last?` Last: ${last.name}, ${fmtW(last.actual)}.`:'');
+    txt=`${j.cat}: ${fmtW(j.spent)} of ${fmtW(j.goal)}. `+(j.over?`${fmtW(j.spent-j.goal)} over.`:`${fmtC(j.left)} left${BM_FIXED.test(j.cat)?'.':`, about ${fmtC(j.left/left)} a day.`}`)+(last?` Last: ${last.name}, ${fmtW(last.actual)}.`:'');
     ax=hit.x+hit.w/2; ay=hit.y+4; _bg.sel={cat:j.cat, life:1.2}; if(hit.y<_bg.H*0.4) _bg.under=hit.y+hit.h; }
   else if(hit.kind==='chest') txt = S.ti<=0 ? 'Add your income and whatever you do not spend lands in here.' : S.net>0 ? `Saved ${fmtW(S.net)} so far this month, ${Math.round(S.sr*100)}% of your income.` : `This month you have spent ${fmtW(-S.net)} more than you earned.`;
   else if(hit.kind==='cat') txt='Purr. The cat moved in when you reached level 5.';
@@ -7651,6 +7718,7 @@ function bgPerson(ctx,x,y,s,happy,bad,t,still,cheer){
 }
 
 function renderMonthly(){
+  try{ bmAutoBills(); }catch(e){ console.warn('auto bills',e); }
   // Ensure budgets exist (handles old data)
   if(!state.budgets || !state.budgets.length){
     state.budgets=[
@@ -7707,6 +7775,7 @@ function renderMonthly(){
   if(statusEl && fresh) statusEl.classList.remove('bmh-wrap');
 
   try{ bmPaceRender(ti,te,tg,fresh); }catch(e){ console.warn('pace',e); }
+  try{ qlChipsRender(); if(!document.getElementById('ql-in')?.value) qlPreview(); bmGoalToolsRender(); }catch(e){ console.warn('quick log',e); }
   try{ bmBillsRender(); }catch(e){ console.warn('bills',e); }
   try{ const dl=document.getElementById('exp-names'); if(dl){ const names=[...new Set([...(state.expenses||[]).map(x=>x.name), ...(state.bills||[]).map(x=>x.name)].filter(Boolean))].slice(-40); dl.innerHTML=names.map(n=>`<option value="${escHtml(n)}"></option>`).join(''); } }catch(e){}
   if(window._bmFlash){ const c=window._bmFlash; window._bmFlash=null; setTimeout(()=>{ const el=[...document.querySelectorAll('#expense-cats .bm-cat')].find(x=>x.getAttribute('data-cat')===c); if(el){ el.classList.remove('bm-hit'); void el.offsetWidth; el.classList.add('bm-hit'); } },30); }
@@ -7839,23 +7908,40 @@ function bmAddBill(cat,name,amt){
   if(!state.bills) state.bills=[];
   const ex=state.bills.find(b=>b.name.toLowerCase()===String(name).toLowerCase() && b.cat===cat);
   if(ex){ ex.amt=amt; return ex; }
-  const b={id:'b'+Date.now().toString(36)+Math.random().toString(36).slice(2,5), cat, name, amt};
+  const b={id:'b'+Date.now().toString(36)+Math.random().toString(36).slice(2,5), cat, name, amt, day:new Date().getDate()};
   state.bills.push(b); try{ QA.log('bm_bill_add',{}); }catch(e){} return b;
 }
 function bmBillPaid(b){ return (state.expenses||[]).some(e=>e.billId===b.id); }
 function bmPayBill(id){
   const b=(state.bills||[]).find(x=>x.id===id); if(!b || bmBillPaid(b)) return;
-  const ex={cat:b.cat, name:b.name, actual:b.amt, d:bmToday(), billId:b.id};
+  bmPayBillCore(b);
+  try{ QA.log('bm_bill_paid',{}); }catch(e){}
+  recordActivity(); save(); renderMonthly(); try{ renderDashboard(); }catch(e){}
+  showToast(`<strong>${escHtml(b.name)} paid.</strong> ${fmt(b.amt)} logged in ${escHtml(b.cat)}.`);
+}
+function bmPayBillCore(b,auto){
+  const ex={cat:b.cat, name:b.name, actual:b.amt, d:bmToday(), billId:b.id}; if(auto) ex.auto=true;
   state.expenses.push(ex);
   window._bmFlash=b.cat;
   const debt=b.debt && (state.debts||[]).find(d=>d.name===b.debt);
   if(debt && debt.balance>0){ const pay=Math.min(b.amt,debt.balance); debt.balance=Math.max(0,parseFloat((debt.balance-pay).toFixed(2))); if(!debt.transactions) debt.transactions=[];
     debt.transactions.unshift({type:'payment', amount:pay, date:new Date().toISOString().slice(0,10), note:b.name, balance:debt.balance}); if(debt.transactions.length>20) debt.transactions=debt.transactions.slice(0,20);
     ex.debtName=debt.name; ex.debtPay={name:debt.name, amt:pay}; try{ renderDebt(); }catch(e){} }
-  try{ QA.log('bm_bill_paid',{}); }catch(e){}
-  recordActivity(); save(); renderMonthly(); try{ renderDashboard(); }catch(e){}
-  showToast(`<strong>${escHtml(b.name)} paid.</strong> ${fmt(b.amt)} logged in ${escHtml(b.cat)}.`);
 }
+// Bills set to Auto log themselves on their due day, the next time the app opens on or after it
+function bmAutoBills(){
+  if(window._lpSandbox || !currentUser) return;
+  const today=new Date().getDate(), done=[];
+  (state.bills||[]).forEach(b=>{ if(b.auto && !bmBillPaid(b) && today>=(b.day||1)){ bmPayBillCore(b,true); done.push(b); } });
+  if(!done.length) return;
+  try{ QA.log('bm_bill_auto',{n:done.length}); }catch(e){}
+  save();
+  setTimeout(()=>showToast(`<strong>Logged automatically:</strong> ${done.map(b=>`${escHtml(b.name)} ${fmt(b.amt)}`).join(', ')}. They were due on or before today.`),600);
+}
+function bmToggleAuto(id){ const b=(state.bills||[]).find(x=>x.id===id); if(!b) return; b.auto=!b.auto; if(!b.day) b.day=new Date().getDate(); try{ QA.log('bm_bill_autoset',{on:b.auto}); }catch(e){} save(); renderMonthly();
+  showToast(b.auto?`<strong>${escHtml(b.name)}</strong> will log itself on the ${bmOrd(b.day)} of each month.`:`<strong>${escHtml(b.name)}</strong> will wait for you to mark it paid.`); }
+function bmSetDay(id,v){ const b=(state.bills||[]).find(x=>x.id===id); if(!b) return; b.day=Math.max(1,Math.min(31,parseInt(v,10)||1)); save(); renderMonthly(); }
+function bmOrd(n){ const s=['th','st','nd','rd'], v=n%100; return n+(s[(v-20)%10]||s[v]||s[0]); }
 function bmRemoveBill(id){
   const b=(state.bills||[]).find(x=>x.id===id); if(!b) return;
   const snap=bmSnap(); state.bills=state.bills.filter(x=>x.id!==id); save(); renderMonthly();
@@ -7867,7 +7953,9 @@ function bmBillsRender(){
   const due=bills.filter(b=>!bmBillPaid(b)), dueAmt=due.reduce((t,b)=>t+b.amt,0);
   el.innerHTML=`<div class="bm-bills"><div class="bm-bills-head"><div class="bm-section-title" style="font-size:1rem">Monthly bills</div>
     <div class="bm-bills-sub">${due.length?`${fmt(dueAmt)} still to pay`:'All paid this month'}</div></div>
-    ${bills.map(b=>{ const paid=bmBillPaid(b); return `<div class="bm-bill"><div class="bm-bill-main"><div class="bm-bill-name">${escHtml(b.name)}</div><div class="bm-bill-cat">${escHtml(b.cat)}</div></div>
+    ${bills.map(b=>{ const paid=bmBillPaid(b), day=b.day||1; return `<div class="bm-bill"><div class="bm-bill-main"><div class="bm-bill-name">${escHtml(b.name)}</div>
+      <div class="bm-bill-meta"><span>${escHtml(b.cat)}, due the</span><select aria-label="Day ${escHtml(b.name)} is due" onchange="bmSetDay('${b.id}',this.value)">${Array.from({length:31},(_,i)=>`<option value="${i+1}"${i+1===day?' selected':''}>${bmOrd(i+1)}</option>`).join('')}</select>
+      <button type="button" class="bm-bill-auto ${b.auto?'on':''}" aria-pressed="${!!b.auto}" onclick="bmToggleAuto('${b.id}')" title="Log this bill by itself on its due day">${b.auto?'Auto on':'Auto off'}</button></div></div>
       <span class="bm-bill-amt">${fmt(b.amt)}</span>
       ${paid?'<span class="bm-bill-paid">Paid</span>':`<button type="button" class="bm-bill-pay" onclick="bmPayBill('${b.id}')">Mark paid</button>`}
       <button type="button" class="bm-txn-btn del" onclick="bmRemoveBill('${b.id}')" aria-label="Stop ${escHtml(b.name)} repeating" title="Stop repeating">✕</button></div>`; }).join('')}
@@ -7926,6 +8014,228 @@ function bmPaceRender(ti,te,tg,fresh){
   }
   if(due>0) parts.push(`<span>Bills still to pay: <b>${fmtW(due)}</b></span>`);
   el.innerHTML=parts.join('');
+}
+
+// ══ Quick log: type "coffee 4.50", it lands in the right jar ══
+const QL_RULES=[
+  ['rent',/\b(rent|mortgage|landlord|condo fee|property tax)\b/i],
+  ['debt',/\b(credit card payment|loan payment|osap|line of credit|loc payment)\b/i],
+  ['insurance',/\b(insurance|intact|aviva|desjardins ins|belair|td insurance|cooperators)\b/i],
+  ['utilities',/\b(hydro|electric|enbridge|gas bill|water bill|internet|wifi|rogers|bell|telus|fido|koodo|freedom|virgin|public mobile|phone bill|cell)\b/i],
+  ['transport',/\b(gas|petro|esso|shell|ultramar|pioneer|husky|uber(?! ?eats)|lyft|presto|ttc|go transit|go train|oc transpo|stm|translink|transit|bus|parking|impark|green p|407|oil change|car wash|via rail|tire)\b/i],
+  ['food',/\b(grocer\w*|groceries|loblaws?|no ?frills|metro|sobeys|food ?basics|freshco|costco|farm boy|longos?|t&t|superstore|fortinos|zehrs|iga|safeway|save ?on|walmart|food|coffee|tim ?hortons|tims|starbucks|second cup|lunch|dinner|breakfast|restaurant|pizza|sushi|mcdonald\w*|a&w|subway|wendy\w*|harvey\w*|uber ?eats|skip ?the ?dishes|skip|doordash|cafe|bakery|deli|takeout|snack)\b/i],
+  ['fun',/\b(netflix|spotify|disney|crave|prime video|youtube|apple music|movie|cineplex|concert|show|game|steam|playstation|xbox|nintendo|bar|pub|beer|lcbo|saq|bc liquor|wine|club|tickets?|bowling|golf|gym|fitness|goodlife)\b/i],
+  ['shopping',/\b(amazon|winners|marshalls|homesense|clothes|clothing|shoes|zara|h&m|uniqlo|old navy|gap|best buy|canadian tire|ikea|shoppers|indigo|dollarama|sephora|lululemon|sport chek|gift|hardware|home depot|rona|staples)\b/i],
+];
+const QL_CANON={rent:/rent|mortgage|housing/i, debt:/debt/i, insurance:/insur/i, utilities:/utilit|phone|internet|hydro/i, transport:/transport|transit|car|gas|travel/i, food:/food|grocer|dining/i, fun:/entertain|fun|leisure/i, shopping:/shop|clothes/i, other:/other|misc/i};
+function fmtC(n){ n=+n||0; return (Math.abs(n)<100 && Math.round(n*100)%100!==0) ? '$'+n.toFixed(2) : fmtW(n); }
+function qlCats(){ return (state.budgets||[]).map(b=>b.cat); }
+function qlCanonCat(c){ const cats=qlCats(), re=QL_CANON[c]; return (re && cats.find(x=>re.test(x))) || null; }
+function qlKey(name){ return (String(name).toLowerCase().match(/[a-z&]+(?: ?[a-z&]+)?/)||[''])[0].split(' ')[0]; }
+function qlGuess(name){
+  const cats=qlCats(), k=qlKey(name), nm=String(name).toLowerCase().trim();
+  if(state.catMap && state.catMap[k] && cats.includes(state.catMap[k])) return state.catMap[k];
+  const h=(state.qlHist||[]).find(x=>x.name.toLowerCase()===nm && cats.includes(x.cat)); if(h) return h.cat;
+  for(const [c,re] of QL_RULES){ if(re.test(nm)){ const cat=qlCanonCat(c); if(cat) return cat; } }
+  return qlCanonCat('other') || cats[cats.length-1] || 'Other';
+}
+function qlParse(txt){
+  const t=String(txt||'').trim(); if(!t) return null;
+  const m=t.match(/\$?\s*(\d{1,6}(?:[.,]\d{1,2})?)\s*\$?/);
+  const amt=m ? parseFloat(m[1].replace(',','.')) : 0;
+  let name=m ? (t.slice(0,m.index)+' '+t.slice(m.index+m[0].length)) : t;
+  name=name.replace(/\s+/g,' ').replace(/^(for|on|at)\s+/i,'').trim();
+  if(name) name=name.charAt(0).toUpperCase()+name.slice(1);
+  return {amt, name};
+}
+const _ql={cat:null, picked:false, lastTxt:''};
+function qlPreview(){
+  const el=document.getElementById('ql-prev'), inp=document.getElementById('ql-in'); if(!el||!inp) return;
+  const P=qlParse(inp.value);
+  if(!P){ _ql.picked=false; el.innerHTML='Type what it was and how much, like <b>groceries 84</b> or <b>gas 60</b>.'; return; }
+  if(!_ql.picked) _ql.cat=qlGuess(P.name||'');
+  const opts=qlCats().map(c=>`<option${c===_ql.cat?' selected':''}>${escHtml(c)}</option>`).join('');
+  el.innerHTML = P.amt>0
+    ? `Logs <b>${fmtC(P.amt)}</b>${P.name?` for <b>${escHtml(P.name)}</b>`:''} in <select id="ql-cat" aria-label="Category" onchange="_ql.cat=this.value;_ql.picked=true">${opts}</select>`
+    : `<span>Add the amount, like <b>${escHtml(P.name||'coffee')} 4.50</b>.</span>`;
+}
+function qlSubmit(){
+  const inp=document.getElementById('ql-in'), P=qlParse(inp&&inp.value);
+  if(!P || !(P.amt>0)){ const el=document.getElementById('ql-prev'); if(el) el.innerHTML=`<span class="err">Add how much it was, for example <b>${escHtml((P&&P.name)||'coffee')} 4.50</b>.</span>`; inp&&inp.focus(); return; }
+  const cat=_ql.cat||qlGuess(P.name||''), name=P.name||cat;
+  if(_ql.picked && P.name){ (state.catMap=state.catMap||{})[qlKey(P.name)]=cat; }
+  inp.value=''; _ql.picked=false; _ql.cat=null;
+  bmLog(cat,name,P.amt,'quick');
+  inp.focus();
+}
+function qlRemember(name,cat,amt){
+  if(!name || !(amt>0)) return;
+  const H=state.qlHist||(state.qlHist=[]), nm=String(name).toLowerCase();
+  let h=H.find(x=>x.name.toLowerCase()===nm);
+  if(!h){ h={name:String(name), cat, amt, n:0}; H.push(h); }
+  h.cat=cat; h.amt=Math.round(amt*100)/100; h.n++; h.last=Date.now();
+  H.sort((a,b)=>(b.n-a.n)||(b.last-a.last)); if(H.length>40) H.length=40;
+}
+function qlChipsRender(){
+  const el=document.getElementById('ql-chips'), lab=document.getElementById('ql-lab'); if(!el) return;
+  if(!state.qlHist){ state.qlHist=[]; (state.expenses||[]).forEach(e=>{ if(!e.billId && !BM_FIXED.test(e.cat)) qlRemember(e.name,e.cat,e.actual); }); }
+  const billNames=new Set((state.bills||[]).map(b=>b.name.toLowerCase()));
+  const top=(state.qlHist||[]).filter(h=>!billNames.has(h.name.toLowerCase()) && qlCats().includes(h.cat)).slice(0,6);
+  if(lab) lab.hidden=!top.length;
+  el.innerHTML=top.map((h,i)=>`<button type="button" class="ql-chip" onclick="qlRepeat(${(state.qlHist||[]).indexOf(h)})" aria-label="Log ${escHtml(h.name)} ${fmtC(h.amt)} again">${escHtml(h.name)} <b>${fmtC(h.amt)}</b></button>`).join('');
+}
+function qlRepeat(i){ const h=(state.qlHist||[])[i]; if(!h) return; bmLog(h.cat,h.name,h.amt,'chip'); }
+// one place every quick entry goes through: saves, remembers, celebrates, offers undo
+function bmLog(cat,name,amt,src){
+  amt=Math.round((+amt||0)*100)/100; if(!(amt>0)) return null;
+  const snap=bmSnap();
+  const e={cat,name,actual:amt,d:bmToday()}; state.expenses.push(e); qlRemember(name,cat,amt);
+  window._bmFlash=cat; _bg.walkTo=cat;
+  recordActivity(); try{ checkJourneyMilestone(); }catch(_){}
+  save(); renderMonthly(); try{ renderDashboard(); }catch(_){}
+  try{ QA.log('bm_log',{src}); }catch(_){}
+  const j=(bgMonthStats().jars||[]).find(x=>x.cat===cat);
+  const tail=j ? (j.over?` The ${escHtml(bgShort(cat))} jar is ${fmtW(j.spent-j.goal)} over.`:` ${fmtW(j.left)} left in ${escHtml(bgShort(cat))}.`) : '';
+  bmUndoOffer(`<strong>Logged ${fmt(amt)}</strong> ${escHtml(name)}.${tail}`, snap);
+  if(state.expenses.length===1) try{ nudgeCheckin('First expense logged.'); }catch(_){}
+  return e;
+}
+// ── tap a jar to spend from it ──
+function bgPopOpen(j,hit,stage){
+  bgPopClose();
+  const left=bgDaysLeft(), pop=document.createElement('div'); pop.className='bg-pop'; pop.id='bg-pop'; pop.setAttribute('role','dialog'); pop.setAttribute('aria-label','Spend from '+j.cat);
+  pop.innerHTML=`<h4>Spend from ${escHtml(bgShort(j.cat))}</h4><p>${j.over?`${fmtW(j.spent-j.goal)} over this month`:`${fmtC(j.left)} left${BM_FIXED.test(j.cat)?'':`, about ${fmtC(j.left/left)} a day`}`}</p>
+    <input id="bg-pop-amt" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Amount, like 12.50" aria-label="Amount">
+    <input id="bg-pop-note" placeholder="What for? (optional)" aria-label="What it was for" autocomplete="off">
+    <div class="er" id="bg-pop-er" role="alert"></div>
+    <div class="r"><button type="button" class="go" onclick="bgPopGo('${escHtml(j.cat).replace(/'/g,"\\'")}')">Spend</button><button type="button" class="x" onclick="bgPopClose()" aria-label="Close">Close</button></div>`;
+  stage.appendChild(pop);
+  const W=stage.clientWidth, H=stage.clientHeight, pw=pop.offsetWidth, ph=pop.offsetHeight;
+  let x=hit.x+hit.w/2-pw/2, y=hit.y+hit.h+6; if(y+ph>H-6) y=Math.max(6,hit.y-ph-6);
+  pop.style.left=Math.max(8,Math.min(W-pw-8,x))+'px'; pop.style.top=Math.max(6,Math.min(H-ph-6,y))+'px';
+  pop.addEventListener('click',ev=>ev.stopPropagation());
+  pop.addEventListener('keydown',ev=>{ if(ev.key==='Enter'){ ev.preventDefault(); bgPopGo(j.cat); } if(ev.key==='Escape') bgPopClose(); });
+  setTimeout(()=>document.getElementById('bg-pop-amt')?.focus({preventScroll:true}),30);
+}
+function bgPopClose(){ document.getElementById('bg-pop')?.remove(); }
+function bgPopGo(cat){
+  const a=parseFloat(document.getElementById('bg-pop-amt')?.value)||0, note=(document.getElementById('bg-pop-note')?.value||'').trim();
+  if(!(a>0)){ const er=document.getElementById('bg-pop-er'); if(er) er.textContent='Enter how much you spent.'; return; }
+  bgPopClose(); bmLog(cat, note?note.charAt(0).toUpperCase()+note.slice(1):cat, a, 'jar');
+}
+document.addEventListener('click',e=>{ const p=document.getElementById('bg-pop'); if(p && !p.contains(e.target) && !e.target.closest('#bg-stage')) bgPopClose(); });
+// ── suggested goals ──
+function bmGoalToolsRender(){
+  const el=document.getElementById('bm-goal-tools'); if(!el) return;
+  const ti=(state.income||[]).reduce((t,x)=>t+(+x.actual||0),0), last=bmLastMonth();
+  el.innerHTML=(ti>0?'<button type="button" onclick="bmSuggestGoals()">Suggest goals from my income</button>':'')+(last?'<button type="button" onclick="bmUseLastMonth()">Use last month\'s spending</button>':'');
+}
+function bmLastMonth(){ const n=new Date(), m=(n.getMonth()+11)%12, y=n.getMonth()===0?n.getFullYear()-1:n.getFullYear(); const out={}; let any=false;
+  (state.yearly||[]).forEach(r=>{ if(r.type==='Expense' && (r.year||y)===y){ const v=+(r.monthly||[])[m]||0; if(v>0){ out[r.cat]=(out[r.cat]||0)+v; any=true; } } }); return any?out:null; }
+const BM_SPLIT={rent:0.30, food:0.12, utilities:0.05, transport:0.10, fun:0.05, shopping:0.05, insurance:0.04, debt:0.10, other:0.04};
+function bmFillGoals(fn,msg){ (state.budgets||[]).forEach((b,i)=>{ const inp=document.getElementById('bg-'+i); if(!inp) return; const v=fn(b); if(v>0){ inp.value=Math.round(v/5)*5; inp.style.outline='2px solid rgba(74,222,128,0.6)'; setTimeout(()=>{ inp.style.outline=''; },1800); } }); showToast(msg); }
+function bmSuggestGoals(){ const ti=(state.income||[]).reduce((t,x)=>t+(+x.actual||0),0); try{ QA.log('bm_goal_suggest',{}); }catch(e){}
+  bmFillGoals(b=>{ const k=Object.keys(QL_CANON).find(c=>QL_CANON[c].test(b.cat)); return k?ti*(BM_SPLIT[k]||0):0; }, '<strong>Goals filled in.</strong> They leave about 15% of your income for saving. Change any that do not fit, then tap Save goals.'); }
+function bmUseLastMonth(){ const L=bmLastMonth()||{}; try{ QA.log('bm_goal_lastmonth',{}); }catch(e){}
+  bmFillGoals(b=>L[b.cat]||0, '<strong>Filled in from last month.</strong> Change any that do not fit, then tap Save goals.'); }
+// ══ Import from your bank: a CSV file, read on this device ══
+function impOpen(){ try{ QA.log('imp_open',{}); }catch(e){} document.getElementById('imp-file')?.click(); }
+function impSplit(text){
+  const first=(text.split(/\r?\n/)[0]||''), d=(first.split(';').length>first.split(',').length)?';':',';
+  const rows=[]; let row=[], cur='', q=false;
+  for(let i=0;i<text.length;i++){ const c=text[i];
+    if(q){ if(c==='"'){ if(text[i+1]==='"'){ cur+='"'; i++; } else q=false; } else cur+=c; }
+    else if(c==='"') q=true; else if(c===d){ row.push(cur); cur=''; }
+    else if(c==='\n'||c==='\r'){ if(c==='\r'&&text[i+1]==='\n') i++; row.push(cur); rows.push(row); row=[]; cur=''; }
+    else cur+=c; }
+  if(cur!==''||row.length){ row.push(cur); rows.push(row); }
+  return rows.map(r=>r.map(x=>x.trim())).filter(r=>r.some(Boolean));
+}
+const IMP_MON={jan:1,feb:2,mar:3,apr:4,may:5,jun:6,jul:7,aug:8,sep:9,oct:10,nov:11,dec:12};
+function impDateRaw(s){ s=String(s||'').trim(); let m;
+  if((m=s.match(/^(\d{4})[-\/.](\d{1,2})[-\/.](\d{1,2})/))) return {y:+m[1],a:+m[2],b:+m[3],iso:true};
+  if((m=s.match(/^(\d{1,2})[-\/.](\d{1,2})[-\/.](\d{2,4})/))) return {y:+m[3]<100?2000+(+m[3]):+m[3],a:+m[1],b:+m[2]};
+  if((m=s.match(/^([A-Za-z]{3})[a-z]*\.?\s+(\d{1,2}),?\s+(\d{4})/))&&IMP_MON[m[1].toLowerCase()]) return {y:+m[3],a:IMP_MON[m[1].toLowerCase()],b:+m[2],iso:true};
+  if((m=s.match(/^(\d{1,2})\s+([A-Za-z]{3})[a-z]*\.?\s+(\d{4})/))&&IMP_MON[m[2].toLowerCase()]) return {y:+m[3],a:IMP_MON[m[2].toLowerCase()],b:+m[1],iso:true};
+  return null; }
+function impNum(s){ s=String(s||'').trim(); if(!s) return null; const neg=/^\(.*\)$/.test(s)||/-/.test(s)||/\bDR\b/i.test(s); const v=parseFloat(s.replace(/[^0-9.]/g,'')); return isFinite(v)?(neg?-v:v):null; }
+function impClean(n){ n=String(n).replace(/#\s?\d+/g,'').replace(/\b\d{4,}\b/g,'').replace(/\b(ON|QC|BC|AB|MB|SK|NS|NB|NL|PE|YT|NT|NU)\s*$/,'').replace(/\s+,/g,',').replace(/\s+/g,' ').replace(/^[\s,]+|[\s,]+$/g,'').trim();
+  if(n===n.toUpperCase()) n=n.toLowerCase().replace(/\b[a-z]/g,c=>c.toUpperCase()); return n.slice(0,60)||'Bank purchase'; }
+function impRead(text){
+  const rows=impSplit(text); if(rows.length<2) return {err:'That file looks empty.'};
+  const hasHeader=!rows[0].some(c=>impDateRaw(c)) && rows[0].filter(c=>/[a-z]/i.test(c)).length>=2;
+  const head=hasHeader?rows[0].map(h=>h.toLowerCase()):[], data=hasHeader?rows.slice(1):rows, nc=Math.max(...data.map(r=>r.length));
+  const col=i=>data.map(r=>r[i]||'');
+  const dateScore=i=>col(i).filter(v=>impDateRaw(v)).length/data.length;
+  let dc=-1, best=0; for(let i=0;i<nc;i++){ const s0=dateScore(i); if(s0>best){ best=s0; dc=i; } }
+  if(dc<0 || best<0.6) return {err:'Could not find a date column. Try the CSV download from your bank\'s website.'};
+  const numish=i=>col(i).filter(v=>v==='' || impNum(v)!==null && !/[a-z]{3,}/i.test(v)).length/data.length, filled=i=>col(i).filter(v=>v!=='').length/data.length;
+  const isNum=i=>i!==dc && numish(i)>0.9 && col(i).some(v=>impNum(v)!==null);
+  let deb=-1, cre=-1, amt=-1;
+  head.forEach((h,i)=>{ if(i===dc) return; if(/debit|withdraw|paid out|money out|charge/.test(h)&&deb<0) deb=i; else if(/credit|deposit|paid in|money in/.test(h)&&!/card/.test(h)&&cre<0) cre=i; else if(/amount|cad\$|^cad|\$/.test(h)&&amt<0 && !/usd/.test(h)) amt=i; });
+  const nums=[]; for(let i=0;i<nc;i++) if(isNum(i)) nums.push(i);
+  if(deb<0 && amt<0){ const sparse=nums.filter(i=>filled(i)<0.98); if(sparse.length>=2){ deb=sparse[0]; cre=sparse[1]; } else if(nums.length) amt=nums[0]; }
+  // description: the text column with the most different values
+  let dsc=-1, var0=-1;
+  for(let i=0;i<nc;i++){ if(i===dc||i===deb||i===cre||i===amt||nums.includes(i)) continue; const v=col(i).filter(x=>/[a-z]/i.test(x)); const u=new Set(v).size; if(v.length/data.length>0.5 && u>var0){ var0=u; dsc=i; } }
+  const d2=head.findIndex(h=>/description 2|memo|details/.test(h));
+  // M/D or D/M
+  const raws=col(dc).map(impDateRaw).filter(Boolean), dm=raws.some(r=>!r.iso && r.a>12), md=raws.some(r=>!r.iso && r.b>12);
+  const toIso=r=>{ const mo=r.iso?r.a:(dm&&!md?r.b:r.a), dy=r.iso?r.b:(dm&&!md?r.a:r.b); return r.y+'-'+String(mo).padStart(2,'0')+'-'+String(dy).padStart(2,'0'); };
+  const amtVals=amt>=0?data.map(r=>impNum(r[amt])).filter(v=>v!==null):[], hasNeg=amtVals.some(v=>v<0), hasPos=amtVals.some(v=>v>0);
+  const out=[];
+  data.forEach(r=>{ const dr=impDateRaw(r[dc]); if(!dr) return; let spend=0;
+    if(deb>=0){ const v=impNum(r[deb]); spend=v?Math.abs(v):0; if(!spend && cre>=0) return; }
+    else if(amt>=0){ const v=impNum(r[amt]); if(v===null) return; spend = hasNeg&&hasPos ? (v<0?-v:0) : Math.abs(v); }
+    if(!(spend>0)) return;
+    const raw=[dsc>=0?r[dsc]:'', d2>=0&&d2!==dsc?r[d2]:''].filter(Boolean).join(' ');
+    out.push({d:toIso(dr), name:impClean(raw), amt:Math.round(spend*100)/100, raw});
+  });
+  if(!out.length) return {err:'No spending found in that file.'};
+  return {rows:out};
+}
+let _imp=null;
+function impFile(input){
+  const f=input.files&&input.files[0]; input.value=''; if(!f) return;
+  if(f.size>3e6){ showToast('That file is too big. Download one month at a time.'); return; }
+  const rd=new FileReader();
+  rd.onload=()=>{ let R; try{ R=impRead(String(rd.result||'')); }catch(e){ R={err:'Could not read that file.'}; }
+    if(R.err){ try{ QA.log('imp_fail',{}); }catch(e){} showToast(`<strong>${R.err}</strong> Your bank's website usually has a "Download transactions" button that makes a CSV file.`); return; }
+    const mk=bmToday().slice(0,7), now=R.rows.filter(x=>x.d.slice(0,7)===mk), older=R.rows.length-now.length;
+    if(!now.length){ showToast(`<strong>Nothing from this month in that file.</strong> It has ${R.rows.length} older transaction${R.rows.length===1?'':'s'}. The budget is for this month, so download this month's.`); return; }
+    const seen=(state.expenses||[]);
+    _imp={older, rows:now.sort((a,b)=>a.d<b.d?-1:1).map(x=>{ const dup=seen.some(e=>e.d===x.d && Math.abs(e.actual-x.amt)<0.01); const skip=/payment.*thank|thank you|transfer|tfr|e-?transfer|interac|deposit|refund/i.test(x.raw);
+      return {...x, cat:qlGuess(x.name), on:!dup && !skip, note:dup?'Already logged':skip?'Looks like a transfer or payment':''}; })};
+    try{ QA.log('imp_read',{n:_imp.rows.length}); }catch(e){}
+    impShow();
+  };
+  rd.readAsText(f);
+}
+function impShow(){
+  document.getElementById('imp-ov')?.remove();
+  const R=_imp, cats=qlCats(), on=R.rows.filter(x=>x.on), tot=on.reduce((t,x)=>t+x.amt,0);
+  const ov=document.createElement('div'); ov.className='imp-ov'; ov.id='imp-ov';
+  ov.innerHTML=`<div class="imp-box" role="dialog" aria-modal="true" aria-labelledby="imp-t">
+    <div class="imp-head"><h3 id="imp-t">Review before importing</h3><p>${R.rows.length} purchase${R.rows.length===1?'':'s'} from this month. Check the categories, untick anything that is not spending.${R.older?` ${R.older} older one${R.older===1?' was':'s were'} left out.`:''} The file was read on your device and is not uploaded.</p></div>
+    <div class="imp-list">${R.rows.map((x,i)=>`<div class="imp-row${x.on?'':' off'}" id="imp-r${i}"><input type="checkbox" ${x.on?'checked':''} aria-label="Import ${escHtml(x.name)}" onchange="impTog(${i},this.checked)">
+      <div class="n">${escHtml(x.name)}<small>${bmDayLabel(x.d)}${x.note?`, ${x.note}`:''}</small></div><div class="a">${fmtC(x.amt)}</div>
+      <select aria-label="Category for ${escHtml(x.name)}" onchange="impCat(${i},this.value)">${cats.map(c=>`<option${c===x.cat?' selected':''}>${escHtml(c)}</option>`).join('')}</select></div>`).join('')}</div>
+    <div class="imp-foot"><button type="button" class="x" onclick="impClose()">Cancel</button><button type="button" class="go" id="imp-go" onclick="impGo()">Import ${on.length} (${fmtW(tot)})</button></div></div>`;
+  ov.addEventListener('click',e=>{ if(e.target===ov) impClose(); });
+  document.body.appendChild(ov); document.getElementById('imp-go')?.focus();
+}
+function impTog(i,v){ _imp.rows[i].on=v; document.getElementById('imp-r'+i)?.classList.toggle('off',!v); impFoot(); }
+function impCat(i,v){ const x=_imp.rows[i]; x.cat=v; (state.catMap=state.catMap||{})[qlKey(x.name)]=v;
+  _imp.rows.forEach((y,j)=>{ if(j!==i && qlKey(y.name)===qlKey(x.name)){ y.cat=v; const s2=document.querySelector(`#imp-r${j} select`); if(s2) s2.value=v; } }); }
+function impFoot(){ const on=_imp.rows.filter(x=>x.on), b=document.getElementById('imp-go'); if(b) b.textContent=`Import ${on.length} (${fmtW(on.reduce((t,x)=>t+x.amt,0))})`; }
+function impClose(){ document.getElementById('imp-ov')?.remove(); _imp=null; }
+function impGo(){
+  const on=(_imp&&_imp.rows||[]).filter(x=>x.on); if(!on.length){ impClose(); return; }
+  const snap=bmSnap();
+  on.forEach(x=>{ state.expenses.push({cat:x.cat, name:x.name, actual:x.amt, d:x.d, imp:true}); qlRemember(x.name,x.cat,x.amt); });
+  try{ QA.log('imp_done',{n:on.length}); }catch(e){}
+  recordActivity(); impClose(); save(); renderMonthly(); try{ renderDashboard(); }catch(e){}
+  bmUndoOffer(`<strong>Imported ${on.length} purchase${on.length===1?'':'s'}</strong> (${fmt(on.reduce((t,x)=>t+x.amt,0))}).`, snap);
 }
 
 function toggleBudgetCat(el){
