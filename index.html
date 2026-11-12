@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Qualisight: Canadian Budget, Debt and TFSA Planner</title>
-<meta name="description" content="Budget, debt payoff and your TFSA, RRSP and FHSA in one place, built for Canadians. Budgeting is free forever. Try investing, housing and the AI advisor free for 14 days, no card needed.">
+<meta name="description" content="Budget, debt payoff and your TFSA, RRSP and FHSA in one place, built for Canadians. Budgeting is free forever. Try investing, housing and the AI coach free for 14 days, no card needed.">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"Qualisight","alternateName":"qualisight.ca","url":"https://qualisight.ca/"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Qualisight","url":"https://qualisight.ca/","applicationCategory":"FinanceApplication","operatingSystem":"Web","inLanguage":"en-CA","description":"Canadian budget, debt payoff, TFSA, RRSP and FHSA planner that turns your money into a game.","offers":[{"@type":"Offer","name":"Free","price":"0","priceCurrency":"CAD"},{"@type":"Offer","name":"Premium","price":"12","priceCurrency":"CAD"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I need to connect my bank account?","acceptedAnswer":{"@type":"Answer","text":"No. Qualisight never asks for a bank login. You add only the numbers you want to track."}},{"@type":"Question","name":"Is Qualisight free?","acceptedAnswer":{"@type":"Answer","text":"Budgeting, debt payoff and the dashboard are free forever. Investing, housing and the AI advisor are free for 14 days, then $12 CAD a month."}},{"@type":"Question","name":"Is Qualisight built for Canada?","acceptedAnswer":{"@type":"Answer","text":"Yes. It tracks TFSA, RRSP and FHSA accounts and uses Canadian mortgage rules, including the stress test and CMHC insurance."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Do I need to connect my bank account?","acceptedAnswer":{"@type":"Answer","text":"No. Qualisight never asks for a bank login. You add only the numbers you want to track."}},{"@type":"Question","name":"Is Qualisight free?","acceptedAnswer":{"@type":"Answer","text":"Budgeting, debt payoff and the dashboard are free forever. Investing, housing and the AI coach are free for 14 days, then $12 CAD a month."}},{"@type":"Question","name":"Is Qualisight built for Canada?","acceptedAnswer":{"@type":"Answer","text":"Yes. It tracks TFSA, RRSP and FHSA accounts and uses Canadian mortgage rules, including the stress test and CMHC insurance."}}]}</script>
 <link rel="canonical" href="https://qualisight.ca/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Qualisight">
@@ -941,6 +941,17 @@ header{
   max-height:520px;
 }
 .ai-panel.open{display:flex}
+.coach-ask{display:flex;flex-wrap:wrap;align-items:center;gap:0.4rem;margin:0 0 1rem}
+.coach-ask[hidden]{display:none}
+.coach-ask .ca-label{font-size:0.8rem;color:var(--muted);font-weight:600;margin-right:0.15rem}
+.coach-ask button{min-height:40px;padding:0 0.85rem;border-radius:999px;border:1px solid var(--border);background:var(--card);color:var(--text);font:inherit;font-size:0.84rem;cursor:pointer}
+.coach-ask button:hover,.coach-ask button:focus-visible{border-color:var(--accent)}
+.ai-act{display:inline-flex;align-items:center;margin-top:0.65rem;min-height:42px;padding:0 0.95rem;border-radius:10px;border:1px solid var(--accent);background:transparent;color:var(--accent);font:inherit;font-weight:600;font-size:0.86rem;cursor:pointer;text-align:left}
+.ai-act:hover{background:rgba(74,222,128,0.08)}
+.ai-fb{display:flex;align-items:center;gap:0.2rem;margin-top:0.4rem;font-size:0.75rem;color:var(--muted)}
+.ai-fb button{background:none;border:none;color:var(--muted);font:inherit;cursor:pointer;padding:0.35rem 0.45rem;min-height:32px;border-radius:6px}
+.ai-fb button:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.ai-left{font-size:0.75rem;color:var(--muted);margin-top:0.35rem}
 .ai-header{
   display:flex;align-items:center;justify-content:space-between;
   padding:0.8rem 1rem;border-bottom:1px solid var(--border);
@@ -3464,7 +3475,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
           <tr><th>Category</th><th>What it includes</th></tr>
           <tr><td><strong>Account information</strong></td><td>Your email address and a securely hashed password, used to create and secure your account.</td></tr>
           <tr><td><strong>Financial information you enter</strong></td><td>Income, expenses, budgets, debts, savings, investment holdings, account types (such as TFSA, RRSP, or FHSA), and financial goals that you choose to input. This is sensitive personal information and we treat it accordingly.</td></tr>
-          <tr><td><strong>AI advisor conversations</strong></td><td>The questions you ask our AI advisor and the financial context used to answer them, so the feature can respond to you.</td></tr>
+          <tr><td><strong>AI coach conversations</strong></td><td>The questions you ask our AI coach and the financial context used to answer them, so the feature can respond to you.</td></tr>
           <tr><td><strong>Subscription information</strong></td><td>Whether you are on a trial or paid plan, and billing status. Payment card numbers are handled directly by our payment processor and are never seen or stored by us.</td></tr>
           <tr><td><strong>Technical information</strong></td><td>Basic information your browser sends automatically, such as device and browser type, and information needed to keep you securely logged in. We also record anonymous usage events on our own servers, such as which pages are opened, which buttons are tapped, and errors, tied to a random ID rather than your name or email. These never include the dollar amounts you enter. We do not use advertising trackers.</td></tr>
         </table>
@@ -3477,7 +3488,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
         <ul class="pp-list">
           <li>Create, secure, and operate your account;</li>
           <li>Provide the budgeting, debt, investment, housing, and savings-planning features you use;</li>
-          <li>Generate calculations, projections, and AI advisor responses based on the figures you enter;</li>
+          <li>Generate calculations, projections, and AI coach responses based on the figures you enter;</li>
           <li>Process your subscription and trial through our payment processor;</li>
           <li>Respond to your support requests and communicate with you about your account;</li>
           <li>Maintain the security of the service and meet our legal obligations.</li>
@@ -3495,7 +3506,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
           <tr><td><strong>Stripe</strong></td><td>Payment processing for subscriptions. Stripe collects and handles your payment card details directly under its own privacy policy.</td></tr>
           <tr><td><strong>Zoho Mail</strong></td><td>Sending and receiving account and support email.</td></tr>
           <tr><td><strong>GitHub Pages</strong></td><td>Hosting and serving the application to your browser.</td></tr>
-          <tr><td><strong>AI processing provider</strong></td><td>Powering the AI advisor feature. Conversations are sent to be processed so the feature can respond.</td></tr>
+          <tr><td><strong>AI processing provider</strong></td><td>Powering the AI coach feature. Conversations are sent to be processed so the feature can respond.</td></tr>
         </table>
         <p>We require our service providers to protect your personal information using safeguards comparable to our own, and to use it only for the purposes we specify. We remain accountable for your information while it is being processed by them.</p>
         <p>We may also disclose personal information if required to do so by law, by a valid court order, or by a lawful request from a government or regulatory authority, or where necessary to protect our legal rights or the safety of others.</p>
@@ -3565,7 +3576,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 
       <div class="pp-section">
         <h3><span class="pp-num">13</span>This is not financial advice</h3>
-        <p>Qualisight is a personal finance tracking and planning tool. The calculations, projections, and AI advisor responses are for general educational and informational purposes only and are not investment, tax, legal, or financial advice. Always consult a qualified professional before making financial decisions.</p>
+        <p>Qualisight is a personal finance tracking and planning tool. The calculations, projections, and AI coach responses are for general educational and informational purposes only and are not investment, tax, legal, or financial advice. Always consult a qualified professional before making financial decisions.</p>
       </div>
 
       <div class="pp-section">
@@ -3606,10 +3617,10 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
         <div class="pp-tldr-title">The short version</div>
         <ul>
           <li>Budget, debt, and dashboard tools are free.</li>
-          <li>Investments, Housing, and the AI Advisor are free for 14 days, with no card needed and no automatic charge when the trial ends.</li>
+          <li>Investments, Housing, and the AI coach are free for 14 days, with no card needed and no automatic charge when the trial ends.</li>
           <li>If you subscribe, it's CA$12 a month, charged when you subscribe and then every month until you cancel.</li>
           <li>Cancel anytime in Settings. You keep Premium until the end of the month you paid for and are never charged again.</li>
-          <li>Qualisight and its AI Advisor are educational tools, not financial advice.</li>
+          <li>Qualisight and its AI coach are educational tools, not financial advice.</li>
         </ul>
       </div>
 
@@ -3621,7 +3632,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
       <div class="pp-section">
         <h3><span class="pp-num">2</span>Free and Premium features</h3>
         <p><strong>Free:</strong> the Dashboard, Budget, and Debt tools are free to use for as long as you have an account.</p>
-        <p><strong>Premium:</strong> the Investments tracker, Housing tools (rent vs buy and affordability), and the AI Advisor require an active Premium subscription after your free trial.</p>
+        <p><strong>Premium:</strong> the Investments tracker, Housing tools (rent vs buy and affordability), and the AI coach require an active Premium subscription after your free trial.</p>
         <p>We may improve, add, or change features over time. If we remove a Premium feature in a way that substantially reduces what you're paying for, we'll tell you in advance and you can cancel.</p>
       </div>
 
@@ -3674,9 +3685,9 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
       </div>
 
       <div class="pp-section">
-        <h3><span class="pp-num">10</span>The AI Advisor</h3>
-        <p>The AI Advisor generates responses automatically using an artificial intelligence model. Its responses can be inaccurate, incomplete, or out of date, and it can misread your numbers. It does not know your full situation. Treat its responses as general educational information, check anything important, and don't rely on it as your only source for financial decisions.</p>
-        <p>To keep the service reliable, the AI Advisor has a daily question limit. Please don't enter government ID numbers, account numbers, passwords, or similar sensitive information into it.</p>
+        <h3><span class="pp-num">10</span>The AI coach</h3>
+        <p>The AI coach generates responses automatically using an artificial intelligence model. Its responses can be inaccurate, incomplete, or out of date, and it can misread your numbers. It does not know your full situation. Treat its responses as general educational information, check anything important, and don't rely on it as your only source for financial decisions.</p>
+        <p>To keep the service reliable, the AI coach has a daily question limit. Please don't enter government ID numbers, account numbers, passwords, or similar sensitive information into it.</p>
       </div>
 
       <div class="pp-section">
@@ -3696,7 +3707,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 
       <div class="pp-section">
         <h3><span class="pp-num">14</span>Limitation of liability</h3>
-        <p>To the fullest extent permitted by law, Qualisight is not responsible for financial losses or decisions you make based on information in the app, including projections and AI Advisor responses, or for indirect, incidental, or consequential damages. To the fullest extent permitted by law, our total liability to you for any claim relating to Qualisight is limited to the amount you paid us in the 12 months before the claim. Nothing in these Terms excludes or limits any liability or consumer right that cannot be excluded or limited under applicable law.</p>
+        <p>To the fullest extent permitted by law, Qualisight is not responsible for financial losses or decisions you make based on information in the app, including projections and AI coach responses, or for indirect, incidental, or consequential damages. To the fullest extent permitted by law, our total liability to you for any claim relating to Qualisight is limited to the amount you paid us in the 12 months before the claim. Nothing in these Terms excludes or limits any liability or consumer right that cannot be excluded or limited under applicable law.</p>
       </div>
 
       <div class="pp-section">
@@ -3742,7 +3753,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
       </div>
       <div class="tos-item">
         <div class="tos-item-icon"></div>
-        <div class="tos-item-text"><strong>AI can be wrong.</strong> The AI Advisor's answers are generated automatically and may be inaccurate. Use them as general information, not advice.</div>
+        <div class="tos-item-text"><strong>AI can be wrong.</strong> The AI coach's answers are generated automatically and may be inaccurate. Use them as general information, not advice.</div>
       </div>
       <div class="tos-item">
         <div class="tos-item-icon"></div>
@@ -4106,7 +4117,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
       <div class="lp-head">
         <p class="lp-eyebrow">Pricing</p>
         <h2 class="lp-h2">Free forever. Premium if you want more.</h2>
-        <p class="lp-lead">Your budget, coin jars, debt storm and dashboard are free forever. Investing, the road home and the AI advisor are free for 14 days, then $12 a month if you want to keep them.</p>
+        <p class="lp-lead">Your budget, coin jars, debt storm and dashboard are free forever. Investing, the road home and the AI coach are free for 14 days, then $12 a month if you want to keep them.</p>
       </div>
       <div class="lp-pricing-wrap lp-pricing-two">
         <div class="lp-price-card lp-price-free">
@@ -4134,7 +4145,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
           <ul class="lp-price-feats">
             <li><span class="lp-check">✓</span>The money grove for your TFSA, RRSP and FHSA</li>
             <li><span class="lp-check">✓</span>The road home: every step to your first home</li>
-            <li><span class="lp-check">✓</span>An AI advisor that reads your real numbers</li>
+            <li><span class="lp-check">✓</span>An AI coach that reads your real numbers</li>
             <li><span class="lp-check">✓</span>Rent vs buy, with Canadian mortgage rules</li>
             <li><span class="lp-check">✓</span>Company check-up and news on every stock you own</li>
             <li><span class="lp-check">✓</span>Plus everything that's free: budget, coin jars, debt storm</li>
@@ -4164,7 +4175,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
         </div>
         <div class="lp-faq-item">
           <button class="lp-faq-q" onclick="lpToggleFaq(this)">What happens after the 14-day trial?<span class="lp-faq-icon">+</span></button>
-          <div class="lp-faq-a">Your budget, debt planner, and dashboard stay free. Investments, Housing, and the AI Advisor lock until you subscribe for $12/month CAD. The trial never needs a card, so you are only charged if you choose to subscribe, and you can cancel anytime from inside the app.</div>
+          <div class="lp-faq-a">Your budget, debt planner, and dashboard stay free. Investments, Housing, and the AI coach lock until you subscribe for $12/month CAD. The trial never needs a card, so you are only charged if you choose to subscribe, and you can cancel anytime from inside the app.</div>
         </div>
         <div class="lp-faq-item">
           <button class="lp-faq-q" onclick="lpToggleFaq(this)">Can I cancel easily?<span class="lp-faq-icon">+</span></button>
@@ -4329,7 +4340,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
     <button class="nav-tab"        data-page="rental"      onclick="showPage('rental')">Housing</button>
   </div>
   <button class="hide-figs-btn" id="hide-figs-btn" type="button" onclick="toggleHideFigures()" title="Hide amounts" aria-label="Hide amounts" aria-pressed="false"><svg class="eye-on" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><svg class="eye-off" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 3l18 18"/><path d="M10.6 5.1A10.4 10.4 0 0 1 12 5c6.4 0 10 7 10 7a17.6 17.6 0 0 1-3.2 4.1M6.6 6.6C3.9 8.3 2 12 2 12s3.6 7 10 7a9.7 9.7 0 0 0 5.4-1.6"/><path d="M9.9 9.9a3 3 0 0 0 4.2 4.2"/></svg></button>
-  <button class="ai-toggle" id="ai-toggle-btn" onclick="toggleAI()">AI Advisor</button>
+  <button class="ai-toggle" id="ai-toggle-btn" onclick="toggleAI()">AI coach</button>
   <div class="user-pill" style="position:relative">
     <div class="user-pill-dot"></div>
     <div class="user-pill-name" id="user-label"></div>
@@ -4387,7 +4398,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
     <div class="paywall-title">Premium Features</div>
     <div class="paywall-sub" id="paywall-sub">Your 14-day free trial has ended. Subscribe to keep access to:</div>
     <ul class="paywall-features">
-      <li><strong>AI Advisor</strong>, personalized financial coaching based on your actual data</li>
+      <li><strong>AI coach</strong>, personalized financial coaching based on your actual data</li>
       <li><strong>Investments</strong>, your TFSA, RRSP and FHSA with daily prices and your money grove</li>
       <li><strong>Housing</strong>, rent vs buy analysis, mortgage calculator, appreciation projections</li>
     </ul>
@@ -4411,7 +4422,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
     <div class="modal-sub">Be the first Canadians to use the full Qualisight platform, AI-powered budgeting, stock analysis, and rental valuation built for your reality.</div>
     <div class="modal-features">
       <div class="modal-feature"><span class="modal-feature-icon"></span><span>Built for Canada, TFSA, RRSP, FHSA logic built in</span></div>
-      <div class="modal-feature"><span class="modal-feature-icon"></span><span>AI advisor that reads your real numbers</span></div>
+      <div class="modal-feature"><span class="modal-feature-icon"></span><span>AI coach that reads your real numbers</span></div>
       <div class="modal-feature"><span class="modal-feature-icon"></span><span>Live stock analysis with news and macro data</span></div>
       <div class="modal-feature"><span class="modal-feature-icon"></span><span>Ontario rental property valuation tool</span></div>
     </div>
@@ -4487,6 +4498,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 
   <!-- Daily streak reinforcement -->
   <div class="budget-streak-strip streak-mount" id="bm-streak"></div>
+  <div class="coach-ask" id="ca-monthly" hidden></div>
 
   <!-- This-month status bar -->
   <div class="bm-status" id="bm-status"></div>
@@ -4636,6 +4648,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 
   <!-- Debt-free hero -->
   <div class="dt-hero" id="dt-hero"></div>
+  <div class="coach-ask" id="ca-debt" hidden></div>
 
   <!-- Dig yourself out: debt hole visual -->
   <div id="dt-pit-mount"></div>
@@ -4823,6 +4836,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 
   <!-- Housing game: the road home -->
   <div id="hq-mount"></div>
+  <div class="coach-ask" id="ca-rental" hidden style="margin-top:0.8rem"></div>
 
   <!-- Mode toggle -->
   <div class="rvb-mode-row" id="rvb-mode-row">
@@ -4991,8 +5005,8 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
     <div class="ai-header-left">
       <div class="ai-dot"></div>
       <div>
-        <div class="ai-title">Qualisight AI Advisor</div>
-        <div class="ai-sub">Powered by Claude, your personal finance coach</div>
+        <div class="ai-title">Qualisight coach</div>
+        <div class="ai-sub">Reads your numbers. Powered by Claude.</div>
       </div>
     </div>
     <button class="ai-close" onclick="toggleAI()">✕</button>
@@ -5941,7 +5955,7 @@ const WT_STEPS = [
   { step:6, page:'investments', targetId:'add-account-btn',     msg:'Add your TFSA, RRSP or other accounts here',                      pos:'below' },
   { step:7, page:'investments', targetId:'paycheck-card',       msg:'Enter your paycheck to see exactly where to put your money',       pos:'below' },
   { step:8, page:'rental',      targetId:'rvb-mode-row',        msg:'Use this to decide whether to rent or buy in Ontario',            pos:'below' },
-  { step:9, page:'dashboard',   targetId:'ai-toggle-btn',       msg:'Ask your AI Advisor for a full financial checkup',                pos:'below' },
+  { step:9, page:'dashboard',   targetId:'ai-toggle-btn',       msg:'Ask your AI coach for a full financial checkup',                pos:'below' },
 ];
 const WT_TOTAL = WT_STEPS.length;
 
@@ -9318,13 +9332,14 @@ function renderTrades(){
 // ══════════════════════════════════════════
 let aiDataReady = false; // gates sendAI until state is confirmed loaded
 
-async function toggleAI(){
-  // Gate AI for premium
-  if(!canAccessPremium() && !currentUser?.isDemo){
-    showPaywall(); return;
-  }
+async function toggleAI(src){
   const p = document.getElementById('ai-panel');
   const opening = !p.classList.contains('open');
+  if(opening){ try{ QA.log('ai_open',{src:typeof src==='string'?src:'button', demo:!!currentUser?.isDemo, gated:!canAccessPremium() && !currentUser?.isDemo}); }catch(e){} }
+  // Gate AI for premium
+  if(opening && !canAccessPremium() && !currentUser?.isDemo){
+    showPaywall(); return;
+  }
   p.classList.toggle('open');
   if(!opening) return;
 
@@ -9394,8 +9409,9 @@ function aiSuggest(){
   box.style.display='';
 }
 function aiKeydown(e){ if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();sendAI();} }
-function quickAsk(q){
+function quickAsk(q,src){
   if(!aiDataReady) return;
+  window._aiSrc = typeof src==='string' ? src : 'chip';
   const sug=document.getElementById('ai-suggestions');
   if(sug) sug.style.display='none';
   document.getElementById('ai-input').value=q;
@@ -9547,7 +9563,7 @@ function demoReply(msg){
   if(!homeQ && debts.length && (has('extra','sooner','faster','debt-free','debt free','pay off','payoff','what if') || /\$\s?\d/.test(t))){
     const D=debtPlan(amt);
     if(D.P0.canFinish===false) return `At the current payments one debt never finishes, because its payment does not cover the interest. Raising that payment is step one.\n\n**Next step:** on the Debt page, raise the minimum on that debt and watch the date appear.${tail}`;
-    return `Right now you are debt-free by **${obMonthOut(D.P0.months)}**.\n\nAdd **${$(amt)} a month** and that becomes **${obMonthOut(D.P.months)}**: ${D.sooner} month${D.sooner===1?'':'s'} sooner, with about **${$(D.saved)} less interest**.\n\n${first?`With the ${strat} method that extra goes to **${first.name}** first. When it is gone, its payment rolls onto the next debt.`:''}${goals.length?`\n\nWhere to find it: your jars still have ${$(sum(goals,g=>Math.max(0,g.goal-g.spent)))} unspent this month. Moving part of that is the easiest start.`:''}\n\n**Next step:** on the Debt page, tap **+$${amt}** under the storm to see it.${tail}`;
+    return `[[action:debt_extra:${amt}]]Right now you are debt-free by **${obMonthOut(D.P0.months)}**.\n\nAdd **${$(amt)} a month** and that becomes **${obMonthOut(D.P.months)}**: ${D.sooner} month${D.sooner===1?'':'s'} sooner, with about **${$(D.saved)} less interest**.\n\n${first?`With the ${strat} method that extra goes to **${first.name}** first. When it is gone, its payment rolls onto the next debt.`:''}${goals.length?`\n\nWhere to find it: your jars still have ${$(sum(goals,g=>Math.max(0,g.goal-g.spent)))} unspent this month. Moving part of that is the easiest start.`:''}\n\n**Next step:** on the Debt page, tap **+$${amt}** under the storm to see it.${tail}`;
   }
   if(!homeQ && !saveQ && debts.length && has('which debt','attack','order','avalanche','snowball','debt','loan','credit')){
     const D=debtPlan(0);
@@ -9604,6 +9620,9 @@ async function sendAI(){
   appendMsg(msg,'user');
   const loading = appendMsg('Thinking...','bot loading');
   chatHistory.push({role:'user', content:msg});
+  const _src = window._aiSrc || 'typed'; window._aiSrc = null;
+  const _t0 = Date.now(), _demo = !!(currentUser && currentUser.isDemo);
+  try{ QA.log('ai_ask',{src:_src, demo:_demo, turn:chatHistory.length}); }catch(e){}
 
   const isDemo = currentUser && currentUser.isDemo;
   console.log(isDemo ? '[Qualisight] DEMO MODE, scripted response' : '[Qualisight] LIVE API, calling Supabase edge function');
@@ -9613,8 +9632,7 @@ async function sendAI(){
     await new Promise(r=>setTimeout(r, 600+Math.random()*400));
     let reply; try{ reply=demoReply(msg); }catch(e){ reply='I could not work that out from the sample numbers. Try asking about the budget, the debts or the home goal.'; }
     loading.remove();
-    appendMsg(reply,'bot');
-    chatHistory.push({role:'assistant', content:reply});
+    aiShowReply(reply, {demo:true, ms:Date.now()-_t0});
     return;
   }
 
@@ -9625,7 +9643,7 @@ async function sendAI(){
     if(!session){
       loading.remove();
       chatHistory.pop();
-      appendMsg('Your session expired. Please sign in again to use the advisor.','bot');
+      appendMsg('Your session expired. Please sign in again to use the coach.','bot');
       return;
     }
     const res = await fetch(`${SUPABASE_URL}/functions/v1/ai-advisor`, {
@@ -9644,9 +9662,10 @@ async function sendAI(){
     });
     const data = await res.json().catch(()=>({}));
     loading.remove();
+    if(!res.ok){ try{ QA.log('ai_reply',{ok:false, status:res.status, ms:Date.now()-_t0}); }catch(e){} }
     if(res.status === 402){
       chatHistory.pop();
-      appendMsg('Your free trial has ended. Subscribe to keep using the AI Advisor.','bot');
+      appendMsg('Your free trial has ended. Subscribe to keep using the AI coach.','bot');
       showPaywall();
       return;
     }
@@ -9656,13 +9675,86 @@ async function sendAI(){
       return;
     }
     const reply = data.content?.[0]?.text || 'Sorry, I had trouble generating a response.';
-    appendMsg(reply,'bot');
-    chatHistory.push({role:'assistant', content:reply});
+    aiShowReply(reply, {demo:false, ms:Date.now()-_t0, left:data.remaining});
   }catch(e){
     loading.remove();
+    try{ QA.log('ai_reply',{ok:false, status:0, ms:Date.now()-_t0}); }catch(_){}
     appendMsg('Connection error. Please try again.','bot');
     chatHistory.pop();
   }
+}
+
+// ── Coach replies: an optional action button and a quick helpful / not helpful ──
+// The coach may end with one tag like [[action:debt_extra:100]]. Only the actions below exist;
+// anything else is dropped. With no tag, the button follows the page named in the next step.
+const AI_PAGES={budget:['monthly','Open my budget'],debt:['debt','Open my debt plan'],housing:['rental','Open the road home'],investing:['investments','Open my investments'],dashboard:['dashboard','Open my dashboard']};
+function aiActParse(k,v){
+  k=String(k||'').toLowerCase(); v=String(v||'').toLowerCase();
+  if(k==='debt_extra'){ const n=parseInt(v,10); return (n>=10 && n<=5000 && (state.debts||[]).some(d=>d.balance>0)) ? {k, n, label:`See +$${n.toLocaleString('en-CA')} a month on my debt plan`} : null; }
+  if(k==='page'){ const m=AI_PAGES[v]; return m ? {k, page:m[0], label:m[1]} : null; }
+  if(k==='checkin') return {k, label:'Add a monthly check-in to my calendar'};
+  return null;
+}
+function aiAction(text){
+  let act=null;
+  const clean=String(text||'').replace(/\[\[\s*action\s*:\s*([a-z_]+)\s*(?::\s*([a-z0-9_]+))?\s*\]\]/gi,(m,k,v)=>{ if(!act) act=aiActParse(k,v); return ''; }).replace(/\n{3,}/g,'\n\n').trim();
+  if(!act){
+    const ns=(clean.match(/next step:?\*{0,2}([^\n]*)/i)||[])[1]||'';
+    const t=ns.toLowerCase();
+    const pg = /debt page/.test(t)?'debt' : /budget page/.test(t)?'budget' : /housing page/.test(t)?'housing' : /invest(ing|ments) page/.test(t)?'investing' : '';
+    if(pg) act=aiActParse('page',pg);
+  }
+  return {text:clean, act};
+}
+function aiRunAct(act){
+  if(!act) return;
+  try{ QA.log('ai_action',{k:act.k, demo:!!currentUser?.isDemo}); }catch(e){}
+  const narrow = window.innerWidth < 760, p=document.getElementById('ai-panel');
+  if(act.k==='checkin'){ try{ calCheckin(); }catch(e){} return; }
+  if(narrow && p) p.classList.remove('open');
+  if(act.k==='debt_extra'){
+    showPage('debt');
+    setTimeout(()=>{ try{ pitTry(act.n); const r=document.getElementById('pit-extra'); if(r) r.scrollIntoView({behavior:'smooth', block:'center'}); }catch(e){} }, 250);
+    return;
+  }
+  if(act.k==='page') showPage(act.page);
+}
+function aiShowReply(reply, info){
+  const {text, act}=aiAction(reply);
+  const m=appendMsg(text,'bot');
+  chatHistory.push({role:'assistant', content:text});
+  try{ QA.log('ai_reply',{ok:true, demo:!!info.demo, ms:info.ms, act:act?act.k:''}); }catch(e){}
+  if(act){ const b=document.createElement('button'); b.type='button'; b.className='ai-act'; b.textContent=act.label; b.onclick=()=>aiRunAct(act); m.appendChild(b); }
+  const fb=document.createElement('div'); fb.className='ai-fb';
+  fb.innerHTML='<span>Was this helpful?</span><button type="button" data-up="1">Yes</button><button type="button" data-up="0">No</button>';
+  fb.onclick=e=>{ const b=e.target.closest('button'); if(!b) return; const up=b.dataset.up==='1';
+    try{ QA.log('ai_feedback',{up, demo:!!info.demo, turn:chatHistory.length}); }catch(_){}
+    fb.innerHTML=up?'<span>Thanks. Glad it helped.</span>':'<span>Thanks for telling me. Try asking it a different way, or ask for one specific number.</span>'; };
+  m.appendChild(fb);
+  if(typeof info.left==='number' && info.left>=0 && info.left<=5){ const l=document.createElement('div'); l.className='ai-left'; l.textContent=info.left===0?'That was your last question for today. More tomorrow.':`${info.left} question${info.left===1?'':'s'} left today.`; m.appendChild(l); }
+  const el=document.getElementById('ai-messages'); if(el) el.scrollTop=el.scrollHeight;
+}
+// ── Coach entry points: a question on each page that fits the numbers there ──
+function coachAllowed(){ return !!(currentUser && (currentUser.isDemo || canAccessPremium())); }
+function renderCoachAsk(){
+  const put=(id,qs)=>{ const el=document.getElementById(id); if(!el) return;
+    if(!coachAllowed() || !qs.length){ el.hidden=true; el.innerHTML=''; return; }
+    const src=id.slice(3);
+    el.innerHTML='<span class="ca-label">Ask the coach</span>'+qs.map(([l,q])=>`<button type="button" data-q="${escHtml(q)}" onclick="askCoach(this.dataset.q,'${src}')">${escHtml(l)}</button>`).join('');
+    el.hidden=false; };
+  const debts=(state.debts||[]).filter(d=>d.balance>0);
+  put('ca-debt', debts.length ? [['What would $100 extra do?','What would an extra $100 a month do to my debt-free date, and where could I find that $100?'],[debts.length>1?'Which debt first?':'How do I finish this sooner?', debts.length>1?'Which of my debts should I pay off first, and why?':'How can I pay this debt off sooner?']] : []);
+  const exp=(state.expenses||[]).length, inc=(state.income||[]).some(x=>(+x.actual||0)>0);
+  put('ca-monthly', exp ? [['Where am I overspending?','How is my budget looking this month, and where am I overspending?'],['Find me $100 a month','Looking at what I spend, where could I realistically find $100 a month?']]
+    : inc ? [['Suggest my spending goals','Based on my income, suggest spending goals for my main categories.']] : []);
+  const hf=state.homeFund;
+  put('ca-rental', hf&&hf.price>0 ? [['Reach my down payment sooner','How can I reach my minimum down payment sooner?'],['How would an FHSA help?','In general terms, how would an FHSA help with my first home goal?']] : []);
+}
+async function askCoach(q,src){
+  const p=document.getElementById('ai-panel'); if(!p) return;
+  if(!p.classList.contains('open')){ await toggleAI(src); if(!p.classList.contains('open')) return; }
+  for(let i=0;i<60 && !aiDataReady;i++) await new Promise(r=>setTimeout(r,100));
+  quickAsk(q, src);
 }
 
 function parseMarkdown(text){
@@ -13457,7 +13549,7 @@ function askPaycheckAI(amount){
 // PAYWALL & TRIAL
 // ══════════════════════════════════════════
 const TRIAL_DAYS  = 14;
-const PREMIUM_PAGES = new Set(['investments','rental']); // + AI Advisor
+const PREMIUM_PAGES = new Set(['investments','rental']); // + AI coach
 
 // Premium comes from the subscriptions table, which only the Stripe webhook can write.
 // The trial is measured from when the account was created. Neither can be edited in the browser.
@@ -13510,7 +13602,7 @@ function updateTrialBanner(){
   const textEl = document.getElementById('trial-banner-text');
   if(days <= 0){
     banner.style.display='flex';
-    textEl.innerHTML = `<span class="trial-urgent">Your free trial has ended.</span> Subscribe to keep access to Investments, Housing, and the AI Advisor.`;
+    textEl.innerHTML = `<span class="trial-urgent">Your free trial has ended.</span> Subscribe to keep access to Investments, Housing, and the AI coach.`;
   } else if(days <= 3){
     banner.style.display='flex';
     textEl.innerHTML = `<span class="trial-urgent">${days} day${days!==1?'s':''} left in your trial.</span> Subscribe to keep access.`;
@@ -14073,6 +14165,7 @@ function renderAll(){
   if(document.getElementById('rent-amount')?.value) calcRent();
   try{ renderHomeQuest(); }catch(e){ console.warn('home quest', e); }
   try{ renderDashboardPlus(); }catch(e){ console.warn('dash', e); }
+  try{ renderCoachAsk(); }catch(e){ console.warn('coach ask', e); }
 }
 
 // ══════════════════════════════════════════

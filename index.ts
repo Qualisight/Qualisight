@@ -1,4 +1,4 @@
-// Qualisight AI Advisor (secured)
+// Qualisight AI coach (secured)
 // - Requires a real signed-in user (rejects the public anon key)
 // - Checks trial / subscription on the server, not in the browser
 // - Daily message cap per user so nobody can run up the API bill
@@ -55,11 +55,17 @@ HOW YOU SOUND:
 - Concise. Keep most answers under 130 words. Lead with the answer, then the why.
 - Do not use em dashes.
 
-END EVERY ANSWER WITH ONE NEXT STEP they can take in the app today, and say where: the Budget page (log spending, set coin jar goals), the Debt page (log a payment, try the extra payment slider), the Investing page, or the Housing page. One step, not a list of steps.
+END EVERY ANSWER WITH ONE NEXT STEP they can take in the app today. Write it as a line that starts with "**Next step:**" and names the place: the Budget page (log spending, set coin jar goals), the Debt page (log a payment, try the extra payment slider), the Investing page, or the Housing page (the road to a first home). One step, not a list of steps.
+
+ACTION BUTTON: The app can turn your next step into a button. After the next step line, you may add one tag on its own line:
+- [[action:debt_extra:N]] shows their debt plan with N extra dollars a month. N is a whole number you suggested, from 10 to 5000. Only when they have debts.
+- [[action:page:budget]], [[action:page:debt]], [[action:page:housing]], [[action:page:investing]] or [[action:page:dashboard]] opens that page.
+- [[action:checkin]] adds a monthly check-in reminder to their calendar. Use it when they say they keep forgetting or want a habit.
+Use at most one tag, only when it does exactly what your next step says. Never mention the tag or explain it.
 
 USE THE APP'S OWN NUMBERS:
 - The data includes a DEBT-FREE PLAN block that the app calculated. For any question about payoff dates, what an extra payment would do, or total interest, quote those exact dates and amounts. Do not do your own loan math when a figure is provided.
-- If they ask about an extra amount that is not listed, estimate between the listed ones, say it is an estimate, and tell them the slider on the Debt page gives the exact date.
+- If they ask about an extra amount that is not listed, estimate between the listed ones, say it is an estimate, and add the [[action:debt_extra:N]] tag for that amount so the app shows the exact date.
 - If the data says almost nothing has been entered, do not analyse empty numbers. Suggest the single thing to enter first for their goal and say what it will show them.
 - Do not comment on a savings rate when no income has been entered.
 
@@ -109,7 +115,7 @@ Deno.serve(async (req) => {
 
   // 1. Who is calling? Must be a real signed-in user, not the public anon key.
   const token = (req.headers.get("Authorization") ?? "").replace(/^Bearer\s+/i, "").trim();
-  if (!token) return json({ error: "Please sign in to use the advisor." }, 401, headers);
+  if (!token) return json({ error: "Please sign in to use the coach." }, 401, headers);
 
   const admin = createClient(
     Deno.env.get("SUPABASE_URL")!,
@@ -165,7 +171,7 @@ Deno.serve(async (req) => {
   });
   if (rlErr) {
     console.error("rate limit error", rlErr);
-    return json({ error: "The advisor is unavailable right now. Try again in a minute." }, 500, headers);
+    return json({ error: "The coach is unavailable right now. Try again in a minute." }, 500, headers);
   }
   if (count === null || count === undefined) {
     return json({ error: `You've reached today's limit of ${DAILY_LIMIT} questions. It resets tomorrow.` }, 429, headers);
@@ -175,7 +181,7 @@ Deno.serve(async (req) => {
   const apiKey = Deno.env.get("ANTHROPIC_API_KEY");
   if (!apiKey) {
     console.error("ANTHROPIC_API_KEY secret is missing");
-    return json({ error: "The advisor is unavailable right now." }, 500, headers);
+    return json({ error: "The coach is unavailable right now." }, 500, headers);
   }
 
   // Anthropic sometimes returns short-lived errors (overloaded, rate limited).
@@ -218,8 +224,8 @@ Deno.serve(async (req) => {
     // Hand back the daily question the user didn't get an answer for
     await admin.rpc("refund_ai_usage", { p_user_id: user.id }).then(() => {}, () => {});
     const msg = lastStatus === 429 || lastStatus === 529
-      ? "The advisor is busy right now. Give it a minute and ask again."
-      : "The advisor is unavailable right now. Try again in a minute.";
+      ? "The coach is busy right now. Give it a minute and ask again."
+      : "The coach is unavailable right now. Try again in a minute.";
     return json({ error: msg }, 502, headers);
   }
 
