@@ -2939,6 +2939,46 @@ select option{background:#fff;color:var(--ink)}
 .iv-tabs{display:flex;gap:0.35rem;position:sticky;top:56px;z-index:20;margin:0 0 1rem;padding:0.45rem;background:rgba(13,15,20,0.96);border:1px solid var(--border);border-radius:14px;backdrop-filter:blur(8px)}
 .iv-tabs button{flex:1;min-height:40px;border-radius:10px;border:0;background:transparent;color:var(--muted);font:inherit;font-size:0.9rem;font-weight:600;cursor:pointer;transition:background .15s,color .15s}
 .iv-tabs button:hover{color:var(--text)}
+.iv-today{display:flex;flex-wrap:wrap;gap:0.3rem 0.7rem;align-items:center;margin-top:0.4rem;font-size:0.84rem;color:var(--muted)}
+.iv-today b{font-variant-numeric:tabular-nums;font-weight:700}
+.iv-today .up{color:#4ade80}.iv-today .down{color:#f87171}
+.iv-live-dot{width:8px;height:8px;border-radius:50%;background:#64748b;display:inline-block;margin-right:0.35rem;vertical-align:1px}
+.iv-live-dot.on{background:#4ade80;animation:ivLive 2s ease-in-out infinite}
+@keyframes ivLive{0%,100%{box-shadow:0 0 0 0 rgba(74,222,128,0.55)}50%{box-shadow:0 0 0 5px rgba(74,222,128,0)}}
+#iv-hero-value.tick-up{animation:ivTickUp 1.3s ease}
+#iv-hero-value.tick-down{animation:ivTickDown 1.3s ease}
+@keyframes ivTickUp{0%{color:#4ade80;text-shadow:0 0 18px rgba(74,222,128,0.55)}100%{text-shadow:none}}
+@keyframes ivTickDown{0%{color:#f87171;text-shadow:0 0 18px rgba(248,113,113,0.5)}100%{text-shadow:none}}
+.grove-plant{position:absolute;left:50%;top:34%;z-index:6;pointer-events:none;font-weight:800;font-size:1.3rem;color:#4ade80;text-shadow:0 2px 14px rgba(0,0,0,0.75);white-space:nowrap;animation:grovePlant 2.6s ease-out forwards}
+@keyframes grovePlant{0%{opacity:0;transform:translate(-50%,14px) scale(0.8)}14%{opacity:1;transform:translate(-50%,0) scale(1.1)}70%{opacity:1;transform:translate(-50%,-14px) scale(1)}100%{opacity:0;transform:translate(-50%,-44px) scale(1)}}
+.iv-analysis{display:block}
+.iva-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1rem;margin-bottom:1rem}
+.iva-h{font-weight:700;font-size:1rem}
+.iva-sub{font-size:0.82rem;color:var(--muted);margin:0.15rem 0 0.75rem}
+.iva-big{font-size:1.35rem;font-weight:800;font-variant-numeric:tabular-nums}
+.iva-big.up{color:#4ade80}.iva-big.down{color:#f87171}
+.iva-range{display:flex;gap:0.35rem;margin:0.6rem 0}
+.iva-range button{min-height:36px;padding:0 0.85rem;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--muted);font:inherit;font-size:0.84rem;font-weight:600;cursor:pointer}
+.iva-range button.on{background:#4ade80;border-color:#4ade80;color:#0b0d12}
+.iva-chart{position:relative;height:190px;touch-action:pan-y}
+.iva-chart canvas{width:100%;height:100%;display:block}
+.iva-tip{position:absolute;top:0;transform:translateX(-50%);background:var(--card2,#1a1f2b);border:1px solid var(--border);border-radius:8px;padding:0.2rem 0.5rem;font-size:0.78rem;white-space:nowrap;pointer-events:none;font-variant-numeric:tabular-nums}
+.iva-bar{display:flex;height:14px;border-radius:7px;overflow:hidden;margin:0.2rem 0 0.7rem;background:rgba(255,255,255,0.05)}
+.iva-bar span{display:block;height:100%}
+.iva-row{display:grid;grid-template-columns:12px 1fr auto 3.4rem;gap:0.55rem;align-items:center;font-size:0.88rem;padding:0.32rem 0}
+.iva-sw{width:10px;height:10px;border-radius:3px}
+.iva-row .v{font-variant-numeric:tabular-nums}.iva-row .p{color:var(--muted);text-align:right;font-variant-numeric:tabular-nums}
+.iva-two{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.iva-m{display:flex;justify-content:space-between;gap:0.6rem;font-size:0.88rem;padding:0.4rem 0;border-bottom:1px solid var(--border)}
+.iva-m:last-child{border-bottom:0}.iva-m small{color:var(--muted);font-size:0.75rem;display:block}
+.iva-m .up{color:#4ade80;font-weight:700}.iva-m .down{color:#f87171;font-weight:700}
+.iva-lab{font-size:0.78rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin-bottom:0.2rem}
+.iva-fact{font-size:0.9rem;padding:0.35rem 0;line-height:1.45}
+.iva-note{font-size:0.78rem;color:var(--muted);margin-top:0.6rem}
+@media(max-width:560px){.iva-two{grid-template-columns:1fr}}
+@media (prefers-reduced-motion: reduce){.grove-plant,#iv-hero-value.tick-up,#iv-hero-value.tick-down,.iv-live-dot.on{animation:none}}
+#page-investments:not([data-ivtab="analysis"]) > #iv-analysis{display:none!important}
+#page-investments[data-ivtab="analysis"] > #grove,#page-investments[data-ivtab="analysis"] > #alloc-accounts,#page-investments[data-ivtab="analysis"] > #ck-mount,#page-investments[data-ivtab="analysis"] > #iv-trades,#page-investments[data-ivtab="analysis"] > #news-panel{display:none!important}
 .iv-tabs button.on{background:#4ade80;color:#0b0d12}
 #page-investments[data-ivtab="grove"] > #alloc-accounts,#page-investments[data-ivtab="grove"] > #ck-mount,#page-investments[data-ivtab="grove"] > #iv-trades,#page-investments[data-ivtab="grove"] > #news-panel,
 #page-investments[data-ivtab="holdings"] > #grove,#page-investments[data-ivtab="holdings"] > #ck-mount,#page-investments[data-ivtab="holdings"] > #iv-trades,
@@ -4711,6 +4751,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
         <div class="iv-hero-label">Total portfolio value</div>
         <div class="iv-hero-value" id="iv-hero-value">$0</div>
         <div class="iv-hero-gain" id="iv-hero-gain"></div>
+        <div class="iv-today" id="iv-today"></div>
       </div>
       <div class="iv-hero-actions">
         <button class="btn" id="add-holding-btn" onclick="addPortfolioEntry()">+ Add holding</button>
@@ -4726,9 +4767,11 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
   <div class="iv-tabs" role="tablist" aria-label="Investments sections">
     <button type="button" role="tab" data-t="grove" onclick="ivTab('grove')">Grove</button>
     <button type="button" role="tab" data-t="holdings" onclick="ivTab('holdings')">Holdings</button>
+    <button type="button" role="tab" data-t="analysis" onclick="ivTab('analysis')">Analysis</button>
     <button type="button" role="tab" data-t="trades" onclick="ivTab('trades')">Trades</button>
   </div>
   <div id="grove" class="grove"></div>
+  <div id="iv-analysis" class="iv-analysis" aria-live="off"></div>
 
   <!-- Hidden stat row kept for any legacy references (not displayed) -->
   <div class="stat-row" id="port-stats" style="display:none"></div>
@@ -8901,7 +8944,16 @@ function renderPortfolio(){
   // Hero value + gain
   const hv=document.getElementById('iv-hero-value');
   const hg=document.getElementById('iv-hero-gain');
-  if(hv) hv.innerHTML = fmt(portMV);
+  if(hv){
+    hv.innerHTML = fmt(portMV);
+    const last=window._ivLastMV;
+    if(typeof last==='number' && Math.abs(portMV-last)>0.005 && validHoldings.length){
+      hv.classList.remove('tick-up','tick-down'); void hv.offsetWidth; hv.classList.add(portMV>last?'tick-up':'tick-down');
+    }
+    window._ivLastMV=portMV;
+  }
+  try{ ivTodayRender(); }catch(e){}
+  try{ if(document.getElementById('page-investments')?.dataset.ivtab==='analysis' && !(_iva.hover!=null && Date.now()-(_iva.hoverAt||0)<2500)) ivAnalysisRender(); }catch(e){ console.warn('analysis', e); }
   if(hg){
     if(validHoldings.length){
       hg.className='iv-hero-gain '+(portGL>=0?'pos':'neg');
@@ -10545,6 +10597,7 @@ function renderGrove(){
   document.getElementById('grove-season').textContent = `${GROVE_MONTHS[now.getMonth()]}, ${sn.toLowerCase()}`;
   document.getElementById('grove-streak').textContent = streak ? `${streak}-month contribution streak` : 'Add money this month to start a streak';
 
+  try{ ivGroveMoveFx(tot); }catch(e){}
   _grove.tot = tot;
   groveLifeRender(tot);
   groveUpdateText(tot);
@@ -13001,7 +13054,7 @@ async function groveSyncPrices(opts){
     const need=keys.filter(k=>{ const r=rows.map[k];
       if(!r) return opts.force || !asked[k];
       const age=now-Date.parse(r.updated_at);
-      if(opts.force) return r.status==='ok' ? age>6*3600e3 : age>3*864e5;
+      if(opts.force) return r.status==='ok' ? age>20*60e3 : age>3*864e5;
       return r.status==='ok' && age>2*864e5 && !asked[k]; });
     let fnError=null;
     if(need.length){
@@ -13334,6 +13387,7 @@ function mergeDupHoldings(){
 }
 async function invSave(){
   const err=document.getElementById('inv-err'); err.textContent='';
+  const _ivBefore=ivPlotContribs(), _ivEdit=!!_inv.edit;
   const accDef=invAccDef(_inv.accType);
   if(!accDef.classes.includes(_inv.cls)){ err.textContent=`${accDef.label} accounts can't hold ${_inv.cls.toLowerCase()}.`; return; }
   const q=invVal('inv-qty');
@@ -13373,6 +13427,7 @@ async function invSave(){
   if(rec.type==='Gold' && invVal('inv-price')>0) state.portfolio.forEach(h=>{ if(h.type==='Gold' && (h.metal||'gold')===rec.metal) h.price=rec.price; });
   closeInvest(); save(); renderPortfolio(); renderAllocator();
   if(_inv.feed){ _inv.feed=false; try{ groveSyncPrices({force:true}).catch(()=>{}); }catch(e){} }
+  if(!_ivEdit){ try{ ivAfterAdd(_ivBefore); }catch(e){ console.warn('plant', e); } }
   if(typeof showToast==='function') showToast(merged ? `<strong>Added to your ${escHtml(merged.ticker)}.</strong> You now hold ${+merged.shares.toFixed(4)} at an average cost of $${merged.cost.toFixed(2)} each.` : `<strong>${_inv.edit?'Saved':'Added'}.</strong> ${escHtml(rec.ticker)} is in your ${accDef.label}.`);
 }
 function invRemove(){
@@ -14327,13 +14382,206 @@ function lpShowSignup(){
 // ── Investments page: tabs and the grove-at-a-glance strip ──
 function ivTab(t, quiet){
   const pg=document.getElementById('page-investments'); if(!pg) return;
-  if(!['grove','holdings','trades'].includes(t)) t='grove';
+  if(!['grove','holdings','analysis','trades'].includes(t)) t='grove';
   pg.dataset.ivtab=t; try{ sessionStorage.setItem('qs_ivtab',t); }catch(e){}
   pg.querySelectorAll('.iv-tabs button').forEach(b=>{ const on=b.dataset.t===t; b.classList.toggle('on',on); b.setAttribute('aria-selected',on); });
   if(t==='trades') document.getElementById('iv-trades')?.classList.add('open');
   if(t==='grove'){ try{ groveSize(); groveStart(); }catch(e){} }
+  if(t==='analysis'){ try{ ivAnalysisRender(); }catch(e){ console.warn('analysis', e); } }
   if(!quiet){ const bar=pg.querySelector('.iv-tabs'); if(bar && bar.getBoundingClientRect().top<0) window.scrollTo({top:bar.getBoundingClientRect().top+window.scrollY-70}); try{ if(typeof QA!=='undefined') QA.log('iv_tab',{t}); }catch(e){} }
 }
+// ── Live: today's move, market hours, and new prices while the page is open ──
+function ivToday(){
+  const day=groveMarketDay(); let base=0, now=0, n=0;
+  (state.portfolio||[]).forEach(h=>{ const sh=+h.shares||0, p=+h.price||0; if(!(sh>0)||!(p>0)) return;
+    const m=h.marks||[]; let prev=null; for(let i=m.length-1;i>=0;i--){ if(m[i][0]<day){ prev=m[i][1]; break; } }
+    if(!(prev>0)) return; base+=sh*prev; now+=sh*p; n++; });
+  return n ? {chg:now-base, pct:base>0?(now-base)/base*100:0, n} : null;
+}
+function ivMarketOpen(){
+  try{ const p=new Intl.DateTimeFormat('en-US',{timeZone:'America/Toronto',weekday:'short',hour:'numeric',minute:'numeric',hourCycle:'h23'}).formatToParts(new Date());
+    const g=k=>(p.find(x=>x.type===k)||{}).value; const mins=(+g('hour'))*60+(+g('minute'));
+    return !['Sat','Sun'].includes(g('weekday')) && mins>=570 && mins<960; }catch(e){ return false; }
+}
+function ivLastPriceTime(){ let t=0; (state.portfolio||[]).forEach(h=>{ const x=Date.parse(h.lastRefreshed||''); if(x>t) t=x; }); return t; }
+function ivTodayRender(){
+  const el=document.getElementById('iv-today'); if(!el) return;
+  if(!(state.portfolio||[]).some(h=>+h.shares>0)){ el.innerHTML=''; return; }
+  const T=ivToday(), demo=!!currentUser?.isDemo;
+  let live;
+  if(demo) live='<span><i class="iv-live-dot on"></i>Demo market: a pretend trading day passes every 3 seconds</span>';
+  else {
+    const open=ivMarketOpen(), lt=ivLastPriceTime(), d=lt?new Date(lt):null;
+    const when=d ? d.toLocaleTimeString('en-CA',{hour:'numeric',minute:'2-digit'})+(d.toDateString()===new Date().toDateString()?'':', '+d.toLocaleDateString('en-CA',{month:'short',day:'numeric'})) : '';
+    live = open ? `<span><i class="iv-live-dot on"></i>Markets open. Prices update about every 20 minutes${when?`, last at ${when}`:''}</span>`
+                : `<span><i class="iv-live-dot"></i>Markets closed${when?`. Last prices ${when}`:''}. Crypto keeps moving</span>`;
+  }
+  el.innerHTML=(T?`<b class="${T.chg>=0?'up':'down'}">${T.chg>=0?'+':'-'}${fmt(Math.abs(T.chg))} (${T.chg>=0?'+':''}${T.pct.toFixed(2)}%) today</b>`:'')+live;
+}
+// trees answer a price move: a little gold when an account rose, a few leaves when it dipped
+function ivGroveMoveFx(tot){
+  const last=_grove.lastV, now={};
+  Object.keys(_grove.plots||{}).forEach(id=>{ now[id]=(tot[id]||{}).value||0; });
+  _grove.lastV=now;
+  if(!last || typeof groveReduce!=='undefined' && groveReduce) return;
+  Object.values(_grove.plots||{}).forEach(P=>{
+    const id=P.def.id, a=last[id], b=now[id]; if(!(a>0) || !P.w || P.visible===false) return;
+    const d=b-a; if(Math.abs(d) < Math.max(1, a*0.0004)) return;
+    if(d>0){ for(let i=0;i<4;i++) groveSpawn(P,{type:'spark',x:P.w*(0.3+Math.random()*0.4),y:P.h*(0.25+Math.random()*0.3),vx:(Math.random()-0.5)*1.4,vy:-0.6-Math.random(),r:3,col:'#fde68a'}); }
+    else { for(let i=0;i<3;i++) groveSpawn(P,{type:'leaf',x:P.w*(0.35+Math.random()*0.3),y:P.h*(0.3+Math.random()*0.2),vx:(Math.random()-0.5)*0.8,vy:0.2,seed:Math.random()*6,col:'#b45309'}); }
+  });
+}
+// while the investing page is open, pick up new prices as the server stores them
+setInterval(()=>{
+  try{
+    if(!currentUser || currentUser.isDemo || document.hidden) return;
+    const pg=document.getElementById('page-investments'); if(!pg || pg.offsetParent===null) return;
+    if(Date.now()-(_grove.priceSyncedAt||0) < 4.5*60e3){ ivTodayRender(); return; }
+    groveSyncPrices().then(()=>ivTodayRender()).catch(()=>{});
+  }catch(e){}
+}, 60e3);
+document.addEventListener('visibilitychange',()=>{ try{ if(!document.hidden && currentUser && !currentUser.isDemo && Date.now()-(_grove.priceSyncedAt||0) > 4.5*60e3 && document.getElementById('page-investments')?.offsetParent) groveSyncPrices().then(()=>ivTodayRender()).catch(()=>{}); }catch(e){} });
+
+// ── Planting: after new money goes in, the grove shows it growing ──
+function ivPlotContribs(){ const o={}; try{ const t=groveTotals(); Object.keys(t).forEach(k=>{ o[k]=t[k].contrib||0; }); }catch(e){} return o; }
+function ivAfterAdd(before){
+  let best=null;
+  const after=groveTotals();
+  Object.keys(after).forEach(id=>{ const d=(after[id].contrib||0)-(before[id]||0); if(d>0.5 && (!best || d>best.d)) best={id, d}; });
+  if(!best) return;
+  try{ QA.log('iv_planted',{plot:best.id, demo:!!currentUser?.isDemo}); }catch(e){}
+  _grove.celebrate={id:best.id, amt:best.d, from:before[best.id]||0};
+  ivGlancePick(best.id);
+  setTimeout(groveCelebrate, 500);
+}
+function groveCelebrate(){
+  const c=_grove.celebrate; _grove.celebrate=null; if(!c) return;
+  const P=(_grove.plots||{})[c.id]; if(!P || !P.cv) return;
+  P.disp=c.from; P.pulse=1; P.flash=1; P.visible=true;
+  const reduce=typeof groveReduce!=='undefined' && groveReduce;
+  if(!reduce && P.w){
+    for(let i=0;i<22;i++) groveSpawn(P,{type:'coin',x:P.w*(0.22+Math.random()*0.56),y:-8-Math.random()*50,vx:(Math.random()-0.5)*1.1,vy:Math.random()*1.4,floor:P.h-24-Math.random()*10,life:1.7});
+    for(let i=0;i<3;i++) setTimeout(()=>groveSpawn(P,{type:'ring',x:P.w/2,y:P.h*0.62,r:6+i*2,col:'rgba(74,222,128,0.75)'}), i*180);
+  }
+  const host=P.cv.parentElement;
+  if(host){
+    if(getComputedStyle(host).position==='static') host.style.position='relative';
+    const d=document.createElement('div'); d.className='grove-plant';
+    d.textContent='+$'+Math.round(c.amt).toLocaleString('en-CA')+' planted';
+    host.appendChild(d); setTimeout(()=>d.remove(), 2700);
+  }
+}
+
+// ── Analysis tab: plain facts about what you hold. Never advice on what to buy or sell. ──
+const _iva={range:30};
+const IVA_TYPE_COLORS={'ETFs':'#4ade80','Stocks':'#60a5fa','Bonds':'#a78bfa','Crypto':'#f59e0b','Metals':'#fbbf24','Other':'#64748b'};
+function ivaType(h,byId){
+  try{ if(groveHoldingPlot(h,byId)==='metals') return 'Metals'; }catch(e){}
+  return {ETF:'ETFs',Stocks:'Stocks',Stock:'Stocks',Bond:'Bonds',Crypto:'Crypto',Gold:'Metals',Metal:'Metals'}[h.type] || 'Other';
+}
+function ivaHoldings(){ return (state.portfolio||[]).filter(h=>h && +h.shares>0 && +h.price>0 && (state.accounts||[]).some(a=>a.id===h.accountId)); }
+function ivaSeries(H,days){
+  const day=groveMarketDay();
+  const first=Math.min(...H.map(h=>(h.marks&&h.marks.length)?h.marks[0][0]:day));
+  const start=Math.max(first, day-days), pts=[];
+  for(let d=start; d<=day; d++){
+    let v=0; H.forEach(h=>{ let p=d===day?+h.price:grovePriceOn(h,d); if(!(p>0)){ const f=(h.marks||[])[0]; p=f?f[1]:+h.price; } v+=p*(+h.shares); });
+    pts.push([d,v]);
+  }
+  return pts;
+}
+function ivaLabel(d){ const n=groveMarketDay()-d; return n<=0?'Today':n===1?'Yesterday':`${n} days ago`; }
+function ivaDraw(){
+  const box=document.getElementById('iva-chart'); if(!box) return;
+  const cv=box.querySelector('canvas'), pts=_iva.pts||[]; if(!cv || pts.length<2) return;
+  const dpr=Math.min(2,window.devicePixelRatio||1), W=box.clientWidth, Hh=box.clientHeight; if(!W) return;
+  cv.width=W*dpr; cv.height=Hh*dpr; const x=cv.getContext('2d'); x.setTransform(dpr,0,0,dpr,0,0); x.clearRect(0,0,W,Hh);
+  const vs=pts.map(p=>p[1]), lo=Math.min(...vs), hi=Math.max(...vs), pad=(hi-lo)*0.12||hi*0.01||1, y0=lo-pad, y1=hi+pad;
+  const top=22, bot=Hh-20, X=i=>8+i*(W-16)/(pts.length-1), Y=v=>bot-(v-y0)/(y1-y0)*(bot-top);
+  const up=vs[vs.length-1]>=vs[0], col=up?'#4ade80':'#f87171';
+  const g=x.createLinearGradient(0,top,0,bot); g.addColorStop(0,up?'rgba(74,222,128,0.28)':'rgba(248,113,113,0.25)'); g.addColorStop(1,'rgba(0,0,0,0)');
+  x.beginPath(); pts.forEach((p,i)=>{ i?x.lineTo(X(i),Y(p[1])):x.moveTo(X(i),Y(p[1])); }); x.lineTo(X(pts.length-1),bot); x.lineTo(X(0),bot); x.closePath(); x.fillStyle=g; x.fill();
+  x.beginPath(); pts.forEach((p,i)=>{ i?x.lineTo(X(i),Y(p[1])):x.moveTo(X(i),Y(p[1])); }); x.strokeStyle=col; x.lineWidth=2; x.lineJoin='round'; x.stroke();
+  x.fillStyle='rgba(148,163,184,0.9)'; x.font='11px system-ui,sans-serif'; x.textAlign='left'; x.fillText(ivaLabel(pts[0][0]),8,Hh-5); x.textAlign='right'; x.fillText('Today',W-8,Hh-5);
+  if(_iva.hover!=null){ const i=_iva.hover, px=X(i), py=Y(pts[i][1]); x.strokeStyle='rgba(148,163,184,0.4)'; x.lineWidth=1; x.beginPath(); x.moveTo(px,top-6); x.lineTo(px,bot); x.stroke(); x.fillStyle=col; x.beginPath(); x.arc(px,py,4,0,7); x.fill(); }
+  else { const i=pts.length-1; x.fillStyle=col; x.beginPath(); x.arc(X(i),Y(pts[i][1]),3.5,0,7); x.fill(); }
+}
+function ivaHover(e){
+  const box=document.getElementById('iva-chart'), pts=_iva.pts||[]; if(!box || pts.length<2) return;
+  const r=box.getBoundingClientRect(), cx=(e.touches?e.touches[0].clientX:e.clientX)-r.left;
+  const i=Math.max(0,Math.min(pts.length-1,Math.round((cx-8)/((r.width-16)/(pts.length-1)))));
+  _iva.hover=i; _iva.hoverAt=Date.now(); ivaDraw();
+  const tip=document.getElementById('iva-tip'); if(tip){ tip.hidden=false; tip.style.left=Math.max(60,Math.min(r.width-60,8+i*(r.width-16)/(pts.length-1)))+'px'; tip.innerHTML=`${ivaLabel(pts[i][0])}: <b>$${Math.round(pts[i][1]).toLocaleString('en-CA')}</b>`; }
+}
+function ivaLeave(){ _iva.hover=null; const tip=document.getElementById('iva-tip'); if(tip) tip.hidden=true; ivaDraw(); }
+function ivaRange(n){ _iva.range=n; try{ QA.log('iva_range',{n}); }catch(e){} ivAnalysisRender(); }
+function ivAnalysisRender(){
+  const el=document.getElementById('iv-analysis'); if(!el) return;
+  const H=ivaHoldings();
+  if(!H.length){ el.innerHTML=`<div class="iva-card"><div class="iva-h">Your analysis shows up here</div><div class="iva-sub" style="margin-bottom:0.9rem">Add a holding and you will see how your money is spread out, how it has moved, and what is moving it.</div><button class="btn" type="button" onclick="addPortfolioEntry()">+ Add holding</button></div>`; return; }
+  const byId=Object.fromEntries((state.accounts||[]).map(a=>[a.id,a]));
+  const val=h=>(+h.price)*(+h.shares), total=H.reduce((s,h)=>s+val(h),0)||1;
+  // value over time
+  const day=groveMarketDay(), span=day-Math.min(...H.map(h=>(h.marks&&h.marks.length)?h.marks[0][0]:day));
+  const ranges=[[7,'1W'],[30,'1M'],[90,'3M'],[120,'All']].filter(([n],i)=>i===0 || span>[7,30,90,120][i-1]);
+  if(!ranges.some(r=>r[0]===_iva.range)) _iva.range=ranges[ranges.length-1][0];
+  const pts=ivaSeries(H,_iva.range); _iva.pts=pts; _iva.hover=null;
+  const ch=pts.length>1 ? pts[pts.length-1][1]-pts[0][1] : 0, chp=pts.length>1 && pts[0][1]>0 ? ch/pts[0][1]*100 : 0;
+  const rangeName={7:'week',30:'month',90:'3 months',120:'4 months'}[_iva.range];
+  // groups
+  const group=(keyFn,colorFn)=>{ const m={}; H.forEach(h=>{ const k=keyFn(h); m[k]=(m[k]||0)+val(h); }); return Object.entries(m).sort((a,b)=>b[1]-a[1]).map(([k,v])=>({k,v,c:colorFn(k)})); };
+  const types=group(h=>ivaType(h,byId), k=>IVA_TYPE_COLORS[k]||'#64748b');
+  const accts=group(h=>byId[h.accountId]?.type||'Other', k=>(typeof ACCOUNT_COLORS!=='undefined'&&ACCOUNT_COLORS[k])||'#94a3b8');
+  const rows=list=>`<div class="iva-bar">${list.map(g=>`<span style="width:${(g.v/total*100).toFixed(2)}%;background:${g.c}" title="${escHtml(g.k)}"></span>`).join('')}</div>`+list.map(g=>`<div class="iva-row"><i class="iva-sw" style="background:${g.c}"></i><span>${escHtml(g.k)}</span><span class="v">$${Math.round(g.v).toLocaleString('en-CA')}</span><span class="p">${(g.v/total*100).toFixed(1)}%</span></div>`).join('');
+  // movers, with the same ticker in two accounts counted once
+  const byT={}; H.forEach(h=>{ const k=String(h.ticker||h.name||'').toUpperCase(); const o=byT[k]||(byT[k]={t:h.ticker||h.name||'',v:0,b:0,prev:0,now:0,hasPrev:false}); o.v+=val(h); o.b+=(+h.cost||0)*(+h.shares);
+    const m=h.marks||[]; let pv=null; for(let i=m.length-1;i>=0;i--){ if(m[i][0]<day){ pv=m[i][1]; break; } } if(pv>0){ o.prev+=pv*(+h.shares); o.now+=val(h); o.hasPrev=true; } });
+  const T=Object.values(byT);
+  const since=T.filter(o=>o.b>0).map(o=>({t:o.t, r:(o.v-o.b)/o.b*100, d:o.v-o.b})).sort((a,b)=>b.r-a.r);
+  const today=T.filter(o=>o.hasPrev && o.prev>0).map(o=>({t:o.t, r:(o.now-o.prev)/o.prev*100, d:o.now-o.prev})).sort((a,b)=>b.r-a.r);
+  const mrow=o=>`<div class="iva-m"><span>${escHtml(o.t)}</span><span class="${o.r>=0?'up':'down'}">${o.r>=0?'+':''}${o.r.toFixed(1)}% <small style="display:inline">(${o.d>=0?'+':'-'}$${Math.round(Math.abs(o.d)).toLocaleString('en-CA')})</small></span></div>`;
+  const best=since.slice(0,3), worst=since.slice(Math.max(3,since.length-3)).reverse(); // never repeats a holding from the gains list
+  const todayList=today.length?[...today.slice(0,2),...(today.length>2?today.slice(-2).reverse():[])].filter((o,i,a)=>a.findIndex(x=>x.t===o.t)===i):[];
+  // facts
+  const sorted=[...T].sort((a,b)=>b.v-a.v), top=sorted[0], top3=sorted.slice(0,3).reduce((s,o)=>s+o.v,0);
+  const nAcc=new Set(H.map(h=>h.accountId)).size;
+  const facts=[
+    `Your largest holding is <b>${escHtml(top.t)}</b>, at <b>${(top.v/total*100).toFixed(0)}%</b> of everything you hold.`,
+    sorted.length>3?`Your top 3 holdings make up <b>${(top3/total*100).toFixed(0)}%</b>.`:'',
+    `You hold <b>${sorted.length}</b> investment${sorted.length===1?'':'s'} across <b>${nAcc}</b> account${nAcc===1?'':'s'}.`,
+    types[0]?`The biggest share of your money is in <b>${escHtml(types[0].k==='Other'?'other investments':types[0].k)}</b> (${(types[0].v/total*100).toFixed(0)}%).`:''
+  ].filter(Boolean);
+  const coach = (typeof coachAllowed==='function' && coachAllowed()) ? `<div class="coach-ask" style="margin:0.7rem 0 0"><span class="ca-label">Ask the coach</span><button type="button" onclick="askCoach('In plain words, how is my portfolio spread across accounts and types, and what stands out? Facts only, no buy or sell advice.','analysis')">What stands out in my portfolio?</button></div>` : '';
+  el.innerHTML=`
+    <div class="iva-card">
+      <div class="iva-h">How your holdings moved</div>
+      <div class="iva-big ${ch>=0?'up':'down'}">${pts.length>1?`${ch>=0?'+':'-'}$${Math.round(Math.abs(ch)).toLocaleString('en-CA')} (${ch>=0?'+':''}${chp.toFixed(2)}%)`:'$'+Math.round(total).toLocaleString('en-CA')}</div>
+      <div class="iva-sub">${pts.length>1?`over the past ${rangeName}`:'The chart fills in as daily prices come in.'}</div>
+      ${ranges.length>1?`<div class="iva-range" role="group" aria-label="Time range">${ranges.map(([n,l])=>`<button type="button" class="${n===_iva.range?'on':''}" onclick="ivaRange(${n})" aria-pressed="${n===_iva.range}">${l}</button>`).join('')}</div>`:''}
+      ${pts.length>1?`<div class="iva-chart" id="iva-chart" onpointermove="ivaHover(event)" onpointerleave="ivaLeave()" ontouchmove="ivaHover(event)" ontouchend="ivaLeave()"><canvas aria-label="Value of your holdings over the past ${rangeName}" role="img"></canvas><div class="iva-tip" id="iva-tip" hidden></div></div>`:''}
+      <div class="iva-note">What the investments you hold today were worth each day. Money you added or took out is not part of this line.</div>
+    </div>
+    <div class="iva-two">
+      <div class="iva-card"><div class="iva-h">What you own</div><div class="iva-sub">By type of investment</div>${rows(types)}</div>
+      <div class="iva-card"><div class="iva-h">Where it is held</div><div class="iva-sub">By account</div>${rows(accts)}</div>
+    </div>
+    <div class="iva-card">
+      <div class="iva-h">What is moving</div>
+      <div class="iva-two" style="margin-top:0.6rem">
+        <div><div class="iva-lab">Since you bought</div><div class="iva-sub" style="margin:0 0 0.1rem">Biggest gains</div>${best.map(mrow).join('')}${worst.length?`<div class="iva-sub" style="margin:0.7rem 0 0.1rem">${worst[0].r<0?'Biggest drops':'Smallest gains'}</div>${worst.map(mrow).join('')}`:''}</div>
+        <div><div class="iva-lab">Today</div>${todayList.length?'<div class="iva-sub" style="margin:0 0 0.1rem">Up and down the most</div>':''}${todayList.length?todayList.map(mrow).join(''):'<div class="iva-fact" style="color:var(--muted)">Shows up after the first full day of prices.</div>'}</div>
+      </div>
+    </div>
+    <div class="iva-card">
+      <div class="iva-h">Quick facts</div>
+      ${facts.map(f=>`<div class="iva-fact">${f}</div>`).join('')}
+      ${coach}
+      <div class="iva-note">Facts about what you hold, not advice on what to buy or sell.</div>
+    </div>`;
+  requestAnimationFrame(ivaDraw);
+}
+window.addEventListener('resize',()=>{ try{ if(document.getElementById('page-investments')?.dataset.ivtab==='analysis') ivaDraw(); }catch(e){} });
+
 function ivJump(id){ ivTab({grove:'grove','alloc-accounts':'holdings','ck-mount':'holdings','iv-trades':'trades'}[id]||'grove'); }
 function ivGlancePick(id){
   ivTab('grove');
