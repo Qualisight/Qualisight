@@ -481,6 +481,15 @@ header{
 .db-start-foot{display:flex;flex-wrap:wrap;gap:0.4rem 1rem;align-items:center;margin-top:0.9rem;font-size:0.8rem;color:var(--muted)}
 .db-start-foot button{background:none;border:0;color:var(--text);text-decoration:underline;font:inherit;cursor:pointer;min-height:44px;padding:0}
 .db-fresh .journey-card,.db-fresh .db-details{display:none}
+.bm-fresh #bm-today,.bm-fresh #bm-week,.bm-fresh #bm-pace,.bm-fresh #bg-game-mount,.bm-fresh #bm-bills,.bm-fresh #bm-svg-head,.bm-fresh #expense-cats,.bm-fresh #bm-year{display:none}
+.bm-fresh .bm-log-card::before{content:'Or skip that and just log what you spent:';display:block;font-size:0.85rem;color:var(--muted);margin-bottom:0.6rem}
+.bg-more{border-top:1px solid var(--border2)}
+.bm-idle>summary{cursor:pointer;list-style:none;padding:0.9rem 1rem;font-size:0.86rem;font-weight:600;color:var(--accent,#4ade80);min-height:44px;display:flex;align-items:center}
+.bm-idle>summary::-webkit-details-marker{display:none}
+.bg-more>summary{cursor:pointer;list-style:none;padding:0.95rem 1.1rem;font-weight:700;font-size:0.92rem;display:flex;align-items:center;justify-content:space-between;min-height:44px}
+.bg-more>summary::-webkit-details-marker{display:none}
+.bg-more>summary::after{content:'Show';font-size:0.8rem;color:var(--accent,#4ade80);font-weight:600}
+.bg-more[open]>summary::after{content:'Hide'}
 .db-boost{font-size:0.84rem;color:var(--muted);line-height:1.4;margin:0.1rem 0 0.5rem}
 .db-boost b{color:var(--text)}
 .db-parts summary,.db-more summary{cursor:pointer;font-size:0.8rem;font-weight:600;color:var(--accent,#4ade80);min-height:32px;display:flex;align-items:center;list-style:none}
@@ -4841,7 +4850,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 
   <div id="bm-bills"></div>
   <!-- Spending vs Goals: collapsible category cards -->
-  <div class="bm-section-head">
+  <div class="bm-section-head" id="bm-svg-head">
     <div>
       <div class="bm-section-title">Spending vs goals</div>
       <div class="bm-section-hint">Tap a category to see its expenses. The small line on each everyday bar is an even pace for today.</div>
@@ -7403,6 +7412,7 @@ function renderBudgetGame(){
         <span class="bg-health" id="bg-health"></span>
       </div>
       <div class="bg-stage" id="bg-stage" role="img" aria-label="Your coin jars" title="Tap a jar, the chest or yourself"><canvas></canvas></div>
+      <details class="bg-more"><summary>Quests and badges</summary>
       <div class="bg-body">
         <div class="bg-col">
           <div class="bg-h"><b>This month's quests</b><span id="bg-q-count"></span></div>
@@ -7414,7 +7424,7 @@ function renderBudgetGame(){
           <div class="bg-bnext" id="bg-bnext"></div>
           <div class="bg-troph" id="bg-troph"></div>
         </div>
-      </div>
+      </div></details>
     </div>`;
     _bg.built=true;
     _bg.cv=mount.querySelector('canvas'); _bg.ctx=_bg.cv.getContext('2d');
@@ -7965,6 +7975,7 @@ function renderMonthly(){
   const fresh=!(ti>0) && !(tg>0);
   // A brand-new budget shows one question, not a page of zeros
   ['bm-setup-btn','bm-streak'].forEach(id=>{ const el=document.getElementById(id); if(el) el.style.display=fresh?'none':''; });
+  { const pg=document.getElementById('page-monthly'); if(pg) pg.classList.toggle('bm-fresh', fresh && !state.expenses.length && !(currentUser&&currentUser.isDemo)); }
   if(statusEl && fresh){
     statusEl.innerHTML=bmStartHtml();
   } else if(statusEl){
@@ -8029,7 +8040,7 @@ function renderMonthly(){
     expEl.innerHTML='<div class="empty-state">Log an expense above, or open the setup panel to set your spending goals.</div>';
   } else {
     const openCats = window._bmOpenCats || {};
-    expEl.innerHTML=budgetsWithSpend.map(b=>{
+    const bmRow=b=>{
       const ratio = b.goal>0 ? b.spent/b.goal : 0;
       const pv = b.goal>0 ? Math.min(100,ratio*100) : (b.spent>0?100:0);
       const fillCls = b.goal<=0 ? 'nogoal' : (ratio<0.75?'good':ratio<=1?'warn':'over');
@@ -8083,7 +8094,10 @@ function renderMonthly(){
           </div>
         </div>
       </div>`;
-    }).join('');
+    };
+    const act=budgetsWithSpend.filter(b=>b.spent>0||openCats[b.cat]), idle=budgetsWithSpend.filter(b=>!(b.spent>0||openCats[b.cat]));
+    expEl.innerHTML=(act.length?act.map(bmRow).join(''):'')
+      +(idle.length?(act.length?`<details class="bm-idle"${window._bmIdleOpen?' open':''} ontoggle="window._bmIdleOpen=this.open"><summary>${idle.length} more jar${idle.length===1?'':'s'} with nothing spent yet</summary>${idle.map(bmRow).join('')}</details>`:idle.map(bmRow).join('')):'');
   }
 
   try{ renderBudgetGame(); }catch(e){ console.warn('budget game', e); }
@@ -8200,7 +8214,7 @@ function bmHeroHtml(ti,te,tg,net,sr){
     <div class="bmh-days" role="img" aria-label="Everyday spending each day this ${month}: ${fmtW(total)} so far${per>0?`, about ${fmtW(per)} a day planned`:''}">${cols}${paceLine}</div>
     <div class="bmh-dnums" aria-hidden="true">${nums}</div>
     <div class="bmh-cap">${cap}</div>
-    <div class="bmh-foot"><span>Income <b>${ti>0?fmtW(ti):'not added yet'}</b></span><span>Net saved <b class="${ti>0?(net>=0?'pos':'neg'):''}">${ti>0?fmtW(net):'n/a'}</b>${ti>0?`, a ${sr}% savings rate`:''}</span></div>${hist}`;
+    <div class="bmh-foot"><span>Income <b>${ti>0?fmtW(ti):'not added yet'}</b></span><span>${net>=0?'Not spent yet':'Spent more than you made'} <b class="${ti>0?(net>=0?'pos':'neg'):''}">${ti>0?fmtW(Math.abs(net)):'n/a'}</b></span></div>${hist}`;
 }
 function bmPaceRender(ti,te,tg,fresh){
   const el=document.getElementById('bm-pace'); if(!el) return;
