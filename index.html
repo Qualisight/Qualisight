@@ -3406,6 +3406,42 @@ details.iv-acct[open] .iv-acct-chev{transform:rotate(180deg)}
   .bm-stat-val{font-size:1.4rem}
 }
 
+/* ── Budget month panel: one sentence, one money bar, a strip of days ── */
+#bm-status.bmh-wrap{display:block;padding:1.25rem 1.3rem 1.1rem;background:var(--card);border:1px solid var(--border);border-radius:18px;box-shadow:none;overflow:visible}
+.bmh-month{font-size:0.9rem;color:var(--muted);font-weight:500}
+.bmh-line{font-family:var(--font-display);font-weight:800;font-size:2.35rem;letter-spacing:-0.035em;line-height:1.05;margin:0.2rem 0 0.25rem;font-variant-numeric:tabular-nums;color:var(--text)}
+.bmh-line.over{color:var(--red)}
+.bmh-sub{font-size:0.92rem;color:var(--muted)}
+.bmh-bar{display:flex;height:12px;border-radius:6px;overflow:hidden;margin:1.05rem 0 0.55rem;background:rgba(255,255,255,0.05)}
+.bmh-bar i{display:block;height:100%}
+.bmh-bar .sp{background:#cbd5e1}.bmh-bar .ov{background:var(--red)}.bmh-bar .lf{background:var(--green)}
+.bmh-bar .sv{background:repeating-linear-gradient(135deg,rgba(74,222,128,0.55) 0 4px,rgba(74,222,128,0.18) 4px 8px)}
+.bmh-legend{display:flex;flex-wrap:wrap;gap:0.35rem 1.1rem;font-size:0.84rem;color:var(--muted)}
+.bmh-legend span{display:inline-flex;align-items:center;gap:0.4rem}
+.bmh-legend b{color:var(--text);font-variant-numeric:tabular-nums;font-weight:600}
+.bmh-legend i{width:10px;height:10px;border-radius:3px;display:inline-block}
+.bmh-days{position:relative;display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px;align-items:end;height:84px;margin:1.3rem 0 0.3rem}
+.bmd{position:relative;height:100%;display:flex;align-items:flex-end;justify-content:center;border-radius:4px}
+.bmd i{display:block;width:100%;height:var(--h,0%);min-height:0;border-radius:3px 3px 1px 1px;background:repeating-linear-gradient(to top,#fbbf24 0 3px,#b45309 3px 4px)}
+.bmd.over i{background:repeating-linear-gradient(to top,#fb923c 0 3px,#9a3412 3px 4px)}
+.bmd.future{background:rgba(255,255,255,0.022)}
+.bmd.today{box-shadow:0 0 0 1.5px var(--green);background:rgba(74,222,128,0.07)}
+.bmd.empty:not(.future) i{height:2px;background:rgba(255,255,255,0.14)}
+.bmh-pace{position:absolute;left:0;right:0;border-top:1.5px dashed rgba(74,222,128,0.7);pointer-events:none}
+.bmh-pace span{position:absolute;right:0;top:-1.25rem;font-size:0.7rem;color:var(--green);background:var(--card);padding:0 0.25rem;white-space:nowrap}
+.bmh-dnums{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:3px;font-size:0.66rem;color:var(--muted);text-align:center;font-variant-numeric:tabular-nums}
+.bmh-dnums .t{color:var(--green);font-weight:700}
+.bmh-cap{font-size:0.78rem;color:var(--muted);margin-top:0.5rem}
+.bmh-foot{display:flex;flex-wrap:wrap;gap:0.3rem 1.2rem;margin-top:1rem;padding-top:0.85rem;border-top:1px solid var(--border);font-size:0.86rem;color:var(--muted)}
+.bmh-foot b{color:var(--text);font-variant-numeric:tabular-nums}
+.bmh-foot b.pos{color:var(--green)}.bmh-foot b.neg{color:var(--red)}
+#bm-pace{margin:0.75rem 0 1.2rem}
+#page-monthly #bm-streak{margin-bottom:0.9rem}
+#page-monthly #ca-monthly{margin:-0.4rem 0 1.3rem}
+.bm-cat-bar{position:relative}
+.bm-cat-tick{position:absolute;top:-3px;bottom:-3px;width:2px;margin-left:-1px;background:rgba(232,237,248,0.75);border-radius:1px;pointer-events:none}
+@media(max-width:640px){.bmh-line{font-size:2rem}.bmh-days{height:70px;gap:2px}.bmh-dnums{gap:2px}#bm-status.bmh-wrap{padding:1.1rem 1rem 1rem}}
+
 /* ═══ Dark (black + green) adjustments ═══ */
 /* Text on bright fills is dark, like the original Q icon */
 .btn,.bm-log-btn,.bm-save-btn,.jc-btn,.ob-fi-btn,.ob-primary-btn,.auth-btn,.tos-accept-btn,.modal-submit,.paywall-btn,.pp-footer-btn,.ai-send,
@@ -4562,11 +4598,11 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 
   <!-- Daily streak reinforcement -->
   <div class="budget-streak-strip streak-mount" id="bm-streak"></div>
-  <div class="coach-ask" id="ca-monthly" hidden></div>
 
-  <!-- This-month status bar -->
+  <!-- This month: one sentence, one money bar, a strip of days -->
   <div class="bm-status" id="bm-status"></div>
   <div class="bm-pace" id="bm-pace"></div>
+  <div class="coach-ask" id="ca-monthly" hidden></div>
 
   <!-- Quick log expense (the daily action, up top) -->
   <div class="bm-log-card">
@@ -4620,7 +4656,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
   <div class="bm-section-head">
     <div>
       <div class="bm-section-title">Spending vs goals</div>
-      <div class="bm-section-hint">Tap a category to see its expenses.</div>
+      <div class="bm-section-hint">Tap a category to see its expenses. The small line on each everyday bar is an even pace for today.</div>
     </div>
   </div>
   <div class="bm-cats" id="expense-cats"></div>
@@ -6216,6 +6252,9 @@ function exitDemo(){
 function startDemo(){
   currentUser={name:'Demo',email:null,id:null,isDemo:true};
   state=JSON.parse(JSON.stringify(DEMO_STATE));
+  try{ const t=new Date(), dom=t.getDate(); let k=0;
+    state.expenses.forEach(e=>{ if(e.d) return; const day=BM_FIXED.test(e.cat)?1:Math.max(1, dom-((k++*5+2)%dom));
+      const dd=new Date(t.getFullYear(),t.getMonth(),day); e.d=dd.getFullYear()+'-'+String(dd.getMonth()+1).padStart(2,'0')+'-'+String(dd.getDate()).padStart(2,'0'); }); }catch(e){}
   document.getElementById('trial-banner').style.display='none';
   showApp(); renderAll();
 }
@@ -7444,28 +7483,10 @@ function renderMonthly(){
   if(statusEl && fresh){
     statusEl.innerHTML=bmStartHtml();
   } else if(statusEl){
-    statusEl.innerHTML=`
-      <div class="bm-stat">
-        <div class="bm-stat-label">Income</div>
-        <div class="bm-stat-val">${fmtW(ti)}</div>
-        <div class="bm-stat-sub">this month</div>
-      </div>
-      <div class="bm-stat">
-        <div class="bm-stat-label">Spent</div>
-        <div class="bm-stat-val">${fmtW(te)}</div>
-        <div class="bm-stat-sub">${tg>0?`of ${fmtW(tg)} budgeted`:'no goals set yet'}</div>
-      </div>
-      <div class="bm-stat">
-        <div class="bm-stat-label">${tg>0&&leftToSpend<0?'Over budget':'Left to spend'}</div>
-        <div class="bm-stat-val ${tg>0?(leftToSpend>=0?'pos':'neg'):''}">${tg>0?fmtW(Math.abs(leftToSpend)):'n/a'}</div>
-        <div class="bm-stat-sub">${tg>0?'against your goals':'set goals below'}</div>
-      </div>
-      <div class="bm-stat highlight">
-        <div class="bm-stat-label">Net saved</div>
-        <div class="bm-stat-val ${ti>0?(net>=0?'pos':'neg'):''}">${ti>0?fmtW(net):'n/a'}</div>
-        <div class="bm-stat-sub">${ti>0?`${sr}% savings rate`:'add your income to see it'}</div>
-      </div>`;
+    statusEl.classList.add('bmh-wrap');
+    statusEl.innerHTML=bmHeroHtml(ti,te,tg,net,sr);
   }
+  if(statusEl && fresh) statusEl.classList.remove('bmh-wrap');
 
   try{ bmPaceRender(ti,te,tg,fresh); }catch(e){ console.warn('pace',e); }
   try{ bmBillsRender(); }catch(e){ console.warn('bills',e); }
@@ -7539,7 +7560,7 @@ function renderMonthly(){
               <span class="bm-cat-name">${escHtml(b.cat)}<span class="bm-cat-count">${b.items.length} item${b.items.length===1?'':'s'}</span></span>
               <span class="bm-cat-amounts"><span class="spent">${fmtW(b.spent)}</span>${b.goal>0?` / ${fmtW(b.goal)}`:''}</span>
             </div>
-            <div class="bm-cat-bar"><div class="bm-cat-fill ${fillCls}" style="width:${pv}%"></div></div>
+            <div class="bm-cat-bar"><div class="bm-cat-fill ${fillCls}" style="width:${pv}%"></div>${b.goal>0 && !BM_FIXED.test(b.cat)?`<i class="bm-cat-tick" style="left:${Math.min(100,bmDayFrac()*100).toFixed(1)}%" title="Where an even pace would put you today"></i>`:''}</div>
           </div>
           <span class="bm-cat-status ${over?'over':'left'}">${b.goal>0?statusTxt:''}</span>
         </div>
@@ -7635,6 +7656,44 @@ function bmBillsRender(){
   </div>`;
 }
 const BM_FIXED=/rent|mortgage|insurance|utilit|debt|phone|internet|loan/i;
+function bmDayFrac(){ const n=new Date(), dim=new Date(n.getFullYear(),n.getMonth()+1,0).getDate(); return n.getDate()/dim; }
+function bmHeroHtml(ti,te,tg,net,sr){
+  const now=new Date(), y=now.getFullYear(), m=now.getMonth(), dim=new Date(y,m+1,0).getDate(), dom=now.getDate(), left=dim-dom+1;
+  const month=now.toLocaleDateString('en-CA',{month:'long'});
+  const L=tg-te, over=tg>0 && L<0;
+  const line = tg>0 ? (over ? `${fmtW(-L)} over your goals` : `${fmtW(L)} left to spend`) : `${fmtW(te)} spent`;
+  const sub = `${tg>0?`of ${fmtW(tg)} budgeted. `:'Set spending goals to see what is left. '}${left} day${left===1?'':'s'} to go.`;
+  // one bar for the whole month: spent, over, left within goals, and income not given to any goal
+  const base=Math.max(ti,te,tg,1), inGoal=Math.min(te,tg>0?tg:te), ov=tg>0?Math.max(0,te-tg):0, lf=Math.max(0,tg-te), sv=ti>0?Math.max(0,ti-Math.max(tg,te)):0;
+  const seg=(c,v)=>v>0?`<i class="${c}" style="width:${(v/base*100).toFixed(2)}%"></i>`:'';
+  const leg=(c,l,v)=>v>0?`<span><i class="${c}" style="${c==='sv'?'background:repeating-linear-gradient(135deg,rgba(74,222,128,0.6) 0 3px,rgba(74,222,128,0.2) 3px 6px)':`background:${c==='sp'?'#cbd5e1':c==='ov'?'var(--red)':'var(--green)'}`}"></i>${l} <b>${fmtW(v)}</b></span>`:'';
+  // everyday spending by day (rent, insurance, bills and debt payments are left out, they would flatten the rest)
+  const ym=y+'-'+String(m+1).padStart(2,'0'), byDay=Array(dim+1).fill(0); let undated=0;
+  (state.expenses||[]).forEach(e=>{ if(BM_FIXED.test(e.cat)) return; if(e.d && e.d.slice(0,7)===ym){ const d=+e.d.slice(8,10); if(d>=1&&d<=dim) byDay[d]+=e.actual; } else undated++; });
+  let evGoal=0; (state.budgets||[]).forEach(b=>{ if(b.goal>0 && !BM_FIXED.test(b.cat)) evGoal+=b.goal; });
+  const per=evGoal>0?evGoal/dim:0, maxv=Math.max(per*1.7, ...byDay.slice(1), 1);
+  let cols='', nums='';
+  for(let d=1; d<=dim; d++){
+    const v=byDay[d], fut=d>dom, cls=['bmd', fut?'future':'', d===dom?'today':'', !v?'empty':'', per>0&&v>per?'over':''].filter(Boolean).join(' ');
+    const lbl=new Date(y,m,d).toLocaleDateString('en-CA',{month:'short',day:'numeric'});
+    cols+=`<div class="${cls}" style="--h:${(v/maxv*100).toFixed(1)}%" title="${lbl}: ${fut?'still to come':'$'+Math.round(v).toLocaleString('en-CA')}"><i></i></div>`;
+    nums+=`<span class="${d===dom?'t':''}">${d===dom||(d%7===1&&Math.abs(d-dom)>2)?d:''}</span>`;
+  }
+  const dated=byDay.some(v=>v>0);
+  const paceLine = per>0 ? `<div class="bmh-pace" style="bottom:${(per/maxv*100).toFixed(1)}%"><span>Plan: ${fmtW(per)} a day</span></div>` : '';
+  const cap = !dated ? 'Each day fills in as you log everyday spending.' : undated ? 'Expenses logged before dates were added are not shown by day.' : 'Everyday spending per day. Rent, bills and debt payments are left out.';
+  const total=byDay.reduce((a,b)=>a+b,0);
+  return `
+    <div class="bmh-month">${month} so far</div>
+    <div class="bmh-line${over?' over':''}">${line}</div>
+    <div class="bmh-sub">${sub}</div>
+    <div class="bmh-bar" role="img" aria-label="Spent ${fmtW(te)}${ov?`, ${fmtW(ov)} over goals`:''}${lf?`, ${fmtW(lf)} left to spend`:''}${sv?`, ${fmtW(sv)} of income not in any goal`:''}">${seg('sp',inGoal)}${seg('ov',ov)}${seg('lf',lf)}${seg('sv',sv)}</div>
+    <div class="bmh-legend">${leg('sp','Spent',te)}${leg('ov','Over goals',ov)}${leg('lf','Left',lf)}${leg('sv','Not budgeted',sv)}</div>
+    <div class="bmh-days" role="img" aria-label="Everyday spending each day this ${month}: ${fmtW(total)} so far${per>0?`, about ${fmtW(per)} a day planned`:''}">${cols}${paceLine}</div>
+    <div class="bmh-dnums" aria-hidden="true">${nums}</div>
+    <div class="bmh-cap">${cap}</div>
+    <div class="bmh-foot"><span>Income <b>${ti>0?fmtW(ti):'not added yet'}</b></span><span>Net saved <b class="${ti>0?(net>=0?'pos':'neg'):''}">${ti>0?fmtW(net):'n/a'}</b>${ti>0?`, a ${sr}% savings rate`:''}</span></div>`;
+}
 function bmPaceRender(ti,te,tg,fresh){
   const el=document.getElementById('bm-pace'); if(!el) return;
   if(fresh || !(tg>0)){ el.innerHTML=''; return; }
