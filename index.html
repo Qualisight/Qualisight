@@ -3768,6 +3768,45 @@ button:focus:not(:focus-visible){outline:none}
 /* Numbers line up */
 .bm-cat-amounts,.db-nw-val,.iv-hero-value,.dt-hero-stat-val,.bm-bill-amt{font-variant-numeric:tabular-nums}
 @media (prefers-reduced-motion: reduce){.btn,.btn-ghost{transition:none}.btn:hover{transform:none}}
+
+/* Debt summary: a months-to-go tile instead of the decorative pattern */
+.dt-hero::before,.dt-hero::after{display:none!important}
+.dt-hero{position:relative}
+.dt-count{position:absolute;top:50%;right:1.6rem;transform:translateY(-50%);width:112px;height:112px;border-radius:22px;display:flex;flex-direction:column;align-items:center;justify-content:center;background:radial-gradient(90% 90% at 30% 20%,rgba(96,165,250,0.22),rgba(96,165,250,0.04)),var(--card2,#1b1f29);border:1px solid rgba(96,165,250,0.35);overflow:hidden}
+.dt-count b{font-family:var(--font-display);font-size:2.4rem;line-height:1;letter-spacing:-0.04em;color:#fff;font-variant-numeric:tabular-nums}
+.dt-count span{font-size:0.72rem;color:var(--muted);margin-top:0.3rem;font-weight:600}
+.dt-count i{position:absolute;left:0;bottom:0;height:5px;width:var(--p);background:linear-gradient(90deg,#60a5fa,#4ade80)}
+.dt-count.never{border-color:rgba(248,113,113,0.45);background:radial-gradient(90% 90% at 30% 20%,rgba(248,113,113,0.22),rgba(248,113,113,0.04)),var(--card2,#1b1f29)}
+.dt-count.never b{color:#f87171}
+@media(max-width:680px){.dt-count{position:static;transform:none;width:auto;height:auto;flex-direction:row;gap:0.5rem;justify-content:flex-start;padding:0.7rem 0.9rem;margin-top:1rem;border-radius:14px}.dt-count b{font-size:1.6rem}.dt-count span{margin-top:0}}
+
+/* Rent or buy: modern form and tighter results */
+#rvb-wrap .card{background:var(--card2,#1b1f29);border-radius:18px}
+#rvb-wrap .card-title{font-family:var(--font-display);font-size:1.02rem;letter-spacing:-0.01em;text-transform:none}
+#rvb-wrap input,#rvb-wrap select{min-height:44px;border-radius:12px!important;font-size:0.95rem!important;padding:0 0.85rem!important}
+#rvb-wrap input:focus,#rvb-wrap select:focus{border-color:rgba(74,222,128,0.55)!important;box-shadow:0 0 0 3px rgba(74,222,128,0.16)}
+#rvb-wrap .form-group label{font-size:0.82rem;font-weight:600;color:var(--text);margin-bottom:0.35rem}
+#rvb-buy-mode .card:first-child>div[style*="flex-direction:column"]{display:grid!important;grid-template-columns:1fr 1fr;gap:0.9rem 0.8rem!important}
+#rvb-buy-mode .card:first-child>div[style*="flex-direction:column"]>.form-group:nth-last-child(-n+2),#rvb-buy-mode .card:first-child>div[style*="flex-direction:column"]>:not(.form-group){grid-column:1/-1}
+#rvb-wrap .rental-output-grid{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+#rvb-wrap .rental-metric{background:var(--card2,#1b1f29);border-radius:16px;padding:0.9rem 1rem}
+#rvb-wrap .rvb-mode-row{margin:0.2rem 0 1rem}
+@media(max-width:600px){#rvb-buy-mode .card:first-child>div[style*="flex-direction:column"]{grid-template-columns:1fr}#rvb-wrap .rental-output-grid{grid-template-columns:1fr 1fr;gap:0.6rem}#rvb-wrap .rental-metric .rm-value{font-size:1.25rem}}
+
+/* Landing on phones: swipe the four worlds, tighter rule cards */
+@media(max-width:700px){
+  #landing-page .lp-worlds{display:flex!important;overflow-x:auto;scroll-snap-type:x mandatory;gap:0.8rem;margin:0 -1.2rem;padding:0 1.2rem 0.6rem;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  #landing-page .lp-worlds::-webkit-scrollbar{display:none}
+  #landing-page .lp-world{flex:0 0 82%;scroll-snap-align:center;margin:0!important}
+  #landing-page .lp-worlds::after{content:'';flex:0 0 1px}
+  #landing-page .lp-worlds-hint{display:block}
+  #landing-page .lp-rules{display:grid!important;grid-template-columns:1fr 1fr;gap:0.6rem}
+  #landing-page .lp-rules>div{padding:0.85rem 0.9rem!important}
+  #landing-page .lp-rules b{font-size:0.88rem}
+  #landing-page .lp-rules span{font-size:0.78rem;line-height:1.4}
+  #landing-page .lp-worlds-points{gap:0.6rem!important}
+}
+.lp-worlds-hint{display:none;font-size:0.8rem;color:var(--muted);text-align:center;margin:0.2rem 0 1rem}
 </style>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#4ade80">
@@ -4291,6 +4330,7 @@ button:focus:not(:focus-visible){outline:none}
         <button type="button" class="lp-world" onclick="lpOpenWorld('rental')"><div class="lp-world-art"><canvas id="lpw-home"></canvas></div>
           <div class="lp-world-txt"><span>First home</span><b>The road home</b><p>Drive past every real step to the keys: FHSA, minimum down payment, closing costs and the lender's stress test.</p></div></button>
       </div>
+      <p class="lp-worlds-hint">Swipe to see all four</p>
       <div class="lp-worlds-points">
         <div><b>Quests and levels</b><span>Fresh quests every month and XP for good habits, like logging spending and no-spend days.</span></div>
         <div><b>Badges that mean something</b><span>Earned from what you actually do, never from luck or the stock market.</span></div>
@@ -5220,23 +5260,23 @@ button:focus:not(:focus-visible){outline:none}
   <details class="rvb-wrap" id="rvb-wrap" ontoggle="if(this.open){try{QA.log('rvb_open',{})}catch(e){}}"><summary><span><b>Rent or buy?</b><small>Two quick calculators on Canadian rules: what a rent leaves you, and what owning really costs each month.</small></span></summary>
   <!-- Mode toggle -->
   <div class="rvb-mode-row" id="rvb-mode-row">
-    <button class="rvb-mode-btn active" id="rvb-rent-tab" onclick="rvbSetMode('rent')">Should I Rent?</button>
-    <button class="rvb-mode-btn"        id="rvb-buy-tab"  onclick="rvbSetMode('buy')">Should I Buy?</button>
+    <button class="rvb-mode-btn active" id="rvb-rent-tab" onclick="rvbSetMode('rent')">Should I rent?</button>
+    <button class="rvb-mode-btn"        id="rvb-buy-tab"  onclick="rvbSetMode('buy')">Should I buy?</button>
   </div>
 
   <!-- ── RENT MODE ── -->
   <div id="rvb-rent-mode">
     <div class="two-col" style="gap:1rem;margin-bottom:1rem">
       <div class="card">
-        <div class="card-title">The Rent You're Considering</div>
+        <div class="card-title">The rent you are looking at</div>
         <div class="form-group" style="margin-bottom:0.7rem">
-          <label>Monthly Rent ($)</label>
+          <label>Monthly rent</label>
           <input id="rent-amount" type="number" placeholder="e.g. 2200" oninput="calcRent()"
             style="background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:0.85rem;padding:0.5rem 0.7rem;outline:none;width:100%;transition:border-color 0.15s"
             onfocus="this.style.borderColor='rgba(74,222,128,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.07)'">
         </div>
         <div class="form-group" style="margin-bottom:0.7rem">
-          <label>Down Payment Goal ($) <span style="color:var(--muted);font-weight:400">, optional</span></label>
+          <label>Down payment goal <span style="color:var(--muted);font-weight:400">(optional)</span></label>
           <input id="rent-dp-goal" type="number" placeholder="e.g. 80000" oninput="calcRent()"
             style="background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:0.85rem;padding:0.5rem 0.7rem;outline:none;width:100%;transition:border-color 0.15s"
             onfocus="this.style.borderColor='rgba(74,222,128,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.07)'">
@@ -5244,7 +5284,7 @@ button:focus:not(:focus-visible){outline:none}
         <div id="rent-income-note" style="font-size:0.75rem;color:var(--muted);margin-top:0.5rem"></div>
       </div>
       <div class="card">
-        <div class="card-title">Ontario Rent Benchmarks <span style="font-size:0.75rem;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(CMHC / Rentals.ca 2026)</span></div>
+        <div class="card-title">Typical rents in Ontario <span style="font-size:0.75rem;color:var(--muted);font-weight:400;text-transform:none;letter-spacing:0">(CMHC / Rentals.ca 2026)</span></div>
         <div style="display:flex;flex-direction:column;gap:0.4rem">
           <select id="rent-city" aria-label="City for rent benchmarks" onchange="calcRent()"
             style="background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:0.85rem;padding:0.5rem 0.7rem;outline:none;margin-bottom:0.6rem">
@@ -5278,10 +5318,10 @@ button:focus:not(:focus-visible){outline:none}
   <div id="rvb-buy-mode" style="display:none">
     <div class="two-col" style="gap:1rem;margin-bottom:1rem">
       <div class="card">
-        <div class="card-title">Property Details</div>
+        <div class="card-title">The home</div>
         <div style="display:flex;flex-direction:column;gap:0.7rem">
           <div class="form-group">
-            <label>City / Area</label>
+            <label>City or area</label>
             <select id="rv-city" style="background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:0.85rem;padding:0.5rem 0.7rem;outline:none">
               <option value="toronto">Toronto</option><option value="mississauga">Mississauga</option>
               <option value="brampton">Brampton</option><option value="vaughan">Vaughan / York Region</option>
@@ -5293,44 +5333,44 @@ button:focus:not(:focus-visible){outline:none}
             </select>
           </div>
           <div class="form-group">
-            <label>Property Type</label>
+            <label>Type of home</label>
             <select id="rv-type" style="background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:0.85rem;padding:0.5rem 0.7rem;outline:none">
               <option value="condo">Condo</option><option value="semi">Semi-Detached</option>
               <option value="townhouse">Townhouse</option><option value="detached">Detached</option>
             </select>
           </div>
           <div class="form-group">
-            <label>Purchase Price ($)</label>
+            <label>Price</label>
             <input id="rv-price" type="number" placeholder="650000"
               style="background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:0.85rem;padding:0.5rem 0.7rem;outline:none;transition:border-color 0.15s"
               onfocus="this.style.borderColor='rgba(74,222,128,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.07)'">
           </div>
           <div class="form-group">
-            <label>Down Payment ($)</label>
+            <label>Down payment</label>
             <input id="rv-down" type="number" placeholder="130000" oninput="syncDownPct()"
               style="background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:0.85rem;padding:0.5rem 0.7rem;outline:none;transition:border-color 0.15s"
               onfocus="this.style.borderColor='rgba(74,222,128,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.07)'">
           </div>
           <div class="form-group">
-            <label>Down Payment %</label>
+            <label>Down payment %</label>
             <input id="rv-down-pct" type="number" placeholder="20" oninput="syncDownAmt()"
               style="background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:0.85rem;padding:0.5rem 0.7rem;outline:none;transition:border-color 0.15s"
               onfocus="this.style.borderColor='rgba(74,222,128,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.07)'">
           </div>
           <div class="form-group">
-            <label>Household income before tax ($/year)</label>
+            <label>Household income before tax, per year</label>
             <input id="rv-gross" type="number" placeholder="e.g. 85000" oninput="state.grossIncome=parseFloat(this.value)||0;save();autoCalcBuy()"
               style="background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:0.85rem;padding:0.5rem 0.7rem;outline:none;transition:border-color 0.15s">
             <div style="font-size:0.75rem;color:var(--muted);margin-top:0.35rem">Lenders use income before tax, not take-home pay.</div>
           </div>
           <div class="form-group">
-            <label>Mortgage Rate (%)</label>
+            <label>Mortgage rate %</label>
             <input id="rv-rate" type="number" value="5.0" step="0.05"
               style="background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:0.85rem;padding:0.5rem 0.7rem;outline:none;transition:border-color 0.15s"
               onfocus="this.style.borderColor='rgba(74,222,128,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.07)'">
           </div>
           <div class="form-group">
-            <label style="margin-bottom:0.5rem;display:block">Annual Appreciation</label>
+            <label style="margin-bottom:0.5rem;display:block">How fast prices grow each year</label>
             <div style="display:flex;gap:0.4rem;margin-bottom:0.5rem">
               <button class="appr-preset" id="appr-btn-2"  onclick="setAppreciation(2)"  style="flex:1">Conservative<br><span>2%</span></button>
               <button class="appr-preset active" id="appr-btn-4" onclick="setAppreciation(4)" style="flex:1">Average<br><span>4%</span></button>
@@ -5346,7 +5386,7 @@ button:focus:not(:focus-visible){outline:none}
         </div>
       </div>
       <div class="card">
-        <div class="card-title">Your Finances at a Glance</div>
+        <div class="card-title">Your money right now</div>
         <div id="buy-finances-summary" style="font-size:0.85rem;color:var(--muted)">Add income and expenses on the Monthly page to see your financial picture here.</div>
       </div>
     </div>
@@ -7038,11 +7078,11 @@ function renderDashboard(){
   const totalDebt = state.debts.reduce((s,x)=>s+x.balance,0);
 
   document.getElementById('dash-stats').innerHTML = [
-    ['Net Savings',    fmt(net),        net>=0?'pos':'neg', 'This month'],
-    ['Total Income',   fmt(totalIncome),'',                 'This month'],
-    ['Total Expenses', fmt(totalExp),   '',                 'This month'],
-    ['Portfolio Value',fmt(portValue),  'pos',              fmtRet(portValue,portCost)+' return'],
-    ['Total Debt',     fmt(totalDebt),  totalDebt>0?'neg':'pos', 'Outstanding balance'],
+    ['Left this month',    fmt(net),        net>=0?'pos':'neg', 'This month'],
+    ['Income',   fmt(totalIncome),'',                 'This month'],
+    ['Spent', fmt(totalExp),   '',                 'This month'],
+    ['Investments',fmt(portValue),  'pos',              fmtRet(portValue,portCost)+' return'],
+    ['Debt',     fmt(totalDebt),  totalDebt>0?'neg':'pos', 'Outstanding balance'],
     ['Trade P&L',      fmt(state.trades.reduce((s,t)=>s+t.profit,0)), state.trades.reduce((s,t)=>s+t.profit,0)>=0?'pos':'neg', 'All time'],
   ].map(([l,v,cls,sub])=>`<div class="stat-tile"><div class="label">${l}</div><div class="value ${cls}">${v}</div><div class="sub">${sub}</div></div>`).join('');
 
@@ -9806,7 +9846,8 @@ function renderDebt(){
             <div class="dt-hero-stat-val ${canFinish?'neg':''}">${canFinish?fmtW(sim.totalInterest):'∞'}</div>
             <div class="dt-hero-stat-sub">${canFinish?'before you finish':'at current rate'}</div>
           </div>
-        </div>`;
+        </div>
+        <div class="dt-count ${canFinish?'':'never'}" aria-hidden="true">${canFinish?`<b>${sim.months}</b><span>month${sim.months===1?'':'s'} to go</span><i style="--p:${Math.max(4,Math.min(100,Math.round((1-totalDebt/Math.max(totalDebt,order.reduce((a,d)=>a+(+d.origBalance||d.balance),0)))*100)))}%"></i>`:`<b>!</b><span>not finishing</span>`}</div>`;
     }
   }
 
@@ -11332,10 +11373,10 @@ function calcRent(){
   state.rental = _rvbLastRent;
 
   document.getElementById('rent-metrics').innerHTML = [
-    ['Monthly Rent',      fmt(rent),                                    '',                         "The amount you're considering"],
-    ['% of Take-Home Pay',  rentPct!==null?rentPct.toFixed(1)+'%':'n/a',    rentPct===null?'':rentPct<=30?'pos':rentPct<=40?'neutral':'neg', '30% or less keeps room to save'],
-    ['Left After Rent',   totalIncome>0?fmt(leftAfterRent):'n/a',         totalIncome>0&&leftAfterRent>0?'pos':'neg', 'Income minus this rent'],
-    ['Monthly Savings',   monthlySaveable!==null?(monthlySaveable>0?'+':'')+fmt(monthlySaveable):'n/a',
+    ['Monthly rent',      fmt(rent),                                    '',                         "The amount you're considering"],
+    ['Share of take-home pay',  rentPct!==null?rentPct.toFixed(1)+'%':'n/a',    rentPct===null?'':rentPct<=30?'pos':rentPct<=40?'neutral':'neg', '30% or less keeps room to save'],
+    ['Left after rent',   totalIncome>0?fmt(leftAfterRent):'n/a',         totalIncome>0&&leftAfterRent>0?'pos':'neg', 'Income minus this rent'],
+    ['Left to save',   monthlySaveable!==null?(monthlySaveable>0?'+':'')+fmt(monthlySaveable):'n/a',
                           monthlySaveable===null?'':monthlySaveable>0?'pos':'neg',                  'After rent + your current expenses'],
   ].map(([l,v,c,s])=>`<div class="rental-metric"><div class="rm-label">${l}</div><div class="rm-value ${c}">${v}</div><div class="rm-sub">${s}</div></div>`).join('');
 
@@ -11489,10 +11530,10 @@ function calcBuy(){
   save();
 
   document.getElementById('buy-metrics').innerHTML = [
-    ['Purchase Price',      fmt(price),             '',     ''],
-    ['Down Payment',        fmt(down)+' ('+(down/price*100).toFixed(1)+'%)'+(cmhcAmt>0?` + ${fmt(cmhcAmt)} CMHC`:''), cmhcAmt>0?'neutral':'pos', cmhcAmt>0?'Insurance added to mortgage':'No mortgage insurance required'],
-    ['Monthly Mortgage',    fmt(Math.round(mortgage)), '',  `25yr @ ${rate}%, Canadian semi-annual compounding`],
-    ['Total Monthly Costs', fmt(Math.round(totalCosts)), gds!==null?(gds<=GDS_COMFY&&tds<=TDS_COMFY?'pos':gds<=GDS_MAX&&tds<=TDS_MAX?'neutral':'neg'):'', 'Mortgage + tax + maintenance + insurance'+(condoFee?' + condo fee':'')],
+    ['Price',      fmt(price),             '',     ''],
+    ['Down payment',        fmt(down)+' ('+(down/price*100).toFixed(1)+'%)'+(cmhcAmt>0?` + ${fmt(cmhcAmt)} CMHC`:''), cmhcAmt>0?'neutral':'pos', cmhcAmt>0?'Insurance added to mortgage':'No mortgage insurance required'],
+    ['Mortgage each month',    fmt(Math.round(mortgage)), '',  `25yr @ ${rate}%, Canadian semi-annual compounding`],
+    ['All costs each month', fmt(Math.round(totalCosts)), gds!==null?(gds<=GDS_COMFY&&tds<=TDS_COMFY?'pos':gds<=GDS_MAX&&tds<=TDS_MAX?'neutral':'neg'):'', 'Mortgage + tax + maintenance + insurance'+(condoFee?' + condo fee':'')],
   ].map(([l,v,c,s])=>`<div class="rental-metric"><div class="rm-label">${l}</div><div class="rm-value ${c}">${v}</div><div class="rm-sub">${s}</div></div>`).join('');
 
   document.getElementById('buy-costs-breakdown').innerHTML = `
@@ -11527,22 +11568,22 @@ function calcBuy(){
   document.getElementById('buy-appreciation').innerHTML = `
     <div class="rental-output-grid" style="margin-bottom:1rem">
       <div class="rental-metric">
-        <div class="rm-label">Value in 5 Years</div>
+        <div class="rm-label">Value in 5 years</div>
         <div class="rm-value pos">${fmt(Math.round(value5))}</div>
         <div class="rm-sub">+${fmt(Math.round(value5-price))} gain at ${appreciation}%/yr</div>
       </div>
       <div class="rental-metric">
-        <div class="rm-label">Your Equity in 5 Years</div>
+        <div class="rm-label">What you own in 5 years</div>
         <div class="rm-value pos">${fmt(Math.round(equity5))}</div>
         <div class="rm-sub">Down payment + ${fmt(Math.round(down + gainVsDown5 - down))} mortgage paydown + appreciation</div>
       </div>
       <div class="rental-metric">
-        <div class="rm-label">Value in 10 Years</div>
+        <div class="rm-label">Value in 10 years</div>
         <div class="rm-value pos">${fmt(Math.round(value10))}</div>
         <div class="rm-sub">+${fmt(Math.round(value10-price))} gain at ${appreciation}%/yr</div>
       </div>
       <div class="rental-metric">
-        <div class="rm-label">Your Equity in 10 Years</div>
+        <div class="rm-label">What you own in 10 years</div>
         <div class="rm-value pos">${fmt(Math.round(equity10))}</div>
         <div class="rm-sub">Net worth growth from this property</div>
       </div>
