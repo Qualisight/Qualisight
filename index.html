@@ -941,6 +941,30 @@ header{
   max-height:520px;
 }
 .ai-panel.open{display:flex}
+.bm-pace{display:flex;flex-wrap:wrap;gap:0.3rem 1rem;margin:-0.4rem 0 1.1rem;font-size:0.86rem;color:var(--muted);line-height:1.45}
+.bm-pace b{color:var(--text);font-variant-numeric:tabular-nums}
+.bm-pace .over{color:#f87171}
+.bm-rep{display:flex;align-items:center;gap:0.5rem;margin-top:0.7rem;font-size:0.86rem;color:#c4ccdb;cursor:pointer;min-height:36px;width:fit-content}
+.bm-rep input{width:20px;height:20px;accent-color:#4ade80}
+.bm-err{color:#f87171;font-size:0.84rem;margin-top:0.5rem;min-height:0}
+.bm-txn-date{font-size:0.72rem;color:var(--muted);margin-left:0.45rem;white-space:nowrap}
+.bm-rec-tag{font-size:0.68rem;font-weight:700;color:#4ade80;border:1px solid rgba(74,222,128,0.35);border-radius:999px;padding:0.05rem 0.4rem;margin-left:0.4rem;white-space:nowrap}
+.bm-bills{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1rem 1.1rem;margin-bottom:1.4rem}
+.bm-bills-head{display:flex;justify-content:space-between;align-items:baseline;gap:0.6rem;margin-bottom:0.5rem}
+.bm-bills-sub{font-size:0.8rem;color:var(--muted)}
+.bm-bill{display:flex;align-items:center;gap:0.6rem;padding:0.55rem 0;border-top:1px solid var(--border)}
+.bm-bill:first-of-type{border-top:0}
+.bm-bill-main{flex:1;min-width:0}.bm-bill-name{font-weight:600;font-size:0.92rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.bm-bill-cat{font-size:0.74rem;color:var(--muted)}
+.bm-bill-amt{font-variant-numeric:tabular-nums;font-weight:600}
+.bm-bill-pay{min-height:38px;padding:0 0.8rem;border-radius:10px;border:1px solid #4ade80;background:transparent;color:#4ade80;font:inherit;font-size:0.82rem;font-weight:700;cursor:pointer;white-space:nowrap}
+.bm-bill-pay:hover{background:rgba(74,222,128,0.1)}
+.bm-bill-paid{font-size:0.8rem;font-weight:700;color:#4ade80;white-space:nowrap;min-width:4.4rem;text-align:center}
+.bm-inc-rec{background:none;border:1px solid var(--border);color:var(--muted);border-radius:999px;font:inherit;font-size:0.72rem;padding:0.15rem 0.55rem;cursor:pointer;min-height:28px;margin-right:0.3rem;white-space:nowrap;flex:none}
+.bm-inc-rec.on{color:#4ade80;border-color:rgba(74,222,128,0.4)}
+.bm-cat.bm-hit{animation:bmHit 1.4s ease}
+@keyframes bmHit{0%{box-shadow:0 0 0 2px rgba(74,222,128,0.7)}100%{box-shadow:0 0 0 0 rgba(74,222,128,0)}}
+@media (prefers-reduced-motion: reduce){.bm-cat.bm-hit{animation:none}}
 .coach-ask{display:flex;flex-wrap:wrap;align-items:center;gap:0.4rem;margin:0 0 1rem}
 .coach-ask[hidden]{display:none}
 .coach-ask .ca-label{font-size:0.8rem;color:var(--muted);font-weight:600;margin-right:0.15rem}
@@ -4542,6 +4566,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
 
   <!-- This-month status bar -->
   <div class="bm-status" id="bm-status"></div>
+  <div class="bm-pace" id="bm-pace"></div>
 
   <!-- Quick log expense (the daily action, up top) -->
   <div class="bm-log-card">
@@ -4555,14 +4580,16 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
       </div>
       <div class="bm-field full">
         <label>Description</label>
-        <input id="exp-name" class="bm-input" placeholder="e.g. Groceries at Loblaws">
+        <input id="exp-name" class="bm-input" placeholder="e.g. Groceries at Loblaws" list="exp-names" autocomplete="off"><datalist id="exp-names"></datalist>
       </div>
       <div class="bm-field">
         <label>Amount ($)</label>
-        <input id="exp-amt" class="bm-input" type="number" placeholder="0.00">
+        <input id="exp-amt" class="bm-input" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" onkeydown="if(event.key==='Enter'){event.preventDefault();addExpense();}">
       </div>
       <button class="bm-log-btn" onclick="addExpense()">Add</button>
     </div>
+    <label class="bm-rep"><input type="checkbox" id="exp-rec" onchange="this.dataset.touched=1"> Repeats every month (rent, phone, insurance)</label>
+    <div class="bm-err" id="exp-err" role="alert"></div>
 
     <!-- Debt-payment target (shown only when Debt Payment category chosen) -->
     <div id="exp-debt-group" style="display:none;margin-top:0.7rem">
@@ -4588,6 +4615,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
   <!-- Budget game: coin jars, XP, quests, badges. Sits right under the log form so each entry visibly lands in a jar -->
   <div id="bg-game-mount"></div>
 
+  <div id="bm-bills"></div>
   <!-- Spending vs Goals: collapsible category cards -->
   <div class="bm-section-head">
     <div>
@@ -4619,7 +4647,7 @@ header{backdrop-filter:none!important;-webkit-backdrop-filter:none!important;bac
           </div>
           <div class="bm-field">
             <label>Amount ($)</label>
-            <input id="inc-amt" class="bm-input" type="number" placeholder="0.00">
+            <input id="inc-amt" class="bm-input" type="number" inputmode="decimal" min="0" placeholder="0.00" onkeydown="if(event.key==='Enter'){event.preventDefault();addIncome();}">
           </div>
           <button class="bm-log-btn" onclick="addIncome()">Add</button>
         </div>
@@ -5096,11 +5124,12 @@ const DEMO_STATE = {
     {cat:'Debt Payment',     goal:700},
     {cat:'Other',            goal:150},
   ],
+  bills: [{id:'bdemo1',cat:'Rent/Mortgage',name:'Rent',amt:1400},{id:'bdemo2',cat:'Utilities',name:'Phone Bill',amt:65},{id:'bdemo3',cat:'Other',name:'Gym membership',amt:40}],
   expenses: [
-    {cat:'Rent/Mortgage',    name:'Rent',              actual:1400},
+    {cat:'Rent/Mortgage',    name:'Rent',              actual:1400, billId:'bdemo1'},
     {cat:'Food & Groceries', name:'Groceries',         actual:340},
     {cat:'Food & Groceries', name:'Restaurants',       actual:120},
-    {cat:'Utilities',        name:'Phone Bill',        actual:65},
+    {cat:'Utilities',        name:'Phone Bill',        actual:65, billId:'bdemo2'},
     {cat:'Utilities',        name:'Internet',          actual:55},
     {cat:'Entertainment',    name:'Spotify + Netflix', actual:28},
     {cat:'Entertainment',    name:'Nights Out',        actual:87},
@@ -5582,16 +5611,17 @@ function checkAndRollover(){
     row.monthly[archiveMonthIdx] = total;
   });
 
-  // Reset monthly income and expenses — keep budget goals
-  state.income    = [];
+  // Reset monthly income and expenses, keep budget goals. Income marked "every month" carries over.
+  const carried = state.income.filter(x=>x.rec!==false).map(x=>({name:x.name, actual:x.actual, rec:true}));
+  state.income    = carried;
   state.expenses  = [];
   state.activeMonth = now;
 
   const nowName = MONTH_NAMES[monthIndexFromKey(now)];
+  const nBills=(state.bills||[]).length;
   showToast(
-    `<strong>${archiveMonthName} archived ✓</strong><br>
-     Your income and expenses were saved to the Yearly view.
-     ${nowName} is ready for new entries.`
+    `<strong>${archiveMonthName} is saved.</strong><br>
+     ${nowName} is ready.${carried.length?` Your income carried over (${fmt(carried.reduce((t,x)=>t+x.actual,0))}), change it if it is different.`:''}${nBills?` ${nBills} monthly bill${nBills===1?' is':'s are'} waiting to be marked paid.`:''}`
   );
 
   return true; // rollover happened
@@ -6726,7 +6756,7 @@ function addIncome(){
   const name=document.getElementById('inc-name').value.trim();
   const actual=parseFloat(document.getElementById('inc-amt').value)||0;
   if(!name||!actual) return;
-  state.income.push({name, actual});
+  state.income.push({name, actual, rec:true});
   document.getElementById('inc-name').value='';
   document.getElementById('inc-amt').value='';
   recordActivity(); checkJourneyMilestone();
@@ -6734,8 +6764,16 @@ function addIncome(){
   wtAutoAdvance(1);
 }
 
-function removeIncome(i){ state.income.splice(i,1); save(); renderMonthly(); }
-function removeExpense(i){ state.expenses.splice(i,1); save(); renderMonthly(); }
+function removeIncome(i){ const r=state.income[i]; if(!r) return; const snap=bmSnap(); state.income.splice(i,1); save(); renderMonthly(); try{ renderDashboard(); }catch(e){} bmUndoOffer(`<strong>Removed ${escHtml(r.name)}.</strong>`, snap); }
+function removeExpense(i){
+  const r=state.expenses[i]; if(!r) return;
+  const snap=bmSnap(); let note='';
+  // undo what this expense did to a debt, so the Debt page stays right
+  if(r.debtPay){ const d=state.debts.find(x=>x.name===r.debtPay.name); if(d){ d.balance=parseFloat((d.balance+r.debtPay.amt).toFixed(2)); bmDropTx(d,'payment',r.debtPay.amt); note=` ${fmt(r.debtPay.amt)} added back to ${escHtml(d.name)}.`; } }
+  if(r.cc){ const d=state.debts.find(x=>x.name===r.cc.name); if(d){ d.balance=Math.max(0,parseFloat((d.balance-r.cc.amt).toFixed(2))); bmDropTx(d,'charge',r.cc.amt); note=` The ${fmt(r.cc.amt)} charge came off ${escHtml(d.name)}.`; } }
+  state.expenses.splice(i,1); save(); renderMonthly(); try{ renderDebt(); renderDashboard(); }catch(e){}
+  bmUndoOffer(`<strong>Removed ${escHtml(r.name)}.</strong>${note}`, snap);
+}
 
 function updateDebtMin(i, val){
   const debt = state.debts[i];
@@ -6810,7 +6848,7 @@ function linkExpenseToCC(gi){
   if(debt.transactions.length > 20) debt.transactions = debt.transactions.slice(0,20);
 
   // Mark expense as linked so button changes to a green tick
-  expense.linkedCard = debt.name;
+  expense.linkedCard = debt.name; expense.cc={name:debt.name, amt:expense.actual};
 
   // Close row
   const row = document.getElementById('exp-cc-row-'+gi);
@@ -6832,6 +6870,7 @@ function toggleExpCC(){
 
 function handleExpCatChange(){
   const cat      = document.getElementById('exp-cat').value;
+  const rec=document.getElementById('exp-rec'); if(rec && !rec.dataset.touched) rec.checked=/rent|mortgage|insurance|utilit|phone|internet/i.test(cat);
   const group    = document.getElementById('exp-debt-group');
   const sel      = document.getElementById('exp-debt-sel');
   if(cat === 'Debt Payment' && state.debts.length){
@@ -6852,6 +6891,7 @@ function applyDebtPaymentFromExpense(amount, name){
   if(!debt) return;
   const payment = Math.min(amount, debt.balance);
   debt.balance  = Math.max(0, parseFloat((debt.balance - payment).toFixed(2)));
+  const _le=state.expenses[state.expenses.length-1]; if(_le && _le.actual===amount && !_le.debtPay) _le.debtPay={name:debt.name, amt:payment};
   if(!debt.origBalance) debt.origBalance = debt.balance + payment;
   if(!debt.transactions) debt.transactions = [];
   debt.transactions.unshift({
@@ -6870,10 +6910,16 @@ function applyDebtPaymentFromExpense(amount, name){
 
 function addExpense(){
   const cat   = document.getElementById('exp-cat').value;
-  const name  = document.getElementById('exp-name').value.trim();
-  const actual= parseFloat(document.getElementById('exp-amt').value)||0;
-  if(!name||!actual) return;
-  state.expenses.push({cat, name, actual});
+  const name  = document.getElementById('exp-name').value.trim() || cat;
+  const actual= Math.round((parseFloat(document.getElementById('exp-amt').value)||0)*100)/100;
+  const err=document.getElementById('exp-err'); if(err) err.textContent='';
+  if(!(actual>0)){ if(err) err.textContent='Enter how much it was, for example 45.20.'; document.getElementById('exp-amt')?.focus(); return; }
+  state.expenses.push({cat, name, actual, d:bmToday()});
+  const _recBox=document.getElementById('exp-rec');
+  if(_recBox && _recBox.checked){ const b=bmAddBill(cat,name,actual); if(b){ state.expenses[state.expenses.length-1].billId=b.id;
+    if(cat==='Debt Payment'){ const sel=document.getElementById('exp-debt-sel'); const di=sel&&sel.value!==''?parseInt(sel.value):NaN; if(!isNaN(di)&&state.debts[di]) b.debt=state.debts[di].name; } } }
+  if(_recBox){ _recBox.checked=false; delete _recBox.dataset.touched; }
+  window._bmFlash=cat;
 
   // Auto-reduce linked debt if Debt Payment category selected
   if(cat === 'Debt Payment'){
@@ -6901,7 +6947,7 @@ function addExpense(){
   if(state.expenses.length===1 && nudgeCheckin('First expense logged.')) return;
   if(!state.seenCCHint && !wtIsActive() && !currentUser?.isDemo){
     setTimeout(()=>{
-      showToast(' Paid with a credit card? Tap the <strong></strong> button next to any expense to automatically track it on your debt.');
+      showToast('<strong>Paid with a credit card?</strong> Open the category and tap the card button next to the expense. The charge is added to that card on your Debt page.');
       state.seenCCHint = true;
       save();
     }, 800);
@@ -6916,7 +6962,8 @@ function addExpenseWithCC(){
   if(!name||!actual){ return; }
   if(!ccIdx){ addExpense(); return; } // nothing selected, just log normally
 
-  state.expenses.push({cat, name, actual});
+  state.expenses.push({cat, name, actual, d:bmToday()});
+  window._bmFlash=cat;
 
   const debt = state.debts[parseInt(ccIdx)];
   if(debt && debt.type==='credit_card'){
@@ -6925,6 +6972,7 @@ function addExpenseWithCC(){
     if(!debt.transactions) debt.transactions = [];
     debt.transactions.unshift({ type:'charge', amount:actual, date:new Date().toISOString().slice(0,10), note:name, balance:debt.balance });
     if(debt.transactions.length > 20) debt.transactions = debt.transactions.slice(0,20);
+    const _ce=state.expenses[state.expenses.length-1]; _ce.linkedCard=debt.name; _ce.cc={name:debt.name, amt:actual};
     showToast(`<strong>${escHtml(name)}</strong> (${fmt(actual)}) charged to ${escHtml(debt.name)}. Balance: ${fmt(debt.balance)}.`);
   }
 
@@ -7360,7 +7408,7 @@ function renderMonthly(){
   const catSel=document.getElementById('exp-cat');
   if(catSel){
     const prev = catSel.value;
-    catSel.innerHTML=state.budgets.map(b=>`<option value="${b.cat}">${b.cat}</option>`).join('');
+    catSel.innerHTML=state.budgets.map(b=>`<option value="${escHtml(b.cat)}">${escHtml(b.cat)}</option>`).join('');
     if(prev && [...catSel.options].some(o=>o.value===prev)) catSel.value=prev;
     else { const day=[...catSel.options].find(o=>/food|grocer/i.test(o.value)); if(day) catSel.value=day.value; } // most first entries are everyday spending, not rent
     handleExpCatChange();
@@ -7419,6 +7467,11 @@ function renderMonthly(){
       </div>`;
   }
 
+  try{ bmPaceRender(ti,te,tg,fresh); }catch(e){ console.warn('pace',e); }
+  try{ bmBillsRender(); }catch(e){ console.warn('bills',e); }
+  try{ const dl=document.getElementById('exp-names'); if(dl){ const names=[...new Set([...(state.expenses||[]).map(x=>x.name), ...(state.bills||[]).map(x=>x.name)].filter(Boolean))].slice(-40); dl.innerHTML=names.map(n=>`<option value="${escHtml(n)}"></option>`).join(''); } }catch(e){}
+  if(window._bmFlash){ const c=window._bmFlash; window._bmFlash=null; setTimeout(()=>{ const el=[...document.querySelectorAll('#expense-cats .bm-cat')].find(x=>x.getAttribute('data-cat')===c); if(el){ el.classList.remove('bm-hit'); void el.offsetWidth; el.classList.add('bm-hit'); } },30); }
+
   // ── Income list (inside setup) ──
   const incList=document.getElementById('income-list');
   if(incList){
@@ -7426,8 +7479,9 @@ function renderMonthly(){
       ? state.income.map((r,i)=>`<div class="bm-inc-item">
           <span class="bm-inc-name">${escHtml(r.name)}</span>
           <span class="bm-inc-right">
+            <button type="button" class="bm-inc-rec ${r.rec===false?'':'on'}" onclick="toggleIncRec(${i})" aria-pressed="${r.rec!==false}" title="Carry this into next month">${r.rec===false?'This month only':'Every month'}</button>
             <span class="bm-inc-amt">${fmt(r.actual)}</span>
-            <button class="bm-txn-btn del" onclick="removeIncome(${i})">✕</button>
+            <button class="bm-txn-btn del" onclick="removeIncome(${i})" aria-label="Remove ${escHtml(r.name)}">✕</button>
           </span>
         </div>`).join('')
       : '<div class="bm-cat-empty">No income added yet.</div>';
@@ -7498,11 +7552,11 @@ function renderMonthly(){
                 ? `<button class="bm-txn-btn" onclick="showExpenseCC(${gi})" title="Charge to a credit card" aria-label="Charge to a credit card"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></button>`
                 : `<span class="bm-txn-btn" title="Charged to ${escHtml(r.linkedCard)}" style="color:var(--accent);cursor:default"><svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="2"/><path d="M2 10h20"/></svg></span>`;
               return `<div class="bm-txn">
-                <span class="bm-txn-name">${escHtml(r.name)}</span>
+                <span class="bm-txn-name">${escHtml(r.name)}${r.billId?'<span class="bm-rec-tag" title="A monthly bill">Monthly</span>':''}${r.d?`<span class="bm-txn-date">${bmDayLabel(r.d)}</span>`:''}</span>
                 <span class="bm-txn-right">
                   <span class="bm-txn-amt">${fmt(r.actual)}</span>
                   ${ccBtn}
-                  <button class="bm-txn-btn del" onclick="removeExpense(${gi})">✕</button>
+                  <button class="bm-txn-btn del" onclick="removeExpense(${gi})" aria-label="Remove ${escHtml(r.name)}">✕</button>
                 </span>
               </div>
               <div id="exp-cc-row-${gi}" style="display:none;padding:0.4rem 0 0.2rem">
@@ -7530,6 +7584,73 @@ function renderMonthly(){
 
 // Budget page collapse toggles
 window._bmOpenCats = window._bmOpenCats || {};
+// ── Budget helpers: dates, undo, monthly bills, spending pace ──
+function bmToday(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function bmDayLabel(iso){ const t=bmToday(); if(iso===t) return 'Today'; const y=new Date(); y.setDate(y.getDate()-1);
+  const ys=y.getFullYear()+'-'+String(y.getMonth()+1).padStart(2,'0')+'-'+String(y.getDate()).padStart(2,'0'); if(iso===ys) return 'Yesterday';
+  const d=new Date(iso+'T12:00:00'); return isNaN(d)?'':d.toLocaleDateString('en-CA',{month:'short',day:'numeric'}); }
+function bmDropTx(d,type,amt){ const tx=d.transactions||[]; const k=tx.findIndex(t=>t.type===type && Math.abs((+t.amount||0)-amt)<0.005); if(k>=0) tx.splice(k,1); }
+let _bmUndo=null;
+function bmSnap(){ return JSON.parse(JSON.stringify({expenses:state.expenses||[], income:state.income||[], yearly:state.yearly||[], debts:state.debts||[], bills:state.bills||[]})); }
+function bmUndoOffer(msg,snap){ _bmUndo=snap; if(typeof showToast==='function') showToast(`${msg} <button type="button" onclick="bmUndo()" style="margin-left:0.5rem;background:none;border:1px solid currentColor;color:inherit;border-radius:8px;padding:0.25rem 0.7rem;font:inherit;font-weight:700;cursor:pointer;min-height:32px">Undo</button>`); }
+function bmUndo(){ if(!_bmUndo) return; Object.assign(state,_bmUndo); _bmUndo=null; save(); renderMonthly(); try{ renderYearly(); renderDebt(); renderDashboard(); }catch(e){} try{ QA.log('bm_undo',{}); }catch(e){} showToast('<strong>Restored.</strong> Everything is back.'); }
+function toggleIncRec(i){ const r=state.income[i]; if(!r) return; r.rec = r.rec===false; save(); renderMonthly(); showToast(r.rec?`<strong>${escHtml(r.name)}</strong> will carry into next month.`:`<strong>${escHtml(r.name)}</strong> is for this month only.`); }
+// Monthly bills: a list that resets every month. Nothing counts as spent until it is marked paid.
+function bmAddBill(cat,name,amt){
+  if(!state.bills) state.bills=[];
+  const ex=state.bills.find(b=>b.name.toLowerCase()===String(name).toLowerCase() && b.cat===cat);
+  if(ex){ ex.amt=amt; return ex; }
+  const b={id:'b'+Date.now().toString(36)+Math.random().toString(36).slice(2,5), cat, name, amt};
+  state.bills.push(b); try{ QA.log('bm_bill_add',{}); }catch(e){} return b;
+}
+function bmBillPaid(b){ return (state.expenses||[]).some(e=>e.billId===b.id); }
+function bmPayBill(id){
+  const b=(state.bills||[]).find(x=>x.id===id); if(!b || bmBillPaid(b)) return;
+  const ex={cat:b.cat, name:b.name, actual:b.amt, d:bmToday(), billId:b.id};
+  state.expenses.push(ex);
+  window._bmFlash=b.cat;
+  const debt=b.debt && (state.debts||[]).find(d=>d.name===b.debt);
+  if(debt && debt.balance>0){ const pay=Math.min(b.amt,debt.balance); debt.balance=Math.max(0,parseFloat((debt.balance-pay).toFixed(2))); if(!debt.transactions) debt.transactions=[];
+    debt.transactions.unshift({type:'payment', amount:pay, date:new Date().toISOString().slice(0,10), note:b.name, balance:debt.balance}); if(debt.transactions.length>20) debt.transactions=debt.transactions.slice(0,20);
+    ex.debtName=debt.name; ex.debtPay={name:debt.name, amt:pay}; try{ renderDebt(); }catch(e){} }
+  try{ QA.log('bm_bill_paid',{}); }catch(e){}
+  recordActivity(); save(); renderMonthly(); try{ renderDashboard(); }catch(e){}
+  showToast(`<strong>${escHtml(b.name)} paid.</strong> ${fmt(b.amt)} logged in ${escHtml(b.cat)}.`);
+}
+function bmRemoveBill(id){
+  const b=(state.bills||[]).find(x=>x.id===id); if(!b) return;
+  const snap=bmSnap(); state.bills=state.bills.filter(x=>x.id!==id); save(); renderMonthly();
+  bmUndoOffer(`<strong>${escHtml(b.name)}</strong> is no longer a monthly bill. Anything already logged stays.`, snap);
+}
+function bmBillsRender(){
+  const el=document.getElementById('bm-bills'); if(!el) return;
+  const bills=state.bills||[]; if(!bills.length){ el.innerHTML=''; return; }
+  const due=bills.filter(b=>!bmBillPaid(b)), dueAmt=due.reduce((t,b)=>t+b.amt,0);
+  el.innerHTML=`<div class="bm-bills"><div class="bm-bills-head"><div class="bm-section-title" style="font-size:1rem">Monthly bills</div>
+    <div class="bm-bills-sub">${due.length?`${fmt(dueAmt)} still to pay`:'All paid this month'}</div></div>
+    ${bills.map(b=>{ const paid=bmBillPaid(b); return `<div class="bm-bill"><div class="bm-bill-main"><div class="bm-bill-name">${escHtml(b.name)}</div><div class="bm-bill-cat">${escHtml(b.cat)}</div></div>
+      <span class="bm-bill-amt">${fmt(b.amt)}</span>
+      ${paid?'<span class="bm-bill-paid">Paid</span>':`<button type="button" class="bm-bill-pay" onclick="bmPayBill('${b.id}')">Mark paid</button>`}
+      <button type="button" class="bm-txn-btn del" onclick="bmRemoveBill('${b.id}')" aria-label="Stop ${escHtml(b.name)} repeating" title="Stop repeating">✕</button></div>`; }).join('')}
+  </div>`;
+}
+const BM_FIXED=/rent|mortgage|insurance|utilit|debt|phone|internet|loan/i;
+function bmPaceRender(ti,te,tg,fresh){
+  const el=document.getElementById('bm-pace'); if(!el) return;
+  if(fresh || !(tg>0)){ el.innerHTML=''; return; }
+  const now=new Date(), dim=new Date(now.getFullYear(),now.getMonth()+1,0).getDate(), left=dim-now.getDate()+1;
+  let everyday=0, everydayGoal=0;
+  (state.budgets||[]).forEach(b=>{ if(!(b.goal>0) || BM_FIXED.test(b.cat)) return; const sp=(state.expenses||[]).filter(e=>e.cat===b.cat).reduce((t,e)=>t+e.actual,0); everydayGoal+=b.goal; everyday+=b.goal-sp; });
+  const due=(state.bills||[]).filter(b=>!bmBillPaid(b)).reduce((t,b)=>t+b.amt,0);
+  const parts=[];
+  if(everydayGoal>0){
+    if(everyday>0) parts.push(`<span>About <b>${fmtW(everyday/left)} a day</b> left for everyday spending, ${left} day${left===1?'':'s'} to go</span>`);
+    else parts.push(`<span class="over">Everyday spending is <b class="over">${fmtW(-everyday)}</b> over your goals, ${left} day${left===1?'':'s'} to go</span>`);
+  }
+  if(due>0) parts.push(`<span>Bills still to pay: <b>${fmtW(due)}</b></span>`);
+  el.innerHTML=parts.join('');
+}
+
 function toggleBudgetCat(el){
   const card=el.closest('.bm-cat');
   const cat=card.getAttribute('data-cat');
@@ -7559,7 +7680,7 @@ function saveYearlyEntry(){
   save(); renderYearly();
 }
 
-function removeYearly(i){ state.yearly.splice(i,1); save(); renderYearly(); }
+function removeYearly(i){ const r=state.yearly[i]; if(!r) return; const snap=bmSnap(); state.yearly.splice(i,1); save(); renderYearly(); bmUndoOffer(`<strong>Removed the ${escHtml(r.cat)} row.</strong>`, snap); }
 
 function renderYearly(){
   // Only render when the Budget/Monthly page is active
@@ -9561,6 +9682,14 @@ function buildContext(){
     const over=spent>b.goal;
     return `  ${b.cat}: $${spent.toFixed(2)} spent of $${b.goal.toFixed(2)} goal${over?'  OVER BUDGET':''}`;
   }).join('\n') || '  No budget goals set yet';
+  // Monthly bills and the everyday spending pace the Budget page shows
+  let billsStr='';
+  try{
+    const bills=state.bills||[];
+    if(bills.length) billsStr='\nMONTHLY BILLS (marked repeating by the user; only paid ones count as spent):\n'+bills.map(b=>`  ${b.name} (${b.cat}): $${(+b.amt).toFixed(2)}, ${bmBillPaid(b)?'paid this month':'not paid yet this month'}`).join('\n');
+    const pace=document.getElementById('bm-pace')?.innerText?.trim();
+    if(pace) billsStr+='\nBUDGET PACE (from the Budget page): '+pace.replace(/\s*\n\s*/g,'. ');
+  }catch(e){}
 
   // Holdings with individual return
   const holdingsStr = state.portfolio.length
@@ -9601,7 +9730,7 @@ MONTHLY INCOME: $${totalIncome.toFixed(2)}
 ${state.income.map(x=>`  ${x.name}: $${x.actual.toFixed(2)}`).join('\n') || '  None entered'}
 
 MONTHLY BUDGET GOALS VS ACTUAL SPENDING:
-${budgetStr}
+${budgetStr}${billsStr}
 
 INDIVIDUAL EXPENSE TRANSACTIONS:
 ${expStr}
