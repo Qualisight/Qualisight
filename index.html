@@ -3888,6 +3888,31 @@ button:focus:not(:focus-visible){outline:none}
 .lpm-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.5rem 1rem;align-items:center;margin-top:0.8rem;font-size:0.82rem;color:#97a2b8}
 .lpm-go{display:inline-flex;align-items:center;min-height:44px;padding:0 1.1rem;border-radius:12px;background:#4ade80;color:#06140b;font-weight:700;text-decoration:none}
 @media(max-width:600px){.lpm-map{height:300px}}
+
+/* Asset chart: scrubbing and candles */
+.avc{position:relative;margin:0.3rem 0 0.2rem;touch-action:pan-y;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;cursor:crosshair;border-radius:10px;outline:none}
+.avc:focus-visible{box-shadow:0 0 0 2px #a78bfa}
+.avc-plot{position:relative;margin-right:52px}
+.avc .av-chart{height:200px;margin:0}
+.avc-y{position:absolute;inset:0;pointer-events:none}
+.avc-y span{position:absolute;right:0;width:48px;text-align:right;transform:translateY(-50%);font-size:0.68rem;color:rgba(200,208,224,0.55);font-variant-numeric:tabular-nums}
+.avc-x{position:absolute;top:0;bottom:0;width:0;border-left:1px solid rgba(255,255,255,0.55);pointer-events:none}
+.avc-x i{position:absolute;left:-6px;width:12px;height:12px;margin-top:-6px;border-radius:50%;background:#fff;box-shadow:0 0 0 3px rgba(167,139,250,0.45)}
+.avc-band{position:absolute;top:0;bottom:0;pointer-events:none}
+.avc-band.up{background:rgba(74,222,128,0.12)}.avc-band.down{background:rgba(248,113,113,0.12)}
+.avc-x[hidden],.avc-band[hidden]{display:none}
+.avc-foot{align-items:center;gap:0.5rem}
+.avc-tip{text-align:center;opacity:0.75}
+.av-ctl{display:flex;flex-wrap:wrap;gap:0.5rem;align-items:center;justify-content:space-between}
+.av-price.scrub b{color:#e9e4ff}
+.av-price em:empty{display:none}
+.av-ohlc{display:flex;flex-wrap:wrap;gap:0.2rem 0.9rem;font-size:0.78rem;color:var(--muted);margin:0.1rem 0 0.1rem;font-variant-numeric:tabular-nums;min-height:1.2em;visibility:hidden}
+.av-ohlc.on{visibility:visible}
+.av-ohlc:empty{min-height:0}
+.avc~.av-ohlc,.av-ohlc:not(:empty){min-height:1.2em}
+@media(max-width:480px){.av-ohlc:not(:empty){min-height:2.6em}.av-price{min-height:4.6rem;align-content:flex-start}}
+.av-ohlc b{color:var(--text);font-weight:600}
+@media(max-width:420px){.avc-tip{font-size:0.7rem}}
 </style>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#4ade80">
@@ -16402,6 +16427,7 @@ async function asOpen(sym){
 }
 function asClose(){ _as.view=null; const v=document.getElementById('as-view'); if(v) v.innerHTML=''; }
 function asRange(r){ _as.range=r; asRender(); }
+try{ if(localStorage.getItem('qs_chart_mode')==='candle') _as.mode='candle'; }catch(e){}
 // numbers from a year of daily closes, in plain words
 function asStats(h){
   const c=h.map(x=>x.c), n=c.length; if(n<2) return null;
@@ -16411,23 +16437,106 @@ function asStats(h){
   const up=rets.filter(r=>r>0).length;
   return { yr:(c[n-1]-c[0])/c[0]*100, daily:sd*100, annVol:sd*Math.sqrt(252)*100, dd:dd*100, ddFrom:h[ddFrom].d, ddTo:h[ddTo].d, upDays:up/rets.length*100, days:n };
 }
-function asChart(h,cur){
-  const W=640,H=170,P=6; if(h.length<2) return '';
-  const v=h.map(x=>x.c), lo=Math.min(...v), hi=Math.max(...v), span=hi-lo||1;
-  const X=i=>P+i/(h.length-1)*(W-2*P), Y=x=>P+(1-(x-lo)/span)*(H-2*P);
-  const up=v[v.length-1]>=v[0], col=up?'#4ade80':'#f87171';
-  const line=h.map((x,i)=>`${i?'L':'M'}${X(i).toFixed(1)} ${Y(x.c).toFixed(1)}`).join('');
-  const long=h.length>40, fmtD=d=>new Date(d+'T12:00:00').toLocaleDateString('en-CA',long?{month:'short',year:'numeric'}:{month:'short',day:'numeric'});
-  return `<svg class="av-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Price from ${fmtD(h[0].d)} to ${fmtD(h[h.length-1].d)}, ${up?'up':'down'} overall">
-    <defs><linearGradient id="avg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity="0.28"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
-    <path d="${line}L${X(h.length-1)} ${H}L${X(0)} ${H}Z" fill="url(#avg)"/>
-    <path d="${line}" fill="none" stroke="${col}" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
-  </svg><div class="av-range-l" style="margin-top:-0.2rem"><span>${fmtD(h[0].d)}</span><span>${fmtD(h[h.length-1].d)}</span></div>`;
+// Price chart: line or candles. Press and drag to read any day; two fingers (or click and drag
+// with a mouse) to see the change between two days. Information only, never advice.
+function asBars(h){
+  // a year of daily candles is too thin on a phone, so long ranges use one candle per week
+  if(h.length<=130) return {bars:h,weekly:false};
+  const out=[]; let cur=null, wk='';
+  h.forEach(x=>{ const d=new Date(x.d+'T12:00:00'), m=new Date(d); m.setDate(d.getDate()-((d.getDay()+6)%7)); const k=m.toISOString().slice(0,10);
+    const o=x.o??x.c, hi=x.h??x.c, lo=x.l??x.c;
+    if(k!==wk){ if(cur) out.push(cur); wk=k; cur={d:x.d,d0:x.d,o,h:hi,l:lo,c:x.c}; }
+    else { cur.h=Math.max(cur.h,hi); cur.l=Math.min(cur.l,lo); cur.c=x.c; cur.d=x.d; } });
+  if(cur) out.push(cur); return {bars:out,weekly:true};
 }
-function asRender(){
+function asChart(h,cur){
+  const W=640,H=200,P=6; if(h.length<2) return '';
+  const hasBars=h.every(x=>x.o!=null&&x.h!=null&&x.l!=null), candle=_as.mode==='candle'&&hasBars;
+  const B=candle?asBars(h):{bars:h,weekly:false}, bars=B.bars, n=bars.length;
+  const lo0=candle?Math.min(...bars.map(x=>x.l)):Math.min(...bars.map(x=>x.c)), hi0=candle?Math.max(...bars.map(x=>x.h)):Math.max(...bars.map(x=>x.c));
+  const pad=(hi0-lo0)*0.06||hi0*0.01||1, lo=lo0-pad, hi=hi0+pad, span=hi-lo;
+  const step=(W-2*P)/(candle?n:Math.max(1,n-1)), X=i=>candle?P+(i+0.5)*step:P+i*step, Y=x=>P+(1-(x-lo)/span)*(H-2*P);
+  const up=bars[n-1].c>=(candle?bars[0].o:bars[0].c), col=up?'#4ade80':'#f87171';
+  _as.ch={bars,n,X,Y,W,H,cur,candle,weekly:B.weekly};
+  // 3 price gridlines with labels
+  const nice=(()=>{ const raw=(hi0-lo0)/3||hi0*0.01||1, mag=Math.pow(10,Math.floor(Math.log10(raw))), st=[1,2,2.5,5,10].map(k=>k*mag).find(k=>k>=raw)||raw; const out=[]; for(let v=Math.ceil(lo0/st)*st; v<=hi0+1e-9; v+=st) out.push(v); return out.slice(0,5); })();
+  const grid=nice.map(v=>`<line x1="0" x2="${W}" y1="${Y(v).toFixed(1)}" y2="${Y(v).toFixed(1)}" stroke="rgba(255,255,255,0.07)" stroke-width="1" vector-effect="non-scaling-stroke"/>`).join('');
+  const glab=nice.map(v=>`<span style="top:${(Y(v)/H*100).toFixed(2)}%">${ckAmt(v,cur).replace(/^CA\$|^US\$|^\$/,'$')}</span>`).join('');
+  let body;
+  if(candle){
+    const bw=Math.max(1,step*0.66);
+    body=bars.map((x,i)=>{ const c=x.c>=x.o?'#4ade80':'#f87171', cx=X(i), y1=Y(Math.max(x.o,x.c)), y2=Y(Math.min(x.o,x.c));
+      return `<line x1="${cx.toFixed(2)}" x2="${cx.toFixed(2)}" y1="${Y(x.h).toFixed(1)}" y2="${Y(x.l).toFixed(1)}" stroke="${c}" stroke-width="1" vector-effect="non-scaling-stroke"/><rect x="${(cx-bw/2).toFixed(2)}" y="${y1.toFixed(1)}" width="${bw.toFixed(2)}" height="${Math.max(0.8,y2-y1).toFixed(1)}" fill="${c}"/>`; }).join('');
+  } else {
+    const line=bars.map((x,i)=>`${i?'L':'M'}${X(i).toFixed(1)} ${Y(x.c).toFixed(1)}`).join('');
+    body=`<defs><linearGradient id="avg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity="0.28"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
+    <path d="${line}L${X(n-1)} ${H}L${X(0)} ${H}Z" fill="url(#avg)"/><path d="${line}" fill="none" stroke="${col}" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`;
+  }
+  const long=h.length>40, fmtD=d=>new Date(d+'T12:00:00').toLocaleDateString('en-CA',long?{month:'short',year:'numeric'}:{month:'short',day:'numeric'});
+  return `<div class="avc" id="avc" aria-label="Price chart. Press and drag to see the price on any day. Use the left and right arrow keys to step through days." tabindex="0" role="img">
+    <div class="avc-plot" id="avc-plot"><svg class="av-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true">${grid}${body}</svg>
+    <div class="avc-band" id="avc-band" hidden></div>
+    <div class="avc-x" id="avc-x1" hidden><i></i></div><div class="avc-x" id="avc-x2" hidden><i></i></div></div>
+    <div class="avc-y" aria-hidden="true">${glab}</div>
+  </div><div class="av-range-l avc-foot"><span>${fmtD(h[0].d)}</span><span class="avc-tip">${candle&&B.weekly?'Each candle is one week. ':''}Press and drag the chart to see any day</span><span>${fmtD(h[h.length-1].d)}</span></div>`;
+}
+function asChartMode(m){
+  const v=_as.view, ok=v&&v.a&&v.a.hist.every(x=>x.o!=null);
+  if(m==='candle'&&!ok){ showToast('Candles will show once this price data refreshes. Try again in a minute.'); return; }
+  _as.mode=m; try{ localStorage.setItem('qs_chart_mode',m); }catch(e){} try{ QA.log('as_chart',{mode:m}); }catch(e){} asRender();
+}
+// scrubbing
+function asScrubIdx(el,clientX){ const ch=_as.ch, r=(document.getElementById('avc-plot')||el).getBoundingClientRect(); const fx=(clientX-r.left)/r.width*ch.W;
+  let best=0,bd=Infinity; for(let i=0;i<ch.n;i++){ const d=Math.abs(ch.X(i)-fx); if(d<bd){bd=d;best=i;} } return best; }
+function asScrubShow(i1,i2){
+  const ch=_as.ch, el=document.getElementById('avc'); if(!ch||!el) return;
+  const pb=document.getElementById('av-pb'), pe=document.getElementById('av-pe'), ps=document.getElementById('av-ps'), ohlc=document.getElementById('av-ohlc');
+  const put=(id,i)=>{ const m=document.getElementById(id); if(i==null){ m.hidden=true; return; } const x=ch.bars[i]; m.hidden=false; m.style.left=(ch.X(i)/ch.W*100)+'%'; m.querySelector('i').style.top=(ch.Y(x.c)/ch.H*100)+'%'; };
+  put('avc-x1',i1); put('avc-x2',i2);
+  const band=document.getElementById('avc-band');
+  const dl=(x,yr)=>{ const o={month:'short',day:'numeric'}; if(yr) o.year='numeric'; return ch.weekly?'Week of '+new Date((x.d0||x.d)+'T12:00:00').toLocaleDateString('en-CA',o):new Date(x.d+'T12:00:00').toLocaleDateString('en-CA',o); };
+  const pct=(a,b)=>(b-a)/a*100;
+  if(i2==null){
+    band.hidden=true; const x=ch.bars[i1], base=ch.candle?ch.bars[0].o:ch.bars[0].c, c=pct(base,x.c);
+    pb.innerHTML=ckAmt(x.c,ch.cur); pe.className=c>=0?'up':'down'; pe.textContent=`${c>=0?'▲':'▼'} ${Math.abs(c).toFixed(2)}% vs start`; ps.textContent=dl(x,true);
+    if(ohlc){ if(x.o!=null){ ohlc.classList.add('on'); ohlc.innerHTML=`<span>Open <b>${ckAmt(x.o,ch.cur)}</b></span><span>High <b>${ckAmt(x.h,ch.cur)}</b></span><span>Low <b>${ckAmt(x.l,ch.cur)}</b></span><span>Close <b>${ckAmt(x.c,ch.cur)}</b></span>`; } else ohlc.classList.remove('on'); }
+  } else {
+    const a=Math.min(i1,i2), b=Math.max(i1,i2), A=ch.bars[a], Bx=ch.bars[b], c=pct(A.c,Bx.c), d=Bx.c-A.c;
+    band.hidden=false; band.style.left=(ch.X(a)/ch.W*100)+'%'; band.style.width=((ch.X(b)-ch.X(a))/ch.W*100)+'%'; band.className='avc-band '+(c>=0?'up':'down');
+    pb.innerHTML=(d>=0?'+':'-')+ckAmt(Math.abs(d),ch.cur); pe.className=c>=0?'up':'down'; pe.textContent=`${c>=0?'▲':'▼'} ${Math.abs(c).toFixed(2)}%`; ps.textContent=`${dl(A,false)} to ${dl(Bx,true)}`;
+    if(ohlc) ohlc.classList.remove('on');
+  }
+  document.querySelector('.av-price')?.classList.add('scrub');
+}
+function asScrubEnd(){
+  const ch=_as.ch; if(!ch) return; ['avc-x1','avc-x2','avc-band'].forEach(id=>{ const m=document.getElementById(id); if(m) m.hidden=true; });
+  const pb=document.getElementById('av-pb'), pe=document.getElementById('av-pe'), ps=document.getElementById('av-ps'), o=document.getElementById('av-ohlc');
+  if(pb&&_as.head){ pb.innerHTML=_as.head.b; pe.className=_as.head.ec; pe.textContent=_as.head.e; ps.textContent=_as.head.s; } if(o) o.classList.remove('on');
+  document.querySelector('.av-price')?.classList.remove('scrub');
+}
+function asScrubBind(){
+  const el=document.getElementById('avc'); if(!el||el.dataset.b) return; el.dataset.b='1';
+  const pts=new Map(); let anchor=null, logged=false, kbd=null;
+  const draw=()=>{ const v=[...pts.values()]; if(!v.length) return;
+    if(v.length>=2) asScrubShow(asScrubIdx(el,v[0]),asScrubIdx(el,v[1]));
+    else if(anchor!=null && Math.abs(v[0]-anchor)>6) asScrubShow(asScrubIdx(el,anchor),asScrubIdx(el,v[0]));
+    else asScrubShow(asScrubIdx(el,v[0]),null);
+    if(!logged){ logged=true; try{ QA.log('as_scrub',{n:v.length,mode:_as.ch.candle?'candle':'line'}); }catch(e){} } };
+  el.addEventListener('pointerdown',e=>{ pts.set(e.pointerId,e.clientX); if(e.pointerType==='mouse') anchor=e.clientX; try{ el.setPointerCapture(e.pointerId); }catch(_){} draw(); });
+  el.addEventListener('pointermove',e=>{
+    if(pts.has(e.pointerId)){ pts.set(e.pointerId,e.clientX); draw(); if(e.pointerType!=='mouse') e.preventDefault(); }
+    else if(e.pointerType==='mouse'&&!pts.size) asScrubShow(asScrubIdx(el,e.clientX),null); });
+  const up=e=>{ pts.delete(e.pointerId); if(e.pointerType==='mouse') anchor=null; if(!pts.size){ if(e.pointerType==='mouse'&&e.type==='pointerup'&&el.matches(':hover')) asScrubShow(asScrubIdx(el,e.clientX),null); else asScrubEnd(); } else draw(); };
+  el.addEventListener('pointerup',up); el.addEventListener('pointercancel',up);
+  el.addEventListener('pointerleave',e=>{ if(e.pointerType==='mouse'&&!pts.size) asScrubEnd(); });
+  el.addEventListener('keydown',e=>{ const n=_as.ch.n; if(e.key==='ArrowLeft'||e.key==='ArrowRight'){ e.preventDefault(); kbd=kbd==null?n-1:Math.max(0,Math.min(n-1,kbd+(e.key==='ArrowRight'?1:-1))); asScrubShow(kbd,null); } else if(e.key==='Escape'){ kbd=null; asScrubEnd(); } });
+  el.addEventListener('blur',()=>{ kbd=null; asScrubEnd(); });
+}
+function asRender(){ asRender0(); try{ const pb=document.getElementById('av-pb'), pe=document.getElementById('av-pe'), ps=document.getElementById('av-ps'); if(pb) _as.head={b:pb.innerHTML,e:pe.textContent,ec:pe.className,s:ps.textContent}; asScrubBind(); const o=document.getElementById('av-ohlc'), ch=_as.ch; if(o&&ch){ const x=ch.bars[ch.n-1]; o.innerHTML=x.o!=null?`<span>Open <b>${ckAmt(x.o,ch.cur)}</b></span><span>High <b>${ckAmt(x.h,ch.cur)}</b></span><span>Low <b>${ckAmt(x.l,ch.cur)}</b></span><span>Close <b>${ckAmt(x.c,ch.cur)}</b></span>`:''; } }catch(e){} }
+function asRender0(){
   const v=document.getElementById('as-view'); if(!v || !_as.view || !_as.view.a) return;
   const {a,f,sym}=_as.view, cur=a.currency||'', money=n=>ckAmt(n,cur);
-  const days={'1m':23,'6m':128,'1y':9999}[_as.range]||9999, h=a.hist.slice(-days);
+  const days={'1m':23,'3m':65,'6m':128,'1y':9999}[_as.range]||9999, h=a.hist.slice(-days);
   const st=asStats(a.hist), stR=asStats(h);
   const chg=a.prev?(a.price-a.prev)/a.prev*100:null;
   const kind={EQUITY:'Stock',ETF:'ETF',CRYPTOCURRENCY:'Crypto',MUTUALFUND:'Fund',INDEX:'Index'}[a.type]||'';
@@ -16484,8 +16593,9 @@ function asRender(){
   const canAdd=['EQUITY','ETF','CRYPTOCURRENCY','MUTUALFUND'].includes(a.type);
   v.innerHTML=`<div class="av">
     <div class="av-top"><div class="av-name"><h3>${escHtml(a.name||sym)}</h3><small>${escHtml(a.symbol||sym)}${a.exchange&&a.exchange!=='CCC'?' · '+escHtml(a.exchange):''}${kind?' · '+kind:''}${cur?' · '+cur:''}</small></div><button type="button" class="av-x" onclick="asClose()" aria-label="Close">×</button></div>
-    <div class="av-price"><b>${money(a.price)}</b>${chg!=null?`<em class="${chg>=0?'up':'down'}">${chg>=0?'▲':'▼'} ${Math.abs(chg).toFixed(2)}% today</em>`:''}<span>as of ${asOf}</span></div>
-    <div class="av-seg" role="group" aria-label="Chart range">${[['1m','1M'],['6m','6M'],['1y','1Y']].map(([k,l])=>`<button type="button" class="${_as.range===k?'on':''}" aria-pressed="${_as.range===k}" onclick="asRange('${k}')">${l}</button>`).join('')}</div>
+    <div class="av-price"><b id="av-pb">${money(a.price)}</b><em id="av-pe" class="${chg==null?'':chg>=0?'up':'down'}">${chg!=null?`${chg>=0?'▲':'▼'} ${Math.abs(chg).toFixed(2)}% today`:''}</em><span id="av-ps">as of ${asOf}</span></div>
+    <div class="av-ohlc" id="av-ohlc" aria-live="off"></div>
+    <div class="av-ctl"><div class="av-seg" role="group" aria-label="Chart range">${[['1m','1M'],['3m','3M'],['6m','6M'],['1y','1Y']].map(([k,l])=>`<button type="button" class="${_as.range===k?'on':''}" aria-pressed="${_as.range===k}" onclick="asRange('${k}')">${l}</button>`).join('')}</div><div class="av-seg" role="group" aria-label="Chart type">${[['line','Line'],['candle','Candles']].map(([k,l])=>{ const eff=(_as.mode==='candle'&&h.every(x=>x.o!=null))?'candle':'line'; return `<button type="button" class="${eff===k?'on':''}" aria-pressed="${eff===k}" onclick="asChartMode('${k}')">${l}</button>`; }).join('')}</div></div>
     ${asChart(h,cur)}
     ${stR?`<div class="av-tiles">${tile(_as.range==='1y'?'Past year':_as.range==='6m'?'Past 6 months':'Past month',pct(stR.yr),'price change',stR.yr>=0?'up':'down')}${tile('How bumpy',bump?bump[0]:'n/a',st?`about ${st.daily.toFixed(1)}% on a typical day`:'')}${tile('Biggest drop',st?Math.abs(st.dd).toFixed(0)+'%':'n/a','from a high, past year')}</div>`:''}
     <div class="av-sec">Where the price sits in its 1-year range</div>
