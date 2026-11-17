@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>TSX Heatmap Today: S&amp;P/TSX 60 Stock Market Map | Qualisight</title>
+<meta name="description" content="Free TSX 60 heatmap. See today&#x27;s Canadian stock market at a glance: every S&amp;P/TSX 60 stock sized by index weight and coloured by today&#x27;s move, by sector. 1 day, 1 week, 1 month.">
+<link rel="canonical" href="https://qualisight.ca/tsx-heatmap/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="TSX 60 heatmap: the Canadian market at a glance">
+<meta property="og:description" content="Free TSX 60 heatmap. See today&#x27;s Canadian stock market at a glance: every S&amp;P/TSX 60 stock sized by index weight and coloured by today&#x27;s move, by sector. 1 day, 1 week, 1 month.">
+<meta property="og:url" content="https://qualisight.ca/tsx-heatmap/">
+<meta property="og:image" content="https://qualisight.ca/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0b0d12">
+<link rel="icon" href="/icon-192.png">
+<link rel="preconnect" href="https://bsjyqecneeptlfrsyesf.supabase.co">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Qualisight", "item": "https://qualisight.ca/"}, {"@type": "ListItem", "position": 2, "name": "TSX 60 heatmap", "item": "https://qualisight.ca/tsx-heatmap/"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebApplication", "name": "TSX 60 heatmap", "url": "https://qualisight.ca/tsx-heatmap/", "applicationCategory": "FinanceApplication", "operatingSystem": "Any", "offers": {"@type": "Offer", "price": "0", "priceCurrency": "CAD"}, "description": "Free TSX 60 heatmap. See today's Canadian stock market at a glance: every S&P/TSX 60 stock sized by index weight and coloured by today's move, by sector. 1 day, 1 week, 1 month."}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is a TSX heatmap?", "acceptedAnswer": {"@type": "Answer", "text": "A picture of the Canadian stock market where each company is a box. Bigger boxes are bigger parts of the index. Green boxes went up, red boxes went down, and the stronger the colour, the bigger the move."}}, {"@type": "Question", "name": "Why are the banks so big on the map?", "acceptedAnswer": {"@type": "Answer", "text": "Box size follows each company's weight in the S&P/TSX 60. Canada's big banks are some of the largest companies on the Toronto Stock Exchange, so they take up a large share of the index and of the map."}}, {"@type": "Question", "name": "How often does this heatmap update?", "acceptedAnswer": {"@type": "Answer", "text": "About every 20 minutes while the market is open on weekdays, and once more after the close. Prices can be delayed, so check your brokerage before you trade."}}, {"@type": "Question", "name": "Where do the weights and sectors come from?", "acceptedAnswer": {"@type": "Answer", "text": "From the daily holdings file of the iShares S&P/TSX 60 Index ETF (XIU), which holds every stock in the index. Prices come from Yahoo Finance public data."}}, {"@type": "Question", "name": "Is this investment advice?", "acceptedAnswer": {"@type": "Answer", "text": "No. It shows what prices did. It does not say what to buy or sell."}}]}</script>
+<style>
+:root{--bg:#0b0d12;--surface:#141821;--border:rgba(255,255,255,0.09);--text:#e8edf8;--muted:#97a2b8;--green:#4ade80;--red:#f87171}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--green)}
+.wrap{max-width:1180px;margin:0 auto;padding:0 1.1rem}
+header{display:flex;justify-content:space-between;align-items:center;padding:1rem 0;gap:1rem}
+.logo{font-weight:800;font-size:1.15rem;color:var(--green);text-decoration:none;letter-spacing:-0.02em}
+nav.top{display:flex;gap:1rem;align-items:center;font-size:0.9rem}
+nav.top a{color:var(--muted);text-decoration:none} nav.top a[aria-current]{color:var(--text);font-weight:700}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:0 1.1rem;border-radius:12px;background:var(--green);color:#0b0d12;font-weight:700;text-decoration:none;border:0;font:inherit;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+h1{font-size:2.1rem;line-height:1.1;letter-spacing:-0.03em;margin:0.6rem 0 0.4rem}
+h2{font-size:1.35rem;letter-spacing:-0.02em;margin:2.4rem 0 0.6rem}
+p{margin:0.5rem 0;color:#c4ccdb} .lead{color:var(--muted);font-size:1.02rem;max-width:760px}
+.bar{display:flex;flex-wrap:wrap;gap:0.6rem 1rem;align-items:center;margin:1rem 0 0.7rem}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:999px;padding:3px;background:var(--surface)}
+.seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-weight:700;font-size:0.88rem;padding:0.4rem 0.95rem;border-radius:999px;cursor:pointer;min-height:38px}
+.seg button[aria-pressed=true]{background:var(--text);color:#0b0d12}
+.upd{font-size:0.82rem;color:var(--muted)}
+.back{display:none;border:1px solid var(--border);background:var(--surface);color:var(--text);border-radius:999px;padding:0 0.9rem;min-height:38px;font:inherit;font-size:0.86rem;font-weight:600;cursor:pointer}
+.back.on{display:inline-flex;align-items:center}
+#map{position:relative;width:100%;border-radius:12px;overflow:hidden;background:#0e1118;user-select:none;-webkit-user-select:none}
+.sec{position:absolute;border:1px solid #0b0d12;cursor:zoom-in}
+.sec.zoomed{cursor:default}
+.sec-h{position:absolute;left:0;right:0;top:0;height:18px;padding:0 5px;font-size:11px;font-weight:700;letter-spacing:0.02em;color:#cfd6e4;background:#1b2030;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:18px;text-transform:uppercase}
+.tile{position:absolute;border:1px solid #0b0d12;display:flex;flex-direction:column;align-items:center;justify-content:center;overflow:hidden;cursor:pointer;color:#fff;text-shadow:0 1px 2px rgba(0,0,0,0.45);line-height:1.1;text-align:center;transition:filter .12s}
+.tile:hover,.tile:focus-visible{filter:brightness(1.18);outline:2px solid #fff;outline-offset:-2px;z-index:2}
+.tile b{font-weight:800;letter-spacing:-0.01em}
+.tile span{font-weight:600;opacity:0.92}
+.legend{display:flex;align-items:center;gap:0.4rem;margin-top:0.6rem;font-size:0.76rem;color:var(--muted);flex-wrap:wrap}
+.legend i{display:inline-block;width:34px;height:14px;border-radius:3px}
+#tip{position:fixed;z-index:20;pointer-events:none;background:#0f131c;border:1px solid rgba(255,255,255,0.14);border-radius:12px;padding:0.75rem 0.85rem;min-width:220px;max-width:280px;box-shadow:0 16px 40px rgba(0,0,0,0.6);font-size:0.86rem;display:none}
+#tip h3{margin:0;font-size:1rem} #tip small{color:var(--muted)}
+#tip table{width:100%;margin-top:0.4rem;border-collapse:collapse} #tip td{padding:0.1rem 0} #tip td:last-child{text-align:right;font-variant-numeric:tabular-nums;font-weight:700}
+.up{color:var(--green)} .down{color:var(--red)}
+#card{display:none;margin-top:0.8rem;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:0.9rem 1rem}
+#card.on{display:block}
+.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.7rem;margin-top:1.2rem}
+.stat{background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:0.8rem 0.9rem}
+.stat span{display:block;font-size:0.76rem;color:var(--muted)} .stat b{display:block;font-size:1.3rem;font-variant-numeric:tabular-nums} .stat em{display:block;font-style:normal;font-size:0.78rem;color:var(--muted)}
+.movers{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0.8rem}
+.list{min-width:0;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:0.6rem 0.9rem}
+.list h3{font-size:0.95rem;margin:0.3rem 0 0.4rem}
+.li{display:flex;justify-content:space-between;gap:0.6rem;padding:0.35rem 0;border-top:1px solid var(--border);font-size:0.9rem}
+.li:first-of-type{border-top:0} .li span{color:var(--muted);overflow:hidden;text-overflow:ellipsis;white-space:nowrap} .li b{font-variant-numeric:tabular-nums}
+table.t{width:100%;border-collapse:collapse;font-size:0.9rem}
+table.t th{text-align:left;font-size:0.76rem;color:var(--muted);font-weight:600;padding:0.5rem 0.4rem;border-bottom:1px solid var(--border);cursor:pointer;white-space:nowrap}
+table.t td{padding:0.45rem 0.4rem;border-bottom:1px solid var(--border)}
+table.t .num{text-align:right;font-variant-numeric:tabular-nums}
+.tw{max-height:560px;overflow:auto;background:var(--surface);border:1px solid var(--border);border-radius:14px}
+#q{width:100%;max-width:340px;background:#0e121a;border:1px solid var(--border);border-radius:10px;color:var(--text);font:inherit;padding:0.55rem 0.7rem;min-height:44px;margin-bottom:0.6rem}
+details{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:0.2rem 0.9rem;margin:0.5rem 0}
+summary{cursor:pointer;font-weight:700;padding:0.6rem 0;min-height:44px;display:flex;align-items:center}
+.cta{margin-top:2.2rem;background:linear-gradient(135deg,rgba(74,222,128,0.12),rgba(74,222,128,0.03));border:1px solid rgba(74,222,128,0.3);border-radius:18px;padding:1.3rem}
+.cta h2{margin:0 0 0.3rem}
+footer{color:var(--muted);font-size:0.82rem;padding:2.4rem 0 3rem;line-height:1.6}
+.err{padding:2rem 1rem;color:var(--muted);text-align:center}
+@media(max-width:760px){h1{font-size:1.7rem}.grid{grid-template-columns:1fr 1fr}.movers{grid-template-columns:minmax(0,1fr)}.hide-s{display:none}nav.top .hide-s{display:none}#tip{display:none!important}}
+@media(prefers-reduced-motion:reduce){.tile{transition:none}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><a class="logo" href="/">Qualisight</a><nav class="top"><a href="/tsx-heatmap/" aria-current="page">TSX 60</a><a href="/sp500-heatmap/">S&amp;P 500</a><a class="btn ghost hide-s" href="/?src=tsx-heatmap">Open Qualisight</a></nav></header>
+<main>
+<h1>TSX 60 heatmap</h1>
+<p class="lead">The Canadian stock market at a glance. Each box is one of the 60 large companies in the S&amp;P/TSX 60, sized by its weight in the index and coloured by how much its price moved.</p>
+<div class="bar">
+  <div class="seg" role="group" aria-label="Time period"><button type="button" data-r="d1" aria-pressed="true">Today</button><button type="button" data-r="w1" aria-pressed="false">1 week</button><button type="button" data-r="m1" aria-pressed="false">1 month</button></div>
+  <button type="button" class="back" id="back">All sectors</button>
+  <span class="upd" id="upd">Loading the latest prices…</span>
+</div>
+<div id="map" role="img" aria-label="S&amp;P/TSX 60 heatmap by sector"><div class="err">Loading the heatmap…</div></div>
+<div class="legend" aria-hidden="true"><span>-3%</span><i style="background:#f63538"></i><i style="background:#bf4045"></i><i style="background:#8b444e"></i><i style="background:#414554"></i><i style="background:#35764e"></i><i style="background:#2f9e4f"></i><i style="background:#30cc5a"></i><span>+3%</span><span style="margin-left:0.6rem">Box size = weight in the index. Tap a sector name to zoom in.</span></div>
+<div id="card" aria-live="polite"></div>
+<div class="grid" id="stats"></div>
+
+<h2>Biggest movers</h2>
+<div class="movers"><div class="list" id="gain"><h3>Up the most</h3></div><div class="list" id="lose"><h3>Down the most</h3></div></div>
+
+<h2>By sector</h2>
+<div class="tw" style="max-height:none"><table class="t" id="sect"><thead><tr><th>Sector</th><th class="num">Weight</th><th class="num">Stocks</th><th class="num" id="sect-h">Today</th></tr></thead><tbody></tbody></table></div>
+
+<h2>Every stock in the S&amp;P/TSX 60</h2>
+<input id="q" type="search" placeholder="Filter by name or ticker" aria-label="Filter the table">
+<div class="tw"><table class="t" id="all"><thead><tr><th data-k="t">Ticker</th><th data-k="n">Company</th><th class="hide-s" data-k="s">Sector</th><th class="num" data-k="w">Weight</th><th class="num" data-k="p">Price (CAD)</th><th class="num" data-k="c" id="all-h">Today</th></tr></thead><tbody><tr data-t="RY"><td><b>RY</b></td><td>Royal Bank of Canada</td><td class="hide-s">Financials</td><td class="num">9.55%</td><td class="num">280.99</td><td class="num chg">-1.65%</td></tr><tr data-t="TD"><td><b>TD</b></td><td>Toronto Dominion</td><td class="hide-s">Financials</td><td class="num">6.91%</td><td class="num">171.08</td><td class="num chg">-1.80%</td></tr><tr data-t="SHOP"><td><b>SHOP</b></td><td>Shopify Subordinate Voting Class A</td><td class="hide-s">Information Technology</td><td class="num">6.16%</td><td class="num">202.83</td><td class="num chg">-4.07%</td></tr><tr data-t="BMO"><td><b>BMO</b></td><td>Bank of Montreal</td><td class="hide-s">Financials</td><td class="num">4.10%</td><td class="num">237.98</td><td class="num chg">-2.05%</td></tr><tr data-t="BNS"><td><b>BNS</b></td><td>Bank of Nova Scotia</td><td class="hide-s">Financials</td><td class="num">3.81%</td><td class="num">127.43</td><td class="num chg">-1.76%</td></tr><tr data-t="ENB"><td><b>ENB</b></td><td>Enbridge</td><td class="hide-s">Energy</td><td class="num">3.63%</td><td class="num">67.39</td><td class="num chg">-0.43%</td></tr><tr data-t="CM"><td><b>CM</b></td><td>Canadian Imperial Bank of Commerce</td><td class="hide-s">Financials</td><td class="num">3.58%</td><td class="num">159.95</td><td class="num chg">-1.76%</td></tr><tr data-t="CNQ"><td><b>CNQ</b></td><td>Canadian Natural Resources Ltd</td><td class="hide-s">Energy</td><td class="num">3.43%</td><td class="num">68.29</td><td class="num chg">-0.97%</td></tr><tr data-t="AEM"><td><b>AEM</b></td><td>Agnico Eagle Mines</td><td class="hide-s">Materials</td><td class="num">2.99%</td><td class="num">247.49</td><td class="num chg">+1.31%</td></tr><tr data-t="BN"><td><b>BN</b></td><td>Brookfield Class A</td><td class="hide-s">Financials</td><td class="num">2.98%</td><td class="num">56.52</td><td class="num chg">-2.10%</td></tr><tr data-t="CP"><td><b>CP</b></td><td>Canadian Pacific Kansas City</td><td class="hide-s">Industrials</td><td class="num">2.87%</td><td class="num">133.30</td><td class="num chg">-1.55%</td></tr><tr data-t="SU"><td><b>SU</b></td><td>Suncor Energy Inc</td><td class="hide-s">Energy</td><td class="num">2.74%</td><td class="num">97.66</td><td class="num chg">+0.41%</td></tr><tr data-t="MFC"><td><b>MFC</b></td><td>Manulife Financial</td><td class="hide-s">Financials</td><td class="num">2.51%</td><td class="num">62.67</td><td class="num chg">+0.19%</td></tr><tr data-t="CNR"><td><b>CNR</b></td><td>Canadian National Railway</td><td class="hide-s">Industrials</td><td class="num">2.42%</td><td class="num">180.54</td><td class="num chg">-1.22%</td></tr><tr data-t="TRP"><td><b>TRP</b></td><td>Tc Energy</td><td class="hide-s">Energy</td><td class="num">2.30%</td><td class="num">92.16</td><td class="num chg">+0.48%</td></tr><tr data-t="ABX"><td><b>ABX</b></td><td>Barrick Mining</td><td class="hide-s">Materials</td><td class="num">2.07%</td><td class="num">52.36</td><td class="num chg">+0.23%</td></tr><tr data-t="WPM"><td><b>WPM</b></td><td>Wheaton Precious Metals</td><td class="hide-s">Materials</td><td class="num">1.98%</td><td class="num">181.81</td><td class="num chg">+0.33%</td></tr><tr data-t="NA"><td><b>NA</b></td><td>National Bank of Canada</td><td class="hide-s">Financials</td><td class="num">1.97%</td><td class="num">210.04</td><td class="num chg">-1.16%</td></tr><tr data-t="CSU"><td><b>CSU</b></td><td>Constellation Software</td><td class="hide-s">Information Technology</td><td class="num">1.76%</td><td class="num">3,316.93</td><td class="num chg">-3.48%</td></tr><tr data-t="WCN"><td><b>WCN</b></td><td>Waste Connections</td><td class="hide-s">Industrials</td><td class="num">1.71%</td><td class="num">259.09</td><td class="num chg">-8.12%</td></tr><tr data-t="FNV"><td><b>FNV</b></td><td>Franco Nevada</td><td class="hide-s">Materials</td><td class="num">1.60%</td><td class="num">353.40</td><td class="num chg">+2.76%</td></tr><tr data-t="ATD"><td><b>ATD</b></td><td>Alimentation Couche Tard Inc</td><td class="hide-s">Consumer Staples</td><td class="num">1.50%</td><td class="num">83.65</td><td class="num chg">-0.30%</td></tr><tr data-t="DOL"><td><b>DOL</b></td><td>Dollarama</td><td class="hide-s">Consumer Discretionary</td><td class="num">1.44%</td><td class="num">218.62</td><td class="num chg">-1.15%</td></tr><tr data-t="SLF"><td><b>SLF</b></td><td>Sun Life Financial Inc</td><td class="hide-s">Financials</td><td class="num">1.40%</td><td class="num">103.96</td><td class="num chg">+0.13%</td></tr><tr data-t="CVE"><td><b>CVE</b></td><td>Cenovus Energy</td><td class="hide-s">Energy</td><td class="num">1.28%</td><td class="num">40.35</td><td class="num chg">-0.20%</td></tr><tr data-t="FFH"><td><b>FFH</b></td><td>Fairfax Financial Holdings Sub Vot</td><td class="hide-s">Financials</td><td class="num">1.27%</td><td class="num">2,725.74</td><td class="num chg">-0.90%</td></tr><tr data-t="IFC"><td><b>IFC</b></td><td>Intact Financial Corp</td><td class="hide-s">Financials</td><td class="num">1.18%</td><td class="num">281.53</td><td class="num chg">+1.19%</td></tr><tr data-t="POW"><td><b>POW</b></td><td>Power Corporation of Canada</td><td class="hide-s">Financials</td><td class="num">1.18%</td><td class="num">95.16</td><td class="num chg">+1.41%</td></tr><tr data-t="NTR"><td><b>NTR</b></td><td>Nutrien Ltd</td><td class="hide-s">Materials</td><td class="num">1.14%</td><td class="num">99.02</td><td class="num chg">+0.41%</td></tr><tr data-t="FTS"><td><b>FTS</b></td><td>Fortis</td><td class="hide-s">Utilities</td><td class="num">1.05%</td><td class="num">84.55</td><td class="num chg">-1.50%</td></tr><tr data-t="CLS"><td><b>CLS</b></td><td>Celestica</td><td class="hide-s">Information Technology</td><td class="num">1.04%</td><td class="num">337.81</td><td class="num chg">-0.87%</td></tr><tr data-t="PPL"><td><b>PPL</b></td><td>Pembina Pipeline</td><td class="hide-s">Energy</td><td class="num">1.00%</td><td class="num">71.58</td><td class="num chg">+0.63%</td></tr><tr data-t="CCO"><td><b>CCO</b></td><td>Cameco</td><td class="hide-s">Energy</td><td class="num">0.99%</td><td class="num">92.16</td><td class="num chg">-2.37%</td></tr><tr data-t="TECK.B"><td><b>TECK.B</b></td><td>Teck Resources Subordinate Voting</td><td class="hide-s">Materials</td><td class="num">0.95%</td><td class="num">80.07</td><td class="num chg">-2.06%</td></tr><tr data-t="L"><td><b>L</b></td><td>Loblaw Companies Ltd</td><td class="hide-s">Consumer Staples</td><td class="num">0.93%</td><td class="num">71.09</td><td class="num chg">+0.07%</td></tr><tr data-t="QSR"><td><b>QSR</b></td><td>Restaurants Brands International</td><td class="hide-s">Consumer Discretionary</td><td class="num">0.90%</td><td class="num">105.48</td><td class="num chg">-1.32%</td></tr><tr data-t="K"><td><b>K</b></td><td>Kinross Gold</td><td class="hide-s">Materials</td><td class="num">0.82%</td><td class="num">28.80</td><td class="num chg">+0.91%</td></tr><tr data-t="BCE"><td><b>BCE</b></td><td>BCE Inc</td><td class="hide-s">Communication</td><td class="num">0.71%</td><td class="num">31.48</td><td class="num chg">-0.47%</td></tr><tr data-t="BAM"><td><b>BAM</b></td><td>Brookfield Asset Management Voting</td><td class="hide-s">Financials</td><td class="num">0.66%</td><td class="num">71.84</td><td class="num chg">-1.35%</td></tr><tr data-t="IMO"><td><b>IMO</b></td><td>Imperial Oil Ltd</td><td class="hide-s">Energy</td><td class="num">0.65%</td><td class="num">180.87</td><td class="num chg">+1.40%</td></tr><tr data-t="WSP"><td><b>WSP</b></td><td>Wsp Global Inc</td><td class="hide-s">Industrials</td><td class="num">0.62%</td><td class="num">183.78</td><td class="num chg">-3.06%</td></tr><tr data-t="BIP.UN"><td><b>BIP.UN</b></td><td>Brookfield Infrastructure Partners</td><td class="hide-s">Utilities</td><td class="num">0.62%</td><td class="num">57.50</td><td class="num chg">+1.90%</td></tr><tr data-t="TOU"><td><b>TOU</b></td><td>Tourmaline Oil Corp</td><td class="hide-s">Energy</td><td class="num">0.58%</td><td class="num">64.32</td><td class="num chg">-0.66%</td></tr><tr data-t="EMA"><td><b>EMA</b></td><td>Emera Inc</td><td class="hide-s">Utilities</td><td class="num">0.55%</td><td class="num">73.70</td><td class="num chg">-0.61%</td></tr><tr data-t="MG"><td><b>MG</b></td><td>Magna International</td><td class="hide-s">Consumer Discretionary</td><td class="num">0.53%</td><td class="num">88.42</td><td class="num chg">+0.90%</td></tr><tr data-t="T"><td><b>T</b></td><td>Telus</td><td class="hide-s">Communication</td><td class="num">0.52%</td><td class="num">13.25</td><td class="num chg">-3.28%</td></tr><tr data-t="GIB.A"><td><b>GIB.A</b></td><td>CGI Inc Class A</td><td class="hide-s">Information Technology</td><td class="num">0.51%</td><td class="num">115.07</td><td class="num chg">-1.08%</td></tr><tr data-t="MRU"><td><b>MRU</b></td><td>Metro</td><td class="hide-s">Consumer Staples</td><td class="num">0.51%</td><td class="num">100.92</td><td class="num chg">-0.56%</td></tr><tr data-t="FM"><td><b>FM</b></td><td>First Quantum Minerals</td><td class="hide-s">Materials</td><td class="num">0.49%</td><td class="num">30.90</td><td class="num chg">+3.66%</td></tr><tr data-t="TRI"><td><b>TRI</b></td><td>Thomson Reuters Corp</td><td class="hide-s">Industrials</td><td class="num">0.47%</td><td class="num">148.97</td><td class="num chg">-3.69%</td></tr><tr data-t="RCI.B"><td><b>RCI.B</b></td><td>Rogers Communications Non-Voting I</td><td class="hide-s">Communication</td><td class="num">0.46%</td><td class="num">49.35</td><td class="num chg">-0.50%</td></tr><tr data-t="H"><td><b>H</b></td><td>Hydro One</td><td class="hide-s">Utilities</td><td class="num">0.44%</td><td class="num">57.24</td><td class="num chg">-1.28%</td></tr><tr data-t="WN"><td><b>WN</b></td><td>George Weston</td><td class="hide-s">Consumer Staples</td><td class="num">0.42%</td><td class="num">113.58</td><td class="num chg">-0.79%</td></tr><tr data-t="CCL.B"><td><b>CCL.B</b></td><td>Ccl Industries Class B</td><td class="hide-s">Materials</td><td class="num">0.33%</td><td class="num">100.61</td><td class="num chg">+1.63%</td></tr><tr data-t="CAE"><td><b>CAE</b></td><td>Cae</td><td class="hide-s">Industrials</td><td class="num">0.31%</td><td class="num">39.58</td><td class="num chg">-1.88%</td></tr><tr data-t="SAP"><td><b>SAP</b></td><td>Saputo</td><td class="hide-s">Consumer Staples</td><td class="num">0.26%</td><td class="num">45.47</td><td class="num chg">-1.90%</td></tr><tr data-t="CTC.A"><td><b>CTC.A</b></td><td>Canadian Tire Ltd Class A</td><td class="hide-s">Consumer Discretionary</td><td class="num">0.26%</td><td class="num">217.36</td><td class="num chg">-1.68%</td></tr><tr data-t="GIL"><td><b>GIL</b></td><td>Gildan Activewear</td><td class="hide-s">Consumer Discretionary</td><td class="num">0.22%</td><td class="num">47.34</td><td class="num chg">-4.17%</td></tr><tr data-t="FSV"><td><b>FSV</b></td><td>Firstservice Subordinate Voting</td><td class="hide-s">Real Estate</td><td class="num">0.22%</td><td class="num">220.12</td><td class="num chg">-1.32%</td></tr><tr data-t="OTEX"><td><b>OTEX</b></td><td>Open Text</td><td class="hide-s">Information Technology</td><td class="num">0.21%</td><td class="num">34.09</td><td class="num chg">-3.62%</td></tr></tbody></table></div>
+
+<h2>How to read this heatmap</h2>
+<p>Each box is one company. A bigger box means a bigger share of the S&amp;P/TSX 60. Green means the price went up over the period you picked, red means it went down, and grey means it barely moved. The brighter the colour, the bigger the move, up to 3% or more.</p>
+<p>Boxes are grouped by sector, so you can see at a glance whether a whole part of the market moved together. Switch to 1 week or 1 month to see the bigger picture instead of one day's noise.</p>
+
+<h2>What is the S&amp;P/TSX 60?</h2>
+<p>The S&P/TSX 60 is an index of 60 large companies listed on the Toronto Stock Exchange. It is run by S&amp;P Dow Jones Indices and is the Canadian part of the S&amp;P Global 1200. Banks, energy companies and miners make up a large share of it, which is why the Financials, Energy and Materials blocks on this map are so big.</p><p>You cannot buy the index itself, but index funds such as XIU hold all 60 stocks in the same proportions.</p>
+
+<h2>Questions</h2>
+<details><summary>What is a TSX heatmap?</summary><p>A picture of the Canadian stock market where each company is a box. Bigger boxes are bigger parts of the index. Green boxes went up, red boxes went down, and the stronger the colour, the bigger the move.</p></details><details><summary>Why are the banks so big on the map?</summary><p>Box size follows each company&#x27;s weight in the S&amp;P/TSX 60. Canada&#x27;s big banks are some of the largest companies on the Toronto Stock Exchange, so they take up a large share of the index and of the map.</p></details><details><summary>How often does this heatmap update?</summary><p>About every 20 minutes while the market is open on weekdays, and once more after the close. Prices can be delayed, so check your brokerage before you trade.</p></details><details><summary>Where do the weights and sectors come from?</summary><p>From the daily holdings file of the iShares S&amp;P/TSX 60 Index ETF (XIU), which holds every stock in the index. Prices come from Yahoo Finance public data.</p></details><details><summary>Is this investment advice?</summary><p>No. It shows what prices did. It does not say what to buy or sell.</p></details>
+
+<div class="cta">
+  <h2>See your own investments this clearly</h2>
+  <p>Qualisight is a free Canadian money app. Track your TFSA, RRSP and FHSA in one place, look up any company in plain words, and plan your budget and debt. No bank login.</p>
+  <p style="margin-top:0.9rem"><a class="btn" href="/?src=tsx-heatmap" id="cta">Try Qualisight free</a> <a class="btn ghost" href="/sp500-heatmap/">See the S&P 500 heatmap</a></p>
+</div>
+</main>
+<footer>Members, weights and sectors from the iShares S&P/TSX 60 Index ETF (XIU), which holds every stock in the index, as of <span id="asof">Nov 16, 2026</span>. Prices from Yahoo Finance public data and may be delayed. Page checked November 17, 2026. For information only, not advice to buy or sell. More free tools: <a href="/tfsa-contribution-room-calculator/">TFSA room calculator</a>, <a href="/debt-payoff-calculator/">debt payoff calculator</a>, <a href="/down-payment-calculator/">down payment calculator</a>. <a href="/">Qualisight</a> is built by a solo founder in Ontario.</footer>
+</div>
+<div id="tip" role="tooltip"></div>
+<script>
+(function(){
+  var EMBED=false;
+  var track=(function(){
+    var ok=true, vid, sid, sent=0;
+    try{ if(localStorage.getItem('qs_notrack')==='1') ok=false; vid=localStorage.getItem('qs_vid'); if(!vid){ vid=Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4); localStorage.setItem('qs_vid',vid); }
+      sid=sessionStorage.getItem('qs_tab'); if(!sid){ sid=Math.random().toString(36).slice(2,10); sessionStorage.setItem('qs_tab',sid); } }catch(e){ vid=vid||'anon'; sid=sid||'anon'; }
+    if(/HeadlessChrome|bot|crawl|spider/i.test(navigator.userAgent||'')) ok=false;
+    return function(name,props){ if(!ok||sent>20) return; sent++; props=props||{}; props.embed=EMBED;
+      try{ fetch('https://bsjyqecneeptlfrsyesf.supabase.co/rest/v1/site_events',{method:'POST',keepalive:true,headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM','Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify([{vid:vid,sid:sid,name:name,props:props}])}).catch(function(){}); }catch(e){} };
+  })();
+  var ID='tsx60', CUR='CAD', KEY='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM';
+  var D=null, R='d1', FOCUS=null, SORT={k:'w',dir:-1};
+  var LBL={d1:'Today',w1:'1 week',m1:'1 month'};
+  function $(id){ return document.getElementById(id); }
+  function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function clean(n){ var s=String(n||'').replace(/\s+(Sub(ordinate)?\s+Vot(ing)?|Voting|Class [A-Z]|Cl [A-Z]|Shs)\b.*$/i,'').replace(/\s+[A-Z]$/,''); return /^[A-Z][a-z]{1,3}$/.test(s)?s.toUpperCase():s; }
+  function pct(v){ return v==null?'n/a':(v>=0?'+':'')+v.toFixed(2)+'%'; }
+  function money(v){ return v==null?'n/a':(CUR==='CAD'?'CA$':'$')+v.toLocaleString('en-CA',{minimumFractionDigits:2,maximumFractionDigits:2}); }
+  // Finviz-style colours: grey at zero, full red or green at 3% or more
+  function mix(a,b,t){ var x=parseInt(a.slice(1),16), y=parseInt(b.slice(1),16); var r=Math.round(((x>>16)&255)+(((y>>16)&255)-((x>>16)&255))*t), g=Math.round(((x>>8)&255)+(((y>>8)&255)-((x>>8)&255))*t), bl=Math.round((x&255)+((y&255)-(x&255))*t); return 'rgb('+r+','+g+','+bl+')'; }
+  function col(v){ if(v==null) return '#2a2f3a'; var k=Math.max(-1,Math.min(1,v/3)); if(k>=0) return k<0.5?mix('#414554','#35764e',k*2):mix('#35764e','#30cc5a',(k-0.5)*2); k=-k; return k<0.5?mix('#414554','#8b444e',k*2):mix('#8b444e','#f63538',(k-0.5)*2); }
+  function worst(row,s){ var sum=0,mx=0,mn=Infinity; row.forEach(function(r){sum+=r.a; if(r.a>mx)mx=r.a; if(r.a<mn)mn=r.a;}); return Math.max(s*s*mx/(sum*sum), sum*sum/(s*s*mn)); }
+  // squarified treemap: keeps boxes close to square so they are easy to read and tap
+  function squarify(items,x,y,w,h){
+    var tot=items.reduce(function(s,i){return s+i.v;},0), out=[]; if(!(tot>0)||w<=0||h<=0) return out;
+    var rest=items.map(function(i){return {it:i,a:i.v*w*h/tot};});
+    while(rest.length){
+      var short=Math.min(w,h), row=[rest[0]], i=1;
+      while(i<rest.length){ var nr=row.concat([rest[i]]); if(worst(nr,short)<=worst(row,short)){row=nr;i++;} else break; }
+      var sum=row.reduce(function(s,r){return s+r.a;},0);
+      if(w>=h){ var cw=sum/h, cy=y; row.forEach(function(r){ var rh=r.a/cw; out.push({it:r.it,x:x,y:cy,w:cw,h:rh}); cy+=rh; }); x+=cw; w-=cw; }
+      else { var rh=sum/w, cx=x; row.forEach(function(r){ var rw=r.a/rh; out.push({it:r.it,x:cx,y:y,w:rw,h:rh}); cx+=rw; }); y+=rh; h-=rh; }
+      rest=rest.slice(row.length);
+    }
+    return out;
+  }
+  function draw(){
+    var m=$('map'); if(!D) return;
+    var W=m.clientWidth, H=Math.round(W<560?W*1.45:Math.min(720,W*0.6)); m.style.height=H+'px';
+    var secs=D.sectors.filter(function(s){return !FOCUS||s.name===FOCUS;}).map(function(s){return {v:s.w,s:s};});
+    var html='';
+    squarify(secs,0,0,W,H).forEach(function(S){
+      var s=S.it.s, hh=S.h>46&&S.w>40?18:0;
+      html+='<div class="sec'+(FOCUS?' zoomed':'')+'" style="left:'+S.x+'px;top:'+S.y+'px;width:'+S.w+'px;height:'+S.h+'px" data-sec="'+esc(s.name)+'">'+(hh?'<div class="sec-h">'+esc(s.name)+'</div>':'');
+      squarify(s.stocks.map(function(x){return {v:x.w,x:x};}),0,hh,S.w,S.h-hh).forEach(function(T){
+        var x=T.it.x, v=x[R], tw=T.w, th=T.h, fs=Math.max(8,Math.min(26,Math.min((tw-4)/(Math.max(2.6,x.t.length)*0.74), th*0.32))), pfs=Math.max(8,fs*0.62);
+        var label=tw>Math.max(22,x.t.length*8*0.74)&&th>14?'<b style="font-size:'+fs.toFixed(1)+'px">'+esc(x.t)+'</b>'+(th>fs*2.3&&tw>pfs*4.4?'<span style="font-size:'+pfs.toFixed(1)+'px">'+pct(v)+'</span>':''):'';
+        html+='<div class="tile" tabindex="0" role="button" aria-label="'+esc(clean(x.n))+', '+pct(v)+'" data-t="'+esc(x.t)+'" style="left:'+T.x+'px;top:'+T.y+'px;width:'+tw+'px;height:'+th+'px;background:'+col(v)+'">'+label+'</div>';
+      });
+      html+='</div>';
+    });
+    m.innerHTML=html;
+    $('back').classList.toggle('on',!!FOCUS);
+  }
+  var BY={};
+  function find(t){ return BY[t]; }
+  function tipHtml(x){ return '<h3>'+esc(x.t)+' <small>'+esc(clean(x.n))+'</small></h3><small>'+esc(x.s)+' · '+x.w.toFixed(2)+'% of the index</small><table><tr><td>Price</td><td>'+money(x.p)+'</td></tr><tr><td>Today</td><td class="'+(x.d1>=0?'up':'down')+'">'+pct(x.d1)+'</td></tr><tr><td>1 week</td><td class="'+(x.w1>=0?'up':'down')+'">'+pct(x.w1)+'</td></tr><tr><td>1 month</td><td class="'+(x.m1>=0?'up':'down')+'">'+pct(x.m1)+'</td></tr></table>'; }
+  function stats(){
+    var all=[]; D.sectors.forEach(function(s){ s.stocks.forEach(function(x){ all.push(x); }); });
+    var tw=0, tv=0, up=0, dn=0; all.forEach(function(x){ if(x[R]!=null){ tw+=x.w; tv+=x.w*x[R]; if(x[R]>0) up++; else if(x[R]<0) dn++; } });
+    var idx=tw?tv/tw:null;
+    var secs=D.sectors.map(function(s){ var w=0,v=0; s.stocks.forEach(function(x){ if(x[R]!=null){w+=x.w;v+=x.w*x[R];} }); return {n:s.name,w:s.w,c:w?v/w:null,k:s.stocks.length}; });
+    var best=secs.slice().sort(function(a,b){return (b.c||0)-(a.c||0);})[0], worstS=secs.slice().sort(function(a,b){return (a.c||0)-(b.c||0);})[0];
+    $('stats').innerHTML='<div class="stat"><span>S&amp;P/TSX 60, '+LBL[R].toLowerCase()+'</span><b class="'+(idx>=0?'up':'down')+'">'+pct(idx)+'</b><em>weighted by index weight</em></div>'
+      +'<div class="stat"><span>Up / down</span><b>'+up+' / '+dn+'</b><em>stocks</em></div>'
+      +'<div class="stat"><span>Strongest sector</span><b class="up" style="font-size:1rem">'+esc(best.n)+'</b><em>'+pct(best.c)+'</em></div>'
+      +'<div class="stat"><span>Weakest sector</span><b class="down" style="font-size:1rem">'+esc(worstS.n)+'</b><em>'+pct(worstS.c)+'</em></div>';
+    var srt=all.filter(function(x){return x[R]!=null;}).sort(function(a,b){return b[R]-a[R];});
+    function li(x){ return '<div class="li"><span><b style="color:var(--text)">'+esc(x.t)+'</b> '+esc(clean(x.n))+'</span><b class="'+(x[R]>=0?'up':'down')+'">'+pct(x[R])+'</b></div>'; }
+    $('gain').innerHTML='<h3>Up the most, '+LBL[R].toLowerCase()+'</h3>'+srt.slice(0,6).map(li).join('');
+    $('lose').innerHTML='<h3>Down the most, '+LBL[R].toLowerCase()+'</h3>'+srt.slice(-6).reverse().map(li).join('');
+    $('sect-h').textContent=LBL[R]; $('all-h').textContent=LBL[R];
+    $('sect').querySelector('tbody').innerHTML=secs.map(function(s){ return '<tr><td>'+esc(s.n)+'</td><td class="num">'+s.w.toFixed(1)+'%</td><td class="num">'+s.k+'</td><td class="num '+(s.c>=0?'up':'down')+'">'+pct(s.c)+'</td></tr>'; }).join('');
+    table(all);
+  }
+  function table(all){
+    all=all||Object.keys(BY).map(function(k){return BY[k];});
+    var q=($('q').value||'').trim().toLowerCase();
+    var rows=all.filter(function(x){ return !q||x.t.toLowerCase().indexOf(q)>=0||x.n.toLowerCase().indexOf(q)>=0; });
+    var k=SORT.k; rows.sort(function(a,b){ var A=k==='c'?a[R]:a[k], B=k==='c'?b[R]:b[k]; if(A==null) return 1; if(B==null) return -1; return (A>B?1:A<B?-1:0)*SORT.dir; });
+    $('all').querySelector('tbody').innerHTML=rows.map(function(x){ return '<tr><td><b>'+esc(x.t)+'</b></td><td>'+esc(clean(x.n))+'</td><td class="hide-s">'+esc(x.s)+'</td><td class="num">'+x.w.toFixed(2)+'%</td><td class="num">'+(x.p==null?'':x.p.toLocaleString('en-CA',{minimumFractionDigits:2,maximumFractionDigits:2}))+'</td><td class="num '+(x[R]>=0?'up':'down')+'">'+pct(x[R])+'</td></tr>'; }).join('');
+  }
+  function when(iso){ try{ var d=new Date(iso); return d.toLocaleString('en-CA',{month:'short',day:'numeric',hour:'numeric',minute:'2-digit',timeZone:'America/Toronto'})+' ET'; }catch(e){ return ''; } }
+  function load(){
+    fetch('https://bsjyqecneeptlfrsyesf.supabase.co/rest/v1/heatmaps?id=eq.'+ID+'&select=data,updated_at',{headers:{apikey:KEY,Authorization:'Bearer '+KEY}})
+      .then(function(r){ return r.json(); }).then(function(j){
+        if(!j||!j[0]) throw new Error('none'); D=j[0].data; BY={};
+        D.sectors.forEach(function(s){ s.stocks.forEach(function(x){ x.s=s.name; BY[x.t]=x; }); });
+        $('upd').textContent='Updated '+when(D.updated)+'. Prices may be delayed.'; $('asof').textContent=D.holdingsAsOf||$('asof').textContent;
+        draw(); stats();
+      }).catch(function(){ $('map').innerHTML='<div class="err">The heatmap could not load right now. Refresh in a minute.</div>'; $('upd').textContent=''; });
+  }
+  document.querySelector('.seg').addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return; R=b.getAttribute('data-r'); document.querySelectorAll('.seg button').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');}); draw(); stats(); track('hm_range',{id:ID,r:R}); });
+  $('back').addEventListener('click',function(){ FOCUS=null; draw(); });
+  var tip=$('tip');
+  $('map').addEventListener('mousemove',function(e){ var t=e.target.closest('.tile'); if(!t){ tip.style.display='none'; return; } var x=find(t.getAttribute('data-t')); if(!x) return; tip.innerHTML=tipHtml(x); tip.style.display='block'; var X=e.clientX+16, Y=e.clientY+16; if(X+290>innerWidth) X=e.clientX-296; if(Y+190>innerHeight) Y=e.clientY-196; tip.style.left=X+'px'; tip.style.top=Y+'px'; });
+  $('map').addEventListener('mouseleave',function(){ tip.style.display='none'; });
+  function pick(t){ var x=find(t); if(!x) return; var c=$('card'); c.innerHTML=tipHtml(x)+'<p style="margin-top:0.6rem"><a href="/?src=tsx-heatmap&amp;lookup='+encodeURIComponent(x.y)+'">Track '+esc(x.t)+' in Qualisight</a></p>'; c.classList.add('on'); track('hm_tap',{id:ID,t:x.t}); }
+  $('map').addEventListener('click',function(e){ var h=e.target.closest('.sec-h'); if(h && !FOCUS){ FOCUS=h.parentNode.getAttribute('data-sec'); draw(); track('hm_zoom',{id:ID}); return; } var t=e.target.closest('.tile'); if(t) pick(t.getAttribute('data-t')); });
+  $('map').addEventListener('keydown',function(e){ if(e.key==='Enter'||e.key===' '){ var t=e.target.closest('.tile'); if(t){ e.preventDefault(); pick(t.getAttribute('data-t')); } } });
+  document.querySelectorAll('#all th').forEach(function(th){ th.addEventListener('click',function(){ var k=th.getAttribute('data-k'); SORT=SORT.k===k?{k:k,dir:-SORT.dir}:{k:k,dir:(k==='t'||k==='n'||k==='s')?1:-1}; table(); }); });
+  $('q').addEventListener('input',function(){ table(); });
+  $('cta').addEventListener('click',function(){ track('hm_cta',{id:ID}); });
+  var rt; window.addEventListener('resize',function(){ clearTimeout(rt); rt=setTimeout(draw,150); });
+  track('hm_view',{id:ID,ref:(document.referrer||'').split('/')[2]||''});
+  load(); setInterval(function(){ if(!document.hidden) load(); }, 5*60*1000);
+})();
+</script>
+</body>
+</html>

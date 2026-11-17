@@ -3819,6 +3819,9 @@ button:focus:not(:focus-visible){outline:none}
 .as-chips span{font-size:0.78rem;color:var(--muted);align-self:center;margin-right:0.2rem}
 .as-chips button{min-height:34px;padding:0 0.8rem;border-radius:999px;border:1px solid var(--border2);background:var(--surface);color:var(--text);font:inherit;font-size:0.82rem;cursor:pointer}
 .as-chips button:hover{border-color:rgba(167,139,250,0.55)}
+.as-maps{margin-top:0.55rem;font-size:0.8rem;color:var(--muted);display:flex;flex-wrap:wrap;gap:0.3rem 0.9rem}
+.as-maps a{color:#c4b5fd;text-decoration:none;font-weight:600}
+.as-maps a:hover{text-decoration:underline}
 .as-list{margin-top:0.4rem;background:var(--card);border:1px solid var(--border2);border-radius:14px;overflow:hidden;box-shadow:0 18px 40px -20px rgba(0,0,0,0.9)}
 .as-opt{display:flex;align-items:center;gap:0.8rem;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--border);padding:0.75rem 1rem;color:var(--text);font:inherit;cursor:pointer;min-height:52px}
 .as-opt:last-child{border-bottom:0}
@@ -3869,6 +3872,22 @@ button:focus:not(:focus-visible){outline:none}
 .av-foot{font-size:0.72rem;color:var(--muted);margin-top:1rem;line-height:1.5}
 .av-wait{padding:1.4rem 0;color:var(--muted);font-size:0.9rem}
 @media(max-width:600px){.av-tiles{grid-template-columns:1fr 1fr}.av-price b{font-size:1.7rem}.as-opt b{min-width:60px}}
+
+/* Landing: live mini market heatmap linking to the full SEO pages */
+.lpm{background:#0f131b;border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:1rem;max-width:980px;margin:0 auto;box-shadow:0 30px 60px -40px rgba(0,0,0,0.9)}
+.lpm-top{display:flex;flex-wrap:wrap;align-items:center;gap:0.6rem 1rem;margin-bottom:0.8rem}
+.lpm-seg{display:inline-flex;border:1px solid rgba(255,255,255,0.1);border-radius:999px;padding:3px}
+.lpm-seg button{border:0;background:none;color:#97a2b8;font:inherit;font-weight:700;font-size:0.86rem;padding:0.4rem 1rem;border-radius:999px;cursor:pointer;min-height:38px}
+.lpm-seg button[aria-pressed=true]{background:#e8edf8;color:#0b0d12}
+.lpm-sum{font-size:0.9rem;color:#c4ccdb}
+.lpm-sum b.up{color:#4ade80}.lpm-sum b.down{color:#f87171}
+.lpm-map{position:relative;display:block;width:100%;height:340px;border-radius:12px;overflow:hidden;background:#0b0e14;text-decoration:none}
+.lpm-map i{position:absolute;border:1px solid #0b0d12;display:flex;flex-direction:column;align-items:center;justify-content:center;font-style:normal;color:#fff;font-weight:800;text-shadow:0 1px 2px rgba(0,0,0,0.5);overflow:hidden;line-height:1.1}
+.lpm-map i small{font-weight:600;opacity:0.9}
+.lpm-map:hover i{filter:brightness(1.06)}
+.lpm-foot{display:flex;flex-wrap:wrap;justify-content:space-between;gap:0.5rem 1rem;align-items:center;margin-top:0.8rem;font-size:0.82rem;color:#97a2b8}
+.lpm-go{display:inline-flex;align-items:center;min-height:44px;padding:0 1.1rem;border-radius:12px;background:#4ade80;color:#06140b;font-weight:700;text-decoration:none}
+@media(max-width:600px){.lpm-map{height:300px}}
 </style>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#4ade80">
@@ -4248,6 +4267,7 @@ button:focus:not(:focus-visible){outline:none}
     <div class="lp-nav-links">
       <button class="lp-nav-link" onclick="lpScrollTo('lp-features')">How it works</button>
       <button class="lp-nav-link" onclick="lpScrollTo('lp-tips')">Tools</button>
+      <a class="lp-nav-link" href="/tsx-heatmap/" style="text-decoration:none">Heatmaps</a>
       <button class="lp-nav-link" onclick="lpScrollTo('lp-pricing')">Pricing</button>
       <button class="lp-nav-link" onclick="lpScrollTo('lp-faq')">FAQ</button>
     </div>
@@ -4403,6 +4423,24 @@ button:focus:not(:focus-visible){outline:none}
   </section>
 
   <!-- TIPS + CALCULATORS -->
+  <section class="lp-section" id="lp-market">
+    <div class="lp-container">
+      <div class="lp-head">
+        <p class="lp-eyebrow">Free market maps</p>
+        <h2 class="lp-h2">Today's market at a glance</h2>
+        <p class="lp-lead">Every stock in the TSX 60 and the S&amp;P 500, sized by its weight in the index and coloured by today's move. Updated every 20 minutes while the market is open.</p>
+      </div>
+      <div class="lpm">
+        <div class="lpm-top">
+          <div class="lpm-seg" role="group" aria-label="Which market"><button type="button" data-id="tsx60" aria-pressed="true" onclick="lpmPick('tsx60')">TSX 60</button><button type="button" data-id="sp500" aria-pressed="false" onclick="lpmPick('sp500')">S&amp;P 500</button></div>
+          <span class="lpm-sum" id="lpm-sum">Loading today's market…</span>
+        </div>
+        <a class="lpm-map" id="lpm-map" href="/tsx-heatmap/" aria-label="Open the full TSX 60 heatmap"></a>
+        <div class="lpm-foot"><a class="lpm-go" id="lpm-go" href="/tsx-heatmap/">Open the full TSX 60 heatmap</a><span>Green went up, red went down. Prices may be delayed.</span></div>
+      </div>
+    </div>
+  </section>
+
   <section class="lp-section" id="lp-tips" style="background:#0a0c11;border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);">
     <div class="lp-container">
       <div class="lp-head">
@@ -4673,6 +4711,8 @@ button:focus:not(:focus-visible){outline:none}
         <button class="lp-footer-link" onclick="lpScrollTo('lp-pricing')">Pricing</button>
         <a class="lp-footer-link" href="/debt-payoff-calculator/" style="text-decoration:none">Debt payoff calculator</a>
         <a class="lp-footer-link" href="/tfsa-contribution-room-calculator/" style="text-decoration:none">TFSA room calculator</a>
+        <a class="lp-footer-link" href="/tsx-heatmap/" style="text-decoration:none">TSX 60 heatmap</a>
+        <a class="lp-footer-link" href="/sp500-heatmap/" style="text-decoration:none">S&amp;P 500 heatmap</a>
         <a class="lp-footer-link" href="/down-payment-calculator/" style="text-decoration:none">Down payment calculator</a>
         <button class="lp-footer-link" onclick="showSignIn()">Sign in</button>
         <button class="lp-footer-link" onclick="showTerms()">Terms</button>
@@ -5206,6 +5246,7 @@ button:focus:not(:focus-visible){outline:none}
       <input id="as-in" type="search" autocomplete="off" spellcheck="false" placeholder="Search a stock, ETF or crypto" aria-label="Look up a company, ETF or crypto" aria-controls="as-list" oninput="asType(this.value)" onkeydown="asKey(event)">
     </div>
     <div class="as-chips" id="as-chips"></div>
+    <div class="as-maps">Market maps: <a href="/tsx-heatmap/" target="_blank" rel="noopener">TSX 60 heatmap</a> <a href="/sp500-heatmap/" target="_blank" rel="noopener">S&amp;P 500 heatmap</a></div>
     <div class="as-list" id="as-list" role="listbox" hidden></div>
     <div id="as-view"></div>
   </section>
@@ -16236,13 +16277,72 @@ function ckRender(){
     <div class="ck-foot">Figures are in ${curName} dollars, from the company's filings with the U.S. Securities and Exchange Commission. Refreshed about weekly. Each company's year ends in a different month. This is information, not advice to buy or sell.</div>`);
 }
 
+// ── Landing: live mini heatmap (TSX 60 / S&P 500). Public market data only. ──
+const _lpmk={id:'tsx60',data:{},seen:false};
+function lpmCol(v){ if(v==null) return '#2a2f3a'; const k=Math.max(-1,Math.min(1,v/3)), mix=(a,b,t)=>{ const x=parseInt(a.slice(1),16), y=parseInt(b.slice(1),16), c=s=>Math.round(((x>>s)&255)+(((y>>s)&255)-((x>>s)&255))*t); return `rgb(${c(16)},${c(8)},${c(0)})`; };
+  if(k>=0) return k<0.5?mix('#414554','#35764e',k*2):mix('#35764e','#30cc5a',(k-0.5)*2); const n=-k; return n<0.5?mix('#414554','#8b444e',n*2):mix('#8b444e','#f63538',(n-0.5)*2); }
+function lpmSquarify(items,x,y,w,h){
+  const tot=items.reduce((s,i)=>s+i.v,0), out=[]; if(!(tot>0)) return out;
+  let rest=items.map(i=>({it:i,a:i.v*w*h/tot}));
+  const worst=(row,sh)=>{ let s=0,mx=0,mn=Infinity; row.forEach(r=>{s+=r.a;mx=Math.max(mx,r.a);mn=Math.min(mn,r.a);}); return Math.max(sh*sh*mx/(s*s),s*s/(sh*sh*mn)); };
+  while(rest.length){ const sh=Math.min(w,h); let row=[rest[0]], i=1;
+    while(i<rest.length){ const nr=row.concat([rest[i]]); if(worst(nr,sh)<=worst(row,sh)){row=nr;i++;} else break; }
+    const sum=row.reduce((s,r)=>s+r.a,0);
+    if(w>=h){ const cw=sum/h; let cy=y; row.forEach(r=>{ const rh=r.a/cw; out.push({it:r.it,x,y:cy,w:cw,h:rh}); cy+=rh; }); x+=cw; w-=cw; }
+    else { const rh=sum/w; let cx=x; row.forEach(r=>{ const rw=r.a/rh; out.push({it:r.it,x:cx,y,w:rw,h:rh}); cx+=rw; }); y+=rh; h-=rh; }
+    rest=rest.slice(row.length); }
+  return out;
+}
+function lpmDraw(){
+  const m=document.getElementById('lpm-map'), d=_lpmk.data[_lpmk.id]; if(!m||!d) return;
+  const W=m.clientWidth, H=m.clientHeight; let html='';
+  lpmSquarify(d.sectors.map(s=>({v:s.w,s})),0,0,W,H).forEach(S=>{
+    lpmSquarify(S.it.s.stocks.map(x=>({v:x.w,x})),S.x,S.y,S.w,S.h).forEach(T=>{
+      const x=T.it.x, fs=Math.max(8,Math.min(22,Math.min((T.w-4)/(Math.max(2.6,x.t.length)*0.74),T.h*0.32)));
+      const lab=T.w>x.t.length*6&&T.h>13?`${escHtml(x.t)}${T.h>fs*2.3&&T.w>fs*2.8?`<small style="font-size:${Math.max(8,fs*0.6).toFixed(1)}px">${x.d1==null?'':(x.d1>=0?'+':'')+x.d1.toFixed(2)+'%'}</small>`:''}`:'';
+      html+=`<i style="left:${T.x}px;top:${T.y}px;width:${T.w}px;height:${T.h}px;background:${lpmCol(x.d1)};font-size:${fs.toFixed(1)}px">${lab}</i>`;
+    });
+  });
+  m.innerHTML=html;
+  let tw=0,tv=0,up=0,dn=0; d.sectors.forEach(s=>s.stocks.forEach(x=>{ if(x.d1!=null){ tw+=x.w; tv+=x.w*x.d1; if(x.d1>0) up++; else if(x.d1<0) dn++; } }));
+  const idx=tw?tv/tw:0, nm=_lpmk.id==='tsx60'?'The TSX 60':'The S&P 500';
+  document.getElementById('lpm-sum').innerHTML=`${nm} <b class="${idx>=0?'up':'down'}">${idx>=0?'+':''}${idx.toFixed(2)}%</b> today, weighted. ${up} up, ${dn} down.`;
+}
+async function lpmLoad(id){
+  if(_lpmk.data[id]) return lpmDraw();
+  try{ const r=await fetch(`${SUPABASE_URL}/rest/v1/heatmaps?id=eq.${id}&select=data`,{headers:{apikey:SUPABASE_ANON,Authorization:'Bearer '+SUPABASE_ANON}});
+    const j=await r.json(); if(j&&j[0]){ _lpmk.data[id]=j[0].data; if(_lpmk.id===id) lpmDraw(); } }
+  catch(e){ const s=document.getElementById('lpm-sum'); if(s) s.textContent='Open the full heatmap to see today\'s market.'; }
+}
+function lpmPick(id){
+  _lpmk.id=id; const path=id==='tsx60'?'/tsx-heatmap/':'/sp500-heatmap/', nm=id==='tsx60'?'TSX 60':'S&P 500';
+  document.querySelectorAll('.lpm-seg button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.id===id?'true':'false'));
+  const m=document.getElementById('lpm-map'), g=document.getElementById('lpm-go');
+  if(m){ m.href=path; m.setAttribute('aria-label','Open the full '+nm+' heatmap'); } if(g){ g.href=path; g.textContent='Open the full '+nm+' heatmap'; }
+  try{ QA.log('lpm_pick',{id}); }catch(e){}
+  lpmLoad(id);
+}
+(function(){
+  const go=()=>{ const el=document.getElementById('lp-market'); if(!el) return;
+    if(!('IntersectionObserver' in window)){ lpmLoad('tsx60'); return; }
+    const io=new IntersectionObserver(es=>{ if(es.some(e=>e.isIntersecting)){ io.disconnect(); _lpmk.seen=true; lpmLoad('tsx60'); try{ QA.log('lp_section',{s:'market'}); }catch(e){} } },{rootMargin:'300px'});
+    io.observe(el); };
+  if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',go); else go();
+  let t; window.addEventListener('resize',()=>{ clearTimeout(t); t=setTimeout(()=>{ if(_lpmk.data[_lpmk.id]) lpmDraw(); },200); });
+})();
+
 // ══════════════════════════════════════════
 // LOOK UP ANY ASSET: search, price history, analysis and company figures
 // Data: the company-lookup function (Yahoo prices and search, SEC filings). Information only, never advice.
 // ══════════════════════════════════════════
 const AS_POPULAR=[['RY.TO','Royal Bank'],['XEQT.TO','XEQT'],['VFV.TO','VFV'],['SHOP.TO','Shopify'],['AAPL','Apple'],['BTC-CAD','Bitcoin']];
 let _as={q:'',t:null,res:[],sel:-1,seq:0,view:null,range:'1y',busy:false};
+// a heatmap tile's "Track it in Qualisight" link carries ?lookup=TICKER: open it once the Investments page shows
+try{ const lk=new URLSearchParams(location.search).get('lookup'); if(lk && /^[A-Za-z0-9.\-]{1,12}$/.test(lk)) sessionStorage.setItem('qs_lookup', lk.toUpperCase()); }catch(e){}
 function asInit(){
+  try{ const lk=sessionStorage.getItem('qs_lookup'); const pg=document.getElementById('page-investments');
+    if(lk && pg && pg.classList.contains('active') && typeof currentUser!=='undefined' && currentUser){ sessionStorage.removeItem('qs_lookup');
+      setTimeout(()=>asOpen(lk),300); } }catch(e){}
   const c=document.getElementById('as-chips'); if(!c || c.dataset.done) return; c.dataset.done='1';
   c.innerHTML='<span>Popular:</span>'+AS_POPULAR.map(([s,n])=>`<button type="button" onclick="asOpen('${s}')">${escHtml(n)}</button>`).join('');
 }
