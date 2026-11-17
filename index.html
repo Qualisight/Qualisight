@@ -3807,6 +3807,68 @@ button:focus:not(:focus-visible){outline:none}
   #landing-page .lp-worlds-points{gap:0.6rem!important}
 }
 .lp-worlds-hint{display:none;font-size:0.8rem;color:var(--muted);text-align:center;margin:0.2rem 0 1rem}
+
+/* ── Look up any asset ── */
+.as{margin:1.1rem 0 1.2rem}
+.as-bar{display:flex;align-items:center;gap:0.6rem;background:var(--card);border:1px solid var(--border2);border-radius:16px;padding:0 1rem;min-height:52px;box-shadow:var(--lift);transition:border-color .15s,box-shadow .15s}
+.as-bar:focus-within{border-color:rgba(167,139,250,0.6);box-shadow:0 0 0 3px rgba(167,139,250,0.16)}
+.as-ico{width:20px;height:20px;color:var(--muted);flex-shrink:0}
+#as-in{flex:1;min-width:0;background:transparent!important;border:0!important;outline:none;color:var(--text);font:inherit;font-size:0.98rem;padding:0.85rem 0;box-shadow:none!important}
+#as-in::placeholder{color:var(--muted)}
+.as-chips{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.6rem}
+.as-chips span{font-size:0.78rem;color:var(--muted);align-self:center;margin-right:0.2rem}
+.as-chips button{min-height:34px;padding:0 0.8rem;border-radius:999px;border:1px solid var(--border2);background:var(--surface);color:var(--text);font:inherit;font-size:0.82rem;cursor:pointer}
+.as-chips button:hover{border-color:rgba(167,139,250,0.55)}
+.as-list{margin-top:0.4rem;background:var(--card);border:1px solid var(--border2);border-radius:14px;overflow:hidden;box-shadow:0 18px 40px -20px rgba(0,0,0,0.9)}
+.as-opt{display:flex;align-items:center;gap:0.8rem;width:100%;text-align:left;background:none;border:0;border-bottom:1px solid var(--border);padding:0.75rem 1rem;color:var(--text);font:inherit;cursor:pointer;min-height:52px}
+.as-opt:last-child{border-bottom:0}
+.as-opt:hover,.as-opt.on{background:rgba(167,139,250,0.08)}
+.as-opt b{font-size:0.92rem;min-width:74px}
+.as-opt span{flex:1;min-width:0;font-size:0.86rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.as-opt i{font-style:normal;font-size:0.7rem;font-weight:700;padding:0.15rem 0.5rem;border-radius:999px;background:var(--surface);color:var(--muted);white-space:nowrap}
+.as-opt i.ca{background:rgba(248,113,113,0.12);color:#fca5a5}
+.as-msg{padding:0.9rem 1rem;font-size:0.86rem;color:var(--muted)}
+.av{margin-top:0.9rem;background:var(--card);border:1px solid var(--border2);border-radius:20px;padding:1.2rem 1.2rem 1rem;box-shadow:var(--lift);background-image:var(--sheen)}
+.av-top{display:flex;align-items:flex-start;gap:1rem}
+.av-name{flex:1;min-width:0}
+.av-name h3{font-family:var(--font-display);font-size:1.3rem;letter-spacing:-0.02em;margin:0;line-height:1.2}
+.av-name small{display:block;color:var(--muted);font-size:0.8rem;margin-top:0.25rem}
+.av-x{width:36px;height:36px;border-radius:50%;border:1px solid var(--border2);background:var(--surface);color:var(--text);font-size:1.1rem;cursor:pointer;flex-shrink:0}
+.av-price{display:flex;align-items:baseline;flex-wrap:wrap;gap:0.4rem 0.8rem;margin:0.9rem 0 0.2rem}
+.av-price b{font-family:var(--font-display);font-size:2rem;letter-spacing:-0.03em;font-variant-numeric:tabular-nums}
+.av-price em{font-style:normal;font-size:0.9rem;font-weight:700}
+.av-price em.up{color:#4ade80}.av-price em.down{color:#f87171}
+.av-price span{font-size:0.78rem;color:var(--muted)}
+.av-seg{display:inline-flex;gap:0.25rem;background:var(--surface);border:1px solid var(--border2);border-radius:999px;padding:0.2rem;margin:0.6rem 0 0.2rem}
+.av-seg button{min-height:30px;padding:0 0.8rem;border-radius:999px;border:0;background:none;color:var(--muted);font:inherit;font-size:0.8rem;font-weight:600;cursor:pointer}
+.av-seg button.on{background:var(--card);color:var(--text);box-shadow:0 1px 0 rgba(255,255,255,0.06) inset}
+.av-chart{width:100%;height:170px;display:block;margin:0.3rem 0 0.4rem}
+.av-sec{font-family:var(--font-display);font-size:1rem;letter-spacing:-0.01em;margin:1.2rem 0 0.6rem}
+.av-tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.6rem}
+.av-tile{border:1px solid var(--border);border-radius:12px;padding:0.7rem 0.8rem;min-width:0;background:var(--surface)}
+.av-tile span{display:block;font-size:0.74rem;color:var(--muted)}
+.av-tile b{display:block;font-size:1.05rem;margin-top:0.15rem;font-variant-numeric:tabular-nums}
+.av-tile em{display:block;font-style:normal;font-size:0.72rem;color:var(--muted);margin-top:0.15rem;line-height:1.35}
+.av-tile em.up{color:#4ade80}.av-tile em.down{color:#f87171}
+.av-range{margin:0.2rem 0 0.2rem}
+.av-range-bar{position:relative;height:8px;border-radius:8px;background:linear-gradient(90deg,rgba(248,113,113,0.35),rgba(251,191,36,0.35),rgba(74,222,128,0.35))}
+.av-range-bar i{position:absolute;top:50%;width:14px;height:14px;border-radius:50%;background:#fff;border:3px solid #a78bfa;transform:translate(-50%,-50%)}
+.av-range-l{display:flex;justify-content:space-between;font-size:0.74rem;color:var(--muted);margin-top:0.35rem;font-variant-numeric:tabular-nums}
+.av-says{margin:0.4rem 0 0;padding:0.9rem 1rem;border-radius:14px;background:rgba(167,139,250,0.07);border:1px solid rgba(167,139,250,0.22);font-size:0.88rem;line-height:1.5}
+.av-says li{margin:0.2rem 0}
+.av-says ul{margin:0;padding-left:1.1rem}
+.av-bars{display:flex;align-items:flex-end;gap:0.5rem;height:150px;padding-top:1.2rem}
+.av-bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;min-width:0}
+.av-bar div{width:100%;max-width:46px;border-radius:6px 6px 2px 2px;background:rgba(167,139,250,0.45)}
+.av-bar div.cur{background:#a78bfa}.av-bar div.neg{background:rgba(248,113,113,0.6)}
+.av-bar small{font-size:0.66rem;color:var(--muted);margin-bottom:0.25rem;white-space:nowrap}
+.av-bar span{font-size:0.7rem;color:var(--muted);margin-top:0.3rem}
+.av-note{font-size:0.84rem;color:var(--muted);line-height:1.5;margin:0.4rem 0 0}
+.av-own{margin-top:0.8rem;padding:0.7rem 0.9rem;border-radius:12px;background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.22);font-size:0.86rem}
+.av-act{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1.1rem}
+.av-foot{font-size:0.72rem;color:var(--muted);margin-top:1rem;line-height:1.5}
+.av-wait{padding:1.4rem 0;color:var(--muted);font-size:0.9rem}
+@media(max-width:600px){.av-tiles{grid-template-columns:1fr 1fr}.av-price b{font-size:1.7rem}.as-opt b{min-width:60px}}
 </style>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#4ade80">
@@ -5136,6 +5198,17 @@ button:focus:not(:focus-visible){outline:none}
     <div id="iv-start"></div>
     <div class="iv-glance" id="iv-glance" aria-label="Your grove at a glance"></div>
   </div>
+
+  <!-- Look up any stock, ETF or crypto -->
+  <section class="as" id="as" aria-label="Look up a company or fund">
+    <div class="as-bar" role="search">
+      <svg class="as-ico" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><path d="M16.5 16.5L21 21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+      <input id="as-in" type="search" autocomplete="off" spellcheck="false" placeholder="Search a stock, ETF or crypto" aria-label="Look up a company, ETF or crypto" aria-controls="as-list" oninput="asType(this.value)" onkeydown="asKey(event)">
+    </div>
+    <div class="as-chips" id="as-chips"></div>
+    <div class="as-list" id="as-list" role="listbox" hidden></div>
+    <div id="as-view"></div>
+  </section>
 
   <!-- Money grove: rendered by renderGrove() -->
   <div class="iv-tabs" role="tablist" aria-label="Investments sections">
@@ -10248,6 +10321,7 @@ function removeHolding(ticker, accountId){
 }
 
 function renderPortfolio(){
+  try{ asInit(); }catch(e){}
   // Only count holdings that belong to a real account
   const validIds   = new Set((state.accounts||[]).map(a=>a.id));
   const validHoldings = state.portfolio.filter(h=>h.accountId && validIds.has(h.accountId));
@@ -14607,7 +14681,7 @@ function openInvest(opts={}){
   if(opts.edit) invFill(opts.edit);
   setTimeout(()=>{ const f=document.querySelector('#inv-sheet [data-first]'); f&&f.focus(); },50);
 }
-function closeInvest(){ document.getElementById('inv-overlay').classList.remove('open'); }
+function closeInvest(){ document.getElementById('inv-overlay').classList.remove('open'); window._asPrefill=null; }
 
 function invRender(){
   const el=document.getElementById('inv-sheet');
@@ -14658,6 +14732,7 @@ function invRender(){
       </div>
     </div>`;
   invSummary();
+  try{ asPrefill(); }catch(e){}
 }
 function invPickAcc(t){ const keep=invGrab(); _inv.accType=t; _inv.accountId=null; invRender(); invRestore(keep); }
 function invPickCls(k){ const keep=invGrab(); _inv.cls=k; invRender(); invRestore(keep); }
@@ -16159,6 +16234,191 @@ function ckRender(){
       <p><b>Dividend</b> is cash the company pays out to shareholders. Many growing companies pay little or none.</p>
     </details>
     <div class="ck-foot">Figures are in ${curName} dollars, from the company's filings with the U.S. Securities and Exchange Commission. Refreshed about weekly. Each company's year ends in a different month. This is information, not advice to buy or sell.</div>`);
+}
+
+// ══════════════════════════════════════════
+// LOOK UP ANY ASSET: search, price history, analysis and company figures
+// Data: the company-lookup function (Yahoo prices and search, SEC filings). Information only, never advice.
+// ══════════════════════════════════════════
+const AS_POPULAR=[['RY.TO','Royal Bank'],['XEQT.TO','XEQT'],['VFV.TO','VFV'],['SHOP.TO','Shopify'],['AAPL','Apple'],['BTC-CAD','Bitcoin']];
+let _as={q:'',t:null,res:[],sel:-1,seq:0,view:null,range:'1y',busy:false};
+function asInit(){
+  const c=document.getElementById('as-chips'); if(!c || c.dataset.done) return; c.dataset.done='1';
+  c.innerHTML='<span>Popular:</span>'+AS_POPULAR.map(([s,n])=>`<button type="button" onclick="asOpen('${s}')">${escHtml(n)}</button>`).join('');
+}
+async function asCall(body){
+  if(typeof sb==='undefined' || !sb.functions) throw new Error('offline');
+  const r=await sb.functions.invoke('company-lookup',{ body });
+  if(r.error) throw r.error; return r.data||{};
+}
+function asType(v){
+  _as.q=v.trim(); clearTimeout(_as.t);
+  const list=document.getElementById('as-list');
+  if(_as.q.length<1){ list.hidden=true; list.innerHTML=''; return; }
+  list.hidden=false; list.innerHTML='<div class="as-msg">Searching…</div>';
+  _as.t=setTimeout(()=>asSearch(_as.q),280);
+}
+async function asSearch(q){
+  const my=++_as.seq, list=document.getElementById('as-list');
+  let res=[];
+  try{ res=(await asCall({action:'search',q})).results||[]; }catch(e){ if(my===_as.seq) list.innerHTML='<div class="as-msg">Search is not reachable right now. Check your connection and try again.</div>'; return; }
+  if(my!==_as.seq) return;
+  // Canadian listings first: this is a Canadian app
+  res.sort((a,b)=>(b.canadian?1:0)-(a.canadian?1:0));
+  _as.res=res; _as.sel=-1;
+  try{ QA.log('as_search',{n:res.length}); }catch(e){}
+  if(!res.length){ list.innerHTML=`<div class="as-msg">Nothing found for "${escHtml(q)}". Try the ticker, like RY.TO or AAPL.</div>`; return; }
+  const kind={EQUITY:'Stock',ETF:'ETF',CRYPTOCURRENCY:'Crypto',MUTUALFUND:'Fund',INDEX:'Index'};
+  list.innerHTML=res.map((r,i)=>`<button type="button" class="as-opt" role="option" id="as-o${i}" onclick="asOpen('${escHtml(r.symbol)}')"><b>${escHtml(r.symbol)}</b><span>${escHtml(r.name)}</span><i class="${r.canadian?'ca':''}">${r.canadian?'Canada':escHtml(r.exchange||'')}${kind[r.type]?' · '+kind[r.type]:''}</i></button>`).join('');
+}
+function asKey(e){
+  const n=_as.res.length; if(document.getElementById('as-list').hidden) return;
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'){ e.preventDefault(); if(!n) return; _as.sel=(_as.sel+(e.key==='ArrowDown'?1:-1)+n)%n;
+    document.querySelectorAll('.as-opt').forEach((o,i)=>o.classList.toggle('on',i===_as.sel)); return; }
+  if(e.key==='Enter'){ e.preventDefault(); const r=_as.res[_as.sel<0?0:_as.sel]; if(r) asOpen(r.symbol); else if(/^[A-Za-z0-9.\-]{1,12}$/.test(_as.q)) asOpen(_as.q.toUpperCase()); }
+  if(e.key==='Escape'){ document.getElementById('as-list').hidden=true; }
+}
+async function asOpen(sym){
+  sym=String(sym||'').toUpperCase(); if(!sym) return;
+  const list=document.getElementById('as-list'); if(list){ list.hidden=true; }
+  const inp=document.getElementById('as-in'); if(inp) inp.value='';
+  const v=document.getElementById('as-view'); if(!v) return;
+  _as.view={sym, loading:true}; _as.range='1y';
+  v.innerHTML=`<div class="av"><div class="av-wait">Loading ${escHtml(sym)}…</div></div>`;
+  v.scrollIntoView({block:'nearest',behavior:pitReduce?'auto':'smooth'});
+  try{ QA.log('as_open',{s:sym}); }catch(e){}
+  let d;
+  try{ d=await asCall({action:'lookup',symbol:sym}); }catch(e){ d={error:'down'}; }
+  if(_as.view.sym!==sym) return;
+  if(d.error){
+    const msg=d.error==='signin'?`${escHtml(d.message)} <button type="button" class="ck-link" onclick="exitDemo()">Make a free account</button>`
+      : d.error==='not_found'?'No prices found for that ticker. Canadian listings end in .TO, like RY.TO.'
+      : 'Couldn\'t reach the market data right now. Try again in a minute.';
+    v.innerHTML=`<div class="av"><div class="av-top"><div class="av-name"><h3>${escHtml(sym)}</h3></div><button type="button" class="av-x" onclick="asClose()" aria-label="Close">×</button></div><div class="av-wait">${msg}</div></div>`;
+    return;
+  }
+  _as.view={sym, a:d.asset, f:d.fund};
+  asRender();
+}
+function asClose(){ _as.view=null; const v=document.getElementById('as-view'); if(v) v.innerHTML=''; }
+function asRange(r){ _as.range=r; asRender(); }
+// numbers from a year of daily closes, in plain words
+function asStats(h){
+  const c=h.map(x=>x.c), n=c.length; if(n<2) return null;
+  const rets=[]; for(let i=1;i<n;i++) rets.push(Math.log(c[i]/c[i-1]));
+  const mean=rets.reduce((a,b)=>a+b,0)/rets.length, sd=Math.sqrt(rets.reduce((a,b)=>a+(b-mean)**2,0)/Math.max(1,rets.length-1));
+  let peak=c[0], dd=0, ddFrom=0, ddTo=0, pk=0; c.forEach((x,i)=>{ if(x>peak){peak=x;pk=i;} const d=(x-peak)/peak; if(d<dd){dd=d;ddFrom=pk;ddTo=i;} });
+  const up=rets.filter(r=>r>0).length;
+  return { yr:(c[n-1]-c[0])/c[0]*100, daily:sd*100, annVol:sd*Math.sqrt(252)*100, dd:dd*100, ddFrom:h[ddFrom].d, ddTo:h[ddTo].d, upDays:up/rets.length*100, days:n };
+}
+function asChart(h,cur){
+  const W=640,H=170,P=6; if(h.length<2) return '';
+  const v=h.map(x=>x.c), lo=Math.min(...v), hi=Math.max(...v), span=hi-lo||1;
+  const X=i=>P+i/(h.length-1)*(W-2*P), Y=x=>P+(1-(x-lo)/span)*(H-2*P);
+  const up=v[v.length-1]>=v[0], col=up?'#4ade80':'#f87171';
+  const line=h.map((x,i)=>`${i?'L':'M'}${X(i).toFixed(1)} ${Y(x.c).toFixed(1)}`).join('');
+  const long=h.length>40, fmtD=d=>new Date(d+'T12:00:00').toLocaleDateString('en-CA',long?{month:'short',year:'numeric'}:{month:'short',day:'numeric'});
+  return `<svg class="av-chart" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" role="img" aria-label="Price from ${fmtD(h[0].d)} to ${fmtD(h[h.length-1].d)}, ${up?'up':'down'} overall">
+    <defs><linearGradient id="avg" x1="0" x2="0" y1="0" y2="1"><stop offset="0" stop-color="${col}" stop-opacity="0.28"/><stop offset="1" stop-color="${col}" stop-opacity="0"/></linearGradient></defs>
+    <path d="${line}L${X(h.length-1)} ${H}L${X(0)} ${H}Z" fill="url(#avg)"/>
+    <path d="${line}" fill="none" stroke="${col}" stroke-width="2" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>
+  </svg><div class="av-range-l" style="margin-top:-0.2rem"><span>${fmtD(h[0].d)}</span><span>${fmtD(h[h.length-1].d)}</span></div>`;
+}
+function asRender(){
+  const v=document.getElementById('as-view'); if(!v || !_as.view || !_as.view.a) return;
+  const {a,f,sym}=_as.view, cur=a.currency||'', money=n=>ckAmt(n,cur);
+  const days={'1m':23,'6m':128,'1y':9999}[_as.range]||9999, h=a.hist.slice(-days);
+  const st=asStats(a.hist), stR=asStats(h);
+  const chg=a.prev?(a.price-a.prev)/a.prev*100:null;
+  const kind={EQUITY:'Stock',ETF:'ETF',CRYPTOCURRENCY:'Crypto',MUTUALFUND:'Fund',INDEX:'Index'}[a.type]||'';
+  const asOf=new Date(a.day+'T12:00:00').toLocaleDateString('en-CA',{month:'short',day:'numeric',year:'numeric'});
+  // owned?
+  const owned=(state.portfolio||[]).filter(x=>x && Number(x.shares)>0 && String(x.ticker||'').toUpperCase().replace(/-(CAD|USD)$/,'')===sym.replace(/-(CAD|USD)$/,''));
+  const ownSh=owned.reduce((s,x)=>s+Number(x.shares),0);
+  const hi=a.hi52||Math.max(...a.hist.map(x=>x.c)), lo=a.lo52||Math.min(...a.hist.map(x=>x.c));
+  const pos=hi>lo?Math.max(0,Math.min(100,(a.price-lo)/(hi-lo)*100)):50;
+  const bump=st?(st.annVol<20?['Calm','it moves less than most stocks']:st.annVol<35?['Medium','it is about as bumpy as a typical stock']:st.annVol<70?['Bumpy','it swings more than most stocks']:['Very bumpy','big swings are normal for it']):null;
+  const fmtD=d=>new Date(d+'T12:00:00').toLocaleDateString('en-CA',{month:'short',year:'numeric'});
+  const tile=(l,val,sub,cls)=>`<div class="av-tile"><span>${l}</span><b>${val}</b>${sub?`<em class="${cls||''}">${sub}</em>`:''}</div>`;
+  const pct=x=>(x>=0?'+':'')+x.toFixed(Math.abs(x)<10?1:0)+'%';
+  const says=[];
+  if(st){
+    says.push(`Over the last year the price ${st.yr>=0?'rose':'fell'} ${Math.abs(st.yr).toFixed(0)}%.`);
+    says.push(`On a typical day it moves about ${st.daily.toFixed(1)}% up or down, so ${bump[1]}.`);
+    if(st.dd<-5) says.push(`Its biggest drop in the last year was ${Math.abs(st.dd).toFixed(0)}%, from ${fmtD(st.ddFrom)} to ${fmtD(st.ddTo)}. Anyone holding it then saw that fall on paper.`);
+    says.push(`Today's price sits ${pos<33?'near the low':pos>67?'near the high':'in the middle'} of its range for the past year.`);
+  }
+  // company figures
+  let fundHtml='';
+  const fd=f&&f.data;
+  if(a.type==='EQUITY'){
+    if(!fd){ fundHtml=`<div class="av-sec">Company figures</div><p class="av-note">${currentUser&&!currentUser.isDemo?'Company figures are not available for this one right now.':'Company figures load for any company once you have a free account.'}</p>`; }
+    else if(fd.unsupported){
+      const why=fd.reason==='different_company'?'This Toronto ticker is a different company from the US one with the same letters, so its reports can\'t be matched.':fd.reason==='no_figures'?'It files in the US, but not in a format we can read sales and profit from.':'It doesn\'t file reports with the U.S. regulator, which is normal for many companies listed only in Canada.';
+      fundHtml=`<div class="av-sec">Company figures</div><p class="av-note">We don't have filed figures for this one. ${why}</p>`;
+    } else if(fd.annual && fd.annual.length>=2){
+      const A=fd.annual, Q=fd.quarterly||[], fc=fd.currency||'USD', last=A[A.length-1], prev=A[A.length-2];
+      const pr=fd.price?(fd.price.amount??fd.price.usd):null;
+      const ttm=Q.length>=4&&Q.slice(-4).every(q=>q.eps!=null)?Q.slice(-4).reduce((s2,q)=>s2+q.eps,0):last.eps;
+      const pe=pr>0&&ttm>0?pr/ttm:null, margin=last.revenue>0&&last.netIncome!=null?last.netIncome/last.revenue*100:null;
+      const yld=pr>0&&last.dps>0?last.dps/pr*100:null;
+      const g=(x,y)=>{ const p=ckPct(x,y); return p==null?'':`${p>=0?'▲':'▼'} ${Math.abs(p).toFixed(Math.abs(p)<10?1:0)}% vs the year before`; };
+      const gc=(x,y)=>{ const p=ckPct(x,y); return p==null?'':p>=0?'up':'down'; };
+      const max=Math.max(1e-9,...A.map(r=>Math.abs(r.revenue||0)));
+      const upYears=A.slice(1).filter((r,i)=>r.revenue!=null&&A[i].revenue!=null&&r.revenue>A[i].revenue).length, yrs=A.slice(1).filter((r,i)=>r.revenue!=null&&A[i].revenue!=null).length;
+      if(yrs) says.push(`Sales grew in ${upYears} of the last ${yrs} year${yrs===1?'':'s'}${margin!=null?`, and it kept about ${margin.toFixed(0)} cents of each sales dollar as profit last year`:''}.`);
+      if(pe) says.push(`Buyers pay about ${pe.toFixed(0)} dollars today for each dollar of yearly profit (P/E). A high number means people expect growth; it is not a score.`);
+      fundHtml=`<div class="av-sec">Company figures, ${escHtml(last.label)}</div>
+        <div class="av-tiles">
+          ${tile('Sales',ckBig(last.revenue,fc),g(last.revenue,prev.revenue),gc(last.revenue,prev.revenue))}
+          ${tile('Profit',ckBig(last.netIncome,fc),g(last.netIncome,prev.netIncome),gc(last.netIncome,prev.netIncome))}
+          ${tile('Earnings per share',ckAmt(last.eps,fc),g(last.eps,prev.eps),gc(last.eps,prev.eps))}
+          ${tile('Profit margin',margin==null?'n/a':margin.toFixed(1)+'%','of each sales dollar')}
+          ${tile('Price to earnings',pe==null?'n/a':pe.toFixed(1),'price ÷ last 12 months of EPS')}
+          ${tile('Dividend',last.dps>0?ckAmt(last.dps,fc):last.dps===0?'None':'Not reported',last.dps>0?(yld?`about ${yld.toFixed(1)}% a year`:'per share, last year'):last.dps===0?'per share, last year':'not in the filed figures we read')}
+        </div>
+        <div class="av-bars" role="img" aria-label="Sales by year">${A.map((r,i)=>{ const hh=r.revenue==null?0:Math.max(3,Math.abs(r.revenue)/max*100); return `<div class="av-bar"><small>${r.revenue==null?'':ckBig(r.revenue,fc)}</small><div class="${i===A.length-1?'cur':''}${r.revenue<0?' neg':''}" style="height:${hh}%"></div><span>${escHtml(r.label.replace('FY20',"'"))}</span></div>`; }).join('')}</div>
+        <p class="av-note">Sales by year, in ${fc==='CAD'?'Canadian':'US'} dollars, from the company's filings with the U.S. Securities and Exchange Commission.</p>`;
+    }
+  }
+  const canAdd=['EQUITY','ETF','CRYPTOCURRENCY','MUTUALFUND'].includes(a.type);
+  v.innerHTML=`<div class="av">
+    <div class="av-top"><div class="av-name"><h3>${escHtml(a.name||sym)}</h3><small>${escHtml(a.symbol||sym)}${a.exchange&&a.exchange!=='CCC'?' · '+escHtml(a.exchange):''}${kind?' · '+kind:''}${cur?' · '+cur:''}</small></div><button type="button" class="av-x" onclick="asClose()" aria-label="Close">×</button></div>
+    <div class="av-price"><b>${money(a.price)}</b>${chg!=null?`<em class="${chg>=0?'up':'down'}">${chg>=0?'▲':'▼'} ${Math.abs(chg).toFixed(2)}% today</em>`:''}<span>as of ${asOf}</span></div>
+    <div class="av-seg" role="group" aria-label="Chart range">${[['1m','1M'],['6m','6M'],['1y','1Y']].map(([k,l])=>`<button type="button" class="${_as.range===k?'on':''}" aria-pressed="${_as.range===k}" onclick="asRange('${k}')">${l}</button>`).join('')}</div>
+    ${asChart(h,cur)}
+    ${stR?`<div class="av-tiles">${tile(_as.range==='1y'?'Past year':_as.range==='6m'?'Past 6 months':'Past month',pct(stR.yr),'price change',stR.yr>=0?'up':'down')}${tile('How bumpy',bump?bump[0]:'n/a',st?`about ${st.daily.toFixed(1)}% on a typical day`:'')}${tile('Biggest drop',st?Math.abs(st.dd).toFixed(0)+'%':'n/a','from a high, past year')}</div>`:''}
+    <div class="av-sec">Where the price sits in its 1-year range</div>
+    <div class="av-range"><div class="av-range-bar"><i style="left:${pos}%"></i></div><div class="av-range-l"><span>Low ${money(lo)}</span><span>High ${money(hi)}</span></div></div>
+    ${says.length?`<div class="av-sec">What the numbers say</div><div class="av-says"><ul>${says.map(x=>`<li>${escHtml(x)}</li>`).join('')}</ul></div>`:''}
+    ${fundHtml}
+    ${ownSh>0?`<div class="av-own">You own ${(+ownSh.toFixed(4)).toLocaleString('en-CA')} of this, worth about ${money(ownSh*a.price)} at today's price.</div>`:''}
+    <div class="av-act">${canAdd?`<button type="button" class="btn" onclick="asAdd()">${ownSh>0?'Add another buy':'Add to my holdings'}</button>`:''}<button type="button" class="btn-ghost" onclick="asAsk()">Ask the coach about ${escHtml(a.symbol||sym)}</button></div>
+    <div class="av-foot">Prices from Yahoo Finance's public data, may be delayed. Company figures from SEC filings, refreshed about weekly. This is information to help you understand an investment, not advice to buy or sell it.</div>
+  </div>`;
+}
+function asAdd(){
+  const a=_as.view&&_as.view.a; if(!a) return;
+  const cls=a.type==='ETF'||a.type==='MUTUALFUND'?'ETF':a.type==='CRYPTOCURRENCY'?'Crypto':'Stocks';
+  const tk=cls==='Crypto'?a.symbol.replace(/-(CAD|USD)$/,''):a.symbol;
+  try{ QA.log('as_add',{s:a.symbol}); }catch(e){}
+  window._asPrefill={tk, name:a.name||'', price:a.price?+a.price.toFixed(2):null};
+  if(cls==='Crypto') openInvest({accType:'Crypto', cls});
+  else { const acc=(state.accounts||[]).find(x=>['TFSA','RRSP','FHSA','Cash'].includes(invTypeOf(x)));
+    openInvest(acc?{accountId:acc.id, cls}:{cls}); }
+  if(!acc_hasTicker()) showToast('Pick where you hold it, and the ticker is filled in for you.');
+}
+function acc_hasTicker(){ return !!document.getElementById('inv-ticker'); }
+// fill the add sheet from a looked-up asset as soon as its ticker box exists
+function asPrefill(){
+  const p=window._asPrefill, t=document.getElementById('inv-ticker'); if(!p || !t) return;
+  window._asPrefill=null; t.value=p.tk; t.dispatchEvent(new Event('input'));
+  const n=document.getElementById('inv-name'); if(n && !n.value) n.value=p.name;
+  const pr=document.getElementById('inv-price'); if(pr && !pr.value && p.price) pr.value=p.price;
+}
+function asAsk(){
+  const a=_as.view&&_as.view.a; if(!a) return;
+  try{ askCoach(`Explain ${a.name} (${a.symbol}) to me in plain words: what it is, what moves its price, and what someone should understand before owning it. No buy or sell advice.`,'investments'); }catch(e){ showToast('The coach is not available right now.'); }
 }
 
 // ══════════════════════════════════════════
