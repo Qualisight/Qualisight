@@ -3913,6 +3913,66 @@ button:focus:not(:focus-visible){outline:none}
 @media(max-width:480px){.av-ohlc:not(:empty){min-height:2.6em}.av-price{min-height:4.6rem;align-content:flex-start}}
 .av-ohlc b{color:var(--text);font-weight:600}
 @media(max-width:420px){.avc-tip{font-size:0.7rem}}
+
+/* Landing v3: one clear path. Number box, their storm, one button. */
+@media(max-width:999px){
+  #landing-page .lp-hero:not(.lp-hero--grove) .lp-play{order:0;margin:0.2rem 0 1.2rem}
+  #landing-page .lp-play-stage{height:210px}
+  #landing-page .lp-hero{padding-top:3.6rem}
+  #landing-page .lp-hero h1{margin-bottom:0.7rem}
+  #landing-page .lp-hero-actions{width:100%;flex-direction:column;align-items:stretch;gap:0.5rem}
+  #landing-page .lp-hero-actions .lp-btn-primary{width:100%;justify-content:center}
+  #landing-page .lp-hero-actions .lp-btn-secondary{border:0;background:none;min-height:44px;color:#9aa6bd;text-decoration:underline;text-underline-offset:3px}
+}
+#landing-page .lp-mine-types{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+#landing-page .lp-mine-types::-webkit-scrollbar{display:none}
+#landing-page .lp-mine-types button{flex:none}
+#landing-page .lp-mine-out.has{color:#c4ccdb}
+#landing-page .lp-mine-out .lpm-date{font-size:1.45rem}
+#landing-page .lpm-save{display:flex;width:100%;align-items:center;justify-content:center;margin-top:0.8rem;min-height:50px;border:0;border-radius:14px;background:#4ade80;color:#06140b;font:inherit;font-weight:800;font-size:1rem;cursor:pointer;box-shadow:0 10px 30px -10px rgba(74,222,128,0.65)}
+#landing-page .lpm-save:hover{filter:brightness(1.06)}
+#landing-page .lpm-safe{display:block;text-align:center;font-size:0.78rem;color:#7a869d;margin-top:0.4rem}
+@keyframes lpmPop{0%{transform:scale(0.97);box-shadow:0 0 0 0 rgba(74,222,128,0.5)}60%{transform:scale(1.01);box-shadow:0 0 0 12px rgba(74,222,128,0)}100%{transform:none;box-shadow:none}}
+#landing-page .lp-mine-out.pop{animation:lpmPop .55s ease-out}
+#landing-page .lp-mine-out.pop .lpm-date b{display:inline-block;animation:lpmDate .6s ease-out}
+@keyframes lpmDate{0%{opacity:0;transform:translateY(6px)}100%{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){#landing-page .lp-mine-out.pop,#landing-page .lp-mine-out.pop .lpm-date b{animation:none}}
+#landing-page .lp-hero.mine-on .lp-hero-actions .lp-btn-primary{display:none}
+#landing-page .lp-hero .lp-badge-dot{background:#4ade80;box-shadow:0 0 0 3px rgba(74,222,128,0.18)}
+.auth-plan{margin:0.2rem auto 0.4rem;text-align:center;font-size:1.15rem;font-weight:800;color:#e8edf8;letter-spacing:-0.01em;line-height:1.3}
+.auth-plan b{color:#4ade80}
+.auth-plan[hidden]{display:none}
+
+/* Landing v3: shorter page */
+#landing-page .lp-tips-old{display:none!important}
+#landing-page .lp-tools-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.8rem;margin-top:1.6rem}
+#landing-page .lp-tools-grid a{display:block;padding:1rem 1.1rem;border:1px solid var(--border);border-radius:16px;background:var(--surface);text-decoration:none;transition:border-color .15s}
+#landing-page .lp-tools-grid a:hover{border-color:rgba(74,222,128,0.45)}
+#landing-page .lp-tools-grid b{display:block;color:var(--ink);font-size:1rem;margin-bottom:0.2rem}
+#landing-page .lp-tools-grid span{display:block;color:#9aa6bd;font-size:0.88rem;line-height:1.45}
+@media(max-width:860px){
+  #landing-page .lp-tools-grid{grid-template-columns:1fr 1fr;gap:0.55rem}
+  #landing-page .lp-tools-grid a{padding:0.8rem 0.85rem}
+  #landing-page .lp-tools-grid span{font-size:0.8rem}
+  #landing-page .lp-worlds-points,#landing-page .lp-promise-list{display:none}
+  #landing-page .lp-promise{margin-top:1rem}
+  #landing-page .lp-section{padding-top:3.2rem;padding-bottom:3.2rem}
+}
+@media(max-width:860px){
+  #landing-page #lp-pricing .lp-lead,#landing-page .lp-price-free .lp-price-fine,#landing-page #lp-market .lp-lead{display:none}
+  #landing-page .lp-price-card{padding:1.3rem 1.2rem!important}
+  #landing-page .lp-price-num{font-size:2.6rem!important}
+  #landing-page .lp-price-feats{margin:0.8rem 0 1rem!important}
+  #landing-page .lp-price-feats li{padding:0.28rem 0!important;font-size:0.92rem}
+  #landing-page .lpm-map{height:250px}
+  #landing-page .lp-tour-sec{padding-top:2rem;padding-bottom:1rem}
+}
+#landing-page .lp-tour-card video{display:block;width:100%;height:auto;aspect-ratio:16/10;object-fit:cover;background:#0b0f18}
+/* Tour card: the loop is the visual, so nothing sits on top of it */
+#landing-page .lp-tour-card .lp-tour-txt{position:static;padding:0.95rem 1.2rem 1.05rem 4.4rem;background:none;border-top:1px solid var(--border)}
+#landing-page .lp-tour-card .lp-tour-play{left:1.2rem;top:auto;bottom:0.95rem;transform:none;width:2.6rem!important;height:2.6rem!important;box-shadow:0 0 0 6px rgba(74,222,128,0.16)}
+#landing-page .lp-tour-card .lp-tour-play svg{width:16px;height:16px}
+#landing-page .lp-tour-card{display:flex;flex-direction:column}
 </style>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#4ade80">
@@ -4306,9 +4366,9 @@ button:focus:not(:focus-visible){outline:none}
   <section class="lp-hero">
     <div class="lp-hero-glow"></div>
     <div class="lp-hero-grid"></div>
-    <span class="lp-badge"><span class="lp-badge-dot"></span>Free for Canadians. No bank login needed.</span>
+    <span class="lp-badge"><span class="lp-badge-dot"></span>Free for Canadians. No bank login.</span>
     <h1 id="lp-h1">See the month you'll be <span class="grad">debt-free.</span></h1>
-    <p class="lp-hero-sub" id="lp-sub">Type what you owe. See the month it is gone, and how much sooner $50 extra a month gets you there. Free, built for Canada, no bank login.</p>
+    <p class="lp-hero-sub" id="lp-sub">Type what you owe. Watch your storm clear and see the exact month you are free. Takes 10 seconds.</p>
 
     <!-- Their own number, before any sign-up -->
     <div class="lp-mine" id="lp-mine">
@@ -4317,7 +4377,7 @@ button:focus:not(:focus-visible){outline:none}
         <label class="lp-mine-f"><span>I pay each month</span><div class="lp-mine-in"><em>$</em><input id="lpm-pay" type="text" inputmode="decimal" placeholder="150" autocomplete="off" aria-label="What you pay each month"></div></label>
       </div>
       <div class="lp-mine-types" id="lpm-types" role="group" aria-label="Type of debt"></div>
-      <div class="lp-mine-out" id="lpm-out" aria-live="polite">Try it: type a number and your debt-free month appears here.</div>
+      <div class="lp-mine-out" id="lpm-out" aria-live="polite">Type a number and your debt-free month appears here.</div>
     </div>
 
     <!-- Live demo: the visitor plays with the real thing in the first screen -->
@@ -4334,9 +4394,9 @@ button:focus:not(:focus-visible){outline:none}
 
     <div class="lp-hero-actions">
       <button class="lp-btn-primary" onclick="lpShowSignup()">Start free, no card</button>
-      <button class="lp-btn-secondary" onclick="lpTryDemo()">Try it with sample numbers</button>
+      <button class="lp-btn-secondary" onclick="lpTryDemo()">Try the demo</button>
     </div>
-    <p class="lp-hero-note">Budgeting and debt payoff are free forever. Takes about a minute.</p>
+    <p class="lp-hero-note">Budget and debt tools are free forever. Sign-up takes about a minute.</p>
 
     <!-- PRODUCT PREVIEW -->
     <div class="lp-preview-wrap">
@@ -4412,9 +4472,9 @@ button:focus:not(:focus-visible){outline:none}
   <section class="lp-section lp-tour-sec" id="lp-tour">
     <div class="lp-container">
       <button type="button" class="lp-tour-card" onclick="qsOpenTour()" aria-label="Watch the 40-second tour of Qualisight">
-        <img src="site-tour-poster.jpg" alt="The Qualisight debt storm page" loading="lazy" width="1280" height="800">
+        <video id="lp-tour-loop" muted loop playsinline preload="none" poster="tour-loop-poster.jpg" width="960" height="600" aria-hidden="true"><source src="tour-loop.mp4" type="video/mp4"></video>
         <span class="lp-tour-play"><svg width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg></span>
-        <span class="lp-tour-txt"><b>See the whole app in 40 seconds</b><i>Dashboard, coin jars, debt storm, money grove and the road home</i></span>
+        <span class="lp-tour-txt"><b>Watch the full 40-second tour</b><i>Your debt storm, coin jars, money grove and the road home</i></span>
       </button>
     </div>
   </section>
@@ -4448,25 +4508,8 @@ button:focus:not(:focus-visible){outline:none}
   </section>
 
   <!-- TIPS + CALCULATORS -->
-  <section class="lp-section" id="lp-market">
-    <div class="lp-container">
-      <div class="lp-head">
-        <p class="lp-eyebrow">Free market maps</p>
-        <h2 class="lp-h2">Today's market at a glance</h2>
-        <p class="lp-lead">Every stock in the TSX 60 and the S&amp;P 500, sized by its weight in the index and coloured by today's move. Updated every 20 minutes while the market is open.</p>
-      </div>
-      <div class="lpm">
-        <div class="lpm-top">
-          <div class="lpm-seg" role="group" aria-label="Which market"><button type="button" data-id="tsx60" aria-pressed="true" onclick="lpmPick('tsx60')">TSX 60</button><button type="button" data-id="sp500" aria-pressed="false" onclick="lpmPick('sp500')">S&amp;P 500</button></div>
-          <span class="lpm-sum" id="lpm-sum">Loading today's market…</span>
-        </div>
-        <a class="lpm-map" id="lpm-map" href="/tsx-heatmap/" aria-label="Open the full TSX 60 heatmap"></a>
-        <div class="lpm-foot"><a class="lpm-go" id="lpm-go" href="/tsx-heatmap/">Open the full TSX 60 heatmap</a><span>Green went up, red went down. Prices may be delayed.</span></div>
-      </div>
-    </div>
-  </section>
 
-  <section class="lp-section" id="lp-tips" style="background:#0a0c11;border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);">
+  <section class="lp-section lp-tips-old" id="lp-tips-old" hidden style="background:#0a0c11;border-top:1px solid rgba(255,255,255,0.05);border-bottom:1px solid rgba(255,255,255,0.05);">
     <div class="lp-container">
       <div class="lp-head">
         <p class="lp-eyebrow">Try it right now</p>
@@ -4644,7 +4687,6 @@ button:focus:not(:focus-visible){outline:none}
             <li><span class="lp-check">✓</span>The debt storm and your debt-free date</li>
             <li><span class="lp-check">✓</span>Dashboard with net worth and Money Score</li>
             <li><span class="lp-check">✓</span>Snowball and avalanche payoff plans</li>
-            <li><span class="lp-check">✓</span>Works on your phone like an app</li>
           </ul>
           <button class="lp-btn-primary" onclick="lpShowSignup()">Start free, no card</button>
           <p class="lp-price-fine">Includes a 14-day free look at everything in Premium.</p>
@@ -4662,7 +4704,6 @@ button:focus:not(:focus-visible){outline:none}
             <li><span class="lp-check">✓</span>The road home: every step to your first home</li>
             <li><span class="lp-check">✓</span>An AI coach that reads your real numbers</li>
             <li><span class="lp-check">✓</span>Rent vs buy, with Canadian mortgage rules</li>
-            <li><span class="lp-check">✓</span>Company check-up and news on every stock you own</li>
             <li><span class="lp-check">✓</span>Plus everything that's free: budget, coin jars, debt storm</li>
           </ul>
           <button class="lp-btn-secondary" onclick="lpShowSignup()">Try Premium free for 14 days</button>
@@ -4673,6 +4714,38 @@ button:focus:not(:focus-visible){outline:none}
   </section>
 
   <!-- FAQ -->
+  <section class="lp-section lp-tools" id="lp-tips">
+    <div class="lp-container">
+      <div class="lp-head"><p class="lp-eyebrow">Free tools, no sign-up</p><h2 class="lp-h2">Try a tool right now</h2></div>
+      <div class="lp-tools-grid">
+        <a href="/budget-calculator/"><b>Budget calculator</b><span>What is left each month, and your 50/30/20 split</span></a>
+        <a href="/debt-payoff-calculator/"><b>Debt payoff calculator</b><span>Snowball or avalanche, and your debt-free month</span></a>
+        <a href="/tfsa-contribution-room-calculator/"><b>TFSA room calculator</b><span>How much you can still put in this year</span></a>
+        <a href="/down-payment-calculator/"><b>Down payment calculator</b><span>The least you need, and the month you get there</span></a>
+        <a href="/tsx-heatmap/"><b>TSX 60 heatmap</b><span>Today's Canadian market at a glance</span></a>
+        <a href="/sp500-heatmap/"><b>S&amp;P 500 heatmap</b><span>Today's US market at a glance</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="lp-section" id="lp-market">
+    <div class="lp-container">
+      <div class="lp-head">
+        <p class="lp-eyebrow">Free market maps</p>
+        <h2 class="lp-h2">Today's market at a glance</h2>
+        <p class="lp-lead">Every stock in the TSX 60 and the S&amp;P 500, sized by its weight in the index and coloured by today's move. Updated every 20 minutes while the market is open.</p>
+      </div>
+      <div class="lpm">
+        <div class="lpm-top">
+          <div class="lpm-seg" role="group" aria-label="Which market"><button type="button" data-id="tsx60" aria-pressed="true" onclick="lpmPick('tsx60')">TSX 60</button><button type="button" data-id="sp500" aria-pressed="false" onclick="lpmPick('sp500')">S&amp;P 500</button></div>
+          <span class="lpm-sum" id="lpm-sum">Loading today's market…</span>
+        </div>
+        <a class="lpm-map" id="lpm-map" href="/tsx-heatmap/" aria-label="Open the full TSX 60 heatmap"></a>
+        <div class="lpm-foot"><a class="lpm-go" id="lpm-go" href="/tsx-heatmap/">Open the full TSX 60 heatmap</a><span>Green went up, red went down. Prices may be delayed.</span></div>
+      </div>
+    </div>
+  </section>
+
   <section class="lp-section" id="lp-faq">
     <div class="lp-container">
       <div class="lp-head">
@@ -4719,7 +4792,7 @@ button:focus:not(:focus-visible){outline:none}
     <p>Type what you owe and see the date. Budgeting and debt payoff are free forever. No card, no bank login.</p>
     <div class="lp-final-actions">
       <button class="lp-btn-primary" onclick="lpToMine('final')">See my debt-free month</button>
-      <button class="lp-btn-secondary" onclick="lpTryDemo()">Try it with sample numbers</button>
+      <button class="lp-btn-secondary" onclick="lpTryDemo()">Try the demo</button>
     </div>
   </section>
 
@@ -4810,7 +4883,8 @@ button:focus:not(:focus-visible){outline:none}
     <div id="auth-create" style="display:none">
       <button type="button" class="auth-back" onclick="lpBackHome()" aria-label="Back to the home page">← Back</button>
       <div class="auth-logo">Qualisight</div>
-      <div class="auth-tagline" style="margin-bottom:0.9rem">Create your free account. Takes about a minute.</div>
+      <div class="auth-plan" id="cr-plan" hidden></div>
+      <div class="auth-tagline" id="cr-tag" style="margin-bottom:0.9rem">Create your free account. Takes about a minute.</div>
       <div class="auth-perks"><span>✓ No credit card</span><span>✓ No bank login</span><span>✓ Free forever for budgeting</span></div>
       <label class="auth-label">First name</label>
       <input class="auth-input" id="cr-name" type="text" placeholder="e.g. Alex" maxlength="32" autocomplete="name"
@@ -5886,6 +5960,15 @@ function showSignIn(){
 }
 function showCreate(){
   showPanel('auth-create');
+  // Name what they are about to save, so the form finishes something they started
+  try{ const plan=document.getElementById('cr-plan'), tag=document.getElementById('cr-tag');
+    let t='';
+    if(typeof _lpm!=='undefined' && _lpm.when && document.querySelector('.lp-hero.mine-on')) t=`Save your debt-free date: <b>${escHtml(_lpm.when)}</b>`;
+    else if(typeof obCalcPlan==='function' && obCalcPlan()) t='Save the debt plan you just made';
+    else if(typeof obHomePlan==='function' && obHomePlan()) t=`Save your <b>${obMoney(obHomePlan().price)}</b> home plan`;
+    else if(typeof obBudgetPlan==='function' && obBudgetPlan()) t='Save the budget you just made';
+    if(plan&&tag){ plan.hidden=!t; plan.innerHTML=t; tag.textContent=t?'One free account and it is yours. Takes about a minute.':'Create your free account. Takes about a minute.'; }
+  }catch(e){}
   ['cr-name','cr-email','cr-pass'].forEach(id=>{ const el=document.getElementById(id); if(el) el.value=''; });
   document.getElementById('cr-error').textContent='';
   setTimeout(()=>document.getElementById('cr-name').focus(),50);
@@ -16743,6 +16826,13 @@ function lppStart(){
   lppStart();
 })();
 
+// Tour card: a silent loop of the four worlds plays while it is on screen; tapping opens the full tour
+(function(){
+  const v=document.getElementById('lp-tour-loop'); if(!v) return;
+  const still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(still || !('IntersectionObserver' in window)) return;
+  new IntersectionObserver(en=>{ en.forEach(e=>{ if(e.isIntersecting){ if(v.preload!=='auto'){ v.preload='auto'; } const p=v.play(); if(p&&p.catch) p.catch(()=>{}); } else v.pause(); }); },{threshold:0.35}).observe(v);
+})();
 // Any "see my date" button below the fold brings the visitor back to the number box at the top
 function lpToMine(where){
   try{ QA.log('cta',{where:where||'mine'}); }catch(e){}
@@ -16751,6 +16841,7 @@ function lpToMine(where){
   try{ box.scrollIntoView({behavior:'smooth', block:'center'}); }catch(e){ if(lp) lp.scrollTop=0; }
   setTimeout(()=>{ try{ inp && inp.focus({preventScroll:true}); }catch(e){} }, 550);
 }
+function lpMineSave(){ try{ QA.log('cta',{where:'mine_result'}); }catch(e){} lpShowSignup(); }
 // ── "Your number": one debt typed into the first screen drives the storm and the sign-up ──
 const _lpm={type:0, logged:false};
 function lpMineUpdate(){
@@ -16761,16 +16852,19 @@ function lpMineUpdate(){
   const apply=(debts)=>{ _lpp.debts=debts; _lpp.extra=0; _lpp.base=lpPath(0,debts); _lpp.path=_lpp.base; _lpp.m=0; _lpp.prevBals=null; _lpp.tick=0;
     if(range){ range.max=_lpp.base.length-1; range.value=0; } if(!pitReduce) _lpp.auto=true; try{ lppUpdate(); if(pitReduce) lppStart(); }catch(e){} };
   const unstash=()=>{ try{ const p=JSON.parse(localStorage.getItem('qs_calc_plan')||'null'); if(p&&p.src==='hero') localStorage.removeItem('qs_calc_plan'); }catch(e){} };
-  if(!(owe>0)){ out.innerHTML='Try it: type a number and your debt-free month appears here.'; if(_lpp.debts){ apply(null); if(title) title.textContent='Your debt storm'; } unstash(); if(btn&&btn.dataset.mine){ btn.textContent='Start free, no card'; delete btn.dataset.mine; } return; }
+  if(!(owe>0)){ out.innerHTML='Type a number and your debt-free month appears here.'; out.classList.remove('has'); document.querySelector('.lp-hero')?.classList.remove('mine-on'); if(_lpp.debts){ apply(null); if(title) title.textContent='Your debt storm'; } unstash(); if(btn&&btn.dataset.mine){ btn.textContent='Start free, no card'; delete btn.dataset.mine; } return; }
   const interest=owe*T[2]/1200, pay=payIn>0?payIn:Math.max(25,Math.round(owe*0.03));
-  if(pay<=interest+1){ out.innerHTML=`At about ${T[2]}% interest, ${obMoney(owe)} grows by ${obMoney(interest)} a month. Type a payment above that and the plan can finish.`; unstash(); return; }
+  if(pay<=interest+1){ out.innerHTML=`At about ${T[2]}% interest, ${obMoney(owe)} grows by ${obMoney(interest)} a month. Type a payment above that and the plan can finish.`; out.classList.remove('has'); document.querySelector('.lp-hero')?.classList.remove('mine-on'); unstash(); return; }
   const debts=[{name:T[1], type:T[0]==='car_loan'?'auto':T[0], balance:owe, origBalance:owe, min:pay, rate:T[2], transactions:[]}];
   apply(debts); if(title) title.textContent='Your storm';
   const months=_lpp.base.length-1, m50=lpPath(50,debts).length-1, capped=months>=240;
   out.innerHTML = capped ? `<strong>More than 20 years</strong>At ${obMoney(pay)} a month this takes a very long time. Try a bigger payment and watch the date move.`
-    : `<strong>Debt-free by <b>${obMonthOut(months)}</b></strong>${months-m50>0?`Add $50 a month and it becomes <b>${obMonthOut(m50)}</b>, ${months-m50} month${months-m50===1?'':'s'} sooner.`:'You are on a fast plan already.'}<small>Estimate at about ${T[2]}% interest${payIn>0?'':`, paying ${obMoney(pay)} a month`}. Change it any time.</small>`;
+    : `<strong class="lpm-date">Debt-free by <b>${obMonthOut(months)}</b></strong>${months-m50>0?`Add $50 a month and it becomes <b>${obMonthOut(m50)}</b>, ${months-m50} month${months-m50===1?'':'s'} sooner.`:'You are on a fast plan already.'}<small>Estimate at about ${T[2]}% interest${payIn>0?'':`, paying ${obMoney(pay)} a month`}. Change it any time.</small>`;
   try{ localStorage.setItem('qs_calc_plan', JSON.stringify({debts:[{n:T[1], b:owe, r:T[2], m:pay}], extra:0, method:'snow', at:Date.now(), src:'hero'})); }catch(e){}
-  if(btn){ btn.textContent='Save my plan free'; btn.dataset.mine='1'; }
+  if(!capped){ out.insertAdjacentHTML('beforeend',`<button type="button" class="lpm-save" onclick="lpMineSave()">Save my ${obMonthOut(months)} plan free</button><span class="lpm-safe">No card. No bank login.</span>`);
+    _lpm.when=obMonthOut(months); document.querySelector('.lp-hero')?.classList.add('mine-on'); if(!out.classList.contains('has')){ out.classList.add('has'); out.classList.remove('pop'); void out.offsetWidth; out.classList.add('pop'); } }
+  else document.querySelector('.lp-hero')?.classList.remove('mine-on');
+  if(btn){ btn.textContent=capped?'Save my plan free':`Save my ${obMonthOut(months)} plan`; btn.dataset.mine='1'; }
   if(!_lpm.logged){ _lpm.logged=true; try{ QA.log('hero_mine',{type:T[0]}); QA.reach('tapped'); }catch(e){} }
 }
 (function(){
@@ -16937,7 +17031,7 @@ function lpOpenWorld(id){
     btn.innerHTML='<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M7 4v16l13-8z"/></svg>'+(hero.classList.contains('lp-hero--grove')?'Watch the 50-second tour':'Watch the 40-second tour');
     btn.onclick=openTour;
     const early=hero.querySelector('.lp-preview-early'), note=hero.querySelector('.lp-hero-note');
-    if(early) early.after(btn); else if(note) note.after(btn);
+    if(hero.classList.contains('lp-hero--grove')){ if(early) early.after(btn); else if(note) note.after(btn); }
   }
 })();
 
