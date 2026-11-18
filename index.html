@@ -4735,6 +4735,7 @@ button:focus:not(:focus-visible){outline:none}
         <button class="lp-footer-link" onclick="lpScrollTo('lp-tips')">Tools</button>
         <button class="lp-footer-link" onclick="lpScrollTo('lp-pricing')">Pricing</button>
         <a class="lp-footer-link" href="/debt-payoff-calculator/" style="text-decoration:none">Debt payoff calculator</a>
+        <a class="lp-footer-link" href="/budget-calculator/" style="text-decoration:none">Budget calculator</a>
         <a class="lp-footer-link" href="/tfsa-contribution-room-calculator/" style="text-decoration:none">TFSA room calculator</a>
         <a class="lp-footer-link" href="/tsx-heatmap/" style="text-decoration:none">TSX 60 heatmap</a>
         <a class="lp-footer-link" href="/sp500-heatmap/" style="text-decoration:none">S&amp;P 500 heatmap</a>
@@ -6182,7 +6183,7 @@ function obRender(){
       <div class="ob2-kicker">Welcome${first?', '+escHtml(first):''}</div>
       <h2 class="ob2-title">What do you want to win first?</h2>
       <p class="ob2-sub">Pick one. You can do all four later. This just decides where we start.</p>
-      ${(()=>{ const cp=(!(state.debts||[]).length && obCalcPlan()); return cp?`<button type="button" class="ob2-go ob2-import" onclick="obImportCalc()">Use the ${cp.debts.length===1?'debt':cp.debts.length+' debts'} I already typed in</button><div class="ob2-safe" style="margin:-0.2rem 0 0.9rem">Or pick a different place to start below.</div>`:(()=>{ const hp=(!(state.homeFund&&state.homeFund.price) && obHomePlan()); return hp?`<button type="button" class="ob2-go ob2-import" onclick="obImportHome()">Use my ${obMoney(hp.price)} home plan</button><div class="ob2-safe" style="margin:-0.2rem 0 0.9rem">Or pick a different place to start below.</div>`:''; })(); })()}
+      ${(()=>{ const cp=(!(state.debts||[]).length && obCalcPlan()); return cp?`<button type="button" class="ob2-go ob2-import" onclick="obImportCalc()">Use the ${cp.debts.length===1?'debt':cp.debts.length+' debts'} I already typed in</button><div class="ob2-safe" style="margin:-0.2rem 0 0.9rem">Or pick a different place to start below.</div>`:(()=>{ const hp=(!(state.homeFund&&state.homeFund.price) && obHomePlan()); return hp?`<button type="button" class="ob2-go ob2-import" onclick="obImportHome()">Use my ${obMoney(hp.price)} home plan</button><div class="ob2-safe" style="margin:-0.2rem 0 0.9rem">Or pick a different place to start below.</div>`:(()=>{ const bp=(!(state.expenses||[]).length && obBudgetPlan()); return bp?`<button type="button" class="ob2-go ob2-import" onclick="obImportBudget()">Use my ${obMoney(bp.income)} a month budget</button><div class="ob2-safe" style="margin:-0.2rem 0 0.9rem">Or pick a different place to start below.</div>`:''; })(); })(); })()}
       <div class="ob2-quests">${OB_QUESTS.map(q=>`<button type="button" class="ob2-quest" onclick="obPick('${q.id}')">
         <span class="ob2-quest-art"><canvas id="obq-${q.id}"></canvas></span>
         <span class="ob2-quest-txt"><b>${q.title}</b><i>${q.sub}</i></span></button>`).join('')}</div>
@@ -6248,6 +6249,21 @@ function obHomePlan(){
     return {price:Math.round(+p.price), saved:Math.max(0,Math.round(+p.saved||0)), monthly:Math.max(0,Math.round(+p.monthly||0))};
   }catch(e){ return null; }
 }
+function obBudgetPlan(){
+  try{ const p=JSON.parse(localStorage.getItem('qs_budget_plan')||'null');
+    if(!p || !(+p.income>=100) || +p.income>200000 || Date.now()-(p.at||0) > 30*864e5) return null;
+    return {income:Math.round(+p.income)};
+  }catch(e){ return null; }
+}
+function obImportBudget(){
+  const bp=obBudgetPlan(); if(!bp) return;
+  _ob.quest='budget'; _ob.step=2; obRender();
+  const el=document.getElementById('ob-a'); if(el) el.value=String(bp.income);
+  try{ localStorage.removeItem('qs_budget_plan'); }catch(e){}
+  try{ QA.log('onb_import',{src:'budget'}); }catch(e){}
+  if(!state.onb) state.onb={}; state.onb.fromBudgetCalc=true;
+  obSubmit();
+}
 function obImportHome(){
   const hp=obHomePlan(); if(!hp) return;
   _ob.quest='home'; _ob.step=2; obRender();
@@ -6261,7 +6277,15 @@ function obImportHome(){
 // Message match: someone arriving from the calculator sees their plan named in the first screen.
 function lpMatchCalc(){
   const plan=obCalcPlan();
-  if(!plan){ const hp=obHomePlan(); if(!hp) return;
+  if(!plan){ const hp=obHomePlan();
+    if(!hp){ const bp=obBudgetPlan(); if(!bp) return;
+      const h=document.getElementById('lp-h1'), sub=document.getElementById('lp-sub'), btn=document.querySelector('.lp-hero-actions .lp-btn-primary');
+      if(!h||!sub) return;
+      h.innerHTML='Your budget is ready. <span class="grad">Save it free.</span>';
+      sub.textContent=`Save your ${obMoney(bp.income)} a month budget as coin jars and watch what you keep fill a treasure chest. No bank login. No card.`;
+      if(btn) btn.textContent='Save my budget free';
+      try{ QA.log('lp_match',{src:'budget'}); }catch(e){}
+      return; }
     const h=document.getElementById('lp-h1'), sub=document.getElementById('lp-sub'), btn=document.querySelector('.lp-hero-actions .lp-btn-primary');
     if(!h||!sub) return;
     h.innerHTML='Your home plan is ready. <span class="grad">Save it free.</span>';

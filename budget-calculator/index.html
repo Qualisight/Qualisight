@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Budget Calculator Canada: Free Monthly Budget Planner | Qualisight</title>
+<meta name="description" content="Free Canadian budget calculator. Enter your take-home pay and bills, see what is left each month, and compare your budget to the 50/30/20 rule. Weekly, biweekly or monthly pay. No sign-up.">
+<link rel="canonical" href="https://qualisight.ca/budget-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Budget Calculator Canada: Free Monthly Budget Planner">
+<meta property="og:description" content="See what is left each month and how your budget compares to 50/30/20. Free, no sign-up.">
+<meta property="og:url" content="https://qualisight.ca/budget-calculator/">
+<meta property="og:image" content="https://qualisight.ca/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0d0f14">
+<link rel="icon" href="/icon-192.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Qualisight","item":"https://qualisight.ca/"},{"@type":"ListItem","position":2,"name":"Budget calculator","item":"https://qualisight.ca/budget-calculator/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Budget Calculator Canada","url":"https://qualisight.ca/budget-calculator/","applicationCategory":"FinanceApplication","operatingSystem":"Any","offers":{"@type":"Offer","price":"0","priceCurrency":"CAD"},"publisher":{"@type":"Organization","name":"Qualisight","url":"https://qualisight.ca/"}}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "What is the 50/30/20 budget rule?", "acceptedAnswer": {"@type": "Answer", "text": "It splits your take-home pay three ways: about 50% for needs like rent, groceries and minimum debt payments, about 30% for wants like eating out and shopping, and about 20% for savings and extra debt payments. It is a starting point, not a law. Where rent is high, needs often take more than half."}}, {"@type": "Question", "name": "Should I budget with my gross pay or my take-home pay?", "acceptedAnswer": {"@type": "Answer", "text": "Use take-home pay: the amount that lands in your bank account after income tax, CPP, EI and any workplace deductions. That is the money you can actually spend or save."}}, {"@type": "Question", "name": "How do I budget if I am paid every two weeks?", "acceptedAnswer": {"@type": "Answer", "text": "Every two weeks means 26 pays a year, so most months have two paydays and about two months a year have three. Budget each month on two pays and treat the third pay as a bonus for savings or debt. Pick every two weeks in the calculator and it does this math for you."}}, {"@type": "Question", "name": "How much of my pay should I save?", "acceptedAnswer": {"@type": "Answer", "text": "A common target is 20% of take-home pay, counting money to a TFSA, RRSP or FHSA, an emergency fund and extra debt payments. If 20% is not possible yet, any regular amount is a good start. Even $25 a payday builds the habit."}}, {"@type": "Question", "name": "What counts as a need and what counts as a want?", "acceptedAnswer": {"@type": "Answer", "text": "A need is something you must pay to live and work: housing, utilities, groceries, getting to work, insurance and minimum debt payments. A want is something you choose: eating out, new clothes beyond the basics, streaming and hobbies. Some things are a bit of both. Put them where they feel honest to you."}}]}</script>
+<style>
+:root{--bg:#0b0d12;--surface:#141821;--border:rgba(255,255,255,0.09);--text:#e8edf8;--muted:#97a2b8;--green:#4ade80;--red:#f87171;--amber:#fbbf24;--need:#60a5fa;--want:#f0abfc;--save:#4ade80}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--green)}
+.wrap{max-width:860px;margin:0 auto;padding:0 1.1rem}
+header{display:flex;justify-content:space-between;align-items:center;padding:1rem 0}
+.logo{font-weight:800;font-size:1.15rem;color:var(--green);text-decoration:none;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 1.2rem;border-radius:12px;background:var(--green);color:#0b0d12;font-weight:700;text-decoration:none;border:0;font:inherit;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);min-height:40px;font-weight:600}
+h1{font-size:2rem;line-height:1.15;letter-spacing:-0.03em;margin:1.2rem 0 0.5rem}
+h2{font-size:1.35rem;letter-spacing:-0.02em;margin:2.4rem 0 0.6rem}
+h3{font-size:1.05rem;margin:1.4rem 0 0.3rem}
+p{margin:0.5rem 0;color:#c4ccdb}.lead{color:var(--muted);font-size:1.05rem;max-width:640px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:1.1rem;margin-top:1.2rem}
+input[type=text],input[type=number],select{width:100%;background:#0e121a;border:1px solid var(--border);border-radius:10px;color:var(--text);font:inherit;padding:0.6rem 0.65rem;min-height:44px}
+input:focus,select:focus{outline:2px solid var(--green);outline-offset:1px}
+input[type=number]{-moz-appearance:textfield;appearance:textfield}input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.pay{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:0.7rem}
+.pay label{display:block;font-size:0.85rem;color:var(--muted);margin-bottom:0.25rem}
+.payhint{font-size:0.88rem;color:var(--muted);margin-top:0.5rem}
+.groups{display:grid;grid-template-columns:1fr;gap:0.8rem;margin-top:1rem}
+.lines{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 1.2rem}
+.sticky{display:none}
+.grp{border:1px solid var(--border);border-radius:14px;padding:0.75rem}
+.grp h3{margin:0 0 0.1rem;font-size:0.98rem;display:flex;justify-content:space-between;gap:0.5rem}
+.grp h3 i{font-style:normal;font-variant-numeric:tabular-nums}
+.grp>small{display:block;color:var(--muted);font-size:0.78rem;margin-bottom:0.5rem}
+.grp.need h3{color:var(--need)}.grp.want h3{color:var(--want)}.grp.save h3{color:var(--save)}
+.line{display:grid;grid-template-columns:minmax(0,1fr) 96px 30px;gap:0.3rem;align-items:center;margin-top:0.3rem}
+.line input[type=text]{background:transparent;border-color:transparent;padding:0.4rem 0.3rem;min-height:40px;font-size:0.92rem}
+.line input[type=text]:hover{border-color:var(--border)}
+.line input[type=number]{padding:0.5rem 0.5rem;min-height:40px;text-align:right}
+.x{background:transparent;border:0;color:var(--muted);width:30px;height:40px;cursor:pointer;font-size:1.05rem;border-radius:8px}
+.x:hover{color:var(--text);background:rgba(255,255,255,0.05)}
+.addl{background:none;border:1px dashed var(--border);color:var(--muted);border-radius:10px;width:100%;min-height:38px;margin-top:0.45rem;font:inherit;font-size:0.88rem;cursor:pointer}
+.big{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.7rem;margin-top:1.1rem}
+.big div{border:1px solid var(--border);border-radius:14px;padding:0.8rem}
+.big span{display:block;font-size:0.75rem;color:var(--muted)}
+.big b{display:block;font-size:1.35rem;font-variant-numeric:tabular-nums;margin-top:0.1rem}
+.big em{display:block;font-style:normal;font-size:0.78rem;color:var(--muted)}
+.big .good{color:var(--green)}.big .bad{color:var(--red)}
+.bar{display:flex;height:22px;border-radius:8px;overflow:hidden;margin-top:1.1rem;background:#2a2f3a}
+.bar i{display:block;height:100%}
+.legend{display:flex;flex-wrap:wrap;gap:0.3rem 1rem;font-size:0.82rem;color:var(--muted);margin-top:0.45rem}
+.legend span::before{content:"";display:inline-block;width:10px;height:10px;border-radius:3px;margin-right:0.35rem;vertical-align:-1px;background:var(--c)}
+table.cmp{width:100%;border-collapse:collapse;margin-top:0.9rem;font-size:0.92rem}
+.cmp th{font-size:0.75rem;color:var(--muted);font-weight:600;text-align:left;padding:0 0.3rem 0.35rem}
+.cmp td{padding:0.4rem 0.3rem;border-top:1px solid var(--border);font-variant-numeric:tabular-nums}
+.cmp td:nth-child(n+2),.cmp th:nth-child(n+2){text-align:right}
+.note{font-size:0.92rem;color:#c4ccdb;margin-top:0.8rem}
+.warn{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);color:#f3d48a;border-radius:12px;padding:0.7rem 0.85rem;margin-top:0.9rem;font-size:0.92rem}
+.acts{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem}.acts .btn{font-size:0.92rem}
+textarea.code{width:100%;min-height:92px;background:#0e121a;border:1px solid var(--border);border-radius:10px;color:#c4ccdb;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:0.7rem;resize:vertical}
+.by{display:none;margin-top:0.8rem;font-size:0.85rem;color:var(--muted)}
+body.embed header,body.embed h1,body.embed .lead,body.embed .cta,body.embed .article,body.embed footer,body.embed .more{display:none}body.embed .card{margin-top:0.6rem}body.embed .by{display:block}body.embed .wrap{padding:0 0.5rem}body.embed .noembed{display:none}
+.cta{background:linear-gradient(135deg,rgba(74,222,128,0.14),rgba(74,222,128,0.03));border:1px solid rgba(74,222,128,0.4);border-radius:18px;padding:1.2rem;margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:0.9rem;align-items:center;justify-content:space-between}
+.cta p{margin:0;max-width:480px;color:var(--text)}.cta small{display:block;color:var(--muted)}
+details{border-top:1px solid var(--border);padding:0.7rem 0}summary{cursor:pointer;font-weight:600;min-height:32px}
+ol.steps{padding-left:1.2rem;color:#c4ccdb}ol.steps li{margin:0.35rem 0}
+footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);color:var(--muted);font-size:0.85rem}
+@media(max-width:760px){.lines{grid-template-columns:1fr}.line{grid-template-columns:minmax(0,1fr) 82px 28px}.line input[type=text]{font-size:0.88rem}.sticky{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:5;justify-content:space-between;align-items:center;gap:0.6rem;padding:0.65rem 1.1rem;background:rgba(11,13,18,0.96);border-top:1px solid var(--border);font-size:0.92rem;backdrop-filter:blur(6px)}.sticky b{font-size:1.1rem;font-variant-numeric:tabular-nums}.sticky b.bad{color:var(--red)}.sticky b.good{color:var(--green)}.sticky a{color:var(--muted);font-size:0.85rem}body{padding-bottom:64px}body.embed .sticky{display:none}}
+@media(max-width:640px){h1{font-size:1.6rem}.big{grid-template-columns:1fr}.pay{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><a class="logo" href="/">Qualisight</a><a class="btn ghost" href="/?utm_source=organic&utm_campaign=budget_calculator">Open the app</a></header>
+
+<h1>Budget calculator for Canadians</h1>
+<p class="lead">Type in your take-home pay and your monthly bills. See what is left over each month and how your budget compares to the 50/30/20 rule. Free, no sign-up. Your numbers stay in your browser.</p>
+
+<section class="card" aria-label="Budget calculator">
+  <div class="pay">
+    <div><label for="amt">Take-home pay per paycheque ($)</label><input type="number" inputmode="decimal" min="0" step="50" id="amt" value="4200"></div>
+    <div><label for="freq">I get paid</label><select id="freq"><option value="12">Once a month</option><option value="24">Twice a month</option><option value="26">Every two weeks</option><option value="52">Every week</option></select></div>
+  </div>
+  <p class="payhint" id="payhint"></p>
+  <div class="groups" id="groups"></div>
+  <div id="out" aria-live="polite"></div>
+  <div class="sticky" id="sticky" aria-hidden="true"><span id="stickyL">Left over each month</span><b id="stickyV"></b><a href="#out">See the split</a></div>
+  <div class="acts">
+    <button class="btn ghost" type="button" id="share">Share my budget split</button>
+    <button class="btn ghost noembed" type="button" id="ics">Add a monthly budget check-in to my calendar</button>
+  </div>
+  <div class="by">Budget calculator by <a href="https://qualisight.ca/budget-calculator/" target="_blank" rel="noopener">Qualisight</a>. Estimates only, not financial advice.</div>
+</section>
+
+<div class="cta"><p><b>Turn this budget into coin jars.</b><small>Qualisight splits your pay into jars, and what you do not spend fills a treasure chest. Budgeting and debt payoff are free forever. No card, no bank login.</small></p>
+  <a class="btn" target="_top" href="/?utm_source=organic&utm_campaign=budget_calculator">Save my budget free</a></div>
+
+<div class="article">
+<h2>How to make a budget in four steps</h2>
+<ol class="steps">
+<li><b>Start with take-home pay.</b> Use what lands in your account after income tax, CPP, EI and other deductions, not your salary.</li>
+<li><b>List every bill you must pay.</b> Rent or mortgage, utilities, groceries, getting around, phone, insurance and the minimum on each debt.</li>
+<li><b>Add what you choose to spend.</b> Eating out, shopping, subscriptions and fun. Check a recent bank statement so the numbers are real.</li>
+<li><b>Pay yourself.</b> Put a set amount toward savings or extra debt payments each payday, then live on what is left.</li>
+</ol>
+<p>The Financial Consumer Agency of Canada has a guide to <a href="https://www.canada.ca/en/financial-consumer-agency/services/make-budget.html" rel="noopener" target="_blank">making a budget</a> and its own <a href="https://itools-ioutils.fcac-acfc.gc.ca/BP-PB/" rel="noopener" target="_blank">Budget Planner</a> if you want a longer worksheet.</p>
+
+<h2>The 50/30/20 rule</h2>
+<p>The 50/30/20 rule is a simple guide: about 50% of take-home pay to needs, 30% to wants and 20% to savings and extra debt payments. The calculator shows your split beside it. It is a rule of thumb, not a test you pass or fail. In many Canadian cities rent alone can take a third of take-home pay or more, so a needs share above 50% is common. If yours is high, the fix is usually in one or two big lines, not in cutting every small one.</p>
+
+<h3>A worked example</h3>
+<p>The calculator starts with $4,200 a month take-home pay. Needs add up to $2,850, wants to $490 and savings to $600. That is 68% needs, 12% wants and 14% savings, with $260 left over. Moving that $260 into savings would bring savings to about 20%, right on the guide, even though needs stay high because of rent.</p>
+
+<h2>Common questions</h2>
+<details><summary>What is the 50/30/20 budget rule?</summary><p>It splits your take-home pay three ways: about 50% for needs like rent, groceries and minimum debt payments, about 30% for wants like eating out and shopping, and about 20% for savings and extra debt payments. It is a starting point, not a law. Where rent is high, needs often take more than half.</p></details>
+<details><summary>Should I budget with my gross pay or my take-home pay?</summary><p>Use take-home pay: the amount that lands in your bank account after income tax, CPP, EI and any workplace deductions. That is the money you can actually spend or save.</p></details>
+<details><summary>How do I budget if I am paid every two weeks?</summary><p>Every two weeks means 26 pays a year, so most months have two paydays and about two months a year have three. Budget each month on two pays and treat the third pay as a bonus for savings or debt. Pick every two weeks in the calculator and it does this math for you.</p></details>
+<details><summary>How much of my pay should I save?</summary><p>A common target is 20% of take-home pay, counting money to a TFSA, RRSP or FHSA, an emergency fund and extra debt payments. If 20% is not possible yet, any regular amount is a good start. Even $25 a payday builds the habit.</p></details>
+<details><summary>What counts as a need and what counts as a want?</summary><p>A need is something you must pay to live and work: housing, utilities, groceries, getting to work, insurance and minimum debt payments. A want is something you choose: eating out, new clothes beyond the basics, streaming and hobbies. Some things are a bit of both. Put them where they feel honest to you.</p></details>
+
+<h2>What this calculator assumes</h2>
+<p>All amounts are monthly. Paycheques are turned into a monthly amount: twice a month is 24 pays a year, every two weeks is 26, every week is 52. It does not work out income tax, so start from your take-home pay. This page is information, not financial advice. If bills are bigger than your pay every month, a non-profit credit counsellor can go through your options for free.</p>
+
+<h2>Put this calculator on your site</h2>
+<p>Run a money workshop, a student finance office or a newcomer program? You can add this calculator to your own page for free. It has no ads and collects nothing your visitors type.</p>
+<textarea class="code" id="embedCode" readonly aria-label="Embed code">&lt;iframe src="https://qualisight.ca/budget-calculator/?embed=1" title="Budget calculator" style="width:100%;max-width:860px;height:1250px;border:0" loading="lazy"&gt;&lt;/iframe&gt;</textarea>
+<div class="row" style="display:flex;gap:0.6rem;align-items:center;margin-top:0.7rem"><button class="btn ghost" type="button" id="copyEmbed">Copy the code</button><span id="copied" style="color:var(--green);font-size:0.9rem" aria-live="polite"></span></div>
+</div>
+
+<p class="more" style="margin-top:1.6rem">Paying off debt? Find your <a href="/debt-payoff-calculator/">debt-free date</a>. Saving next? Check your <a href="/tfsa-contribution-room-calculator/">TFSA room</a> or when you could have a <a href="/down-payment-calculator/">down payment</a>.</p>
+<footer>See today's market: <a href="/tsx-heatmap/">TSX 60 heatmap</a> and <a href="/sp500-heatmap/">S&amp;P 500 heatmap</a>.<br>Built by a solo founder in Ontario. Last checked November 2026. <a href="/">Qualisight</a> is a Canadian budgeting, debt and savings app that turns your money into a game.</footer>
+</div>
+<script>
+(function(){
+  var EMBED=/[?&]embed=1/.test(location.search); if(EMBED) document.body.className+=' embed';
+  // Anonymous page counts only. Nothing typed into the calculator is ever sent.
+  var track=(function(){
+    var ok=true, vid, sid, sent=0;
+    try{ if(localStorage.getItem('qs_notrack')==='1') ok=false; vid=localStorage.getItem('qs_vid'); if(!vid){ vid=Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4); localStorage.setItem('qs_vid',vid); }
+      sid=sessionStorage.getItem('qs_tab'); if(!sid){ sid=Math.random().toString(36).slice(2,10); sessionStorage.setItem('qs_tab',sid); } }catch(e){ vid=vid||'anon'; sid=sid||'anon'; }
+    if(/HeadlessChrome|bot|crawl|spider/i.test(navigator.userAgent||'')) ok=false;
+    return function(name,props){ if(!ok||sent>20) return; sent++; props=props||{}; props.embed=EMBED;
+      try{ fetch('https://bsjyqecneeptlfrsyesf.supabase.co/rest/v1/site_events',{method:'POST',keepalive:true,headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM','Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify([{vid:vid,sid:sid,name:name,props:props}])}).catch(function(){}); }catch(e){} };
+  })();
+  var edited=false, last=null;
+  var G={need:{t:'Needs',s:'Must pay to live and work',c:'var(--need)',rows:[['Rent or mortgage',1600],['Utilities',150],['Groceries',450],['Transportation',250],['Phone and internet',120],['Insurance',80],['Minimum debt payments',200]]},
+         want:{t:'Wants',s:'Things you choose',c:'var(--want)',rows:[['Eating out',180],['Shopping',150],['Subscriptions',40],['Fun and hobbies',120]]},
+         save:{t:'Savings',s:'Pay yourself first',c:'var(--save)',rows:[['TFSA, RRSP or FHSA',400],['Emergency fund',200],['Extra debt payments',0]]}};
+  var K=['need','want','save'], amt=document.getElementById('amt'), freq=document.getElementById('freq'), out=document.getElementById('out');
+  function money(n){ return (n<0?'-':'')+'$'+Math.round(Math.abs(n)).toLocaleString('en-CA'); }
+  function esc(s){ return String(s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+  function sum(k){ return G[k].rows.reduce(function(s,r){ return s+(+r[1]||0); },0); }
+  function income(){ return Math.max(0,parseFloat(amt.value)||0)*(+freq.value)/12; }
+  function build(){
+    document.getElementById('groups').innerHTML=K.map(function(k){ var g=G[k];
+      return '<div class="grp '+k+'"><h3>'+g.t+' <i id="sum-'+k+'"></i></h3><small>'+g.s+'</small><div class="lines">'
+        +g.rows.map(function(r,i){ return '<div class="line"><input type="text" data-k="'+k+'" data-i="'+i+'" data-f="0" value="'+esc(r[0])+'" aria-label="Name of '+g.t.toLowerCase()+' line '+(i+1)+'"><input type="number" inputmode="decimal" min="0" step="10" data-k="'+k+'" data-i="'+i+'" data-f="1" value="'+r[1]+'" aria-label="'+esc(r[0])+' per month"><button class="x" type="button" data-k="'+k+'" data-del="'+i+'" aria-label="Remove '+esc(r[0])+'">×</button></div>'; }).join('')+'</div>'
+        +'<button class="addl" type="button" data-add="'+k+'">+ Add a line</button></div>'; }).join('');
+  }
+  function render(){
+    var inc=income(), n=sum('need'), w=sum('want'), s=sum('save'), spent=n+w+s, left=inc-spent;
+    K.forEach(function(k){ document.getElementById('sum-'+k).textContent=money(sum(k)); });
+    var f=+freq.value, per=Math.max(0,parseFloat(amt.value)||0);
+    document.getElementById('payhint').innerHTML=f===12?'That is <b>'+money(inc)+'</b> a month.':'That is about <b>'+money(inc)+'</b> a month.'+(f===26?' Most months have two paydays. About two months a year have three, so you get two extra pays of '+money(per)+' a year.':f===52?' Most months have four paydays. Four months a year have five.':'');
+    var sv=document.getElementById('stickyV'); sv.textContent=inc>0?money(Math.abs(left)):'n/a'; sv.className=left<0?'bad':'good'; document.getElementById('stickyL').textContent=left<0?'Short each month':'Left over each month';
+    if(!(inc>0)){ out.innerHTML='<div class="warn">Type your take-home pay to see your budget.</div>'; last=null; return; }
+    var pn=n/inc*100, pw=w/inc*100, ps=(s+Math.max(0,left))/inc*100;
+    last={pn:Math.round(pn),pw:Math.round(pw),ps:Math.round(s/inc*100)};
+    var seg=function(v,c){ return v>0?'<i style="width:'+Math.min(100,v/Math.max(inc,spent)*100).toFixed(2)+'%;background:'+c+'"></i>':''; };
+    var head=left>=0
+      ?'<div><span>Left over each month</span><b class="good">'+money(left)+'</b><em>after bills, spending and savings</em></div>'
+      :'<div><span>Short each month</span><b class="bad">'+money(-left)+'</b><em>you plan to use more than you take home</em></div>';
+    var tips=[];
+    if(left<0) tips.push('Your plan uses '+money(-left)+' more than you take home each month. Look at the biggest line first: <b>'+esc(biggest())+'</b>.');
+    else if(left>0) tips.push('Give the '+money(left)+' left over a job. Moving it to savings brings your savings to '+Math.round((s+left)/inc*100)+'% of your pay.');
+    if(pn>50) tips.push('Needs take '+Math.round(pn)+'% of your pay, above the 50% guide. That is common where rent is high. Housing is '+Math.round((+G.need.rows[0][1]||0)/inc*100)+'% of your pay.');
+    if(s/inc*100>=20) tips.push('You are already saving at least 20% of your pay.');
+    out.innerHTML='<div class="big">'+head
+      +'<div><span>Saving each month</span><b>'+money(s)+'</b><em>'+Math.round(s/inc*100)+'% of your pay</em></div>'
+      +'<div><span>Saved in a year</span><b>'+money(s*12)+'</b><em>at this pace</em></div></div>'
+      +'<div class="bar" role="img" aria-label="Needs '+Math.round(pn)+'%, wants '+Math.round(pw)+'%, savings '+Math.round(s/inc*100)+'% of take-home pay">'+seg(n,'var(--need)')+seg(w,'var(--want)')+seg(s,'var(--save)')+'</div>'
+      +'<div class="legend"><span style="--c:var(--need)">Needs '+Math.round(pn)+'%</span><span style="--c:var(--want)">Wants '+Math.round(pw)+'%</span><span style="--c:var(--save)">Savings '+Math.round(s/inc*100)+'%</span>'+(left>0?'<span style="--c:#2a2f3a">Left over '+Math.round(left/inc*100)+'%</span>':'')+'</div>'
+      +'<table class="cmp"><thead><tr><th>Compared to 50/30/20</th><th>Yours</th><th>Guide</th><th>Guide amount</th></tr></thead><tbody>'
+      +'<tr><td>Needs</td><td>'+Math.round(pn)+'%</td><td>50%</td><td>'+money(inc*0.5)+'</td></tr>'
+      +'<tr><td>Wants</td><td>'+Math.round(pw)+'%</td><td>30%</td><td>'+money(inc*0.3)+'</td></tr>'
+      +'<tr><td>Savings and extra debt payments</td><td>'+Math.round(s/inc*100)+'%</td><td>20%</td><td>'+money(inc*0.2)+'</td></tr></tbody></table>'
+      +(tips.length?'<p class="note">'+tips.join(' ')+'</p>':'');
+  }
+  function biggest(){ var b=['',-1]; K.forEach(function(k){ if(k==='save') return; G[k].rows.forEach(function(r){ if((+r[1]||0)>b[1]) b=[r[0],+r[1]||0]; }); }); return b[0]; }
+  function edit(){ if(!edited){ edited=true; track('bud_edit'); } }
+  var gw=document.getElementById('groups');
+  gw.addEventListener('input',function(e){ var t=e.target, k=t.dataset.k; if(!k) return; edit(); var r=G[k].rows[+t.dataset.i]; if(t.dataset.f==='0') r[0]=t.value; else r[1]=Math.max(0,parseFloat(t.value)||0); render(); });
+  gw.addEventListener('click',function(e){ var t=e.target; if(t.dataset.add){ var g=G[t.dataset.add]; if(g.rows.length>=12) return; g.rows.push(['New line',0]); edit(); build(); render(); var ins=gw.querySelectorAll('.'+t.dataset.add+' .line input[type=text]'); if(ins.length) ins[ins.length-1].select(); }
+    else if(t.dataset.del!=null){ G[t.dataset.k].rows.splice(+t.dataset.del,1); edit(); build(); render(); } });
+  amt.addEventListener('input',function(){ edit(); render(); }); freq.addEventListener('change',function(){ edit(); track('bud_freq',{n:+freq.value}); render(); });
+  // Sign-up handoff: the monthly take-home pay waits in this browser so the app can fill the coin jars with it.
+  function stash(){ try{ localStorage.setItem('qs_budget_plan', JSON.stringify({income:Math.round(income()), at:Date.now()})); }catch(e){} }
+  var links=document.querySelectorAll('a[href*="utm_campaign=budget_calculator"]');
+  for(var i=0;i<links.length;i++) links[i].addEventListener('click',function(){ if(edited) stash(); track('bud_cta',{edited:edited}); });
+  function card(){
+    var c=document.createElement('canvas'); c.width=1200; c.height=630; var x=c.getContext('2d'), F=' system-ui,-apple-system,Segoe UI,Roboto,sans-serif';
+    var g=x.createLinearGradient(0,0,1200,630); g.addColorStop(0,'#0b0d12'); g.addColorStop(1,'#10261a'); x.fillStyle=g; x.fillRect(0,0,1200,630);
+    x.fillStyle='#4ade80'; x.font='800 34px'+F; x.fillText('Qualisight',80,110);
+    x.fillStyle='#e8edf8'; x.font='800 76px'+F; x.fillText('My budget split',80,230);
+    var parts=[['Needs',last.pn,'#60a5fa'],['Wants',last.pw,'#f0abfc'],['Savings',last.ps,'#4ade80']], tot=parts.reduce(function(s,p){return s+Math.max(0,p[1]);},0)||1, X=80;
+    parts.forEach(function(p){ var w=Math.max(0,p[1])/tot*1040; x.fillStyle=p[2]; x.fillRect(X,290,w,56); X+=w; });
+    parts.forEach(function(p,i){ x.fillStyle=p[2]; x.font='800 64px'+F; x.fillText(p[1]+'%',80+i*350,450); x.fillStyle='#97a2b8'; x.font='500 32px'+F; x.fillText(p[0],80+i*350,495); });
+    x.fillStyle='#97a2b8'; x.font='500 30px'+F; x.fillText('Make your own budget free at qualisight.ca/budget-calculator',80,575);
+    return c;
+  }
+  document.getElementById('share').onclick=function(){ if(!last) return; track('bud_share');
+    card().toBlob(function(b){ if(!b) return; var f; try{ f=new File([b],'my-budget-split.png',{type:'image/png'}); }catch(e){}
+      if(f && navigator.canShare && navigator.canShare({files:[f]})){ navigator.share({files:[f], text:'My budget split. Make yours at qualisight.ca/budget-calculator'}).catch(function(){}); return; }
+      var a=document.createElement('a'); a.href=URL.createObjectURL(b); a.download='my-budget-split.png'; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },1500);
+    },'image/png'); };
+  document.getElementById('ics').onclick=function(){ track('bud_ics');
+    var d=new Date(); d.setMonth(d.getMonth()+1,1); function p2(n){ return (n<10?'0':'')+n; }
+    var ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Qualisight//Check-in//EN','BEGIN:VEVENT','UID:bud-'+Date.now()+'@qualisight.ca','DTSTAMP:'+new Date().toISOString().replace(/[-:]|\.\d+/g,''),
+      'DTSTART:'+d.getFullYear()+p2(d.getMonth()+1)+'01T090000','DURATION:PT15M','RRULE:FREQ=MONTHLY;BYMONTHDAY=1','SUMMARY:Budget check-in','DESCRIPTION:Fifteen minutes. Compare last month to your budget and set this month. https://qualisight.ca/budget-calculator/','URL:https://qualisight.ca/budget-calculator/',
+      'BEGIN:VALARM','ACTION:DISPLAY','DESCRIPTION:Budget check-in','TRIGGER:PT0M','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
+    var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'})); a.download='budget-check-in.ics'; document.body.appendChild(a); a.click(); setTimeout(function(){ URL.revokeObjectURL(a.href); a.remove(); },1500); };
+  var ce=document.getElementById('copyEmbed'); if(ce) ce.onclick=function(){ var ta=document.getElementById('embedCode'); ta.select(); var done=function(){ document.getElementById('copied').textContent='Copied.'; track('bud_embed_copy'); };
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(done,function(){ try{ document.execCommand('copy'); done(); }catch(e){} }); else { try{ document.execCommand('copy'); done(); }catch(e){} } };
+  var src=''; try{ src=(new URLSearchParams(location.search).get('utm_source')||'').slice(0,20); }catch(e){}
+  build(); render(); track('bud_view',{ref:(document.referrer||'').split('/')[2]||'', src:src});
+})();
+</script>
+</body>
+</html>
