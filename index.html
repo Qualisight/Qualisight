@@ -24,8 +24,11 @@
 <meta name="twitter:title" content="Qualisight: free budget app and debt payoff planner for Canada">
 <meta name="twitter:description" content="Watch your debt storm clear, your coin jars fill and your TFSA grow. Built on Canadian rules. Free to start.">
 <meta name="twitter:image" content="https://qualisight.ca/og-image.png">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Geist:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" as="script">
+<script>/* returning visitors with a saved login: keep the landing page out of sight until the app decides (fail-safe 4 s) */
+try{ if(localStorage.getItem('sb-bsjyqecneeptlfrsyesf-auth-token')){ document.documentElement.classList.add('qs-returning'); setTimeout(function(){ document.documentElement.classList.remove('qs-returning'); },4000); } }catch(e){}</script>
+<style>.qs-returning #landing-page{visibility:hidden}</style>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -5712,6 +5715,7 @@ button:focus:not(:focus-visible){outline:none}
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script>
 // ══════════════════════════════════════════
 // STATE
@@ -16047,6 +16051,7 @@ captureSignupSource();
   } catch(e){
     document.getElementById('landing-page').classList.remove('hidden');
   }
+  document.documentElement.classList.remove('qs-returning');
 })();
 </script>
 <script>
