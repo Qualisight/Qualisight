@@ -3973,6 +3973,16 @@ button:focus:not(:focus-visible){outline:none}
 #landing-page .lp-tour-card .lp-tour-play{left:1.2rem;top:auto;bottom:0.95rem;transform:none;width:2.6rem!important;height:2.6rem!important;box-shadow:0 0 0 6px rgba(74,222,128,0.16)}
 #landing-page .lp-tour-card .lp-tour-play svg{width:16px;height:16px}
 #landing-page .lp-tour-card{display:flex;flex-direction:column}
+.iva-asof{display:inline-block;margin-left:0.5rem;padding-left:0.5rem;border-left:1px solid var(--border);color:var(--muted)}
+.iva-e{padding:0.55rem 0;border-bottom:1px solid var(--border)}
+.iva-e:last-of-type{border-bottom:0}
+.iva-e-top{display:flex;justify-content:space-between;align-items:center;gap:0.6rem}
+.iva-e-top b{font-size:0.95rem}
+.iva-e-when{font-size:0.76rem;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);border-radius:999px;padding:0.15rem 0.55rem;white-space:nowrap}
+.iva-e-when.up{color:#4ade80;background:rgba(74,222,128,0.12)}.iva-e-when.down{color:#f87171;background:rgba(248,113,113,0.12)}
+.iva-e-l{font-size:0.88rem;margin-top:0.15rem;line-height:1.45}
+.iva-e-l .up{color:#4ade80;font-weight:700}.iva-e-l .down{color:#f87171;font-weight:700}
+.iva-e-s{font-size:0.82rem;color:var(--muted);margin-top:0.1rem}
 </style>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#4ade80">
@@ -16005,7 +16015,7 @@ function ivTab(t, quiet){
   pg.querySelectorAll('.iv-tabs button').forEach(b=>{ const on=b.dataset.t===t; b.classList.toggle('on',on); b.setAttribute('aria-selected',on); });
   if(t==='trades') document.getElementById('iv-trades')?.classList.add('open');
   if(t==='grove'){ try{ groveSize(); groveStart(); }catch(e){} }
-  if(t==='analysis'){ try{ ivAnalysisRender(); }catch(e){ console.warn('analysis', e); } }
+  if(t==='analysis'){ try{ ivAnalysisRender(); if(currentUser && !currentUser.isDemo && Date.now()-(_grove.priceSyncedAt||0)>4.5*60e3) groveSyncPrices().then(()=>ivAnalysisRender()).catch(()=>{}); }catch(e){ console.warn('analysis', e); } }
   if(!quiet){ const bar=pg.querySelector('.iv-tabs'); if(bar && bar.getBoundingClientRect().top<0) window.scrollTo({top:bar.getBoundingClientRect().top+window.scrollY-70}); try{ if(typeof QA!=='undefined') QA.log('iv_tab',{t}); }catch(e){} }
 }
 // ── Live: today's move, market hours, and new prices while the page is open ──
@@ -16132,7 +16142,7 @@ function ivaHover(e){
   const tip=document.getElementById('iva-tip'); if(tip){ tip.hidden=false; tip.style.left=Math.max(60,Math.min(r.width-60,8+i*(r.width-16)/(pts.length-1)))+'px'; tip.innerHTML=`${ivaLabel(pts[i][0])}: <b>$${Math.round(pts[i][1]).toLocaleString('en-CA')}</b>`; }
 }
 function ivaLeave(){ _iva.hover=null; const tip=document.getElementById('iva-tip'); if(tip) tip.hidden=true; ivaDraw(); }
-function ivaRange(n){ _iva.range=n; try{ QA.log('iva_range',{n}); }catch(e){} ivAnalysisRender(); }
+function ivaRange(n){ _iva.range=n; _iva.hover=null; try{ QA.log('iva_range',{n}); }catch(e){} ivAnalysisRender(); }
 function ivAnalysisRender(){
   const el=document.getElementById('iv-analysis'); if(!el) return;
   const H=ivaHoldings();
@@ -16143,7 +16153,7 @@ function ivAnalysisRender(){
   const day=groveMarketDay(), span=day-Math.min(...H.map(h=>(h.marks&&h.marks.length)?h.marks[0][0]:day));
   const ranges=[[7,'1W'],[30,'1M'],[90,'3M'],[120,'All']].filter(([n],i)=>i===0 || span>[7,30,90,120][i-1]);
   if(!ranges.some(r=>r[0]===_iva.range)) _iva.range=ranges[ranges.length-1][0];
-  const pts=ivaSeries(H,_iva.range); _iva.pts=pts; _iva.hover=null;
+  const pts=ivaSeries(H,_iva.range); _iva.pts=pts; if(_iva.hover!=null && _iva.hover>=pts.length) _iva.hover=null;
   const ch=pts.length>1 ? pts[pts.length-1][1]-pts[0][1] : 0, chp=pts.length>1 && pts[0][1]>0 ? ch/pts[0][1]*100 : 0;
   const rangeName={7:'week',30:'month',90:'3 months',120:'4 months'}[_iva.range];
   // groups
@@ -16170,33 +16180,137 @@ function ivAnalysisRender(){
     types[0]?`The biggest share of your money is in <b>${escHtml(types[0].k==='Other'?'other investments':types[0].k)}</b> (${(types[0].v/total*100).toFixed(0)}%).`:''
   ].filter(Boolean);
   const coach = (typeof coachAllowed==='function' && coachAllowed()) ? `<div class="coach-ask" style="margin:0.7rem 0 0"><span class="ca-label">Ask the coach</span><button type="button" onclick="askCoach('In plain words, how is my portfolio spread across accounts and types, and what stands out? Facts only, no buy or sell advice.','analysis')">What stands out in my portfolio?</button></div>` : '';
-  el.innerHTML=`
-    <div class="iva-card">
+  const html=`
+    <div class="iva-card" data-k="move">
       <div class="iva-h">How your holdings moved</div>
       <div class="iva-big ${ch>=0?'up':'down'}">${pts.length>1?`${ch>=0?'+':'-'}$${Math.round(Math.abs(ch)).toLocaleString('en-CA')} (${ch>=0?'+':''}${chp.toFixed(2)}%)`:'$'+Math.round(total).toLocaleString('en-CA')}</div>
-      <div class="iva-sub">${pts.length>1?`over the past ${rangeName}`:'The chart fills in as daily prices come in.'}</div>
+      <div class="iva-sub">${pts.length>1?`over the past ${rangeName}`:'The chart fills in as daily prices come in.'}<span class="iva-asof">${ivaAsOf()}</span></div>
       ${ranges.length>1?`<div class="iva-range" role="group" aria-label="Time range">${ranges.map(([n,l])=>`<button type="button" class="${n===_iva.range?'on':''}" onclick="ivaRange(${n})" aria-pressed="${n===_iva.range}">${l}</button>`).join('')}</div>`:''}
-      ${pts.length>1?`<div class="iva-chart" id="iva-chart" onpointermove="ivaHover(event)" onpointerleave="ivaLeave()" ontouchmove="ivaHover(event)" ontouchend="ivaLeave()"><canvas aria-label="Value of your holdings over the past ${rangeName}" role="img"></canvas><div class="iva-tip" id="iva-tip" hidden></div></div>`:''}
+      ${pts.length>1?`<div class="iva-chart" id="iva-chart" onpointermove="ivaHover(event)" onpointerdown="ivaHover(event)" onpointerleave="ivaLeave()" onpointerup="if(event.pointerType!=='mouse') ivaLeave()" onpointercancel="ivaLeave()"><canvas aria-label="Value of your holdings over the past ${rangeName}" role="img"></canvas><div class="iva-tip" id="iva-tip" hidden></div></div>`:''}
       <div class="iva-note">What the investments you hold today were worth each day. Money you added or took out is not part of this line.</div>
     </div>
-    <div class="iva-two">
+    ${ivaEarningsHtml()}
+    <div class="iva-two" data-k="mix">
       <div class="iva-card"><div class="iva-h">What you own</div><div class="iva-sub">By type of investment</div>${rows(types)}</div>
       <div class="iva-card"><div class="iva-h">Where it is held</div><div class="iva-sub">By account</div>${rows(accts)}</div>
     </div>
-    <div class="iva-card">
+    <div class="iva-card" data-k="movers">
       <div class="iva-h">What is moving</div>
       <div class="iva-two" style="margin-top:0.6rem">
         <div><div class="iva-lab">Since you bought</div><div class="iva-sub" style="margin:0 0 0.1rem">Biggest gains</div>${best.map(mrow).join('')}${worst.length?`<div class="iva-sub" style="margin:0.7rem 0 0.1rem">${worst[0].r<0?'Biggest drops':'Smallest gains'}</div>${worst.map(mrow).join('')}`:''}</div>
         <div><div class="iva-lab">Today</div>${todayList.length?'<div class="iva-sub" style="margin:0 0 0.1rem">Up and down the most</div>':''}${todayList.length?todayList.map(mrow).join(''):'<div class="iva-fact" style="color:var(--muted)">Shows up after the first full day of prices.</div>'}</div>
       </div>
     </div>
-    <div class="iva-card">
+    <div class="iva-card" data-k="facts">
       <div class="iva-h">Quick facts</div>
       ${facts.map(f=>`<div class="iva-fact">${f}</div>`).join('')}
       ${coach}
       <div class="iva-note">Facts about what you hold, not advice on what to buy or sell.</div>
     </div>`;
+  ivaPatch(el, html);
   requestAnimationFrame(ivaDraw);
+  ivaEarnLoad();
+}
+// Update only the parts that changed, so a price tick never rebuilds the tab, the chart or what you are touching
+function ivaPatch(el, html){
+  const tmp=document.createElement('div'); tmp.innerHTML=html;
+  const nw=[...tmp.children], old=[...el.children];
+  const same=old.length===nw.length && nw.every((n,i)=>old[i].dataset.k===n.dataset.k);
+  if(!same){ el.replaceChildren(...nw); return; }
+  nw.forEach((n,i)=>{ const o=old[i]; if(o.isEqualNode(n)) return;
+    if(n.dataset.k==='move' && !!o.querySelector('#iva-chart')===!!n.querySelector('#iva-chart')){
+      ['.iva-big','.iva-sub','.iva-range'].forEach(sel=>{ const a=o.querySelector(sel), b=n.querySelector(sel);
+        if(a&&b){ if(!a.isEqualNode(b)) a.replaceWith(b); } else if(a||b){ o.replaceWith(n); } });
+      return; }
+    o.replaceWith(n); });
+}
+function ivaAsOf(){
+  if(currentUser?.isDemo) return 'Demo prices';
+  const t=ivLastPriceTime(); if(!t) return '';
+  const d=new Date(t), today=d.toDateString()===new Date().toDateString();
+  return 'Prices as of '+d.toLocaleTimeString('en-CA',{hour:'numeric',minute:'2-digit'})+(today?'':', '+d.toLocaleDateString('en-CA',{month:'short',day:'numeric'}));
+}
+// ── Earnings: when each stock you hold reports next, and what it reported last. Facts only. ──
+const _ivaE={rows:{}, at:0, sig:'', busy:false, failed:false};
+function ivaEarnTargets(){
+  // key (as the check-up uses) -> symbol on the US earnings calendar, or null when we cannot match it safely
+  const owned=(typeof ckOwned==='function')?ckOwned():{}, out=[];
+  Object.keys(owned).forEach(k=>{
+    const m=k.match(/^(.*)\.(TO|NE|V|CN)$/);
+    let sym=null;
+    if(!m) sym=k;
+    else { const f=_ck.rows[k]; if(f && f.data && !f.data.unsupported && !f.data.receipt) sym=m[1]; } // a Toronto listing of a company that files with the SEC
+    out.push({key:k, ticker:owned[k].ticker, sym, us:!m});
+  });
+  return out;
+}
+async function ivaEarnLoad(force){
+  const T=ivaEarnTargets(); if(!T.length) return;
+  const keys=T.map(t=>t.key), syms=[...new Set(T.map(t=>t.sym).filter(Boolean))];
+  const missing=keys.filter(k=>!_ck.rows[k]);
+  if(missing.length && !_ck.loading && !_ivaE.ckAsked){ _ivaE.ckAsked=1; try{ await ckLoad(keys); }catch(e){} return ivaEarnLoad(force); }
+  const sig=syms.sort().join(',');
+  if(_ivaE.busy || (!force && sig===_ivaE.sig && Date.now()-_ivaE.at<30*60e3)) return;
+  _ivaE.busy=true;
+  try{
+    if(syms.length){
+      const from=new Date(Date.now()-10*864e5).toISOString().slice(0,10);
+      const r=await sb.from('earnings_calendar').select('symbol,report_date,time,fiscal_quarter,eps_forecast,n_ests,eps_actual,surprise_pct,last_year_eps').in('symbol',syms).gte('report_date',from).order('report_date');
+      if(r.error) throw r.error;
+      const rows={}; (r.data||[]).forEach(x=>{ (rows[x.symbol]=rows[x.symbol]||[]).push(x); });
+      _ivaE.rows=rows;
+    }
+    _ivaE.sig=sig; _ivaE.at=Date.now(); _ivaE.failed=false;
+  }catch(e){ console.warn('earnings', e); _ivaE.failed=true; _ivaE.sig=sig; _ivaE.at=Date.now(); }
+  _ivaE.busy=false;
+  try{ if(document.getElementById('page-investments')?.dataset.ivtab==='analysis') ivAnalysisRender(); }catch(e){}
+}
+function ivaDay(d){ return new Date(d+'T12:00:00').toLocaleDateString('en-CA',{weekday:'short',month:'short',day:'numeric'}); }
+function ivaEps(n,c){ return n==null?'n/a':(n<0?'-':'')+(c==='CAD'?'CA$':c==='US'?'US$':'$')+Math.abs(n).toFixed(2); }
+function ivaLastQuarter(key){
+  const f=_ck.rows[key], q=f&&f.data&&f.data.quarterly; if(!q||!q.length) return null;
+  const last=q[q.length-1], yr=+last.end.slice(0,4), mo=last.end.slice(5,7);
+  const prev=q.find(x=>+x.end.slice(0,4)===yr-1 && Math.abs(+x.end.slice(5,7)-+mo)<=1);
+  const c=f.data.currency||'USD';
+  const chg=(a,b)=>a!=null&&b!=null&&b!==0?(a-b)/Math.abs(b)*100:null;
+  return {label:last.label, eps:last.eps, rev:last.revenue, epsChg:chg(last.eps,prev&&prev.eps), revChg:chg(last.revenue,prev&&prev.revenue), cur:c, end:last.end};
+}
+function ivaEarningsHtml(){
+  const T=ivaEarnTargets();
+  const note='<div class="iva-note">Dates and analyst estimates from the Nasdaq earnings calendar. Results from company filings with the U.S. SEC. Dates can move. Facts only, not advice.</div>';
+  if(!T.length) return `<div class="iva-card" data-k="earn"><div class="iva-h">Earnings</div><div class="iva-sub">Companies report their results every three months. ETFs, funds and crypto do not, so earnings show up here once you hold a company stock.</div></div>`;
+  const _d=new Date(), today=`${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,'0')}-${String(_d.getDate()).padStart(2,'0')}`, soon=[], just=[], none=[];
+  T.forEach(t=>{
+    const list=(t.sym&&_ivaE.rows[t.sym])||[];
+    const next=list.find(x=>x.report_date>=today || (x.eps_actual==null && x.report_date>=today.slice(0,8)+'00' && Date.parse(x.report_date)>=Date.now()-2*864e5)), past=[...list].reverse().find(x=>x.report_date<today && x.eps_actual!=null);
+    if(next) soon.push({t,x:next}); if(past) just.push({t,x:past});
+    if(!next && !past) none.push(t);
+  });
+  soon.sort((a,b)=>a.x.report_date<b.x.report_date?-1:1);
+  const when=x=>{ const n=Math.round((Date.parse(x.report_date+'T12:00:00')-Date.parse(today+'T12:00:00'))/864e5);
+    return n<0?'Results coming':n===0?'Today':n===1?'Tomorrow':`In ${n} days`; };
+  const tm={before_open:'before the market opens',after_close:'after the market closes'};
+  const soonHtml=soon.map(({t,x})=>`<div class="iva-e"><div class="iva-e-top"><b>${escHtml(t.ticker)}</b><span class="iva-e-when">${when(x)}</span></div>
+      <div class="iva-e-l">${x.report_date<today?'Reported':'Reports'} ${ivaDay(x.report_date)}${tm[x.time]?', '+tm[x.time]:''}${x.fiscal_quarter?` (quarter ending ${escHtml(x.fiscal_quarter.replace('/',' '))})`:''}.</div>
+      ${x.eps_forecast!=null?`<div class="iva-e-s">Analysts expect ${ivaEps(x.eps_forecast,t.us?'':'US')} a share${x.n_ests?` (${x.n_ests} estimate${x.n_ests===1?'':'s'})`:''}${x.last_year_eps!=null?`. A year ago it was ${ivaEps(x.last_year_eps,t.us?'':'US')}`:''}.</div>`:''}</div>`).join('');
+  const justHtml=just.map(({t,x})=>{ const beat=x.eps_forecast!=null?(x.eps_actual>=x.eps_forecast):null;
+    return `<div class="iva-e"><div class="iva-e-top"><b>${escHtml(t.ticker)}</b><span class="iva-e-when ${beat==null?'':beat?'up':'down'}">${beat==null?'Reported':beat?'Above estimate':'Below estimate'}</span></div>
+      <div class="iva-e-l">Reported ${ivaDay(x.report_date)}: ${ivaEps(x.eps_actual,t.us?'':'US')} a share${x.eps_forecast!=null?` vs ${ivaEps(x.eps_forecast,t.us?'':'US')} expected`:''}.</div></div>`; }).join('');
+  const lastHtml=T.map(t=>{ const q=ivaLastQuarter(t.key); if(!q) return '';
+    const ch=(v,w)=>v==null?'':`<span class="${v>=0?'up':'down'}">${v>=0?'up':'down'} ${Math.abs(v).toFixed(Math.abs(v)<10?1:0)}%</span>${w?' '+w:''}`;
+    return `<div class="iva-e"><div class="iva-e-top"><b>${escHtml(t.ticker)}</b><span class="iva-e-when">${escHtml(q.label)} quarter</span></div>
+      <div class="iva-e-l">Earned ${ivaEps(q.eps,q.cur)} a share${q.epsChg!=null?`, ${ch(q.epsChg,'from a year earlier')}`:''}.${q.rev!=null?` Sales ${ckBig(q.rev,q.cur)}${q.revChg!=null?`, ${ch(q.revChg,'')}`:''}.`:''}</div></div>`; }).filter(Boolean).join('');
+  const loading=_ivaE.busy && !_ivaE.at;
+  const missing=none.filter(t=>!t.sym || !_ivaE.at ? true : !(_ivaE.rows[t.sym]||[]).length);
+  return `<div class="iva-card" data-k="earn"><div class="iva-h">Earnings</div>
+    <div class="iva-sub">When the companies you hold report next, and what they reported last.</div>
+    ${loading?'<div class="iva-fact" style="color:var(--muted)">Loading earnings dates…</div>':''}
+    ${_ivaE.failed?'<div class="iva-fact" style="color:var(--muted)">Could not load earnings dates right now. They will show up next time.</div>':''}
+    ${soon.length?`<div class="iva-lab" style="margin-top:0.8rem">Coming up</div>${soonHtml}`:''}
+    ${just.length?`<div class="iva-lab" style="margin-top:0.8rem">Just reported</div>${justHtml}`:''}
+    ${lastHtml?`<div class="iva-lab" style="margin-top:0.8rem">Latest results on file</div>${lastHtml}`:''}
+    ${_ivaE.at&&missing.length?`<div class="iva-fact" style="color:var(--muted);font-size:0.84rem">No date on file yet for ${missing.map(t=>escHtml(t.ticker)).join(', ')}. ${missing.some(t=>!t.sym)?'Toronto-only companies are not on the US calendar we use.':'Dates usually appear a few weeks before a report.'}</div>`:''}
+    ${note}</div>`;
 }
 window.addEventListener('resize',()=>{ try{ if(document.getElementById('page-investments')?.dataset.ivtab==='analysis') ivaDraw(); }catch(e){} });
 
