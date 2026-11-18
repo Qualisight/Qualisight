@@ -25,7 +25,7 @@
 <meta name="twitter:description" content="Watch your debt storm clear, your coin jars fill and your TFSA grow. Built on Canadian rules. Free to start.">
 <meta name="twitter:image" content="https://qualisight.ca/og-image.png">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link rel="preload" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Geist:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'"><noscript><link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,600;12..96,700;12..96,800&family=Geist:wght@400;500;600;700&display=swap" rel="stylesheet"></noscript>
-<link rel="preload" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" as="script">
+<link rel="preload" href="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js" as="script" integrity="sha384-uteMfOloLDGt042uDz+xHGF3ym63/WQ6rFq7murQRG8Ih7QrXGEGNtWd8688sb4O" crossorigin="anonymous">
 <script>/* returning visitors with a saved login: keep the landing page out of sight until the app decides (fail-safe 4 s) */
 try{ if(localStorage.getItem('sb-bsjyqecneeptlfrsyesf-auth-token')){ document.documentElement.classList.add('qs-returning'); setTimeout(function(){ document.documentElement.classList.remove('qs-returning'); },4000); } }catch(e){}</script>
 <style>.qs-returning #landing-page{visibility:hidden}</style>
@@ -4047,7 +4047,7 @@ button:focus:not(:focus-visible){outline:none}
       <div>
         <div class="pp-logo">Qualisight</div>
         <div class="pp-title">Privacy Policy</div>
-        <div class="pp-updated">Last updated: June 26, 2026 &nbsp;·&nbsp; Effective date: June 26, 2026</div>
+        <div class="pp-updated">Last updated: November 17, 2026 &nbsp;·&nbsp; Effective date: November 17, 2026</div>
       </div>
       <button class="pp-close" onclick="closePrivacy()" aria-label="Close">✕</button>
     </div>
@@ -4109,7 +4109,7 @@ button:focus:not(:focus-visible){outline:none}
           <tr><td><strong>Stripe</strong></td><td>Payment processing for subscriptions. Stripe collects and handles your payment card details directly under its own privacy policy.</td></tr>
           <tr><td><strong>Zoho Mail</strong></td><td>Sending and receiving account and support email.</td></tr>
           <tr><td><strong>GitHub Pages</strong></td><td>Hosting and serving the application to your browser.</td></tr>
-          <tr><td><strong>AI processing provider</strong></td><td>Powering the AI coach feature. Conversations are sent to be processed so the feature can respond.</td></tr>
+          <tr><td><strong>Anthropic</strong></td><td>Powering the AI coach with its Claude models. Your question and the financial figures needed to answer it are sent to Anthropic, in the United States, to generate a reply. Only when you use the coach.</td></tr>
         </table>
         <p>We require our service providers to protect your personal information using safeguards comparable to our own, and to use it only for the purposes we specify. We remain accountable for your information while it is being processed by them.</p>
         <p>We may also disclose personal information if required to do so by law, by a valid court order, or by a lawful request from a government or regulatory authority, or where necessary to protect our legal rights or the safety of others.</p>
@@ -5717,7 +5717,8 @@ button:focus:not(:focus-visible){outline:none}
   </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- Pinned to one checked version. The integrity hash makes the browser refuse the file if it is ever changed. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js" integrity="sha384-uteMfOloLDGt042uDz+xHGF3ym63/WQ6rFq7murQRG8Ih7QrXGEGNtWd8688sb4O" crossorigin="anonymous"></script>
 <script>
 // ══════════════════════════════════════════
 // STATE
