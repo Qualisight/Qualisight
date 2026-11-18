@@ -3983,6 +3983,18 @@ button:focus:not(:focus-visible){outline:none}
 .iva-e-l{font-size:0.88rem;margin-top:0.15rem;line-height:1.45}
 .iva-e-l .up{color:#4ade80;font-weight:700}.iva-e-l .down{color:#f87171;font-weight:700}
 .iva-e-s{font-size:0.82rem;color:var(--muted);margin-top:0.1rem}
+.ax-next{display:flex;gap:0.7rem;align-items:flex-start;padding:0.55rem 0;border-bottom:1px solid var(--border);font-size:0.92rem;line-height:1.45}
+.ax-next small{display:block;color:var(--muted);font-size:0.84rem;margin-top:0.15rem}
+.ax-pill{flex:none;font-size:0.74rem;font-weight:700;color:#a78bfa;background:rgba(167,139,250,0.12);border-radius:999px;padding:0.18rem 0.6rem;white-space:nowrap;margin-top:0.1rem}
+.ax-pill.up{color:#4ade80;background:rgba(74,222,128,0.12)}.ax-pill.down{color:#f87171;background:rgba(248,113,113,0.12)}
+.ax-q{margin-top:0.9rem}
+.ax-t{width:100%;border-collapse:collapse;margin-top:0.7rem;font-size:0.84rem;font-variant-numeric:tabular-nums}
+.ax-t th{font-size:0.7rem;color:var(--muted);font-weight:600;text-align:right;padding:0 0.3rem 0.35rem}
+.ax-t th:first-child,.ax-t td:first-child{text-align:left}
+.ax-t td{padding:0.38rem 0.3rem;border-top:1px solid var(--border);text-align:right}
+.ax-t td.up{color:#4ade80}.ax-t td.down{color:#f87171}
+@media(max-width:420px){.ax-t th:nth-child(3),.ax-t td:nth-child(3){display:none}}
+.ax-news .ck-news{display:block}
 </style>
   <link rel="manifest" href="/manifest.json">
   <meta name="theme-color" content="#4ade80">
@@ -10602,12 +10614,13 @@ async function fetchNewsForTicker(ticker){
   const r=await fetchNewsForTickerRaw(ticker); if(r.length) _ivNews[ticker]=r; return r;
 }
 async function fetchNewsForTickerRaw(ticker){
-  const url = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&tickers=${encodeURIComponent(ticker)}&limit=5&sort=LATEST&apikey=${AV_KEY}`;
+  // server-side feed (company-lookup news), shaped like the old feed so the panels keep working
   try{
-    const res  = await fetch(url);
-    const data = await res.json();
-    if(data.feed && data.feed.length) return data.feed.slice(0,3);
-    return [];
+    const h=(state.portfolio||[]).find(x=>String(x.ticker||'').toUpperCase()===String(ticker).toUpperCase());
+    const r=await asCall({action:'news', symbol:String(ticker).toUpperCase(), name:(h&&h.name)||''});
+    const p2=n=>String(n).padStart(2,'0'), seen=new Set();
+    return (r.news||[]).filter(n=>{ const k=String(n.title||'').toLowerCase(); if(!k||seen.has(k)) return false; seen.add(k); return true; }).slice(0,4).map(n=>{ const d=new Date((n.time||0)*1000);
+      return { title:n.title, url:n.link, source:n.publisher, time_published:n.time?`${d.getUTCFullYear()}${p2(d.getUTCMonth()+1)}${p2(d.getUTCDate())}T${p2(d.getUTCHours())}${p2(d.getUTCMinutes())}00`:'' }; });
   } catch(e){ return []; }
 }
 
@@ -16645,6 +16658,81 @@ async function asOpen(sym){
   }
   _as.view={sym, a:d.asset, f:d.fund};
   asRender();
+  asExtrasLoad(sym);
+}
+// ── Earnings and news for any company you look up ──
+const _asx={};   // sym -> {earn:[...]|null, news:[...]|null, earnErr, newsErr}
+function asCalSym(){
+  const v=_as.view; if(!v||!v.a) return null;
+  const a=v.a, sym=(a.symbol||v.sym).toUpperCase(), fd=v.f&&v.f.data;
+  const m=sym.match(/^(.*)\.(TO|NE|V|CN)$/);
+  if(!m) return sym.replace(/\./g,'-');
+  return fd && !fd.unsupported && !fd.receipt ? m[1].replace(/\./g,'-') : null;   // a Toronto listing of a company that also files in the US
+}
+async function asExtrasLoad(sym){
+  const v=_as.view; if(!v||!v.a) return;
+  const x=_asx[sym]=_asx[sym]&&Date.now()-_asx[sym].at<15*60e3?_asx[sym]:{at:Date.now(), earn:null, news:null};
+  const done=()=>{ if(_as.view&&_as.view.sym===sym){ const el=document.getElementById('av-extra'); if(el) el.innerHTML=asExtrasHtml(); } };
+  const jobs=[];
+  if(v.a.type==='EQUITY' && x.earn===null){
+    const cs=asCalSym();
+    if(!cs) x.earn=[];
+    else jobs.push((async()=>{ try{ const from=new Date(Date.now()-10*864e5).toISOString().slice(0,10);
+      const r=await sb.from('earnings_calendar').select('report_date,time,fiscal_quarter,eps_forecast,n_ests,eps_actual,last_year_eps').eq('symbol',cs).gte('report_date',from).order('report_date');
+      if(r.error) throw r.error; x.earn=r.data||[]; }catch(e){ x.earn=[]; x.earnErr=true; } done(); })());
+  }
+  if(x.news===null) jobs.push((async()=>{ try{ const r=await asCall({action:'news', symbol:(v.a.symbol||sym), name:v.a.name||''});
+      const seen=new Set(); x.news=(r.news||[]).filter(n=>{ const k=String(n.title||'').toLowerCase(); if(!k||seen.has(k)) return false; seen.add(k); return true; }); }
+    catch(e){ x.news=[]; x.newsErr=true; } done(); })());
+  done(); await Promise.all(jobs);
+}
+function asAgo(t){ if(!t) return ''; const s=Date.now()/1000-t; if(s<3600) return Math.max(1,Math.round(s/60))+' min ago'; if(s<86400) return Math.round(s/3600)+' h ago'; if(s<7*86400) return Math.round(s/86400)+' d ago';
+  return new Date(t*1000).toLocaleDateString('en-CA',{month:'short',day:'numeric'}); }
+function asExtrasHtml(){
+  const v=_as.view; if(!v||!v.a) return '';
+  const a=v.a, sym=(a.symbol||v.sym).toUpperCase(), x=_asx[v.sym]||{}, fd=v.f&&v.f.data;
+  let out='';
+  if(a.type==='EQUITY'){
+    const _d=new Date(), today=`${_d.getFullYear()}-${String(_d.getMonth()+1).padStart(2,'0')}-${String(_d.getDate()).padStart(2,'0')}`;
+    const ca=/\.(TO|NE|V|CN)$/.test(sym), usd=ca?'US':'';
+    const E=x.earn||[], next=E.find(r=>r.report_date>=today), past=[...E].reverse().find(r=>r.report_date<today && r.eps_actual!=null);
+    const pendingToday=!next && [...E].reverse().find(r=>r.report_date<today && r.eps_actual==null && Date.parse(r.report_date)>=Date.now()-2*864e5);
+    const tm={before_open:'before the market opens',after_close:'after the market closes'};
+    const days=d=>Math.round((Date.parse(d+'T12:00:00')-Date.parse(today+'T12:00:00'))/864e5);
+    let cal='';
+    if(x.earn===null) cal='<div class="av-wait" style="padding:0.3rem 0">Checking the earnings calendar…</div>';
+    else {
+      if(next){ const n=days(next.report_date);
+        cal+=`<div class="ax-next"><span class="ax-pill">${n===0?'Today':n===1?'Tomorrow':'In '+n+' days'}</span><div><b>Next report: ${ivaDay(next.report_date)}</b>${tm[next.time]?`, ${tm[next.time]}`:''}.${next.fiscal_quarter?` Quarter ending ${escHtml(next.fiscal_quarter.replace('/',' '))}.`:''}
+          ${next.eps_forecast!=null?`<small>Analysts expect ${ivaEps(next.eps_forecast,usd)} a share${next.n_ests?` (${next.n_ests} estimate${next.n_ests===1?'':'s'})`:''}${next.last_year_eps!=null?`. Same quarter last year: ${ivaEps(next.last_year_eps,usd)}`:''}.</small>`:''}</div></div>`; }
+      if(pendingToday) cal+=`<div class="ax-next"><span class="ax-pill">Just out</span><div><b>Reported ${ivaDay(pendingToday.report_date)}</b>. The result shows here within a day.${pendingToday.eps_forecast!=null?`<small>Analysts expected ${ivaEps(pendingToday.eps_forecast,usd)} a share.</small>`:''}</div></div>`;
+      if(past){ const beat=past.eps_forecast!=null?past.eps_actual>=past.eps_forecast:null;
+        cal+=`<div class="ax-next"><span class="ax-pill ${beat==null?'':beat?'up':'down'}">${beat==null?'Reported':beat?'Above estimate':'Below estimate'}</span><div><b>Reported ${ivaDay(past.report_date)}: ${ivaEps(past.eps_actual,usd)} a share</b>${past.eps_forecast!=null?` vs ${ivaEps(past.eps_forecast,usd)} expected`:''}.</div></div>`; }
+      if(!next && !past && !pendingToday) cal+=`<p class="av-note" style="margin-top:0.2rem">${asCalSym()?'No report date on the calendar yet. Dates usually appear 4 to 8 weeks before a report.':'Report dates come from a US calendar, so Toronto-only companies do not have one here yet.'}</p>`;
+    }
+    // last quarters from the filings
+    let qs='';
+    const Q=(fd&&!fd.unsupported&&fd.quarterly)||[];
+    if(Q.length>=2){
+      const fc=fd.currency||'USD', last=Q.slice(-6);
+      const yoy=(r,key)=>{ const y=+r.end.slice(0,4), mo=+r.end.slice(5,7); const p=Q.find(q=>+q.end.slice(0,4)===y-1 && Math.abs(+q.end.slice(5,7)-mo)<=1); return p&&p[key]!=null&&r[key]!=null&&p[key]!==0?(r[key]-p[key])/Math.abs(p[key])*100:null; };
+      const mx=Math.max(1e-9,...last.map(r=>Math.abs(r.eps||0)));
+      const pc=v2=>v2==null?'<td></td>':`<td class="${v2>=0?'up':'down'}">${v2>=0?'+':''}${v2.toFixed(Math.abs(v2)<10?1:0)}%</td>`;
+      qs=`<div class="av-bars ax-q" role="img" aria-label="Earnings per share by quarter">${last.map((r,i)=>{ const hh=r.eps==null?0:Math.max(3,Math.abs(r.eps)/mx*100); return `<div class="av-bar"><small>${r.eps==null?'':ckAmt(r.eps,fc)}</small><div class="${i===last.length-1?'cur':''}${r.eps<0?' neg':''}" style="height:${hh}%"></div><span>${escHtml(r.label.replace(' 20',"'"))}</span></div>`; }).join('')}</div>
+        <table class="ax-t"><thead><tr><th>Quarter</th><th>EPS</th><th>vs year before</th><th>Sales</th><th>vs year before</th></tr></thead><tbody>
+        ${last.slice().reverse().slice(0,4).map(r=>`<tr><td>${escHtml(r.label)}</td><td>${ckAmt(r.eps,fc)}</td>${pc(yoy(r,'eps'))}<td>${ckBig(r.revenue,fc)}</td>${pc(yoy(r,'revenue'))}</tr>`).join('')}</tbody></table>
+        <p class="av-note">Earnings per share (EPS) and sales by quarter, in ${fc==='CAD'?'Canadian':'US'} dollars, from the company's SEC filings.</p>`;
+    } else if(fd && fd.unsupported){ qs=''; }
+    else if(!fd){ qs=`<p class="av-note">${currentUser&&!currentUser.isDemo?'Quarterly results are not available for this one right now.':'Quarterly results load once you have a free account.'}</p>`; }
+    out+=`<div class="av-sec">Earnings</div>${cal}${qs}`;
+  }
+  // news
+  let nw;
+  if(x.news===null || x.news===undefined) nw='<div class="av-wait" style="padding:0.3rem 0">Finding the latest headlines…</div>';
+  else if(!x.news.length) nw=`<p class="av-note">${x.newsErr?'Could not reach the news feed right now. Try again in a minute.':a.type==='ETF'||a.type==='MUTUALFUND'?'Funds rarely make the news on their own. Check the news on the companies they hold.':'No recent headlines found for this one.'}</p>`;
+  else nw=x.news.slice(0,6).map(n=>`<a class="ck-news" href="${escHtml(/^https:\/\//.test(n.link)?n.link:'#')}" target="_blank" rel="noopener noreferrer"><b>${escHtml(n.title)}</b><span>${escHtml(n.publisher||'')}${n.time?', '+asAgo(n.time):''}</span></a>`).join('');
+  out+=`<div class="av-sec">Latest news</div><div class="ax-news">${nw}</div><p class="av-note">Headlines from Yahoo Finance's news feed. Opens the publisher's page.</p>`;
+  return out;
 }
 function asClose(){ _as.view=null; const v=document.getElementById('as-view'); if(v) v.innerHTML=''; }
 function asRange(r){ _as.range=r; asRender(); }
@@ -16823,9 +16911,10 @@ function asRender0(){
     <div class="av-range"><div class="av-range-bar"><i style="left:${pos}%"></i></div><div class="av-range-l"><span>Low ${money(lo)}</span><span>High ${money(hi)}</span></div></div>
     ${says.length?`<div class="av-sec">What the numbers say</div><div class="av-says"><ul>${says.map(x=>`<li>${escHtml(x)}</li>`).join('')}</ul></div>`:''}
     ${fundHtml}
+    <div id="av-extra">${asExtrasHtml()}</div>
     ${ownSh>0?`<div class="av-own">You own ${(+ownSh.toFixed(4)).toLocaleString('en-CA')} of this, worth about ${money(ownSh*a.price)} at today's price.</div>`:''}
     <div class="av-act">${canAdd?`<button type="button" class="btn" onclick="asAdd()">${ownSh>0?'Add another buy':'Add to my holdings'}</button>`:''}<button type="button" class="btn-ghost" onclick="asAsk()">Ask the coach about ${escHtml(a.symbol||sym)}</button></div>
-    <div class="av-foot">Prices from Yahoo Finance's public data, may be delayed. Company figures from SEC filings, refreshed about weekly. This is information to help you understand an investment, not advice to buy or sell it.</div>
+    <div class="av-foot">Prices from Yahoo Finance's public data, may be delayed. Company figures from SEC filings, refreshed daily. Earnings dates from the Nasdaq calendar. This is information to help you understand an investment, not advice to buy or sell it.</div>
   </div>`;
 }
 function asAdd(){
