@@ -185,7 +185,7 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
       live.innerHTML=h;
       var q=qs[b.t], qe=document.getElementById('q-'+b.t);
       if(q && q.length>=2){ var last=q.slice(-6), mx=Math.max.apply(null,last.map(function(r){return Math.abs(r.eps||0);}))||1;
-        qe.innerHTML='<div class="qs">'+last.map(function(r){ var hh=r.eps==null?0:Math.max(6,Math.abs(r.eps)/mx*100); return '<div><small>'+ca(r.eps)+'</small><i style="height:'+hh+'%"></i><span>'+esc(r.label.replace(' 20',"'"))+'</span></div>'; }).join('')+'</div><p>Earnings per share by quarter, Canadian dollars, from SEC filings.</p>'; }
+        qe.innerHTML='<div class="qs">'+last.map(function(r){ var hh=r.eps==null?0:Math.max(6,Math.abs(r.eps)/mx*100); return '<div><small>'+ca(r.eps)+'</small><i style="height:'+hh+'%"></i><span>'+esc(r.label.replace(' 20',"'"))+'</span></div>'; }).join('')+'</div><p>Earnings per share, latest quarters on file with the U.S. SEC, in Canadian dollars. Newer quarters appear once the bank files them.</p>'; }
     });
   }
   get('heatmaps?id=eq.tsx60&select=data,updated_at').then(function(j){ var d=j&&j[0]&&j[0].data; if(!d) return;
