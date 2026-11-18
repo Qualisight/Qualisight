@@ -4746,6 +4746,8 @@ button:focus:not(:focus-visible){outline:none}
         <a href="/down-payment-calculator/"><b>Down payment calculator</b><span>The least you need, and the month you get there</span></a>
         <a href="/tsx-heatmap/"><b>TSX 60 heatmap</b><span>Today's Canadian market at a glance</span></a>
         <a href="/sp500-heatmap/"><b>S&amp;P 500 heatmap</b><span>Today's US market at a glance</span></a>
+        <a href="/tfsa-limit-2027/"><b>TFSA limit 2027</b><span>Your room on January 1, under both outcomes</span></a>
+        <a href="/canadian-bank-earnings/"><b>Bank earnings dates</b><span>When the Big Six report, with live estimates</span></a>
       </div>
     </div>
   </section>
@@ -4831,6 +4833,8 @@ button:focus:not(:focus-visible){outline:none}
         <button class="lp-footer-link" onclick="lpScrollTo('lp-pricing')">Pricing</button>
         <a class="lp-footer-link" href="/debt-payoff-calculator/" style="text-decoration:none">Debt payoff calculator</a>
         <a class="lp-footer-link" href="/budget-calculator/" style="text-decoration:none">Budget calculator</a>
+        <a class="lp-footer-link" href="/tfsa-limit-2027/" style="text-decoration:none">TFSA limit 2027</a>
+        <a class="lp-footer-link" href="/canadian-bank-earnings/" style="text-decoration:none">Bank earnings dates</a>
         <a class="lp-footer-link" href="/tfsa-contribution-room-calculator/" style="text-decoration:none">TFSA room calculator</a>
         <a class="lp-footer-link" href="/tsx-heatmap/" style="text-decoration:none">TSX 60 heatmap</a>
         <a class="lp-footer-link" href="/sp500-heatmap/" style="text-decoration:none">S&amp;P 500 heatmap</a>
@@ -6381,6 +6385,14 @@ function obImportHome(){
 }
 // Message match: someone arriving from the calculator sees their plan named in the first screen.
 function lpMatchCalc(){
+  // a link like /?lookup=RY.TO from a tool page: name the company and open it in the demo, no sign-up
+  try{ const lk=sessionStorage.getItem('qs_lookup');
+    if(lk){ const h=document.getElementById('lp-h1'), sub=document.getElementById('lp-sub'), btn=document.querySelector('.lp-hero-actions .lp-btn-primary');
+      if(h&&sub){ h.innerHTML=`${escHtml(lk)}: chart, earnings <span class="grad">and news.</span>`;
+        sub.textContent='Open it now in the free demo, no sign-up. Make a free account later to save it to your holdings.';
+        if(btn){ btn.textContent=`Open ${lk} now`; btn.onclick=e=>{ e.preventDefault(); try{ QA.log('cta',{where:'lookup'}); }catch(_){} lpTryDemo(); }; }
+        try{ QA.log('lp_match',{src:'lookup'}); }catch(e){}
+        return; } } }catch(e){}
   const plan=obCalcPlan();
   if(!plan){ const hp=obHomePlan();
     if(!hp){ const bp=obBudgetPlan(); if(!bp) return;
@@ -16357,6 +16369,8 @@ function lpBackHome(){
 function lpTryDemo(){
   document.getElementById('landing-page').classList.add('hidden');
   startDemo();
+  // came from a tool page link to a company: go straight to it
+  try{ if(sessionStorage.getItem('qs_lookup')) setTimeout(()=>{ try{ showPage('investments'); }catch(e){} },350); }catch(e){}
 }
 function lpScrollTo(id){
   const el=document.getElementById(id);
@@ -16598,6 +16612,12 @@ const AS_POPULAR=[['RY.TO','Royal Bank'],['XEQT.TO','XEQT'],['VFV.TO','VFV'],['S
 let _as={q:'',t:null,res:[],sel:-1,seq:0,view:null,range:'1y',busy:false};
 // a heatmap tile's "Track it in Qualisight" link carries ?lookup=TICKER: open it once the Investments page shows
 try{ const lk=new URLSearchParams(location.search).get('lookup'); if(lk && /^[A-Za-z0-9.\-]{1,12}$/.test(lk)) sessionStorage.setItem('qs_lookup', lk.toUpperCase()); }catch(e){}
+// already signed in: once the app is showing, go to Investments so the company opens
+(function(){ let n=0; const t=setInterval(()=>{ n++; try{
+  const lk=sessionStorage.getItem('qs_lookup'), lp=document.getElementById('landing-page');
+  if(!lk || n>24){ clearInterval(t); return; }
+  if(typeof currentUser!=='undefined' && currentUser && !currentUser.isDemo && lp && lp.classList.contains('hidden')){ clearInterval(t); showPage('investments'); }
+}catch(e){ clearInterval(t); } },500); })();
 function asInit(){
   try{ const lk=sessionStorage.getItem('qs_lookup'); const pg=document.getElementById('page-investments');
     if(lk && pg && pg.classList.contains('active') && typeof currentUser!=='undefined' && currentUser){ sessionStorage.removeItem('qs_lookup');
