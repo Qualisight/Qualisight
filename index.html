@@ -16048,7 +16048,16 @@ captureSignupSource();
           if(typeof lpTryDemo!=='function' || typeof startDemo!=='function'){ if(++tries<60) return setTimeout(open,50); document.getElementById('landing-page').classList.remove('hidden'); return; }
           lpTryDemo(); if(dq==='grove') setTimeout(()=>{ showPage('investments'); const g=document.getElementById('grove'); window.scrollTo({top: g ? Math.max(0, g.getBoundingClientRect().top+window.scrollY-72) : 0, behavior:'instant'}); },450); };
         open();
-      } else document.getElementById('landing-page').classList.remove('hidden');
+      } else {
+        document.getElementById('landing-page').classList.remove('hidden');
+        // A tool page's "Save" button sends ?signup=1: open account creation straight away
+        let sq=null; try{ sq=new URLSearchParams(location.search).get('signup'); }catch(e){}
+        if(sq==='1'){
+          try{ const u=new URL(location.href); u.searchParams.delete('signup'); history.replaceState(null,'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams:'')+u.hash); }catch(e){}
+          let t2=0; const go=()=>{ if(typeof lpShowSignup!=='function'){ if(++t2<60) return setTimeout(go,50); return; } try{ lpShowSignup(); }catch(e){} };
+          setTimeout(go,60);
+        }
+      }
     }
   } catch(e){
     document.getElementById('landing-page').classList.remove('hidden');

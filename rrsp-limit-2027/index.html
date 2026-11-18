@@ -56,7 +56,7 @@ details{border-top:1px solid var(--border);padding:0.7rem 0}summary{cursor:point
 .note{font-size:0.84rem;color:var(--muted)}
 footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);color:var(--muted);font-size:0.85rem}
 .status .ok b{color:var(--green)}
-@media(max-width:640px){h1{font-size:1.65rem}.status,.f{grid-template-columns:1fr}}
+@media(max-width:640px){h1{font-size:1.65rem}.f{grid-template-columns:1fr}.status{gap:0.4rem}.status div{padding:0.55rem 0.5rem;border-radius:12px}.status span{font-size:0.68rem;line-height:1.25}.status b{font-size:1rem}.status em{font-size:0.66rem;line-height:1.25}}
 </style>
 </head>
 <body>
@@ -85,7 +85,7 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
 </section>
 
 <div class="cta"><p><b>Watch your RRSP grow.</b><small>In Qualisight your RRSP, TFSA and FHSA grow as trees as you add money. Investment tracking is free for 14 days, then $12 a month. Budget and debt tools are free forever. No card, no bank login.</small></p>
-  <a class="btn" href="/?utm_source=organic&amp;utm_campaign=rrsp_2027" id="cta">Start free</a></div>
+  <a class="btn" href="/?utm_source=organic&amp;utm_campaign=rrsp_2027&amp;signup=1" id="cta">Start free</a></div>
 
 <h2>How your RRSP room is worked out</h2>
 <p>Each year the CRA adds new room based on what you earned the year before. The new room is 18% of your earned income from the previous year, up to that year's dollar limit. If you are in a pension plan at work, your pension adjustment is taken off. Any room you did not use in past years carries forward and is added on top. <a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/rrsps-related-plans/contributing-a-rrsp-prpp/contributions-affect-your-rrsp-prpp-deduction-limit.html" target="_blank" rel="noopener">The CRA explains it here.</a></p>
@@ -138,5 +138,35 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
   render(); track('rrsp27_view',{ref:(document.referrer||'').split('/')[2]||'', src:src});
 })();
 </script>
+<script>/* Where this visitor came from: saved on the first visit only (same as the app does), and an ad's tags are carried to the app so a sign-up is credited to the ad. Stays in this browser. */
+(function(){try{
+  var p=new URLSearchParams(location.search), s=(p.get('utm_source')||'').slice(0,60), c=(p.get('utm_campaign')||'').replace(/[^a-z0-9_-]/gi,'').slice(0,80), m=(p.get('utm_medium')||'').slice(0,60);
+  var links=document.querySelectorAll('a[href^="/?utm_source="]'), def='';
+  if(links.length){ def=new URLSearchParams(links[0].getAttribute('href').slice(2)).get('utm_campaign')||''; }
+  var ref=''; try{ var r=document.referrer?new URL(document.referrer).hostname:''; ref=r&&r!==location.hostname?r:''; }catch(e){}
+  if(!localStorage.getItem('qs_source')) localStorage.setItem('qs_source',JSON.stringify({source:(s||ref||'direct').slice(0,60),medium:(m||(!s&&ref?'organic':'')).slice(0,60),campaign:(c||def).slice(0,80),landedAt:new Date().toISOString()}));
+  if(s||c){ for(var i=0;i<links.length;i++){ var a=links[i], q=new URLSearchParams(a.getAttribute('href').slice(2)); if(s) q.set('utm_source',s); if(c) q.set('utm_campaign',c); if(m) q.set('utm_medium',m); a.setAttribute('href','/?'+q.toString()); } }
+}catch(e){}})();</script>
+<style>
+.qbar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:none;align-items:center;gap:0.7rem;padding:0.6rem 0.9rem calc(0.6rem + env(safe-area-inset-bottom));background:rgba(11,13,18,0.96);border-top:1px solid rgba(74,222,128,0.35);backdrop-filter:blur(8px)}
+.qbar div{flex:1;min-width:0}.qbar span{display:block;font-size:0.74rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.qbar b{display:block;font-size:1.05rem;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qbar .btn{min-height:44px;padding:0 1rem;white-space:nowrap}
+@media(max-width:640px){.qbar.on{display:flex}body.qbar-pad{padding-bottom:76px}}
+</style>
+<div class="qbar" id="qbar" aria-hidden="true"><div><span id="qbarL"></span><b id="qbarV"></b></div><a class="btn" id="qbarB" href="#" tabindex="-1">Save free</a></div>
+<script>/* Phones: keep the answer and the next step on screen while the visitor scrolls */
+(function(){try{
+  if(/[?&]embed=1/.test(location.search)) return;
+  var bar=document.getElementById('qbar'), L=document.getElementById('qbarL'), V=document.getElementById('qbarV'), B=document.getElementById('qbarB');
+  var main=document.querySelector('.cta .btn'), res=document.getElementById('res')||document.getElementById('out'); if(!main||!res) return;
+  var mt=(main.textContent||'').trim(); B.textContent=mt.length<=12?mt:'Save free';
+  B.addEventListener('click',function(e){ e.preventDefault(); main.click(); });
+  var seen={}, has=false;
+  function read(){ var v=res.querySelector('.big b')||res.querySelector(':scope>b'), l=res.querySelector('.big span')||res.querySelector(':scope>span');
+    has=!!(v&&v.textContent.trim()); if(has){ V.textContent=v.textContent.trim(); L.textContent=(l?l.textContent.trim():''); } upd(); }
+  function upd(){ var on=has&&!seen.cta&&!seen.res; bar.classList.toggle('on',on); bar.setAttribute('aria-hidden',!on); document.body.classList.toggle('qbar-pad',has); }
+  if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){ es.forEach(function(e){ seen[e.target===res?'res':'cta']=e.intersectionRatio>=0.5; }); upd(); },{threshold:[0,0.5,1]}); io.observe(res); io.observe(main.closest('.cta')); }
+  new MutationObserver(read).observe(res,{childList:true,subtree:true,characterData:true}); read();
+}catch(e){}})();</script>
 </body>
 </html>

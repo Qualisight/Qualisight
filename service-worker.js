@@ -1,4 +1,4 @@
-const CACHE_NAME = 'qualisight-v61';
+const CACHE_NAME = 'qualisight-v62';
 
 // Cache only the single HTML file — it contains everything
 const ASSETS = [

@@ -238,5 +238,14 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
   render(); track('home_view',{ref:(document.referrer||'').split('/')[2]||'', src:src});
 })();
 </script>
+<script>/* Where this visitor came from: saved on the first visit only (same as the app does), and an ad's tags are carried to the app so a sign-up is credited to the ad. Stays in this browser. */
+(function(){try{
+  var p=new URLSearchParams(location.search), s=(p.get('utm_source')||'').slice(0,60), c=(p.get('utm_campaign')||'').replace(/[^a-z0-9_-]/gi,'').slice(0,80), m=(p.get('utm_medium')||'').slice(0,60);
+  var links=document.querySelectorAll('a[href^="/?utm_source="]'), def='';
+  if(links.length){ def=new URLSearchParams(links[0].getAttribute('href').slice(2)).get('utm_campaign')||''; }
+  var ref=''; try{ var r=document.referrer?new URL(document.referrer).hostname:''; ref=r&&r!==location.hostname?r:''; }catch(e){}
+  if(!localStorage.getItem('qs_source')) localStorage.setItem('qs_source',JSON.stringify({source:(s||ref||'direct').slice(0,60),medium:(m||(!s&&ref?'organic':'')).slice(0,60),campaign:(c||def).slice(0,80),landedAt:new Date().toISOString()}));
+  if(s||c){ for(var i=0;i<links.length;i++){ var a=links[i], q=new URLSearchParams(a.getAttribute('href').slice(2)); if(s) q.set('utm_source',s); if(c) q.set('utm_campaign',c); if(m) q.set('utm_medium',m); a.setAttribute('href','/?'+q.toString()); } }
+}catch(e){}})();</script>
 </body>
 </html>
