@@ -4861,6 +4861,7 @@ button:focus:not(:focus-visible){outline:none}
         <a class="lp-footer-link" href="/debt-payoff-calculator/" style="text-decoration:none">Debt payoff calculator</a>
         <a class="lp-footer-link" href="/budget-calculator/" style="text-decoration:none">Budget calculator</a>
         <a class="lp-footer-link" href="/tfsa-limit-2027/" style="text-decoration:none">TFSA limit 2027</a>
+        <a class="lp-footer-link" href="/rrsp-limit-2027/" style="text-decoration:none">RRSP limit 2027</a>
         <a class="lp-footer-link" href="/canadian-bank-earnings/" style="text-decoration:none">Bank earnings dates</a>
         <a class="lp-footer-link" href="/tfsa-contribution-room-calculator/" style="text-decoration:none">TFSA room calculator</a>
         <a class="lp-footer-link" href="/tsx-heatmap/" style="text-decoration:none">TSX 60 heatmap</a>
@@ -17158,7 +17159,8 @@ function lpOpenWorld(id){
 (function(){
   let camp=''; try{ camp=(new URLSearchParams(location.search).get('utm_campaign')||sessionStorage.getItem('qs_camp')||'').toLowerCase(); }catch(e){}
   if(!camp || /grove|invest/.test(camp)) return;
-  const V = /tfsa/.test(camp) ? {h:'You know your TFSA room. <span class="grad">Now watch it grow.</span>', s:'Your TFSA, RRSP and FHSA become trees that grow with every deposit. Budgeting and debt payoff are free forever. No bank login.', t:'Clear debt, then grow'}
+  const V = /rrsp/.test(camp) ? {h:'You know your RRSP room. <span class="grad">Now watch it grow.</span>', s:'Your RRSP, TFSA and FHSA become trees that grow with every deposit. Budgeting and debt payoff are free forever. No bank login.', t:'Clear debt, then grow'}
+    : /tfsa/.test(camp) ? {h:'You know your TFSA room. <span class="grad">Now watch it grow.</span>', s:'Your TFSA, RRSP and FHSA become trees that grow with every deposit. Budgeting and debt payoff are free forever. No bank login.', t:'Clear debt, then grow'}
     : /debt|credit|loan|payoff/.test(camp) ? {h:'See the exact month <span class="grad">you\'ll be <span class="nw">debt-free.</span></span>', s:'Add your debts and watch the storm clear with every payment. Snowball or avalanche, built on real interest math. Free forever.', t:'Your debt storm'}
     : /budget|spend|save|jar/.test(camp) ? {h:'Your budget, <span class="grad">as coin jars.</span>', s:'Each spending goal is a jar. Stay under and it stays full; what you save fills a treasure chest. Carrying debt too? Type it below and see the month it is gone.', t:'Your debt storm'}
     : /home|house|fhsa|mortgage|condo/.test(camp) ? {h:'Your road to <span class="grad">your first home.</span>', s:'Your FHSA, minimum down payment, closing costs and the lender\'s stress test, all on one road. Built on Canadian rules.', t:'Clear debt, then buy sooner'}
@@ -17166,7 +17168,7 @@ function lpOpenWorld(id){
   if(!V) return;
   const h1=document.getElementById('lp-h1'), sub=document.getElementById('lp-sub'), t=document.getElementById('lpp-title');
   if(h1) h1.innerHTML=V.h; if(sub) sub.textContent=V.s; if(t) t.textContent=V.t;
-  if(/budget|tfsa/.test(camp)){ const al=document.querySelector('.lp-alt'); if(al) al.hidden=true; }
+  if(/budget|tfsa|rrsp/.test(camp)){ const al=document.querySelector('.lp-alt'); if(al) al.hidden=true; }
 })();
 
 // ── Phones: a "Start for free" bar sticks to the bottom once you've scrolled past the main button ──
