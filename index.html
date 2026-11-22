@@ -247,7 +247,7 @@ header{
 .bm-cc-toggle{background:transparent;border:none;color:var(--muted);font-family:var(--font-body);font-size:0.76rem;cursor:pointer;padding:0.2rem 0;transition:color 0.15s;}
 .bm-cc-toggle:hover{color:var(--text);}
 
-/* Spending vs Goals — collapsible category cards */
+/* Spending vs Goals - collapsible category cards */
 .bm-cats{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:1.2rem;}
 .bm-cat{
   background:var(--card);border:1px solid var(--border);border-radius:13px;overflow:hidden;
@@ -333,7 +333,7 @@ header{
 .bm-save-btn{margin-top:1.1rem;background:var(--accent);color:#0a1a0a;border:none;font-family:var(--font-body);font-size:0.88rem;font-weight:700;padding:0.6rem 1.4rem;border-radius:9px;cursor:pointer;transition:opacity 0.15s;}
 .bm-save-btn:hover{opacity:0.9;}
 
-/* Year at a Glance — cleaner */
+/* Year at a Glance - cleaner */
 .bm-year{background:var(--card);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-top:1.4rem;}
 .bm-year-head{display:flex;align-items:center;gap:0.8rem;padding:1rem 1.2rem;cursor:pointer;user-select:none;transition:background 0.15s;}
 .bm-year-head:hover{background:rgba(255,255,255,0.02);}
@@ -851,7 +851,7 @@ header{
 .iv-acct-mv-gain{font-size:0.74rem;font-variant-numeric:tabular-nums;}
 .iv-acct-body{padding:0 1.3rem 1.1rem;}
 
-/* holding row — card style, not cramped table */
+/* holding row - card style, not cramped table */
 .iv-holding{padding:0.9rem 0;border-top:1px solid var(--border);}
 .iv-holding:first-child{border-top:none;}
 .iv-hold-top{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:0.6rem;}
@@ -2510,7 +2510,7 @@ body.hide-figures .qs-money{transition:filter .15s}
 
 
 /* ═══════════════════════════════════════════════════════════
-   QUALISIGHT REDESIGN — "polymer note"
+   QUALISIGHT REDESIGN - "polymer note"
    Light, calm surfaces. Every section borrows the colour of a
    Canadian bill. Big figures in Geist with tabular digits.
    Headlines in Bricolage Grotesque. One motif: a guilloche
@@ -5305,7 +5305,7 @@ button:focus:not(:focus-visible){outline:none}
     </div>
   </div>
 
-  <!-- ═══ YEAR AT A GLANCE — collapsible ═══ -->
+  <!-- ═══ YEAR AT A GLANCE - collapsible ═══ -->
   <div class="bm-year" id="bm-year">
     <div class="bm-year-head" onclick="toggleYearGlance()">
       <span class="bm-setup-icon"></span>
@@ -5463,7 +5463,7 @@ button:focus:not(:focus-visible){outline:none}
   <!-- Hidden stat row kept for any legacy references (not displayed) -->
   <div class="stat-row" id="port-stats" style="display:none"></div>
 
-  <!-- Account blocks — rendered by renderAllocator() -->
+  <!-- Account blocks - rendered by renderAllocator() -->
   <div id="alloc-accounts" style="margin-bottom:1.2rem"></div>
 
 
@@ -5768,7 +5768,7 @@ button:focus:not(:focus-visible){outline:none}
 // STATE
 // ══════════════════════════════════════════
 // ══════════════════════════════════════════
-// DEMO STATE — pre-loaded Canadian sample data
+// DEMO STATE - pre-loaded Canadian sample data
 // ══════════════════════════════════════════
 const DEMO_STATE = {
   income: [
@@ -6110,7 +6110,7 @@ async function submitResetPassword(){
   const { error } = await sb.auth.updateUser({ password: pass });
   btn.textContent='Save New Password'; btn.disabled=false;
   if(error){ err.textContent=error.message; return; }
-  // Success — sign out the recovery session, show sign in with message
+  // Success - sign out the recovery session, show sign in with message
   await sb.auth.signOut();
   showSignIn();
   document.getElementById('si-error').textContent='';
@@ -6168,7 +6168,7 @@ function closeTos(){
   document.getElementById('tos-overlay').classList.remove('open');
 }
 
-// Step 2: user accepted ToS — now actually create the account
+// Step 2: user accepted ToS - now actually create the account
 async function acceptTermsAndCreate(){
   closeTos();
   const name  = document.getElementById('cr-name').value.trim();
@@ -6182,7 +6182,7 @@ async function acceptTermsAndCreate(){
   });
   if(error){ err.textContent=error.message; showCreate(); return; }
 
-  // Email confirmation is OFF — Supabase returns a session immediately
+  // Email confirmation is OFF - Supabase returns a session immediately
   if(data.session){
     // Set trial start for new accounts
     await handleSignedInUser(data.user);
@@ -6190,7 +6190,7 @@ async function acceptTermsAndCreate(){
     return;
   }
 
-  // Email confirmation is ON — show the check inbox screen
+  // Email confirmation is ON - show the check inbox screen
   document.getElementById('verify-email-display').textContent=email;
   try{ QA.log('verify_shown',{}); }catch(e){}
   showPanel('auth-verify');
@@ -6238,16 +6238,16 @@ function checkAndRollover(){
   const now      = currentMonthKey();
   const lastKey  = state.activeMonth;
 
-  // First login ever — just stamp the month, nothing to archive
+  // First login ever - just stamp the month, nothing to archive
   if(!lastKey){
     state.activeMonth = now;
     return false;
   }
 
-  // Same month — nothing to do
+  // Same month - nothing to do
   if(lastKey === now) return false;
 
-  // Different month — archive last month's data into yearly
+  // Different month - archive last month's data into yearly
   const archiveMonthIdx  = monthIndexFromKey(lastKey);
   const archiveMonthName = MONTH_NAMES[archiveMonthIdx];
   const archiveYear      = parseInt(lastKey.split('-')[0]);
@@ -6262,7 +6262,7 @@ function checkAndRollover(){
 
   if(!state.yearly) state.yearly = [];
 
-  // Archive income — one row per income source name
+  // Archive income - one row per income source name
   state.income.forEach(inc=>{
     let row = state.yearly.find(r=>r.cat===inc.name && r.type==='Income' && r.year===archiveYear);
     if(!row){
@@ -6272,7 +6272,7 @@ function checkAndRollover(){
     row.monthly[archiveMonthIdx] = inc.actual;
   });
 
-  // Archive expenses — one row per category (summed)
+  // Archive expenses - one row per category (summed)
   const expCats = [...new Set(state.expenses.map(e=>e.cat))];
   expCats.forEach(cat=>{
     const total = state.expenses.filter(e=>e.cat===cat).reduce((s,e)=>s+e.actual, 0);
@@ -7083,7 +7083,7 @@ async function confirmCancelSub(){
         return;
       }
     }
-    // Fallback — static portal link, user enters their email to authenticate
+    // Fallback - static portal link, user enters their email to authenticate
     window.location.href = 'https://billing.stripe.com/p/login/8x2dRb1jM5Bf5FPaih7ok00';
   } catch(e){
     window.location.href = 'https://billing.stripe.com/p/login/8x2dRb1jM5Bf5FPaih7ok00';
@@ -7164,13 +7164,13 @@ function fmt(n){
   const centsStr = cents.toString().padStart(2,'0');
   return (neg?'-':'')+'$'+wholeStr+'<span class="cents">.'+centsStr+'</span>';
 }
-// Plain-text currency (no HTML) — for inputs, placeholders, or anywhere HTML can't render.
+// Plain-text currency (no HTML) - for inputs, placeholders, or anywhere HTML can't render.
 function fmtPlain(n){
   const v = parseFloat(n||0);
   const decimals = v % 1 === 0 ? 0 : 2;
   return '$'+v.toLocaleString('en-CA',{minimumFractionDigits:decimals,maximumFractionDigits:2});
 }
-// For large headline numbers — always whole dollars, no cents
+// For large headline numbers - always whole dollars, no cents
 function fmtW(n){
   return '$'+Math.round(parseFloat(n||0)).toLocaleString('en-CA');
 }
@@ -7535,15 +7535,15 @@ function updateDebtMin(i, val){
 function deleteDebtTransaction(debtIdx, txIdx){
   const debt = state.debts[debtIdx];
   if(!debt || !debt.transactions) return;
-  // The txIdx refers to position in the recent (first 3) slice — map to full array index
+  // The txIdx refers to position in the recent (first 3) slice - map to full array index
   const tx = debt.transactions[txIdx];
   if(!tx) return;
   // Reverse the transaction's effect on the balance
   if(tx.type === 'payment'){
-    // Payment was subtracted from balance — add it back
+    // Payment was subtracted from balance - add it back
     debt.balance = parseFloat((debt.balance + tx.amount).toFixed(2));
   } else {
-    // Charge was added to balance — subtract it back
+    // Charge was added to balance - subtract it back
     debt.balance = Math.max(0, parseFloat((debt.balance - tx.amount).toFixed(2)));
   }
   debt.transactions.splice(txIdx, 1);
@@ -8432,7 +8432,7 @@ function renderMonthly(){
     handleExpCatChange();
   }
 
-  // Credit card toggle row — only show if user has credit card debts
+  // Credit card toggle row - only show if user has credit card debts
   const cards       = state.debts.map((d,i)=>({d,i})).filter(({d})=>d.type==='credit_card');
   const ccToggleRow = document.getElementById('exp-cc-toggle-row');
   const ccSel       = document.getElementById('exp-cc');
@@ -8513,7 +8513,7 @@ function renderMonthly(){
       : 'Set these once a month, then forget them.';
   }
 
-  // ── Spending vs Goals — collapsible category cards ──
+  // ── Spending vs Goals - collapsible category cards ──
   const expEl=document.getElementById('expense-cats');
   const budgetsWithSpend=state.budgets.map(b=>{
     const items=state.expenses.filter(e=>e.cat===b.cat);
@@ -10532,7 +10532,7 @@ async function fetchLivePrice(ticker){
 function addPortfolioEntry(){
   const accounts = state.accounts || [];
   if(!accounts.length){
-    // No accounts — prompt to add one first
+    // No accounts - prompt to add one first
     document.getElementById('alloc-add-form').style.display='block';
     document.getElementById('alloc-add-form').scrollIntoView({behavior:'smooth', block:'start'});
     showToast(' Add an account first, then you can add holdings to it.');
@@ -10646,7 +10646,7 @@ async function refreshAllPrices(){
   document.querySelectorAll('.port-price-cell').forEach(el=>el.classList.add('price-refreshing'));
 
   let refreshed=0, failed=0;
-  // Rate limit: AV free tier = 25 req/day, 5/min — fetch sequentially with small delay
+  // Rate limit: AV free tier = 25 req/day, 5/min - fetch sequentially with small delay
   for(const h of state.portfolio){
     if(h.type==='Crypto') { failed++; continue; } // AV doesn't support crypto well on free tier
     if(h.type==='Gold') continue; // physical gold is priced by the user
@@ -10915,7 +10915,7 @@ function calcAccountBalance(accountId){
     .reduce((s,h)=>s+(h.price*h.shares), 0);
 }
 
-// Legacy stub — balance is now auto-calculated
+// Legacy stub - balance is now auto-calculated
 function updateAccountBalance(id, val){}
 
 const _ivOpen={};
@@ -11137,7 +11137,7 @@ function editHolding(accountId, ticker){
   document.getElementById('port-form').scrollIntoView({behavior:'smooth', block:'start'});
 }
 
-// Stubs for old alloc-holding-form functions — now handled by unified port-form
+// Stubs for old alloc-holding-form functions - now handled by unified port-form
 function addHolding(accountId){ addHoldingToAccount(accountId); }
 function saveHolding(){}
 function cancelHolding(){ document.getElementById('alloc-holding-form') && (document.getElementById('alloc-holding-form').style.display='none'); }
@@ -11225,14 +11225,14 @@ async function toggleAI(src){
   // Complete step 6 of walkthrough when AI panel is opened
   wtAutoAdvance(9);
 
-  // Demo mode — data already in state, ready immediately
+  // Demo mode - data already in state, ready immediately
   if(!currentUser || currentUser.isDemo){
     aiDataReady = true;
     try{ aiSuggest(); }catch(e){}
     return;
   }
 
-  // Real user — fetch fresh from Supabase before allowing any message
+  // Real user - fetch fresh from Supabase before allowing any message
   aiDataReady = false;
   setAIInputLocked(true);
 
@@ -11247,7 +11247,7 @@ async function toggleAI(src){
     }
     aiDataReady = true;
   } catch(e){
-    // Fall back to whatever is in state — don't block the user
+    // Fall back to whatever is in state - don't block the user
     aiDataReady = true;
   } finally {
     loadingMsg.remove();
@@ -11435,7 +11435,7 @@ ${(() => {
 })()}`;
 }
 
-// Scripted demo responses — no API cost. Tuned to feel like the real advisor.
+// Scripted demo responses - no API cost. Tuned to feel like the real advisor.
 // Sample-account coach: every answer is worked out from the numbers on screen, so it never contradicts them.
 // It follows the same rules as the real coach: plain words, one next step, no investment picks, no limits quoted from memory.
 function demoReply(msg){
@@ -11519,7 +11519,7 @@ async function sendAI(){
   const isDemo = currentUser && currentUser.isDemo;
   console.log(isDemo ? '[Qualisight] DEMO MODE, scripted response' : '[Qualisight] LIVE API, calling Supabase edge function');
 
-  // Demo mode — scripted responses, no API cost
+  // Demo mode - scripted responses, no API cost
   if(isDemo){
     await new Promise(r=>setTimeout(r, 600+Math.random()*400));
     let reply; try{ reply=demoReply(msg); }catch(e){ reply='I could not work that out from the sample numbers. Try asking about the budget, the debts or the home goal.'; }
@@ -15342,7 +15342,7 @@ function calcPaycheck(){
     remaining -= Math.round(suggested);
   }
 
-  // Step 2: FHSA (if exists and under limit) — best first-home vehicle
+  // Step 2: FHSA (if exists and under limit) - best first-home vehicle
   if(fhsaAcc && remaining > 0){
     const roomLeft = Math.max(0, FHSA_LIMIT - fhsaBalance);
     if(roomLeft > 0){
@@ -16156,7 +16156,7 @@ captureSignupSource();
   const accessToken = hashParams.get('access_token');
 
   if(isRecovery && accessToken){
-    // Show the reset form immediately — don't touch Supabase session yet
+    // Show the reset form immediately - don't touch Supabase session yet
     document.getElementById('landing-page').classList.add('hidden');
     document.getElementById('auth-screen').style.display='flex';
     showPanel('auth-reset');
