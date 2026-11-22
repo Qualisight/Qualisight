@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Emergency Fund Calculator Canada: How Much, and By When | Qualisight</title>
+<meta name="description" content="Work out your emergency fund target (3 to 6 months of expenses) and the exact month you will reach it. Free, no sign-up, based on Government of Canada guidance.">
+<link rel="canonical" href="https://qualisight.ca/emergency-fund-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Emergency fund calculator: the month you are covered">
+<meta property="og:description" content="Your target, what is left, and the month you reach it. Free, no sign-up.">
+<meta property="og:url" content="https://qualisight.ca/emergency-fund-calculator/">
+<meta property="og:image" content="https://qualisight.ca/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0d0f14">
+<link rel="icon" href="/icon-192.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Qualisight", "item": "https://qualisight.ca/"}, {"@type": "ListItem", "position": 2, "name": "Emergency fund calculator", "item": "https://qualisight.ca/emergency-fund-calculator/"}]}</script>
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "How much should I have in an emergency fund in Canada?", "acceptedAnswer": {"@type": "Answer", "text": "The Financial Consumer Agency of Canada suggests saving the equivalent of 3 to 6 months of your regular expenses. You can also aim for 3 to 6 months of income. If you spend $3,000 a month, 3 months is $9,000 and 6 months is $18,000."}}, {"@type": "Question", "name": "How long will it take to save my emergency fund?", "acceptedAnswer": {"@type": "Answer", "text": "Subtract what you have saved from your target, then divide by what you can put aside each month. At $250 a month, a $9,000 target from zero takes 36 months. The calculator above shows the exact month for your numbers."}}, {"@type": "Question", "name": "Where should I keep my emergency fund?", "acceptedAnswer": {"@type": "Answer", "text": "The Financial Consumer Agency of Canada suggests a savings account or an investment that can be easily cashed, kept separate so it is not touched unless there is an emergency. Look for low or no fees."}}, {"@type": "Question", "name": "What counts as an emergency?", "acceptedAnswer": {"@type": "Answer", "text": "Things like a car repair, an urgent vet visit, losing your job, health problems that stop you from working, or a home repair such as a broken hot water tank. A sale or a trip is a savings goal, not an emergency."}}, {"@type": "Question", "name": "What if I can only save a little?", "acceptedAnswer": {"@type": "Answer", "text": "Start small and keep going. At $5 a week you have $260 after a year, and at $20 a week you have $1,040. Cutting one regular expense and saving that amount helps the fund grow faster."}}, {"@type": "Question", "name": "Why have an emergency fund if I have a credit card?", "acceptedAnswer": {"@type": "Answer", "text": "Paying for a surprise with savings is usually better than paying with credit, according to the Financial Consumer Agency of Canada. It keeps one bad month from turning into debt that costs interest."}}]}</script>
+<style>
+:root{--bg:#0b0d12;--surface:#141821;--border:rgba(255,255,255,0.09);--text:#e8edf8;--muted:#97a2b8;--green:#4ade80;--amber:#fbbf24}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--green)}
+.wrap{max-width:820px;margin:0 auto;padding:0 1.1rem}
+header{display:flex;justify-content:space-between;align-items:center;padding:1rem 0}
+.logo{font-weight:800;font-size:1.15rem;color:var(--green);text-decoration:none;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 1.2rem;border-radius:12px;background:var(--green);color:#0b0d12;font-weight:700;text-decoration:none;border:0;font:inherit;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);min-height:40px;font-weight:600}
+h1{font-size:2.1rem;line-height:1.15;letter-spacing:-0.03em;margin:1.2rem 0 0.5rem}
+h2{font-size:1.35rem;letter-spacing:-0.02em;margin:2.4rem 0 0.6rem}
+p{margin:0.5rem 0;color:#c4ccdb}.lead{color:var(--muted);font-size:1.05rem}
+.status{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.6rem;margin-top:1.1rem}
+.status div{border:1px solid var(--border);border-radius:14px;padding:0.8rem 0.9rem;background:var(--surface)}
+.status span{display:block;font-size:0.75rem;color:var(--muted)}.status b{display:block;font-size:1.35rem;font-variant-numeric:tabular-nums;margin-top:0.1rem}
+.status em{display:block;font-style:normal;font-size:0.78rem;color:var(--muted)}
+.status .pend{border-color:rgba(251,191,36,0.45)}.status .pend b{color:var(--amber)}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:1.1rem;margin-top:1.2rem}
+.f{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.7rem}
+.f label{display:block;font-size:0.84rem;color:var(--muted);margin-bottom:0.25rem}
+input{width:100%;background:#0e121a;border:1px solid var(--border);border-radius:10px;color:var(--text);font:inherit;padding:0.6rem 0.65rem;min-height:44px}
+input:focus{outline:2px solid var(--green);outline-offset:1px}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:999px;padding:3px;margin-top:0.9rem}
+.seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-weight:600;padding:0.45rem 0.9rem;border-radius:999px;cursor:pointer;min-height:40px;font-size:0.9rem}
+.seg button[aria-pressed=true]{background:var(--green);color:#0b0d12}
+.hero{margin-top:1rem;border:1px solid rgba(74,222,128,0.4);background:rgba(74,222,128,0.06);border-radius:14px;padding:1rem}
+.hero>span{display:block;font-size:0.84rem;color:var(--muted)}.hero>b{display:block;font-size:2.1rem;letter-spacing:-0.02em;font-variant-numeric:tabular-nums}
+.hero p{margin:0.3rem 0 0;font-size:0.92rem}
+.warn{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);color:#f3d48a;border-radius:12px;padding:0.7rem 0.85rem;margin-top:0.9rem;font-size:0.92rem}
+table{width:100%;border-collapse:collapse;font-size:0.92rem;margin-top:0.6rem;font-variant-numeric:tabular-nums}
+th{font-size:0.75rem;color:var(--muted);font-weight:600;text-align:left;padding:0 0.4rem 0.4rem}
+td{padding:0.42rem 0.4rem;border-top:1px solid var(--border)}
+tr.tbd td{color:var(--amber)}
+.cta{background:linear-gradient(135deg,rgba(74,222,128,0.14),rgba(74,222,128,0.03));border:1px solid rgba(74,222,128,0.4);border-radius:18px;padding:1.2rem;margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:0.9rem;align-items:center;justify-content:space-between}
+.cta p{margin:0;max-width:520px;color:var(--text)}.cta small{display:block;color:var(--muted)}
+details{border-top:1px solid var(--border);padding:0.7rem 0}summary{cursor:pointer;font-weight:600;min-height:32px}
+.note{font-size:0.84rem;color:var(--muted)}
+footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);color:var(--muted);font-size:0.85rem}
+.status .ok b{color:var(--green)}
+.chips{display:flex;gap:0.4rem;flex-wrap:wrap}.chips button{min-height:40px;padding:0 0.9rem;border-radius:99px;border:1px solid var(--border);background:transparent;color:var(--text);font:inherit;cursor:pointer}.chips button[aria-pressed="true"]{border-color:var(--green);color:var(--green);background:rgba(74,222,128,0.1)}
+.bar{height:10px;border-radius:99px;background:rgba(255,255,255,0.08);overflow:hidden;margin:0.7rem 0 0.3rem}.bar i{display:block;height:100%;background:linear-gradient(90deg,#22c55e,#4ade80)}
+@media(max-width:640px){h1{font-size:1.65rem}.f{grid-template-columns:1fr}.status{gap:0.4rem}.status div{padding:0.55rem 0.5rem;border-radius:12px}.status span{font-size:0.68rem;line-height:1.25}.status b{font-size:1rem}.status em{font-size:0.66rem;line-height:1.25}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><a class="logo" href="/">Qualisight</a><a class="btn ghost" href="/?utm_source=organic&amp;utm_campaign=emergency_fund">Open the app</a></header>
+
+<h1>Emergency fund calculator: how much, and by when</h1>
+<p class="lead">Aim for 3 to 6 months of your regular expenses. Type what you spend, what you have, and what you can save, and see the month your emergency fund is full.</p>
+
+<section class="card" aria-label="Your emergency fund">
+  <div class="f">
+    <div><label for="exp">What you spend in a month ($)</label><input id="exp" type="number" inputmode="decimal" min="0" step="100" value="3000"></div>
+    <div><label for="have">Saved for emergencies now ($)</label><input id="have" type="number" inputmode="decimal" min="0" step="100" value="1000"></div>
+    <div><label for="per">You can save each month ($)</label><input id="per" type="number" inputmode="decimal" min="0" step="25" value="250"></div>
+  </div>
+  <div style="margin-top:0.9rem"><span class="note" style="display:block;margin-bottom:0.4rem">Months of expenses to cover</span>
+    <div class="chips" role="group" aria-label="Months of expenses to cover"><button type="button" data-m="3" aria-pressed="true">3 months</button><button type="button" data-m="4" aria-pressed="false">4 months</button><button type="button" data-m="5" aria-pressed="false">5 months</button><button type="button" data-m="6" aria-pressed="false">6 months</button></div></div>
+  <div class="hero" id="res" aria-live="polite"></div>
+  <p class="note">Count regular monthly costs: rent or mortgage, food, bills, transit, debt payments. Leave out things you could pause, like eating out. Nothing you type leaves this page.</p>
+</section>
+
+<div class="cta"><p><b>Keep your safety net in one place.</b><small>Qualisight tracks your cash, your emergency fund and your savings goals next to your budget and debt plan, and shows the month you reach each one. Free forever. No card, no bank login.</small></p>
+  <a class="btn" href="/?utm_source=organic&amp;utm_campaign=emergency_fund&amp;signup=1" id="cta">Save my plan free</a></div>
+
+<h2>How much is enough?</h2>
+<p>The Financial Consumer Agency of Canada suggests saving 3 to 6 months of your regular expenses, or 3 to 6 months of income. <a href="https://www.canada.ca/en/financial-consumer-agency/services/savings-investments/setting-up-emergency-funds.html" target="_blank" rel="noopener">Read its guide.</a> Pick the low end if your income is steady, and lean toward 6 months if your pay changes from month to month or one income supports the whole household.</p>
+
+<h2>Start small: what a weekly habit adds up to</h2>
+<table><thead><tr><th>Put aside</th><th>After 1 year</th><th>After 3 years</th></tr></thead><tbody><tr><td>$5 a week</td><td>$260</td><td>$780</td></tr><tr><td>$10 a week</td><td>$520</td><td>$1,560</td></tr><tr><td>$20 a week</td><td>$1,040</td><td>$3,120</td></tr><tr><td>$50 a week</td><td>$2,600</td><td>$7,800</td></tr><tr><td>$100 a week</td><td>$5,200</td><td>$15,600</td></tr></tbody></table>
+<p class="note">Simple totals with no interest added.</p>
+
+<h2>Where to keep it</h2>
+<p>Keep it somewhere you can reach quickly and will not touch for everyday spending, like a separate savings account with low or no fees. <a href="https://www.canada.ca/en/financial-consumer-agency/services/financial-basics/financial-basics-videos/financial-basics-video-saving-investing.html" target="_blank" rel="noopener">The FCAC explains why.</a> Paying for a surprise from savings is usually better than paying with credit. <a href="https://www.canada.ca/en/financial-consumer-agency/services/large-amount-money.html" target="_blank" rel="noopener">Source.</a></p>
+
+<h2>Common questions</h2>
+<details><summary>How much should I have in an emergency fund in Canada?</summary><p>The Financial Consumer Agency of Canada suggests saving the equivalent of 3 to 6 months of your regular expenses. You can also aim for 3 to 6 months of income. If you spend $3,000 a month, 3 months is $9,000 and 6 months is $18,000.</p></details><details><summary>How long will it take to save my emergency fund?</summary><p>Subtract what you have saved from your target, then divide by what you can put aside each month. At $250 a month, a $9,000 target from zero takes 36 months. The calculator above shows the exact month for your numbers.</p></details><details><summary>Where should I keep my emergency fund?</summary><p>The Financial Consumer Agency of Canada suggests a savings account or an investment that can be easily cashed, kept separate so it is not touched unless there is an emergency. Look for low or no fees.</p></details><details><summary>What counts as an emergency?</summary><p>Things like a car repair, an urgent vet visit, losing your job, health problems that stop you from working, or a home repair such as a broken hot water tank. A sale or a trip is a savings goal, not an emergency.</p></details><details><summary>What if I can only save a little?</summary><p>Start small and keep going. At $5 a week you have $260 after a year, and at $20 a week you have $1,040. Cutting one regular expense and saving that amount helps the fund grow faster.</p></details><details><summary>Why have an emergency fund if I have a credit card?</summary><p>Paying for a surprise with savings is usually better than paying with credit, according to the Financial Consumer Agency of Canada. It keeps one bad month from turning into debt that costs interest.</p></details>
+<p class="note" style="margin-top:1.4rem">Last checked November 22, 2026. Information only, not financial advice.</p>
+<footer>More free tools: <a href="/budget-calculator/">budget calculator</a>, <a href="/debt-payoff-calculator/">debt payoff calculator</a>, <a href="/tfsa-limit-2027/">TFSA limit 2027</a>, <a href="/rrsp-limit-2027/">RRSP limit 2027</a>, <a href="/fhsa-limit-2027/">FHSA limit 2027</a>, <a href="/down-payment-calculator/">down payment calculator</a>.<br>Built by a solo founder in Ontario. <a href="/">Qualisight</a> is a Canadian budgeting, debt and investing app.</footer>
+</div>
+<script>
+(function(){
+  var EMBED=false;
+  // Anonymous page counts only. Nothing typed into the calculator is ever sent.
+  var track=(function(){
+    var ok=true, vid, sid, sent=0;
+    try{ if(localStorage.getItem('qs_notrack')==='1') ok=false; vid=localStorage.getItem('qs_vid'); if(!vid){ vid=Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4); localStorage.setItem('qs_vid',vid); }
+      sid=sessionStorage.getItem('qs_tab'); if(!sid){ sid=Math.random().toString(36).slice(2,10); sessionStorage.setItem('qs_tab',sid); } }catch(e){ vid=vid||'anon'; sid=sid||'anon'; }
+    if(/HeadlessChrome|bot|crawl|spider/i.test(navigator.userAgent||'')) ok=false;
+    return function(name,props){ if(!ok||sent>20) return; sent++; props=props||{}; props.embed=EMBED;
+      try{ fetch('https://bsjyqecneeptlfrsyesf.supabase.co/rest/v1/site_events',{method:'POST',keepalive:true,headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM','Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify([{vid:vid,sid:sid,name:name,props:props}])}).catch(function(){}); }catch(e){} };
+  })();
+  var months=3, edited=false;
+  var exp=document.getElementById('exp'), have=document.getElementById('have'), per=document.getElementById('per'), res=document.getElementById('res');
+  function money(n){ return '$'+Math.round(Math.max(0,n)).toLocaleString('en-CA'); }
+  function num(el){ return Math.max(0,parseFloat(el.value)||0); }
+  function when(n){ var d=new Date(); d.setDate(1); d.setMonth(d.getMonth()+n); return d.toLocaleDateString('en-CA',{month:'long',year:'numeric'}); }
+  function render(){
+    var e=num(exp), h=num(have), p=num(per);
+    if(!e){ res.innerHTML='<span>Your emergency fund target</span><b>$0</b><p>Type what you spend in a month to see your target.</p>'; return; }
+    var target=e*months, gap=Math.max(0,target-h), cov=h/e, pct=Math.min(100,h/target*100), n=p>0?Math.ceil(gap/p):0;
+    var line = gap<=0 ? '<p><b>You are already covered.</b> You have '+cov.toFixed(1)+' months of expenses saved.</p>'
+      : p>0 ? '<p>You have '+money(h)+', which covers '+cov.toFixed(1)+' month'+(cov>=0.95&&cov<1.05?'':'s')+'. Saving '+money(p)+' a month, you reach '+money(target)+' in <b>'+when(n)+'</b>'+(n>1?' ('+n+' months)':' (next month)')+'.</p>'
+      : '<p>You need '+money(gap)+' more. Type how much you can save each month to see when you get there.</p>';
+    var half = gap>0 && p>0 && h<target/2 ? '<p>Halfway, '+money(target/2)+', comes in '+when(Math.ceil(Math.max(0,target/2-h)/p))+'.</p>' : '';
+    res.innerHTML='<span>Your emergency fund target ('+months+' months)</span><b>'+money(target)+'</b>'+line+half+'<div class="bar" role="img" aria-label="'+Math.round(pct)+'% saved"><i style="width:'+pct.toFixed(1)+'%"></i></div>';
+  }
+  function touched(){ if(!edited){ edited=true; track('ef_edit'); } }
+  [exp,have,per].forEach(function(el){ el.addEventListener('input',function(){ touched(); render(); }); });
+  [].forEach.call(document.querySelectorAll('.chips button'),function(b){ b.addEventListener('click',function(){ months=+b.getAttribute('data-m'); [].forEach.call(document.querySelectorAll('.chips button'),function(x){ x.setAttribute('aria-pressed',x===b?'true':'false'); }); touched(); render(); }); });
+  var c=document.getElementById('cta'); if(c) c.addEventListener('click',function(){
+    track('ef_cta',{edited:edited});
+    if(edited){ try{ localStorage.setItem('qs_ef_plan',JSON.stringify({base:num(exp),months:months,saved:num(have),monthly:num(per),t:Date.now()})); }catch(e){} }
+  });
+  var src=''; try{ src=(new URLSearchParams(location.search).get('utm_source')||'').slice(0,20); }catch(e){}
+  render(); track('ef_view',{ref:(document.referrer||'').split('/')[2]||'', src:src});
+})();
+</script>
+<script>/* Where this visitor came from: saved on the first visit only (same as the app does), and an ad's tags are carried to the app so a sign-up is credited to the ad. Stays in this browser. */
+(function(){try{
+  var p=new URLSearchParams(location.search), s=(p.get('utm_source')||'').slice(0,60), c=(p.get('utm_campaign')||'').replace(/[^a-z0-9_-]/gi,'').slice(0,80), m=(p.get('utm_medium')||'').slice(0,60);
+  var links=document.querySelectorAll('a[href^="/?utm_source="]'), def='';
+  if(links.length){ def=new URLSearchParams(links[0].getAttribute('href').slice(2)).get('utm_campaign')||''; }
+  var ref=''; try{ var r=document.referrer?new URL(document.referrer).hostname:''; ref=r&&r!==location.hostname?r:''; }catch(e){}
+  if(!localStorage.getItem('qs_source')) localStorage.setItem('qs_source',JSON.stringify({source:(s||ref||'direct').slice(0,60),medium:(m||(!s&&ref?'organic':'')).slice(0,60),campaign:(c||def).slice(0,80),landedAt:new Date().toISOString()}));
+  if(s||c){ for(var i=0;i<links.length;i++){ var a=links[i], q=new URLSearchParams(a.getAttribute('href').slice(2)); if(s) q.set('utm_source',s); if(c) q.set('utm_campaign',c); if(m) q.set('utm_medium',m); a.setAttribute('href','/?'+q.toString()); } }
+}catch(e){}})();</script>
+<style>
+.qbar{position:fixed;left:0;right:0;bottom:0;z-index:50;display:none;align-items:center;gap:0.7rem;padding:0.6rem 0.9rem calc(0.6rem + env(safe-area-inset-bottom));background:rgba(11,13,18,0.96);border-top:1px solid rgba(74,222,128,0.35);backdrop-filter:blur(8px)}
+.qbar div{flex:1;min-width:0}.qbar span{display:block;font-size:0.74rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.qbar b{display:block;font-size:1.05rem;font-variant-numeric:tabular-nums;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.qbar .btn{min-height:44px;padding:0 1rem;white-space:nowrap}
+@media(max-width:640px){.qbar.on{display:flex}body.qbar-pad{padding-bottom:76px}}
+</style>
+<div class="qbar" id="qbar" aria-hidden="true"><div><span id="qbarL"></span><b id="qbarV"></b></div><a class="btn" id="qbarB" href="#" tabindex="-1">Save free</a></div>
+<script>/* Phones: keep the answer and the next step on screen while the visitor scrolls */
+(function(){try{
+  if(/[?&]embed=1/.test(location.search)) return;
+  var bar=document.getElementById('qbar'), L=document.getElementById('qbarL'), V=document.getElementById('qbarV'), B=document.getElementById('qbarB');
+  var main=document.querySelector('.cta .btn'), res=document.getElementById('res')||document.getElementById('out'); if(!main||!res) return;
+  var mt=(main.textContent||'').trim(); B.textContent=mt.length<=12?mt:'Save free';
+  B.addEventListener('click',function(e){ e.preventDefault(); main.click(); });
+  var seen={}, has=false;
+  function read(){ var v=res.querySelector('.big b')||res.querySelector(':scope>b'), l=res.querySelector('.big span')||res.querySelector(':scope>span');
+    has=!!(v&&v.textContent.trim()); if(has){ V.textContent=v.textContent.trim(); L.textContent=(l?l.textContent.trim():''); } upd(); }
+  function upd(){ var on=has&&!seen.cta&&!seen.res; bar.classList.toggle('on',on); bar.setAttribute('aria-hidden',!on); document.body.classList.toggle('qbar-pad',has); }
+  if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){ es.forEach(function(e){ seen[e.target===res?'res':'cta']=e.intersectionRatio>=0.5; }); upd(); },{threshold:[0,0.5,1]}); io.observe(res); io.observe(main.closest('.cta')); }
+  new MutationObserver(read).observe(res,{childList:true,subtree:true,characterData:true}); read();
+}catch(e){}})();</script>
+</body>
+</html>

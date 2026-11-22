@@ -485,7 +485,7 @@ header{
 .db-start-foot{display:flex;flex-wrap:wrap;gap:0.4rem 1rem;align-items:center;margin-top:0.9rem;font-size:0.8rem;color:var(--muted)}
 .db-start-foot button{background:none;border:0;color:var(--text);text-decoration:underline;font:inherit;cursor:pointer;min-height:44px;padding:0}
 .db-fresh .journey-card,.db-fresh .db-details{display:none}
-.bm-fresh #bm-today,.bm-fresh #bm-week,.bm-fresh #bm-pace,.bm-fresh #bg-game-mount,.bm-fresh #bm-bills,.bm-fresh #bm-safety,.bm-fresh #bm-svg-head,.bm-fresh #expense-cats,.bm-fresh #bm-year{display:none}
+.bm-fresh #bm-today,.bm-fresh #bm-week,.bm-fresh #bm-pace,.bm-fresh #bg-game-mount,.bm-fresh #bm-bills,.bm-fresh #bm-safety,.bm-fresh #bm-subs,.bm-fresh #bm-svg-head,.bm-fresh #expense-cats,.bm-fresh #bm-year{display:none}
 .bm-fresh .bm-log-card::before{content:'Or skip that and just log what you spent:';display:block;font-size:0.85rem;color:var(--muted);margin-bottom:0.6rem}
 .bg-more{border-top:1px solid var(--border2)}
 .bm-idle>summary{cursor:pointer;list-style:none;padding:0.9rem 1rem;font-size:0.86rem;font-weight:600;color:var(--accent,#4ade80);min-height:44px;display:flex;align-items:center}
@@ -1005,6 +1005,14 @@ header{
 .bm-err{color:#f87171;font-size:0.84rem;margin-top:0.5rem;min-height:0}
 .bm-txn-date{font-size:0.72rem;color:var(--muted);margin-left:0.45rem;white-space:nowrap}
 .bm-rec-tag{font-size:0.68rem;font-weight:700;color:#4ade80;border:1px solid rgba(74,222,128,0.35);border-radius:999px;padding:0.05rem 0.4rem;margin-left:0.4rem;white-space:nowrap}
+.subs{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1rem 1.1rem;margin-bottom:1.4rem}
+.subs-top{display:flex;justify-content:space-between;align-items:baseline;gap:0.6rem;flex-wrap:wrap}
+.subs-big{font-family:var(--font-display);font-size:1.35rem;font-weight:800;font-variant-numeric:tabular-nums;margin:0.35rem 0 0.1rem}
+.subs-big small{font-size:0.82rem;font-weight:600;color:var(--muted)}
+.subs-row{display:grid;grid-template-columns:minmax(0,1fr) auto auto;gap:0.6rem;align-items:center;padding:0.55rem 0;border-top:1px solid var(--border);font-size:0.88rem}
+.subs-row b{font-variant-numeric:tabular-nums} .subs-row span{color:var(--muted);font-size:0.78rem;font-variant-numeric:tabular-nums}
+.subs-row .nm{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.subs-tip{font-size:0.8rem;color:var(--muted);margin-top:0.6rem}
 .sn{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.1rem 1.15rem;margin-bottom:1.4rem}
 .sn-head{display:flex;justify-content:space-between;align-items:baseline;gap:0.6rem;flex-wrap:wrap}
 .sn-sub{color:var(--muted);font-size:0.82rem;margin:0.15rem 0 0.9rem}
@@ -4735,8 +4743,8 @@ button:focus:not(:focus-visible){outline:none}
       </div>
       <div class="lp-rules">
         <div><b>TFSA, RRSP and FHSA</b><span>Each account tracked on its own, the way the CRA treats it.</span></div>
-        <div><b>The mortgage stress test</b><span>Home numbers checked at the rate lenders actually use, plus CMHC insurance.</span></div>
-        <div><b>Ontario land transfer tax</b><span>With the first-time buyer refund already taken off.</span></div>
+        <div><b>The stress test and land transfer tax</b><span>Home numbers at the rate lenders use, with CMHC insurance and Ontario's first-time buyer refund.</span></div>
+        <div><b>An emergency fund that fits you</b><span>3 to 6 months of your own expenses, as the FCAC suggests, and the month you get there.</span></div>
         <div><b>Snowball or avalanche</b><span>Pay debt your way and see the exact month you're done.</span></div>
       </div>
       <div class="lp-promise">
@@ -4806,12 +4814,12 @@ button:focus:not(:focus-visible){outline:none}
       <div class="lp-tools-grid">
         <a href="/budget-calculator/"><b>Budget calculator</b><span>What is left each month, and your 50/30/20 split</span></a>
         <a href="/debt-payoff-calculator/"><b>Debt payoff calculator</b><span>Snowball or avalanche, and your debt-free month</span></a>
-        <a href="/tfsa-contribution-room-calculator/"><b>TFSA room calculator</b><span>How much you can still put in this year</span></a>
+        <a href="/emergency-fund-calculator/"><b>Emergency fund calculator</b><span>Your 3 to 6 month target, and the month you reach it</span></a>
         <a href="/down-payment-calculator/"><b>Down payment calculator</b><span>The least you need, and the month you get there</span></a>
-        <a href="/tsx-heatmap/"><b>TSX 60 heatmap</b><span>Today's Canadian market at a glance</span></a>
-        <a href="/sp500-heatmap/"><b>S&amp;P 500 heatmap</b><span>Today's US market at a glance</span></a>
         <a href="/tfsa-limit-2027/"><b>TFSA limit 2027</b><span>Your room on January 1, under both outcomes</span></a>
-        <a href="/canadian-bank-earnings/"><b>Bank earnings dates</b><span>When the Big Six report, with live estimates</span></a>
+        <a href="/rrsp-limit-2027/"><b>RRSP limit 2027</b><span>$35,390, your own room, and the March 1 deadline</span></a>
+        <a href="/fhsa-limit-2027/"><b>FHSA limit 2027</b><span>Up to $16,000 of room, and why December 31 matters</span></a>
+        <a href="/tsx-heatmap/"><b>TSX 60 heatmap</b><span>Today's Canadian market at a glance</span></a>
       </div>
     </div>
   </section>
@@ -4900,6 +4908,8 @@ button:focus:not(:focus-visible){outline:none}
         <a class="lp-footer-link" href="/tfsa-limit-2027/" style="text-decoration:none">TFSA limit 2027</a>
         <a class="lp-footer-link" href="/rrsp-limit-2027/" style="text-decoration:none">RRSP limit 2027</a>
         <a class="lp-footer-link" href="/fhsa-limit-2027/" style="text-decoration:none">FHSA limit 2027</a>
+        <a class="lp-footer-link" href="/emergency-fund-calculator/" style="text-decoration:none">Emergency fund calculator</a>
+        <a class="lp-footer-link" href="/tfsa-contribution-room-calculator/" style="text-decoration:none">TFSA room calculator</a>
         <a class="lp-footer-link" href="/canadian-bank-earnings/" style="text-decoration:none">Bank earnings dates</a>
         <a class="lp-footer-link" href="/tfsa-contribution-room-calculator/" style="text-decoration:none">TFSA room calculator</a>
         <a class="lp-footer-link" href="/tsx-heatmap/" style="text-decoration:none">TSX 60 heatmap</a>
@@ -5257,6 +5267,7 @@ button:focus:not(:focus-visible){outline:none}
   <div id="bg-game-mount"></div>
 
   <div id="bm-bills"></div>
+  <div id="bm-subs"></div>
   <div id="bm-safety"></div>
   <!-- Spending vs Goals: collapsible category cards -->
   <div class="bm-section-head" id="bm-svg-head">
@@ -5693,7 +5704,7 @@ button:focus:not(:focus-visible){outline:none}
               oninput="clearApprPresets();autoCalcBuy()"
               style="background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:0.85rem;padding:0.45rem 0.7rem;outline:none;width:100%;transition:border-color 0.15s"
               onfocus="this.style.borderColor='rgba(74,222,128,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.07)'">
-            <div style="font-size:0.75rem;color:var(--muted);margin-top:0.4rem">Based on Ontario historical averages 2010–2024</div>
+            <div style="font-size:0.75rem;color:var(--muted);margin-top:0.4rem">Based on Ontario historical averages 2010 to 2024</div>
           </div>
           <button class="btn" onclick="calcBuy()">Calculate</button>
         </div>
@@ -8472,6 +8483,7 @@ function renderMonthly(){
   try{ qlChipsRender(); if(!document.getElementById('ql-in')?.value) qlPreview(); bmGoalToolsRender(); }catch(e){ console.warn('quick log',e); }
   try{ bmTodayRender(); bmWeekRender(); bmWrapMaybe(); }catch(e){ console.warn('retention',e); }
   try{ bmBillsRender(); }catch(e){ console.warn('bills',e); }
+  try{ subsRender(); }catch(e){ console.warn('subs',e); }
   try{ snRender(); }catch(e){ console.warn('safety',e); }
   try{ const dl=document.getElementById('exp-names'); if(dl){ const names=[...new Set([...(state.expenses||[]).map(x=>x.name), ...(state.bills||[]).map(x=>x.name)].filter(Boolean))].slice(-40); dl.innerHTML=names.map(n=>`<option value="${escHtml(n)}"></option>`).join(''); } }catch(e){}
   if(window._bmFlash){ const c=window._bmFlash; window._bmFlash=null; setTimeout(()=>{ const el=[...document.querySelectorAll('#expense-cats .bm-cat')].find(x=>x.getAttribute('data-cat')===c); if(el){ el.classList.remove('bm-hit'); void el.offsetWidth; el.classList.add('bm-hit'); } },30); }
@@ -8647,6 +8659,28 @@ function bmRemoveBill(id){
   const snap=bmSnap(); state.bills=state.bills.filter(x=>x.id!==id); save(); renderMonthly();
   bmUndoOffer(`<strong>${escHtml(b.name)}</strong> is no longer a monthly bill. Anything already logged stays.`, snap);
 }
+// ===== Subscriptions: spotted by name in this month's spending and in monthly bills =====
+const SUBS_RE=/netflix|spotify|disney|crave|prime video|amazon prime|apple ?(music|tv|one)|icloud|youtube (premium|tv|music)|xbox|game ?pass|playstation|ps plus|nintendo|adobe|microsoft 365|office 365|dropbox|google one|chatgpt|openai|claude|audible|kindle unlimited|patreon|twitch|crunchyroll|paramount|sirius|nordvpn|expressvpn|\bvpn\b|1password|duolingo|headspace|\bcalm\b|tinder|bumble|hinge|uber one|dashpass|skip\+|canva|grammarly|notion|peloton|goodlife|planet fitness|\bgym\b|fitness|subscription|membership|streaming|patreon|substack|globe and mail|\bnyt\b|new york times/i;
+function subsKey(n){ return String(n||'').toLowerCase().replace(/[^a-z0-9+ ]/g,'').replace(/\s+/g,' ').trim(); }
+function subsList(){
+  const ign=new Set((state.subsIgnore||[]).map(subsKey)), out=new Map();
+  (state.bills||[]).forEach(b=>{ if(SUBS_RE.test(b.name)){ const k=subsKey(b.name); if(!ign.has(k)) out.set(k,{name:b.name, amt:+b.amt||0, bill:true}); } });
+  const ym=new Date().toISOString().slice(0,7);
+  (state.expenses||[]).forEach(e=>{ if(e.billId || !SUBS_RE.test(e.name||'')) return; if(e.d && e.d.slice(0,7)!==ym) return; const k=subsKey(e.name); if(ign.has(k)) return;
+    const o=out.get(k); if(o){ if(!o.bill) o.amt+=(+e.actual||0); } else out.set(k,{name:e.name, amt:+e.actual||0, bill:false}); });
+  return [...out.values()].filter(x=>x.amt>0).sort((a,b)=>b.amt-a.amt);
+}
+function subsRender(){
+  const el=document.getElementById('bm-subs'); if(!el) return;
+  const L=subsList(); if(!L.length){ el.innerHTML=''; return; }
+  const mo=L.reduce((t,x)=>t+x.amt,0);
+  el.innerHTML=`<div class="subs"><div class="subs-top"><div class="bm-section-title" style="font-size:1rem">Subscriptions</div><div class="bm-bills-sub">${L.length} spotted</div></div>
+    <div class="subs-big">${fmtW(mo)} <small>a month, about ${fmtW(mo*12)} a year</small></div>
+    ${L.map(x=>`<div class="subs-row"><div class="nm">${escHtml(x.name)}</div><div><b>${fmt(x.amt)}</b> <span>/mo, ${fmtW(x.amt*12)}/yr</span></div><button type="button" class="sn-tag" onclick="subsIgnore('${escHtml(subsKey(x.name))}')" aria-label="${escHtml(x.name)} is not a subscription">Not one</button></div>`).join('')}
+    <div class="subs-tip">Found by name in this month's spending and your monthly bills. Cancel one you don't use and that money can go to your safety net.</div></div>`;
+}
+function subsIgnore(k){ if(!Array.isArray(state.subsIgnore)) state.subsIgnore=[]; if(!state.subsIgnore.includes(k)) state.subsIgnore.push(k); try{ save(); }catch(e){} subsRender(); }
+
 // ===== Safety net: cash accounts, emergency fund, savings goals =====
 function snS(){ if(!state.safety||typeof state.safety!=='object') state.safety={}; const S=state.safety;
   if(!Array.isArray(S.cash)) S.cash=[]; if(!Array.isArray(S.goals)) S.goals=[]; if(!(S.months>=3&&S.months<=6)) S.months=3; return S; }
@@ -8662,7 +8696,18 @@ function snEf(){ const S=snS(), B=snBase(), have=S.cash.filter(a=>a.ef).reduce((
 function snMonthName(d){ return d.toLocaleDateString('en-CA',{month:'short',year:'numeric'}); }
 function snAddMonths(n){ const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()+n); return d; }
 function snSave(){ try{ save(); }catch(e){} try{ snRender(); }catch(e){} try{ if(typeof renderDashboard==='function') renderDashboard(); }catch(e){} }
+// A plan built on the free emergency fund page comes into the Safety net once, for a signed-in user who has not set one up
+function snImportPlan(){
+  try{ if(!currentUser || currentUser.isDemo) return; const raw=localStorage.getItem('qs_ef_plan'); if(!raw) return;
+    const P=JSON.parse(raw); localStorage.removeItem('qs_ef_plan'); if(!P || Date.now()-(+P.t||0)>30*86400000) return;
+    const S=snS(); if(S.base>0 || S.cash.length) return;
+    if(P.base>0) S.base=Math.round(P.base*100)/100; if(P.months>=3&&P.months<=6) S.months=P.months; if(P.monthly>0) S.monthly=Math.round(P.monthly*100)/100;
+    if(P.saved>0) S.cash.push({id:snId('c'),name:'Emergency savings',bal:Math.round(P.saved*100)/100,ef:true});
+    try{ QA.log('onb_import',{src:'ef'}); }catch(e){} try{ save(); }catch(e){} setTimeout(()=>{ try{ showToast('Your emergency fund plan is in your Safety net on the Budget page.'); }catch(e){} },900);
+  }catch(e){}
+}
 function snRender(){
+  snImportPlan();
   const el=document.getElementById('bm-safety'); if(!el) return;
   const S=snS(), E=snEf(), pct=E.target>0?Math.min(100,E.have/E.target*100):0, full=E.target>0&&E.have>=E.target;
   const gap=Math.max(0,E.target-E.have), mo=E.monthly>0?Math.ceil(gap/E.monthly):0;
@@ -9164,7 +9209,7 @@ function renderYearly(){
   const groups={Income:[],Investment:[],Expense:[]};
   visibleRows.forEach(r=>{ if(groups[r.type]) groups[r.type].push(r); });
 
-  const cell=(v)=> v ? v.toLocaleString('en-CA') : '<span style="color:var(--muted);opacity:0.5">–</span>';
+  const cell=(v)=> v ? v.toLocaleString('en-CA') : '<span style="color:var(--muted);opacity:0.5">n/a</span>';
 
   let html='';
   Object.entries(groups).forEach(([type,rows])=>{
@@ -17315,7 +17360,8 @@ function lpOpenWorld(id){
 (function(){
   let camp=''; try{ camp=(new URLSearchParams(location.search).get('utm_campaign')||sessionStorage.getItem('qs_camp')||'').toLowerCase(); }catch(e){}
   if(!camp || /grove|invest/.test(camp)) return;
-  const V = /rrsp/.test(camp) ? {h:'You know your RRSP room. <span class="grad">Now watch it grow.</span>', s:'Your RRSP, TFSA and FHSA become trees that grow with every deposit. Budgeting and debt payoff are free forever. No bank login.', t:'Clear debt, then grow'}
+  const V = /emergency|safety/.test(camp) ? {h:'Your safety net, <span class="grad">one month at a time.</span>', s:'Track your cash, your emergency fund and your savings goals next to your budget and debt plan, and see the month you reach each one. Free forever. No bank login.', t:'Start my safety net'}
+    : /rrsp/.test(camp) ? {h:'You know your RRSP room. <span class="grad">Now watch it grow.</span>', s:'Your RRSP, TFSA and FHSA become trees that grow with every deposit. Budgeting and debt payoff are free forever. No bank login.', t:'Clear debt, then grow'}
     : /tfsa/.test(camp) ? {h:'You know your TFSA room. <span class="grad">Now watch it grow.</span>', s:'Your TFSA, RRSP and FHSA become trees that grow with every deposit. Budgeting and debt payoff are free forever. No bank login.', t:'Clear debt, then grow'}
     : /debt|credit|loan|payoff/.test(camp) ? {h:'See the exact month <span class="grad">you\'ll be <span class="nw">debt-free.</span></span>', s:'Add your debts and watch the storm clear with every payment. Snowball or avalanche, built on real interest math. Free forever.', t:'Your debt storm'}
     : /budget|spend|save|jar/.test(camp) ? {h:'Your budget, <span class="grad">as coin jars.</span>', s:'Each spending goal is a jar. Stay under and it stays full; what you save fills a treasure chest. Carrying debt too? Type it below and see the month it is gone.', t:'Your debt storm'}
@@ -17324,7 +17370,7 @@ function lpOpenWorld(id){
   if(!V) return;
   const h1=document.getElementById('lp-h1'), sub=document.getElementById('lp-sub'), t=document.getElementById('lpp-title');
   if(h1) h1.innerHTML=V.h; if(sub) sub.textContent=V.s; if(t) t.textContent=V.t;
-  if(/budget|tfsa|rrsp/.test(camp)){ const al=document.querySelector('.lp-alt'); if(al) al.hidden=true; }
+  if(/budget|tfsa|rrsp|emergency|safety/.test(camp)){ const al=document.querySelector('.lp-alt'); if(al) al.hidden=true; }
 })();
 
 // ── Phones: a "Start for free" bar sticks to the bottom once you've scrolled past the main button ──
