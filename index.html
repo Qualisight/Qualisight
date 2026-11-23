@@ -4024,6 +4024,11 @@ button:focus:not(:focus-visible){outline:none}
 @media(max-width:520px){.hg-grid{grid-template-columns:1fr 1fr}.hg-hero>b{font-size:2.1rem}}
 
 /* This week */
+.gf-stage{position:relative}.gf-banner{position:absolute;left:50%;top:14px;transform:translate(-50%,-8px);opacity:0;pointer-events:none;transition:opacity .35s,transform .35s;background:rgba(8,12,18,0.82);border:1px solid rgba(74,222,128,0.45);border-radius:14px;padding:0.6rem 1rem;text-align:center;max-width:88%;backdrop-filter:blur(6px)}
+.gf-banner.on{opacity:1;transform:translate(-50%,0)}.gf-banner b{display:block;font-family:var(--font-display,inherit);font-size:1.15rem;color:#4ade80}.gf-banner span{font-size:0.85rem;color:#e8edf8}.gf-banner.lvl{border-color:#fbbf24}.gf-banner.lvl b{color:#fbbf24;font-size:1.3rem}
+.gf-tl{margin:0 0 0.6rem}.gf-tl .tl-go{min-height:46px;padding:0 1.1rem;border-radius:12px;border:0;background:var(--green);color:#06140b;font:inherit;font-weight:800;cursor:pointer}.gf-tl small{display:block;color:var(--muted);font-size:0.8rem;margin-top:0.35rem;line-height:1.4}
+.gf-tl .tl-now{display:flex;gap:1rem;flex-wrap:wrap;align-items:baseline}.gf-tl .tl-yr{font-family:var(--font-display,inherit);font-weight:800;font-size:1.6rem;color:#4ade80;min-width:4.2ch}.gf-tl .tl-now span{font-size:0.92rem}.gf-tl .tl-now b{font-size:1.05rem}
+.gf-tl .tl-sum{font-size:0.95rem;line-height:1.45;margin:0 0 0.5rem}.gf-tl .tl-acts{display:flex;gap:0.45rem;flex-wrap:wrap}.gf-tl .tl-acts button{min-height:44px;padding:0 0.9rem;border-radius:12px;font:inherit;font-weight:700;cursor:pointer;background:transparent;border:1px solid var(--border);color:var(--text)}.gf-tl .tl-acts button.on{background:var(--green);color:#06140b;border-color:var(--green)}
 .mc-card{margin:0 0 1rem;padding:1rem 1.05rem;border-radius:18px;background:linear-gradient(160deg,rgba(96,165,250,0.12),rgba(96,165,250,0.02) 60%),var(--card,#141821);border:1px solid rgba(96,165,250,0.35)}
 .mc-card .mc-k{font-size:0.72rem;letter-spacing:0.02em;color:#93c5fd;font-weight:700}.mc-card .mc-q{font-family:var(--font-display,inherit);font-weight:800;font-size:1.15rem;margin:0.2rem 0 0.3rem}.mc-card .mc-p{color:var(--muted);font-size:0.9rem;margin:0 0 0.8rem;line-height:1.45}
 .mc-acts{display:flex;gap:0.5rem;flex-wrap:wrap}.mc-acts button{min-height:44px;padding:0 1rem;border-radius:12px;font:inherit;font-weight:700;cursor:pointer}.mc-go{border:0;background:var(--green);color:#06140b}.mc-x{background:transparent;border:1px solid var(--border);color:var(--text)}
@@ -12442,6 +12447,7 @@ const groveFmt = n => (n<0?'-$':'$') + Math.abs(Math.round(n)).toLocaleString('e
 const GROVE_MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
 const groveReduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 let _grove = { plots:{}, raf:null, saveT:null, offset:0, autoT:null, past:[] };
+function groveSceneMonth(){ return _grove.tlMonth!=null ? _grove.tlMonth : groveNow().getMonth(); }
 function groveNow(){ const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()+_grove.offset); return d; }
 
 function groveSeason(m){ return [11,0,1].includes(m)?'winter':[2,3,4].includes(m)?'spring':[5,6,7].includes(m)?'summer':'autumn'; }
@@ -12904,8 +12910,10 @@ function groveFrame(ms){
   const t=ms/1000, tot=_grove.tot||{};
   _grove.ph = grovePhase(); _grove.composed = false; _grove.warmed = false;
   if(_grove.focusP){ // focus mode: only the big scene draws
-    const F=_grove.focusP, d=tot[F.def.id]||{contrib:0,value:0};
-    if(F.w){ F.disp+=(d.contrib-F.disp)*(groveReduce?1:0.07); F.dispGain+=(Math.max(0,d.value-d.contrib)-F.dispGain)*(groveReduce?1:0.07);
+    const F=_grove.focusP; let d=tot[F.def.id]||{contrib:0,value:0};
+    if(F.tl) d=groveTLFrame(F,t);
+    const kk=groveReduce?1:F.tl?0.25:F.slow?0.028:0.07; if(F.slow && Math.abs(d.contrib-F.disp)<1) F.slow=false;
+    if(F.w){ F.disp+=(d.contrib-F.disp)*kk; F.dispGain+=(Math.max(0,d.value-d.contrib)-F.dispGain)*kk;
       F.pulse*=0.94; F.flash*=0.96; F.cam=(F.cam||0)+(((F.camT||0)+(groveReduce?0:Math.sin(t*0.12)*0.35))-(F.cam||0))*0.06;
       groveDrawPlot(F,t); }
     _grove.drawnOnce=true; return;
@@ -12925,7 +12933,7 @@ function groveFrame(ms){
 
 // ── drawing ──
 function groveSnow(P,t){
-  if(groveSeason(groveNow().getMonth())!=='winter'||groveReduce) return;
+  if(groveSeason(groveSceneMonth())!=='winter'||groveReduce) return;
   const {ctx,w,h}=P; ctx.fillStyle='rgba(232,237,248,0.7)';
   for(let i=0;i<30;i++){ const sp=18+groveRand(i)*22, x=(groveRand(i+3)*w+Math.sin(t*0.8+i)*10+w)%w, y=(t*sp+groveRand(i+7)*h)%h; ctx.beginPath(); ctx.arc(x,y,1+groveRand(i+9)*1.4,0,Math.PI*2); ctx.fill(); }
 }
@@ -12956,8 +12964,11 @@ function groveTree(P,t){
   ctx.fillStyle='rgba(0,0,0,0.28)'; ctx.beginPath(); ctx.ellipse(cx-L*spread*0.18,base+2,spread,6,0,0,Math.PI*2); ctx.fill();
 
   // branches: tapered, curved, darker at the trunk
-  const depth=Math.max(1,Math.min(8,1+Math.floor(s*8.4)));
-  const trunk=Math.min(16+s*h*0.25, (h-50)/3.6), tips=[], nodes=[], segs=[];
+  const depthF=Math.max(1,Math.min(8,1+s*8.4)), depth=Math.floor(depthF), part=depth>=8?0:depthF-depth; // every dollar grows new twigs between full levels
+  let trunk=Math.min(16+s*h*0.25, (h-50)/3.6); const tips=[], nodes=[], segs=[];
+  { // big trees: shrink to fit so the crown never runs off the top of the scene
+    const reach=trunk*(1-Math.pow(0.78,depth))/0.22 + trunk*Math.pow(0.78,depth)*0.72*part, room=base-(6+s*10)*1.7-10;
+    if(reach>room) trunk*=room/reach; }
   const bounce=1+P.pulse*0.04;
   (function br(x,y,len,ang,d,id){
     const sway=groveReduce?0:Math.sin(t*1.2+id*0.9)*0.016*(depth-d+1)*(1+gust) + Math.sin(t*24+id)*0.05*shake*(depth-d+1)/Math.max(1,depth)*2.4;
@@ -12965,7 +12976,15 @@ function groveTree(P,t){
     const bend=(groveRand(id+500)-0.5)*len*0.25;
     segs.push({x,y,x2,y2,mx:(x+x2)/2+Math.cos(a+Math.PI/2)*bend,my:(y+y2)/2+Math.sin(a+Math.PI/2)*bend,d,id});
     if(d<=2) nodes.push([x2,y2,id]);
-    if(d<=1){ tips.push([x2,y2,id]); return; }
+    if(d<=1){
+      if(part>0.03 && d===1){ // new growth: twigs that lengthen with every contribution, and leaves that move out to them
+        tips.push([x2,y2,id,1-part*0.85]);
+        const q1=groveRand(id*2+7), q2=groveRand(id*2+11);
+        [[a-0.3-q1*0.3,id*2],[a+0.3+q2*0.3,id*2+1]].forEach(([aa,iid])=>{ const l2=len*0.72*part, x3=x2+Math.cos(aa)*l2*bounce, y3=y2+Math.sin(aa)*l2*bounce;
+          segs.push({x:x2,y:y2,x2:x3,y2:y3,mx:(x2+x3)/2,my:(y2+y3)/2,d:0.25+0.6*part,id:iid}); tips.push([x3,y3,iid,0.25+0.75*part]); });
+      } else tips.push([x2,y2,id]);
+      return;
+    }
     const r1=groveRand(id*2+7), r2=groveRand(id*2+11);
     br(x2,y2,len*(0.7+r1*0.1),a-0.3-r1*0.3,d-1,id*2);
     br(x2,y2,len*(0.7+r2*0.1),a+0.3+r2*0.3,d-1,id*2+1);
@@ -12994,10 +13013,10 @@ function groveTree(P,t){
     const bob=(id)=>groveReduce?0:Math.sin(t*1.5+id)*1.1;
     // each layer is one path and one fill (much cheaper than a fill per clump)
     const layer=(col,fn)=>{ ctx.fillStyle=col; ctx.beginPath(); clumps.forEach(q=>{ const c=fn(q); if(c){ ctx.moveTo(c[0]+c[2],c[1]); ctx.arc(c[0],c[1],c[2],0,Math.PI*2); } }); ctx.fill(); };
-    layer(pal[0],([x,y,id])=>[x-L*leafR*0.25,y+leafR*0.3+bob(id),leafR*(0.95+groveRand(id)*0.4)]);
-    layer(pal[1],([x,y,id])=>[x,y+bob(id),leafR*(0.8+groveRand(id+1)*0.35)]);
+    layer(pal[0],([x,y,id,k])=>[x-L*leafR*0.25,y+leafR*0.3+bob(id),leafR*(0.95+groveRand(id)*0.4)*(k??1)]);
+    layer(pal[1],([x,y,id,k])=>[x,y+bob(id),leafR*(0.8+groveRand(id+1)*0.35)*(k??1)]);
     groveLeafEdges(ctx,clumps,pal,leafR,t);
-    ctx.globalAlpha=0.85; layer(pal[2],([x,y,id])=>groveRand(id+2)<0.7?[x+L*leafR*0.3,y-leafR*0.3+bob(id),leafR*(0.38+groveRand(id+3)*0.2)]:null); ctx.globalAlpha=1;
+    ctx.globalAlpha=0.85; layer(pal[2],([x,y,id,k])=>groveRand(id+2)<0.7?[x+L*leafR*0.3,y-leafR*0.3+bob(id),leafR*(0.38+groveRand(id+3)*0.2)*(k??1)]:null); ctx.globalAlpha=1;
     if(season==='spring'){ tips.forEach(([x,y,id])=>{ if(groveRand(id+40)<0.6){ ctx.fillStyle=groveRand(id+41)<0.5?'#f9a8d4':'#fce7f3'; ctx.beginPath(); ctx.arc(x+(groveRand(id+42)-0.5)*leafR*1.4,y+(groveRand(id+43)-0.5)*leafR*1.2,1.8+s*1.2,0,Math.PI*2); ctx.fill(); } }); }
   } else {
     // winter: a few hardy leaves and snow resting in the crown
@@ -13311,7 +13330,7 @@ function groveCloudSprite(rgb){
 }
 
 function groveScene(P,glow,t){
-  const {ctx,w,h}=P, season=groveSeason(groveNow().getMonth()), ph=_grove.ph||grovePhase(), kind=P.def.kind, pal=GROVE_PHASE[ph];
+  const {ctx,w,h}=P, season=groveSeason(groveSceneMonth()), ph=_grove.ph||grovePhase(), kind=P.def.kind, pal=GROVE_PHASE[ph];
   const dpr=Math.min(1.5,window.devicePixelRatio||1), key=[w,h,ph,season,kind,P.rs||dpr,(typeof groveRewardKey==='function'?groveRewardKey():'')].join('|');
   if(P.sceneKey!==key){ P.sceneKey=key; P.far=groveBuildFar(P,ph,season,kind); P.mid=groveBuildMid(P,ph,season,kind); P.fore=groveBuildFore(P,ph,season,kind); }
   const cam=P.cam||0, base=h-24;
@@ -14601,7 +14620,7 @@ function groveOvercast(P,ctx,ph,kind){
 }
 function groveWeather(P,t){
   if(groveReduce || P.def.kind==='coin' || !groveIsBear(P)) return;
-  if(groveSeason(groveNow().getMonth())==='winter') return;  // winter already has snow
+  if(groveSeason(groveSceneMonth())==='winter') return;  // winter already has snow
   const {ctx,w,h}=P; ctx.strokeStyle='rgba(176,196,226,0.3)'; ctx.lineWidth=1; ctx.beginPath();
   for(let i=0;i<34;i++){ const sp=230+groveRand(i+4000)*90, x=(groveRand(i+4001)*w*1.2 - t*30)%(w*1.2), y=(t*sp+groveRand(i+4002)*h)%h; const xx=x<0?x+w*1.2:x;
     ctx.moveTo(xx,y); ctx.lineTo(xx-2.5,y+9); }
@@ -14631,8 +14650,8 @@ function groveFocusEnsure(){
   const el=document.createElement('div'); el.id='gf-overlay'; el.className='gf-overlay';
   el.innerHTML=`<div class="gf-sheet" role="dialog" aria-modal="true" aria-labelledby="gf-title">
     <div class="gf-head"><div class="gf-name" id="gf-title"></div><button type="button" class="gs-x" onclick="groveFocusClose()" aria-label="Close">×</button></div>
-    <div class="gf-stage" id="gf-stage"><canvas></canvas></div>
-    <div class="gf-info"><div class="gf-stats" id="gf-stats"></div><div class="gf-hint" id="gf-hint"></div></div></div>`;
+    <div class="gf-stage" id="gf-stage"><canvas></canvas><div class="gf-banner" id="gf-banner" aria-live="polite"></div></div>
+    <div class="gf-info"><div class="gf-tl" id="gf-tl"></div><div class="gf-stats" id="gf-stats"></div><div class="gf-hint" id="gf-hint"></div></div></div>`;
   el.addEventListener('click',e=>{ if(e.target===el) groveFocusClose(); });
   document.body.appendChild(el);
   document.addEventListener('keydown',e=>{ if(e.key==='Escape' && el.classList.contains('open')) groveFocusClose(); });
@@ -14663,7 +14682,7 @@ function groveFocus(id){
   const fl=['tree','house','field'].includes(def.kind) ? ' A wildflower blooms for each day you check in.' : '';
   document.getElementById('gf-hint').textContent=(GROVE_FOCUS_HINT[def.kind]||'')+' Tap a bull or bear to say hi.'+vis+fl;
   el.classList.add('open'); document.body.style.overflow='hidden';
-  _grove.focusP=F; groveFocusStats();
+  _grove.focusP=F; groveFocusStats(); groveTLPanel();
   requestAnimationFrame(()=>{ groveFocusSize(F); groveStart(); });
 }
 function groveFocusStats(){
@@ -14674,7 +14693,7 @@ function groveFocusStats(){
 function groveFocusClose(){
   const el=document.getElementById('gf-overlay'); if(el) el.classList.remove('open');
   const F=_grove.focusP; if(F){ const live=(_grove.plots||{})[F.def.id]; if(live) live.lightsOff=F.lightsOff; }
-  _grove.focusP=null; document.body.style.overflow='';
+  _grove.focusP=null; _grove.tlMonth=null; document.body.style.overflow='';
 }
 
 // ── Grove life: small things that change from day to day ──
@@ -14728,7 +14747,7 @@ const GROVE_FLOWER_X=[0.08,0.9,0.16,0.82,0.04,0.95,0.22,0.76,0.12,0.86,0.28,0.7]
 function groveVisitFlowers(P,t){
   const k=P.def.kind; if(k!=='tree' && k!=='house' && k!=='field') return;
   const n=_grove.flowers||0; if(!n) return;
-  const {ctx,w,h}=P, base=h-24, o=P.off?P.off.content:0, season=groveSeason(groveNow().getMonth());
+  const {ctx,w,h}=P, base=h-24, o=P.off?P.off.content:0, season=groveSeason(groveSceneMonth());
   const cols = season==='autumn' ? ['#c084fc','#f97316','#facc15'] : season==='winter' ? ['#f8fafc'] : ['#f9a8d4','#fde68a','#c4b5fd','#fca5a5','#ffffff'];
   for(let i=0;i<n;i++){
     let g=1; if(i===n-1 && _grove.bloomAt){ g=groveEase((t-_grove.bloomAt)/2.2); if(g<=0) continue; }
@@ -16626,7 +16645,8 @@ function ivAfterAdd(before){
   try{ QA.log('iv_planted',{plot:best.id, demo:!!currentUser?.isDemo}); }catch(e){}
   _grove.celebrate={id:best.id, amt:best.d, from:before[best.id]||0};
   ivGlancePick(best.id);
-  setTimeout(groveCelebrate, 500);
+  if(!groveReduce && document.getElementById('page-investments')?.offsetParent!==null && (_grove.plots||{})[best.id]) setTimeout(groveCelebrateBig, 450);
+  else setTimeout(groveCelebrate, 500);
 }
 function groveCelebrate(){
   const c=_grove.celebrate; _grove.celebrate=null; if(!c) return;
@@ -16644,6 +16664,75 @@ function groveCelebrate(){
     d.textContent='+$'+Math.round(c.amt).toLocaleString('en-CA')+' planted';
     host.appendChild(d); setTimeout(()=>d.remove(), 2700);
   }
+}
+
+// ── Planting, full screen: the new money grows the scene in front of you, and a level up gets its own moment ──
+function groveLvlName(def,c){ return def.kind==='house' ? def.stages[groveStage(def,c)][1] : def.levels[groveLevel(c)]; }
+function groveBanner(html,cls,ms){
+  const b=document.getElementById('gf-banner'); if(!b) return;
+  b.className='gf-banner'+(cls?' '+cls:''); b.innerHTML=html; requestAnimationFrame(()=>b.classList.add('on'));
+  clearTimeout(_grove.bannerT); _grove.bannerT=setTimeout(()=>b.classList.remove('on'), ms||3600);
+}
+function groveCelebrateBig(){
+  const c=_grove.celebrate; _grove.celebrate=null; if(!c) return;
+  groveFocus(c.id); const F=_grove.focusP; if(!F) return;
+  const def=F.def, to=c.from+c.amt, l0=groveLvlOf(def,c.from), l1=groveLvlOf(def,to);
+  F.disp=c.from; F.slow=true; F.pulse=1; F.flash=1;
+  setTimeout(()=>{ if(_grove.focusP!==F || !F.w) return;
+    for(let i=0;i<28;i++) groveSpawn(F,{type:'coin',x:F.w*(0.25+Math.random()*0.5),y:-8-Math.random()*60,vx:(Math.random()-0.5)*1.2,vy:Math.random()*1.4,floor:F.h-24-Math.random()*10,life:1.9});
+    for(let i=0;i<3;i++) setTimeout(()=>groveSpawn(F,{type:'ring',x:F.w/2,y:F.h*0.62,r:6+i*2,col:'rgba(74,222,128,0.75)'}), i*200);
+  },120);
+  const amt='+$'+Math.round(c.amt).toLocaleString('en-CA')+' planted';
+  let line;
+  if(def.kind==='house'){ const nx=def.stages[l1+1]; line=nx?`${groveFmt(Math.max(0,nx[0]*GROVE_FHSA_GOAL-to))} to "${nx[1].toLowerCase()}"`:'Down payment ready'; }
+  else { const hi=GROVE_MILESTONES[l1], lo=l1?GROVE_MILESTONES[l1-1]:0; line=hi?`${Math.round((to-lo)/(hi-lo)*100)}% of the way to ${def.levels[l1+1].toLowerCase()}`:'Fully grown'; }
+  groveBanner(`<b>${amt}</b><span>${escHtml(line)}</span>`,'',3200);
+  if(l1>l0) setTimeout(()=>{ if(_grove.focusP!==F) return; F.pulse=1; F.flash=1;
+    for(let i=0;i<5;i++) setTimeout(()=>groveSpawn(F,{type:'ring',x:F.w/2,y:F.h*0.5,r:8+i*3,col:'rgba(251,191,36,0.8)'}), i*140);
+    groveBanner(`<b>Level up!</b><span>${escHtml(groveLvlName(def,c.from))} grew into ${escHtml(groveLvlName(def,to).toLowerCase())}</span>`,'lvl',4200);
+    try{ QA.log('grove_levelup',{plot:def.id, lvl:l1}); }catch(e){} }, 3400);
+}
+
+// ── Fast-forward: ten years in a few seconds, at the monthly amount you choose ──
+// An illustration at a fixed 5% a year, labelled as such. Never a prediction or advice.
+const GROVE_TL_PLOTS=['tfsa','rrsp','fhsa','taxable'], GROVE_TL_RATE=0.05, GROVE_TL_YEARS=10, GROVE_TL_SECS_PER_YEAR=0.65;
+function groveTLAt(F,y){
+  const n=Math.round(y*12), r=GROVE_TL_RATE/12, T=F.tl; let c=T.c0, v=T.v0;
+  for(let i=0;i<n;i++){ let add=T.plan; if(F.def.id==='fhsa') add=Math.max(0,Math.min(add,GROVE_FHSA_GOAL-c)); c+=add; v=(v+add)*(1+r); }
+  return {contrib:c, value:v};
+}
+function groveTLFrame(F,t){
+  const T=F.tl; if(T.t0==null) T.t0=t;
+  const y=Math.min(GROVE_TL_YEARS,(t-T.t0)/GROVE_TL_SECS_PER_YEAR), d=groveTLAt(F,y);
+  _grove.tlMonth=(new Date().getMonth()+Math.floor(y*12))%12;
+  if(!T.done && (t-(T.drawn||0)>0.08 || y>=GROVE_TL_YEARS)){ T.drawn=t;
+    const el=document.getElementById('gf-tl-now');
+    if(el) el.innerHTML=`<span class="tl-yr">${new Date().getFullYear()+Math.floor(y)}</span><span>Put in <b>${groveFmt(d.contrib)}</b></span><span>Worth about <b>${groveFmt(d.value)}</b></span><span>${escHtml(groveLvlName(F.def,d.contrib))}</span>`;
+    const lv=groveLvlOf(F.def,d.contrib); if(T.lvl!=null && lv>T.lvl){ F.pulse=1; F.flash=0.6; groveBanner(`<b>${escHtml(groveLvlName(F.def,d.contrib))}</b><span>${new Date().getFullYear()+Math.floor(y)}</span>`,'lvl',1300); } T.lvl=lv;
+  }
+  if(!T.done && y>=GROVE_TL_YEARS){ T.done=true; T.end=d; groveTLPanel(); try{ QA.log('grove_tl_done',{plot:F.def.id, plan:T.plan}); }catch(e){} }
+  return d;
+}
+function groveTLStart(monthly){
+  const F=_grove.focusP; if(!F) return;
+  const tot=(_grove.tot||{})[F.def.id]||{contrib:0,value:0}, g=state.grove||{};
+  const plan=monthly!=null?monthly:((g.plan&&g.plan[F.def.id]!=null)?g.plan[F.def.id]:F.def.defPlan);
+  F.tl={c0:tot.contrib, v0:Math.max(0,tot.value), plan:Math.max(0,+plan||0), t0:null, done:false, lvl:null};
+  try{ QA.log('grove_tl',{plot:F.def.id, plan:F.tl.plan}); }catch(e){}
+  groveTLPanel();
+}
+function groveTLStop(){ const F=_grove.focusP; if(F){ F.tl=null; F.slow=true; } _grove.tlMonth=null; groveTLPanel(); }
+function groveTLPanel(){
+  const el=document.getElementById('gf-tl'), F=_grove.focusP; if(!el) return;
+  if(!F || !GROVE_TL_PLOTS.includes(F.def.id)){ el.innerHTML=''; return; }
+  const g=state.grove||{}, plan=(g.plan&&g.plan[F.def.id]!=null)?g.plan[F.def.id]:F.def.defPlan, T=F.tl;
+  const note=`<small>An example at 5% a year, every year. Real returns go up and down, and some years lose money. This is not a prediction or advice.${F.def.id==='tfsa'?' Stay within your TFSA room.':''}${F.def.id==='fhsa'?' Stops at the $40,000 FHSA lifetime limit.':''}</small>`;
+  if(!T){ el.innerHTML=`<button type="button" class="tl-go" onclick="groveTLStart()">Fast-forward 10 years</button><small>Watch ${groveFmt(plan)} a month grow for ten years, seasons and all.</small>`; return; }
+  if(!T.done){ el.innerHTML=`<div class="tl-now" id="gf-tl-now"></div>${note}`; return; }
+  const e=T.end, growth=Math.max(0,e.value-e.contrib);
+  const chips=[100,300,500].map(a=>`<button type="button" class="${Math.abs(T.plan-a)<1?'on':''}" onclick="groveTLStart(${a})">${groveFmt(a)} a month</button>`).join('');
+  el.innerHTML=`<p class="tl-sum">In ${GROVE_TL_YEARS} years at ${groveFmt(T.plan)} a month: put in <b>${groveFmt(e.contrib)}</b>, worth about <b>${groveFmt(e.value)}</b>. About <b>${groveFmt(growth)}</b> of that is growth, not money you put in. That is why growth looks slow at first and fast later.</p>
+    <div class="tl-acts">${chips}<button type="button" onclick="groveTLStop()">Back to today</button></div>${note}`;
 }
 
 // ── Analysis tab: plain facts about what you hold. Never advice on what to buy or sell. ──
