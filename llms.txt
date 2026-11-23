@@ -1,0 +1,33 @@
+# Qualisight
+
+> Qualisight (qualisight.ca) is a Canadian personal finance web app and a set of free Canadian money calculators. It shows the month you could be debt-free, what you can safely spend this week, and every cost of buying a home in Ontario. No bank login: you type or paste your numbers.
+
+Key facts:
+- Built and run by a solo founder in Ontario, Canada. Launched 2026.
+- Budgeting, debt payoff and the dashboard are free. The investing grove, the home-buying guide and the AI coach have a 14-day free trial, then $12 CAD a month.
+- The free calculators need no sign-up, collect nothing typed into them, and show no ads.
+- Canadian rules (TFSA, RRSP, FHSA, CMHC insurance, the mortgage stress test, Ontario land transfer tax) are sourced to CRA, CMHC, OSFI, FCAC and the Ontario government, and each page shows the date it was last checked.
+- Qualisight gives information, not financial advice, and never recommends specific investments.
+
+## Free calculators and guides
+
+- [Budget Calculator Canada: Free Monthly Budget Planner](https://qualisight.ca/budget-calculator/): Free Canadian budget calculator. Enter your take-home pay and bills, see what is left each month, and compare your budget to the 50/30/20 rule. Weekly, biweekly or monthly pay. No sign-up.
+- [Canadian Bank Earnings Dates: Big Six Q4 2026](https://qualisight.ca/canadian-bank-earnings/): When RBC, TD, Scotiabank, BMO, CIBC and National Bank report Q4 2026 earnings: dates and times from each bank, analyst estimates, last year's results and live prices. Updated daily.
+- [Credit Card Payoff Calculator Canada: Your Debt-Free Date](https://qualisight.ca/credit-card-payoff-calculator/): How long will your credit card take to pay off? See your payoff month, the interest, and what paying only the minimum really costs. Free, no sign-up.
+- [Debt Payoff Calculator Canada: Snowball vs Avalanche](https://qualisight.ca/debt-payoff-calculator/): Free Canadian debt payoff calculator. Enter your debts, compare snowball and avalanche, and see the month you will be debt-free. No sign-up needed.
+- [Minimum Down Payment Calculator Canada](https://qualisight.ca/down-payment-calculator/): Free Canadian down payment calculator. Enter a home price and what you save each month. See the minimum down payment, the mortgage insurance cost, and the month you will have it. No sign-up.
+- [Emergency Fund Calculator Canada: How Much, and By When](https://qualisight.ca/emergency-fund-calculator/): Work out your emergency fund target (3 to 6 months of expenses) and the exact month you will reach it. Free, no sign-up, based on Government of Canada guidance.
+- [FHSA Limit 2027: $8,000, Up to $16,000 With Carryforward](https://qualisight.ca/fhsa-limit-2027/): The 2027 FHSA limit is $8,000 plus up to $8,000 carried forward. Work out your own 2027 FHSA room, and why opening one before December 31 matters.
+- [Canada Money Limits 2027: TFSA, RRSP, FHSA and Key Dates](https://qualisight.ca/money-limits-2027/): Every 2027 number Canadians look up in one place: TFSA, RRSP and FHSA limits, tax deadlines, down payment rules and land transfer refunds, with official sources.
+- [Mortgage Affordability Calculator Canada: Stress Test](https://qualisight.ca/mortgage-affordability-calculator/): Free Canadian mortgage affordability calculator with the stress test. See the most a lender could approve, your GDS and TDS, and whether a home you like passes. No sign-up.
+- [Ontario Land Transfer Tax Calculator 2026, with Toronto](https://qualisight.ca/ontario-land-transfer-tax-calculator/): Work out Ontario and Toronto land transfer tax, minus first-time buyer refunds of up to $8,475. Official 2026 rates. Free, no sign-up.
+- [RRSP Limit 2027 Is $35,390: Your Room and Deadline](https://qualisight.ca/rrsp-limit-2027/): The 2027 RRSP limit is $35,390. Work out your own new room from your 2026 income, and see the March 1, 2027 deadline for 2026 contributions.
+- [S&P 500 Heatmap Today: Stock Market Map by Sector](https://qualisight.ca/sp500-heatmap/): Free S&P 500 heatmap. Every S&P 500 stock sized by index weight and coloured by today's move, grouped by sector. Switch to 1 week or 1 month. Built for Canadian investors.
+- [TFSA Contribution Room Calculator 2026 (Canada)](https://qualisight.ca/tfsa-contribution-room-calculator/): Free TFSA contribution room calculator for 2026. Enter your birth year, what you put in and took out, and see your estimated room. Uses the CRA yearly limits. No sign-up.
+- [TFSA Limit 2027: Not Announced Yet, and Your Room on Jan 1](https://qualisight.ca/tfsa-limit-2027/): Is the 2027 TFSA limit $7,500? What the CRA has published so far, how the limit is set, and a calculator for your total TFSA room on January 1, 2027.
+- [TSX 60 Heatmap Today: Canadian Stock Market Map](https://qualisight.ca/tsx-heatmap/): Free TSX 60 heatmap. See today's Canadian stock market at a glance: every S&P/TSX 60 stock sized by index weight and coloured by today's move, by sector. 1 day, 1 week, 1 month.
+
+## About
+
+- [About Qualisight](https://qualisight.ca/about/): who builds it, how the tools work, and where the rules come from.
+- [The app](https://qualisight.ca/): try the no-sign-up demo.
