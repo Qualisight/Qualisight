@@ -136,7 +136,7 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
 <tr><td>15% to under 20%</td><td>2.80%</td></tr>
 <tr><td>20% or more</td><td>None needed</td></tr>
 </tbody></table>
-<p>In Ontario, Quebec and Saskatchewan, provincial sales tax on the premium is due in cash at closing. It cannot be added to the mortgage. A 30-year amortization can add a small surcharge.</p>
+<p>In some provinces, including Ontario (8%) and Quebec, provincial sales tax on the premium is due in cash at closing. It cannot be added to the mortgage. A 30-year amortization can add a small surcharge.</p>
 
 <h2>Do not forget closing costs</h2>
 <p>Land transfer tax, a lawyer, an inspection and moving often add 1.5% to 4% of the price. These are paid in cash and are not part of the down payment, so save for both. First-time buyers can get land transfer tax rebates in some provinces and cities. In Ontario, work out yours with the <a href="/ontario-land-transfer-tax-calculator/">land transfer tax calculator</a>.</p>
@@ -198,7 +198,7 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
     h+='<div><span>20% down, no insurance</span><b>'+money(twenty)+'</b><em>'+(s>=twenty?'You have it':m20!==null?'by '+monthOut(m20):'add a monthly amount')+'</em></div>';
     h+='<div><span>Closing costs to save too</span><b>'+money(p*0.015)+'+</b><em>often 1.5% to 4% of the price</em></div></div>';
     if(p>=CAP) h+='<div class="warn">At '+money(CAP)+' or more, the minimum is 20% and mortgage insurance is not available.</div>';
-    else if(rate) h+='<p class="cmp">At the minimum down payment, the mortgage would be <b>'+money(loan)+'</b> and insurance would add about <b>'+money(prem)+'</b> ('+(rate*100).toFixed(2)+'%). It is usually added to the mortgage. In Ontario, Quebec and Saskatchewan, sales tax on it is paid in cash at closing.</p>';
+    else if(rate) h+='<p class="cmp">At the minimum down payment, the mortgage would be <b>'+money(loan)+'</b> and insurance would add about <b>'+money(prem)+'</b> ('+(rate*100).toFixed(2)+'%). It is usually added to the mortgage. In Ontario, 8% sales tax on it is paid in cash at closing.</p>';
     if(gap>0){ var m2=months(gap,mo+200); h+='<p class="cmp">Save <b>$200 more</b> a month and you get there by <b>'+monthOut(m2)+'</b>'+(m1!==null&&m1-m2>0?', '+dur(m1-m2)+' sooner':'')+'.</p>'; }
     $('out').innerHTML=h; $('acts').hidden=false;
     $('share').hidden = !(gap>0 && m1!==null);

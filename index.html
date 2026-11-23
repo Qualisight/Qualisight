@@ -3966,6 +3966,63 @@ button:focus:not(:focus-visible){outline:none}
 
 
 
+
+/* Home buying guide */
+.hg-tabs{display:flex;gap:0.35rem;overflow-x:auto;scrollbar-width:none;margin:0 0 1rem;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+.hg-tabs::-webkit-scrollbar{display:none}
+.hg-tabs button{flex:1 0 auto;min-height:40px;padding:0 0.8rem;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--muted);font:inherit;font-size:0.86rem;font-weight:700;cursor:pointer;white-space:nowrap}
+.hg-tabs button.on{background:#4ade80;border-color:#4ade80;color:#06140b}
+@media(max-width:430px){.hg-tabs{gap:0.25rem}.hg-tabs button{padding:0 0.55rem;font-size:0.8rem}}
+#page-rental.hg-guide #hq-mount,#page-rental.hg-guide #ca-rental,#page-rental.hg-guide #rvb-wrap{display:none!important}
+.hg-panel:empty{display:none}
+.hg-card{background:var(--card,#141821);border:1px solid var(--border);border-radius:18px;padding:1rem 1.05rem;margin-bottom:0.9rem}
+.hg-h{font-size:1.15rem;font-weight:800;color:var(--text)}.hg-kick{font-size:0.8rem;font-weight:700;color:var(--muted);margin-bottom:0.35rem}.hg-h2{font-size:1rem;font-weight:800;color:var(--text)}
+.hg-p{color:#aab4c6;font-size:0.9rem;line-height:1.5;margin:0.35rem 0 0}.hg-p b{color:var(--text)}
+.hg-s{color:var(--muted);font-size:0.8rem;line-height:1.45;margin-top:0.4rem}.hg-s b{color:var(--text)}
+.hg-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.65rem;margin-top:0.8rem}
+.hg-f label{display:block;font-size:0.78rem;color:var(--muted);margin-bottom:0.25rem;line-height:1.3}
+.hg-in{position:relative}.hg-in input{width:100%;min-height:44px;border-radius:10px;border:1px solid var(--border);background:#0e121a;color:var(--text);font:inherit;padding:0 0.7rem}
+.hg-in input:focus{outline:2px solid #4ade80;outline-offset:1px}.hg-in span{position:absolute;right:0.7rem;top:50%;transform:translateY(-50%);color:var(--muted);font-size:0.85rem}
+.hg-row{display:flex;justify-content:space-between;align-items:center;gap:0.6rem;margin-top:0.75rem;font-size:0.86rem;color:var(--muted)}
+.hg-seg{display:inline-flex;border:1px solid var(--border);border-radius:999px;padding:3px}
+.hg-seg button{border:0;background:none;color:var(--muted);font:inherit;font-size:0.84rem;font-weight:700;min-height:36px;padding:0 0.8rem;border-radius:999px;cursor:pointer}
+.hg-seg button[aria-pressed=true]{background:#4ade80;color:#06140b}
+.hg-chk{display:flex;align-items:center;gap:0.55rem;min-height:40px;margin-top:0.45rem;color:#c4ccdb;font-size:0.9rem;cursor:pointer}.hg-chk input{width:20px;height:20px;accent-color:#4ade80}
+.hg-more{margin-top:0.5rem;border-top:1px solid var(--border);padding-top:0.5rem}.hg-more summary{cursor:pointer;font-size:0.86rem;color:#c4ccdb;min-height:32px;font-weight:600}
+.hg-hero{border-color:rgba(74,222,128,0.4);background:linear-gradient(160deg,rgba(74,222,128,0.12),rgba(74,222,128,0.02) 60%),var(--card,#141821)}
+.hg-hero>span{display:block;color:var(--muted);font-size:0.88rem}.hg-hero>b{display:block;font-family:var(--font-display,inherit);font-size:2.4rem;font-weight:800;letter-spacing:-0.04em;color:#4ade80;line-height:1.1;font-variant-numeric:tabular-nums}
+.hg-hero>p{color:#c4ccdb;font-size:0.9rem;line-height:1.5;margin:0.35rem 0 0.6rem}.hg-hero>p b{color:var(--text)}
+.hg-ratio{margin-top:0.55rem}.hg-rl{display:flex;align-items:baseline;gap:0.5rem;font-size:0.84rem}.hg-rl span{flex:1;color:#c4ccdb}.hg-rl b{color:var(--text)}.hg-rl em{font-style:normal;color:var(--muted);font-size:0.76rem}
+.hg-rb{height:8px;border-radius:8px;background:rgba(255,255,255,0.07);margin-top:0.25rem;overflow:hidden}.hg-rb i{display:block;height:100%;background:#4ade80;border-radius:8px}.hg-rb i.hot{background:#fbbf24}
+.hg-comfy{margin-top:0.85rem;padding:0.7rem 0.8rem;border-radius:12px;background:rgba(96,165,250,0.08);border:1px solid rgba(96,165,250,0.3)}.hg-comfy b{display:block;color:#bfdbfe}.hg-comfy small{display:block;color:#aab4c6;font-size:0.82rem;line-height:1.45;margin-top:0.15rem}
+.hg-tips{margin:0.7rem 0 0;padding-left:1.1rem;color:#c4ccdb;font-size:0.86rem;line-height:1.5}.hg-tips b{color:var(--text)}
+.hg-go{width:100%;min-height:46px;margin-top:0.8rem;border-radius:12px;border:0;background:#4ade80;color:#06140b;font:inherit;font-weight:800;cursor:pointer}
+.hg-src{color:var(--muted);font-size:0.76rem;line-height:1.5;margin:0.4rem 0 0.9rem}.hg-src a{color:#9fb0c8}
+.hg-empty{color:#aab4c6;font-size:0.92rem}.hg-warn{border-color:rgba(251,191,36,0.4);background:rgba(251,191,36,0.07);color:#f3e2a0;font-size:0.9rem;line-height:1.5}.hg-warn b{color:#fff}
+.hg-note{font-size:0.88rem;color:#c4ccdb;line-height:1.5}.hg-note b{color:var(--text)}
+.hg-t{width:100%;border-collapse:collapse;margin-top:0.6rem;font-size:0.88rem}.hg-t td{padding:0.55rem 0;border-top:1px solid var(--border);vertical-align:top}
+.hg-t td:last-child{text-align:right;white-space:nowrap;padding-left:0.8rem;font-weight:700;color:var(--text);font-variant-numeric:tabular-nums}.hg-t td b{display:block;color:var(--text);font-weight:700}.hg-t td small{display:block;color:var(--muted);font-size:0.78rem;line-height:1.4;margin-top:0.1rem}
+.hg-big2{font-family:var(--font-display,inherit);font-size:1.8rem;font-weight:800;color:var(--text);margin-top:0.2rem;font-variant-numeric:tabular-nums}.hg-big2 small{font-size:0.9rem;color:var(--muted);font-weight:600}
+.hg-lnk{border:0;background:none;color:#4ade80;font:inherit;font-weight:700;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px;min-height:32px}
+.hg-est{margin-top:0.8rem;padding:0.8rem;border-radius:14px;background:rgba(74,222,128,0.08);border:1px solid rgba(74,222,128,0.3)}.hg-est>span{display:block;color:#aab4c6;font-size:0.85rem;line-height:1.45}.hg-est>b{display:block;font-size:1.9rem;font-weight:800;color:#4ade80;margin:0.15rem 0}
+.hg-est ul{list-style:none;margin:0.2rem 0 0.3rem;padding:0}.hg-est li{display:flex;justify-content:space-between;font-size:0.86rem;color:#c4ccdb;padding:0.2rem 0}.hg-est li em{font-style:normal;color:var(--text);font-weight:700}.hg-est small{color:var(--muted);font-size:0.76rem}
+.hg-sec{font-size:0.8rem;font-weight:700;color:var(--muted);margin:1.1rem 0 0.4rem}
+.hg-prog{background:var(--card,#141821);border:1px solid var(--border);border-radius:14px;margin-bottom:0.5rem;padding:0 0.9rem}.hg-prog[open]{padding-bottom:0.6rem;border-color:rgba(74,222,128,0.35)}
+.hg-prog summary{cursor:pointer;list-style:none;min-height:56px;display:flex;align-items:center}.hg-prog summary::-webkit-details-marker{display:none}
+.hg-prog summary span{flex:1;display:block}.hg-prog summary b{display:block;color:var(--text);font-size:0.95rem}.hg-prog summary em{display:block;font-style:normal;color:#4ade80;font-size:0.84rem;font-weight:700;margin-top:0.1rem}
+.hg-prog summary::after{content:'+';color:var(--muted);font-size:1.2rem;margin-left:0.6rem}.hg-prog[open] summary::after{content:'−'}
+.hg-prog p{color:#c4ccdb;font-size:0.88rem;line-height:1.5;margin:0.35rem 0}.hg-prog p b{color:var(--text)}
+.hg-prog-bar{height:10px;border-radius:10px;background:rgba(255,255,255,0.07);margin-top:0.8rem;overflow:hidden}.hg-prog-bar i{display:block;height:100%;background:#4ade80;border-radius:10px;transition:width .4s}
+.hg-steps{list-style:none;margin:0;padding:0}
+.hg-steps li{display:flex;gap:0.8rem;padding:0.85rem 0.9rem;margin-bottom:0.5rem;border-radius:14px;background:var(--card,#141821);border:1px solid var(--border)}
+.hg-steps li.next{border-color:rgba(74,222,128,0.5)}.hg-steps li.done{opacity:0.72}.hg-steps li.done b{text-decoration:line-through;text-decoration-color:rgba(74,222,128,0.7)}
+.hg-tick{position:relative;flex:none;width:36px;height:36px;cursor:pointer}.hg-tick input{position:absolute;inset:0;opacity:0;cursor:pointer;margin:0}
+.hg-tick span{display:grid;place-items:center;width:36px;height:36px;border-radius:50%;border:2px solid var(--border);color:var(--muted);font-weight:800;font-size:0.9rem}
+.hg-tick input:checked+span{background:#4ade80;border-color:#4ade80;color:#06140b;font-size:0}.hg-tick input:checked+span::after{content:'✓';font-size:1rem}
+.hg-tick input:focus-visible+span{outline:2px solid #4ade80;outline-offset:2px}
+.hg-steps b{display:block;color:var(--text);font-size:0.95rem}.hg-steps em{display:block;font-style:normal;color:#4ade80;font-size:0.78rem;font-weight:700;margin-top:0.1rem}.hg-steps p{color:#aab4c6;font-size:0.86rem;line-height:1.5;margin:0.3rem 0 0}
+@media(max-width:520px){.hg-grid{grid-template-columns:1fr 1fr}.hg-hero>b{font-size:2.1rem}}
+
 /* This week */
 .sw-card{margin:0 0 1rem;padding:1rem 1.05rem;border-radius:18px;background:linear-gradient(160deg,rgba(74,222,128,0.10),rgba(74,222,128,0.02) 55%),var(--card,#141821);border:1px solid rgba(74,222,128,0.28)}
 .sw-card.over{background:linear-gradient(160deg,rgba(248,113,113,0.10),transparent 55%),var(--card,#141821);border-color:rgba(248,113,113,0.35)}
@@ -5771,10 +5828,18 @@ window.QS_HERO_SPLIT=null;
 <div id="page-rental" class="page">
   <div style="margin-bottom:1.2rem">
     <div class="hero-title" style="font-size:1.3rem">Housing</div>
-    <div class="hero-sub" style="margin:0">Your road to a first home, plus rent vs buy math on Canadian rules.</div>
+    <div class="hero-sub" style="margin:0">Everything for buying your first home in Ontario: what you can afford, every cost, the programs that help, and each step to the keys.</div>
   </div>
 
   <!-- Housing game: the road home -->
+  <div class="hg-tabs" role="tablist" aria-label="Home buying guide" id="hg-tabs">
+    <button type="button" role="tab" data-t="road" onclick="hgTab('road')">Road</button>
+    <button type="button" role="tab" data-t="afford" onclick="hgTab('afford')">Afford</button>
+    <button type="button" role="tab" data-t="costs" onclick="hgTab('costs')">Costs</button>
+    <button type="button" role="tab" data-t="help" onclick="hgTab('help')">Programs</button>
+    <button type="button" role="tab" data-t="steps" onclick="hgTab('steps')">Steps</button>
+  </div>
+  <div id="hg-panel" class="hg-panel" role="tabpanel"></div>
   <div id="hq-mount"></div>
   <div class="coach-ask" id="ca-rental" hidden style="margin-top:0.8rem"></div>
 
@@ -16364,6 +16429,7 @@ function renderAll(){
   calcPaycheck();
   if(document.getElementById('rent-amount')?.value) calcRent();
   try{ renderHomeQuest(); }catch(e){ console.warn('home quest', e); }
+  try{ hgRender(); }catch(e){ console.warn('home guide', e); }
   try{ renderDashboardPlus(); }catch(e){ console.warn('dash', e); }
   try{ renderCoachAsk(); }catch(e){ console.warn('coach ask', e); }
 }
@@ -17502,6 +17568,189 @@ function lppStart(){
 })();
 
 
+
+
+// ══════════════════════════════════════════
+// HOME BUYING GUIDE: what you can afford, every cost, programs, and the steps to the keys.
+// Rules checked November 23, 2026 against OSFI, CMHC, Finance Canada, the CRA, Ontario and Toronto.
+// Uses the same mortgage helpers as the road home: minDownPayment, cmhcPremium, monthlyMortgage, qualifyingRate.
+// ══════════════════════════════════════════
+const HG_CHECKED='November 23, 2026';
+const HG_SRC={
+  osfi:['OSFI, minimum qualifying rate','https://www.osfi-bsif.gc.ca/en/supervision/financial-institutions/banks/minimum-qualifying-rate-uninsured-mortgages'],
+  cmhcRatio:['CMHC, debt service ratios','https://www.cmhc-schl.gc.ca/en/consumers/home-buying/calculators/debt-service-calculator'],
+  amort:['Finance Canada, 30-year mortgages and the $1.5 million cap','https://www.canada.ca/en/department-finance/news/2024/12/boldest-mortgage-reforms-in-decades-come-into-force-today.html'],
+  down:['FCAC, minimum down payment','https://www.canada.ca/en/financial-consumer-agency/services/mortgages/down-payment.html'],
+  cmhc:['CMHC, mortgage loan insurance explained','https://www.cmhc-schl.gc.ca/observer/2025/cmhc-mortgage-loan-insurance-explained'],
+  ltt:['Ontario Ministry of Finance, land transfer tax','https://www.ontario.ca/document/land-transfer-tax/calculating-land-transfer-tax'],
+  lttRef:['Ontario, refunds for first-time homebuyers','https://www.ontario.ca/document/land-transfer-tax/land-transfer-tax-refunds-first-time-homebuyers'],
+  mltt:['City of Toronto, land transfer tax rates','https://www.toronto.ca/services-payments/property-taxes-utilities/municipal-land-transfer-tax-mltt/municipal-land-transfer-tax-mltt-rates-and-fees'],
+  mlttRef:['City of Toronto, first-time buyer rebate','https://www.toronto.ca/services-payments/property-taxes-utilities/municipal-land-transfer-tax-mltt/municipal-land-transfer-tax-mltt-rebate-opportunities/'],
+  fhsa:['CRA, First Home Savings Account','https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/first-home-savings-account.html'],
+  hbp:['CRA, Home Buyers\' Plan','https://www.canada.ca/en/revenue-agency/services/tax/individuals/topics/rrsps-related-plans/what-home-buyers-plan.html'],
+  hbtc:['CRA, line 31270 home buyers\' amount','https://www.cra-arc.gc.ca/hbtc/'],
+  gst:['CRA, first-time home buyers\' GST/HST rebate','https://www.canada.ca/en/revenue-agency/services/tax/businesses/topics/gst-hst-businesses/gst-hst-rebates/first-time-home-buyers-gst-hst-rebate'],
+  onhst:['Ontario, HST relief on new homes','https://www.ontario.ca/housinginnovation'],
+  onENHR:['CRA Notice 346, Ontario Enhanced New Housing Rebate','https://www.canada.ca/en/revenue-agency/services/forms-publications/publications/notice346/ontario-enhanced-new-housing-rebate.html'],
+  pre:['FCAC, getting preapproved','https://www.canada.ca/en/financial-consumer-agency/services/mortgages/preapproval-qualify-mortgage.html']
+};
+function hgSrc(k){ const x=HG_SRC[k]; return x?`<a href="${x[1]}" target="_blank" rel="noopener">${x[0]}</a>`:''; }
+function hgG(){
+  if(!state.homeGuide||typeof state.homeGuide!=='object'){
+    const hf=(typeof hqFund==='function')?hqFund():{}, debts=(state.debts||[]).reduce((t,d)=>t+((+d.balance||0)>0?(+d.min||0):0),0);
+    state.homeGuide={income:state.grossIncome||(hqIsDemo()?92000:0), debts:Math.round(debts), down:Math.round((hf.saved||0)+(typeof hqFhsaBalance==='function'?hqFhsaBalance():0)), rate:4.5, amort:30, first:true, newBuild:false, toronto:false,
+      price:hf.price||(hqIsDemo()?650000:0), taxPct:1.0, heat:120, condo:0, steps:{}, tab:'road'};
+  }
+  const G=state.homeGuide; G.steps=G.steps||{}; return G;
+}
+let _hgT=null; function hgSave(){ clearTimeout(_hgT); _hgT=setTimeout(()=>{ try{ save(); }catch(e){} },700); }
+function hgSet(k,v,rerender){ const G=hgG(); G[k]=v; if(k==='income') state.grossIncome=v; hgSave(); if(rerender!==false) hgRender(true); }
+function hgNum(id,k){ const el=document.getElementById(id); const v=parseFloat(String(el&&el.value||'').replace(/[, $%]/g,'')); hgSet(k, isFinite(v)&&v>=0?v:0); }
+function hgTab(t){ const G=hgG(); G.tab=t; hgSave(); try{ QA.log('hg_tab',{t}); }catch(e){} hgRender(); try{ document.getElementById('hg-tabs').scrollIntoView({block:'nearest'}); }catch(e){} }
+function hgLTT(p,toronto){
+  const ON=[[55000,0.005],[250000,0.01],[400000,0.015],[2000000,0.02],[Infinity,0.025]];
+  const TO=[[55000,0.005],[250000,0.01],[400000,0.015],[2000000,0.02],[3000000,0.025],[4000000,0.044],[5000000,0.0545],[10000000,0.065],[20000000,0.0755],[Infinity,0.086]];
+  const t=b=>{ let x=0,lo=0; for(const [hi,r] of b){ if(p<=lo) break; x+=(Math.min(p,hi)-lo)*r; lo=hi; } return x; };
+  return {on:t(ON), to:toronto?t(TO):0};
+}
+// One price, every number a lender looks at
+function hgAt(G,P){
+  const down=Math.min(G.down,P), minD=minDownPayment(P), insured=down<P*0.2;
+  const loan=Math.max(0,P-down), prem=insured?cmhcPremium(P,down)+(G.amort>25?0.002:0):0, L=loan*(1+prem);
+  const amort=insured&&!G.first&&!G.newBuild?25:G.amort, q=qualifyingRate(G.rate);
+  const payQ=monthlyMortgage(L,q,amort), pay=monthlyMortgage(L,G.rate,amort), inc=G.income/12;
+  const housing=payQ+P*G.taxPct/1200+G.heat+0.5*G.condo, gds=inc>0?housing/inc*100:999, tds=inc>0?(housing+G.debts)/inc*100:999;
+  return {P,down,minD,insured,loan,prem,L,amort,q,payQ,pay,gds,tds,okDown:down>=minD-0.5&&!(insured&&P>=INSURED_PRICE_CAP)};
+}
+function hgMax(G,gMax,tMax){
+  let best=null, why='';
+  for(let P=20000;P<=4000000;P+=1000){ const a=hgAt(G,P); const ok=a.okDown&&a.gds<=gMax&&a.tds<=tMax;
+    if(ok){ best=a; continue; } if(best){ why=!a.okDown?'down':a.gds>gMax?'gds':'tds'; break; } }
+  return {a:best, why};
+}
+function hgAfford(G){
+  const ins=(id,k,label,ph,suf,step)=>`<div class="hg-f"><label for="${id}">${label}</label><div class="hg-in"><input id="${id}" type="number" inputmode="decimal" min="0" step="${step||1}" value="${G[k]||''}" placeholder="${ph}" onchange="hgNum('${id}','${k}')">${suf?`<span>${suf}</span>`:''}</div></div>`;
+  const form=`<div class="hg-card"><div class="hg-h">How much house can you afford?</div><p class="hg-p">This is how a Canadian lender works it out: your income, your debts, your down payment, and the stress test. Change any number and the answer updates.</p>
+    <div class="hg-grid">${ins('hg-inc','income','Household income before tax, a year','e.g. 92000')}${ins('hg-debt','debts','Other debt payments, a month','car, cards, loans')}${ins('hg-down','down','Down payment you have','e.g. 60000')}${ins('hg-rate','rate','Mortgage rate','4.5','%',0.05)}</div>
+    <div class="hg-row"><span>Amortization</span><div class="hg-seg">${[25,30].map(y=>`<button type="button" aria-pressed="${G.amort===y}" onclick="hgSet('amort',${y})">${y} years</button>`).join('')}</div></div>
+    <label class="hg-chk"><input type="checkbox" ${G.first?'checked':''} onchange="hgSet('first',this.checked)"> I am a first-time buyer</label>
+    <details class="hg-more"><summary>Property tax, heat and condo fees</summary><div class="hg-grid">${ins('hg-tax','taxPct','Property tax, % of price a year','1.0','%',0.05)}${ins('hg-heat','heat','Heating, a month','120')}${ins('hg-condo','condo','Condo fees, a month','0')}</div><p class="hg-s">Ontario property tax is often under 1% of the price a year, but it varies by city. Check your city's tax rate and change it here.</p></details></div>`;
+  if(!(G.income>0)){ return form+`<div class="hg-card hg-empty">Add your household income before tax to see your number.</div>`; }
+  let h='';
+  const M=hgMax(G,GDS_MAX,TDS_MAX), C=hgMax(G,32,40);
+  if(!M.a){ return form+`<div class="hg-card hg-warn">With these numbers, a lender would not approve a mortgage yet. The usual fixes: pay down other debts, add to your down payment, or add a co-borrower's income.</div>`; }
+  const a=M.a, why={down:'your down payment',gds:'your income (housing costs can be up to 39% of it)',tds:'your income and other debts (all debt payments up to 44% of it)'}[M.why]||'the numbers you entered';
+  const more=hgMax({...G,down:G.down+10000},GDS_MAX,TDS_MAX), less=hgMax({...G,debts:G.debts+100},GDS_MAX,TDS_MAX);
+  const bar=(v,max,l)=>`<div class="hg-ratio"><div class="hg-rl"><span>${l}</span><b>${v.toFixed(1)}%</b><em>limit ${max}%</em></div><div class="hg-rb"><i style="width:${Math.min(100,v/max*100).toFixed(1)}%" class="${v>max*0.95?'hot':''}"></i></div></div>`;
+  h+=`<div class="hg-card hg-hero"><span>A lender could approve up to about</span><b>${fmtW(Math.floor(a.P/1000)*1000)}</b>
+    <p>Held back by <b>${why}</b>. Mortgage of ${fmtW(a.L)}${a.insured?' including insurance':''}, about <b>${fmtW(a.pay)} a month</b> at ${G.rate}% over ${a.amort} years. You are tested at <b>${a.q.toFixed(2)}%</b>, the higher of your rate plus 2% or 5.25%.</p>
+    ${bar(a.gds,GDS_MAX,'Housing costs (GDS)')}${bar(a.tds,TDS_MAX,'All debts (TDS)')}
+    ${C.a?`<div class="hg-comfy"><b>A more comfortable target: ${fmtW(Math.floor(C.a.P/1000)*1000)}</b><small>Keeps housing near 32% of income and all debts near 40%, so there is room for life. Lenders allow more, but you do not have to borrow it all.</small></div>`:''}
+    <ul class="hg-tips">${more.a&&more.a.P>a.P+1000?`<li>Add $10,000 to your down payment and the limit rises to about <b>${fmtW(Math.floor(more.a.P/1000)*1000)}</b>.</li>`:''}${less.a?`<li>Every extra $100 a month of other debt payments lowers it to about <b>${fmtW(Math.floor(less.a.P/1000)*1000)}</b>.</li>`:''}
+    ${G.amort===30&&a.amort===25?'<li>30-year insured mortgages are only for first-time buyers or new builds, so this uses 25 years.</li>':''}${G.down>0&&a.insured?`<li>Under 20% down, mortgage insurance is added to the loan, and the home must cost under $1.5 million.</li>`:''}</ul>
+    <button type="button" class="hg-go" onclick="hgSet('price',${Math.floor((C.a||a).P/1000)*1000},false);hgTab('costs')">See every cost at ${fmtW(Math.floor((C.a||a).P/1000)*1000)}</button></div>
+    <p class="hg-src">An estimate, not a pre-approval. Lenders also look at your credit and job history. Rules checked ${HG_CHECKED}: ${hgSrc('osfi')}, ${hgSrc('cmhcRatio')}, ${hgSrc('amort')}.</p>`;
+  return h.replace('<div class="hg-card hg-hero">','<div class="hg-card hg-hero"><div class="hg-kick">How much house can you afford?</div>')+form.replace('How much house can you afford?','Your numbers');
+}
+function hgCostsCalc(G){
+  const P=G.price||0, a=hgAt(G,P), cashDown=Math.max(a.minD,Math.min(G.down,P)), ltt=hgLTT(P,G.toronto);
+  const onRef=G.first?Math.min(4000,ltt.on):0, toRef=G.first&&G.toronto?Math.min(4475,ltt.to):0;
+  const premAmt=a.insured?a.loan*a.prem:0, pst=premAmt*0.08;
+  const one=[['Down payment',cashDown,a.insured?`At least ${fmtW(a.minD)} on this price. Under 20% needs mortgage insurance.`:'20% or more, so no mortgage insurance.'],
+    ['Ontario land transfer tax',ltt.on-onRef,G.first?`${fmtW(ltt.on)} minus up to ${fmtW(4000)} first-time buyer refund.`:'Paid to Ontario at closing.'],
+    G.toronto?['Toronto land transfer tax',ltt.to-toRef,G.first?`${fmtW(ltt.to)} minus up to ${fmtW(4475)} first-time buyer rebate.`:'Only inside the City of Toronto.']:null,
+    a.insured?['Sales tax on mortgage insurance',pst,`8% Ontario sales tax on the ${fmtW(premAmt)} premium. The premium goes on the mortgage, but this tax is due in cash.`]:null,
+    ['Lawyer and title fees',2000,'Usually about $1,500 to $2,500 with title insurance and registration. Get two quotes.'],
+    ['Home inspection',500,'Usually about $400 to $700. Skip it only if you truly have to.'],
+    ['Appraisal',350,'Some lenders pay it. Ask yours.'],
+    ['Adjustments and moving',1500,'Paying back the seller for prepaid property tax or utilities, plus movers or a truck.']].filter(Boolean);
+  const cash=one.reduce((t,x)=>t+x[1],0);
+  const tax=P*G.taxPct/1200, ins=P>0?(G.condo>0?40:Math.max(100,P*0.0025/12)):0, util=G.condo>0?90:G.heat+130, maint=P*(G.condo>0?0.005:0.01)/12;
+  const mon=[['Mortgage payment',a.pay,`${fmtW(a.L)} at ${G.rate}% over ${a.amort} years.`],['Property tax',tax,`${G.taxPct}% of the price a year. Check your city's rate.`],G.condo>0?['Condo fees',G.condo,'Set by the building.']:null,
+    ['Home insurance',ins,'A rough guide. Get a quote before you buy.'],['Utilities',util,'Heat, hydro and water. Ask the seller for last year\'s bills.'],['Repairs and upkeep',maint,G.condo>0?'About 0.5% of the price a year for a condo.':'About 1% of the price a year for a house.']].filter(Boolean);
+  return {P,a,one,cash,mon,monthly:mon.reduce((t,x)=>t+x[1],0),ltt,onRef,toRef};
+}
+function hgCosts(G){
+  const form=`<div class="hg-card"><div class="hg-h">Every cost, from offer to keys</div><p class="hg-p">What you need in cash on closing day, and what owning costs every month after.</p>
+    <div class="hg-grid"><div class="hg-f"><label for="hg-price">Home price</label><div class="hg-in"><input id="hg-price" type="number" inputmode="decimal" min="0" step="5000" value="${G.price||''}" placeholder="e.g. 650000" onchange="hgNum('hg-price','price')"></div></div>
+    <div class="hg-f"><label for="hg-down2">Down payment you have</label><div class="hg-in"><input id="hg-down2" type="number" inputmode="decimal" min="0" step="1000" value="${G.down||''}" placeholder="e.g. 60000" onchange="hgNum('hg-down2','down')"></div></div></div>
+    <div class="hg-row"><span>Where</span><div class="hg-seg"><button type="button" aria-pressed="${!G.toronto}" onclick="hgSet('toronto',false)">Ontario</button><button type="button" aria-pressed="${G.toronto}" onclick="hgSet('toronto',true)">City of Toronto</button></div></div>
+    <div class="hg-row"><span>Type</span><div class="hg-seg"><button type="button" aria-pressed="${!(G.condo>0)}" onclick="hgSet('condo',0)">House</button><button type="button" aria-pressed="${G.condo>0}" onclick="hgSet('condo',${G.condo>0?G.condo:450})">Condo</button></div></div>
+    <label class="hg-chk"><input type="checkbox" ${G.first?'checked':''} onchange="hgSet('first',this.checked)"> I am a first-time buyer</label>
+    <label class="hg-chk"><input type="checkbox" ${G.newBuild?'checked':''} onchange="hgSet('newBuild',this.checked)"> It is a brand new home from a builder</label></div>`;
+  if(!(G.price>=50000)) return form+`<div class="hg-card hg-empty">Add a home price to see every cost.</div>`;
+  const R=hgCostsCalc(G); let h='';
+  if(!R.a.okDown) h+=`<div class="hg-card hg-warn">You need at least <b>${fmtW(R.a.minD)}</b> down on a ${fmtW(R.P)} home${R.P>=INSURED_PRICE_CAP?' (20% at $1.5 million or more)':''}. The costs below use that minimum.</div>`;
+  h+=`<div class="hg-card hg-hero"><div class="hg-kick">Every cost, from offer to keys</div><span>Cash you need by closing day</span><b>${fmtW(R.cash)}</b><p>On a ${fmtW(R.P)} ${G.condo>0?'condo':'home'}${G.toronto?' in Toronto':' in Ontario'}. Closing costs on top of the down payment: <b>${fmtW(R.cash-R.one[0][1])}</b>, or ${((R.cash-R.one[0][1])/R.P*100).toFixed(1)}% of the price.</p>
+    <table class="hg-t">${R.one.map(([n,v,why])=>`<tr><td><b>${n}</b><small>${why}</small></td><td>${fmtW(v)}</td></tr>`).join('')}</table></div>
+    <div class="hg-card"><div class="hg-h2">Every month after you move in</div><div class="hg-big2">${fmtW(R.monthly)}<small> a month</small></div>
+    <table class="hg-t">${R.mon.map(([n,v,why])=>`<tr><td><b>${n}</b><small>${why}</small></td><td>${fmtW(v)}</td></tr>`).join('')}</table>
+    ${G.income>0?`<p class="hg-p">That is ${(R.monthly/(G.income/12)*100).toFixed(0)}% of your income before tax.</p>`:''}</div>
+    ${G.newBuild?`<div class="hg-card hg-note"><b>Buying new?</b> HST is usually built into the price, and in Ontario large rebates may apply. See <button type="button" class="hg-lnk" onclick="hgTab('help')">Programs</button>. New homes can also have extra closing charges such as utility hookups and development fees. Ask the builder for a full list before you sign.</div>`:''}
+    <p class="hg-src">Taxes and insurance follow the official rules; lawyer, inspection, insurance, utilities and upkeep are typical ranges, so get real quotes. Checked ${HG_CHECKED}: ${hgSrc('ltt')}, ${hgSrc('mltt')}, ${hgSrc('lttRef')}, ${hgSrc('cmhc')}, ${hgSrc('down')}.</p>`;
+  const cut=h.indexOf('<div class="hg-card"><div class="hg-h2">');
+  return h.slice(0,cut)+form.replace('Every cost, from offer to keys','Change the home')+h.slice(cut);
+}
+function hgHelpEst(G){
+  const P=G.price||0, out=[];
+  if(!(P>0)) return out;
+  const L=hgLTT(P,G.toronto);
+  if(G.first){ out.push(['Ontario land transfer tax refund',Math.min(4000,L.on)]); if(G.toronto) out.push(['Toronto land transfer tax rebate',Math.min(4475,L.to)]); out.push(['Home buyers\' tax credit',1400]); }
+  if(G.newBuild){ const now=new Date(), win=now<new Date(2027,3,1);
+    let hst=0; if(win){ hst=P<=1000000?P*0.13:P<=1500000?130000:P<1850000?130000-(P-1500000)/350000*106000:24000; }
+    else if(G.first){ const fed=P<=1000000?Math.min(50000,P*0.05):P<1500000?50000*(1500000-P)/500000:0, on=P<=1000000?Math.min(80000,P*0.08):0; hst=fed+on; }
+    if(hst>0) out.push([win?'HST relief on a new home (if you sign by March 31, 2027)':'First-time buyer GST/HST rebates',Math.round(hst)]); }
+  return out;
+}
+function hgHelp(G){
+  const est=hgHelpEst(G), tot=est.reduce((t,x)=>t+x[1],0);
+  const card=(t,amt,who,how,src)=>`<details class="hg-prog"><summary><span><b>${t}</b><em>${amt}</em></span></summary><p><b>Who:</b> ${who}</p><p><b>How:</b> ${how}</p><p class="hg-src">Source: ${src}</p></details>`;
+  return `<div class="hg-card"><div class="hg-h">Programs for buyers</div><p class="hg-p">Every federal, Ontario and Toronto program that can lower what you pay, in plain words. Checked ${HG_CHECKED}. Tap one to see who qualifies and how to get it.</p>
+    ${est.length?`<div class="hg-est"><span>Based on your Costs tab (${fmtW(G.price)}${G.first?', first-time buyer':''}${G.newBuild?', new build':''}${G.toronto?', Toronto':''}), you could get about</span><b>${fmtW(tot)}</b><ul>${est.map(([n,v])=>`<li>${n}<em>${fmtW(v)}</em></li>`).join('')}</ul><small>An estimate. The final amounts are set by the CRA, Ontario, Toronto or your builder.</small></div>`:`<div class="hg-est"><span>Add a price on the <button type="button" class="hg-lnk" onclick="hgTab('costs')">Every cost</button> tab to see what you could get.</span></div>`}</div>
+  <div class="hg-sec">Saving for the down payment</div>
+  ${card('First Home Savings Account (FHSA)','Up to $8,000 a year, $40,000 total','First-time buyers 18 or older who live in Canada. Room starts the year you open one, and up to $8,000 unused carries forward.','Open one at your bank or brokerage. What you put in lowers your taxable income, and money taken out for a qualifying first home is not taxed.',hgSrc('fhsa'))}
+  ${card('RRSP Home Buyers\' Plan','Borrow up to $60,000 from your RRSP','First-time buyers, or anyone who has not lived in a home they or their spouse owned in the last four years. A couple can each take $60,000.','Ask your RRSP provider for form T1036. You pay it back to your RRSP over 15 years, starting a few years after you withdraw. Missed payments are added to your taxable income.',hgSrc('hbp'))}
+  <div class="hg-sec">At closing</div>
+  ${card('Ontario land transfer tax refund','Up to $4,000','First-time buyers 18 or older who never owned a home anywhere and live in it within nine months. Citizens or permanent residents.','Your lawyer usually claims it at closing. If not, apply within 18 months.',hgSrc('lttRef'))}
+  ${card('Toronto land transfer tax rebate','Up to $4,475','The same first-time rules, for homes in the City of Toronto.','Your lawyer claims it at closing, or apply to the City within 18 months.',hgSrc('mlttRef'))}
+  ${card('Mortgage insurance with as little as 5% down','Homes under $1.5 million','Anyone buying a home under $1.5 million. Under 20% down needs insurance, which adds a premium to the mortgage.','Your lender arranges it. Premiums are 2.80% to 4.00% of the mortgage, a little more on a 30-year amortization.',hgSrc('cmhc'))}
+  ${card('30-year insured mortgage','Lower monthly payments','First-time buyers and anyone buying a newly built home.','Ask your lender. Payments are lower, but you pay more interest over time.',hgSrc('amort'))}
+  <div class="hg-sec">Taxes and new homes</div>
+  ${card('Home buyers\' tax credit','$10,000 claim, worth about $1,400 for 2026','First-time buyers, or people with a disability buying a more accessible home.','Claim $10,000 on line 31270 of your tax return for the year you buy. A couple shares one $10,000.',hgSrc('hbtc'))}
+  ${card('First-time buyers\' GST/HST rebate','Up to $50,000 on a new home','First-time buyers of a newly built or substantially renovated home under $1.5 million. Full rebate up to $1 million, then less up to $1.5 million.','The builder can credit it at closing, or you apply to the CRA within two years.',hgSrc('gst'))}
+  ${card('Ontario HST relief on new homes','Up to $130,000','Any buyer of an eligible new home in Ontario with a purchase agreement from April 1, 2026 to March 31, 2027: the full 13% HST up to $1 million, a flat $130,000 up to $1.5 million, then less up to $1.85 million. First-time buyers also get the 8% Ontario part back on new homes up to $1 million through 2030.','Usually credited by the builder in the price. Confirm in writing before you sign.',hgSrc('onhst')+', '+hgSrc('onENHR'))}
+  <p class="hg-src">Information only, not tax or legal advice. Rules change; each card links to the official page.</p>`;
+}
+const HG_STEPS=[
+  {id:'credit',t:'Check your credit',w:'6 to 12 months before',d:'Get your free credit report from Equifax and TransUnion. Fix mistakes, pay every bill on time, and keep card balances low. Most lenders want a score in the mid 600s or higher.'},
+  {id:'save',t:'Save the down payment and closing costs',w:'Months to years',d:'Use an FHSA first, then the RRSP Home Buyers\' Plan if you need more. Keep closing costs (often 1.5% to 4% of the price) separate from the down payment.',go:'costs'},
+  {id:'budget',t:'Know your number',w:'Before you shop',d:'Work out what a lender would approve and what is comfortable for you. Pick a price range from the comfortable number, not the maximum.',go:'afford'},
+  {id:'pre',t:'Get pre-approved',w:'Before you view homes',d:'A lender or mortgage broker checks your income, debts and credit, and usually holds a rate for 90 to 120 days. Compare at least two offers. A pre-approval is not a final approval.'},
+  {id:'team',t:'Pick your team',w:'Before you view homes',d:'A real estate agent who knows the area, a real estate lawyer, and a home inspector. Ask friends for names and compare fees.'},
+  {id:'search',t:'Search and view homes',w:'Weeks to months',d:'Check the street at night, the commute, nearby schools and what similar homes sold for. For a condo, ask for the status certificate and reserve fund.'},
+  {id:'offer',t:'Make an offer with conditions',w:'Offer day',d:'Make it conditional on financing and a home inspection when you can. You usually pay a deposit within 24 hours, often a few percent of the price, held in trust.'},
+  {id:'inspect',t:'Inspect and firm up',w:'About 5 to 10 days',d:'Get the home inspected and your mortgage approved before the conditions end. Once you waive conditions, the deal is firm.'},
+  {id:'close',t:'Prepare for closing',w:'30 to 90 days',d:'Your lawyer does the title search and gets closing funds from you. Arrange home insurance, book movers, and set up hydro, water and internet.'},
+  {id:'keys',t:'Closing day: get your keys',w:'Closing day',d:'The money moves, the deed is registered, and your lawyer hands you the keys. Do a final walk-through if your agreement allows one.'}
+];
+function hgSteps(G){
+  const done=HG_STEPS.filter(x=>G.steps[x.id]).length, nxt=HG_STEPS.find(x=>!G.steps[x.id]);
+  return `<div class="hg-card"><div class="hg-h">Steps to the keys</div><p class="hg-p">The whole process in order. Tick each step as you finish it.</p>
+    <div class="hg-prog-bar"><i style="width:${done/HG_STEPS.length*100}%"></i></div><div class="hg-s">${done} of ${HG_STEPS.length} done${nxt?`. Next: <b>${nxt.t}</b>`:'. Enjoy your new home!'}</div></div>
+    <ol class="hg-steps">${HG_STEPS.map((x,i)=>`<li class="${G.steps[x.id]?'done':''}${nxt&&nxt.id===x.id?' next':''}"><label class="hg-tick"><input type="checkbox" ${G.steps[x.id]?'checked':''} onchange="hgStep('${x.id}',this.checked)" aria-label="${escHtml(x.t)} done"><span>${i+1}</span></label>
+      <div><b>${x.t}</b><em>${x.w}</em><p>${x.d}</p>${x.go?`<button type="button" class="hg-lnk" onclick="hgTab('${x.go}')">${x.go==='afford'?'Work out your number':'See every cost'}</button>`:''}${x.id==='pre'?`<p class="hg-src">${hgSrc('pre')}</p>`:''}</div></li>`).join('')}</ol>`;
+}
+function hgStep(id,on){ const G=hgG(); const was=!!G.steps[id]; G.steps[id]=on?todayStr():0; if(!on) delete G.steps[id];
+  if(on && !was){ try{ dqAddXp(20); }catch(e){} try{ QA.log('hg_step',{id}); }catch(e){} showToast(`<strong>Step done.</strong> +20 XP for your budget game.`); }
+  hgSave(); hgRender(true); }
+function hgRender(keepFocus){
+  const panel=document.getElementById('hg-panel'), page=document.getElementById('page-rental'); if(!panel||!page) return;
+  const G=hgG(), t=G.tab||'road', act=keepFocus&&document.activeElement&&document.activeElement.id;
+  document.querySelectorAll('#hg-tabs button').forEach(b=>{ const on=b.dataset.t===t; b.classList.toggle('on',on); b.setAttribute('aria-selected',on); });
+  page.classList.toggle('hg-guide',t!=='road');
+  panel.innerHTML = t==='afford'?hgAfford(G):t==='costs'?hgCosts(G):t==='help'?hgHelp(G):t==='steps'?hgSteps(G):'';
+  if(act){ const el=document.getElementById(act); if(el) try{ el.focus({preventScroll:true}); }catch(e){} }
+}
 
 // ══════════════════════════════════════════
 // BRING IN FROM YOUR BANK: paste what you copied from online banking, or upload the CSV file.
