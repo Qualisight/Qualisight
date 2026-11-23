@@ -1,0 +1,40 @@
+# Tells Bing (and the other IndexNow search engines) which pages changed on every push to main.
+# Bing also feeds ChatGPT search, Copilot and DuckDuckGo. The key below is public by design:
+# it only proves we own qualisight.ca, and its file is served at /242173af72bfee6af584053b76b3b1b9.txt.
+name: IndexNow
+on:
+  push:
+    branches: [main]
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 2
+      - name: Wait for GitHub Pages to publish
+        run: sleep 90
+      - name: Ping IndexNow with changed pages
+        run: |
+          set -e
+          CHANGED=$(git diff --name-only HEAD~1 HEAD || true)
+          URLS=$(python3 - "$CHANGED" <<'PY'
+          import sys, re, json
+          changed = sys.argv[1].split()
+          sitemap = open('sitemap.xml').read()
+          listed = set(re.findall(r'<loc>(.*?)</loc>', sitemap))
+          out = set()
+          for f in changed:
+              if f == 'index.html': u = 'https://qualisight.ca/'
+              elif f.endswith('/index.html'): u = 'https://qualisight.ca/' + f[:-len('index.html')]
+              elif f in ('llms.txt', 'sitemap.xml'): u = 'https://qualisight.ca/' + f
+              else: continue
+              if u in listed or f in ('llms.txt', 'sitemap.xml'): out.add(u)
+          print(json.dumps(sorted(out)))
+          PY
+          )
+          echo "Changed pages: $URLS"
+          if [ "$URLS" = "[]" ]; then echo "Nothing to send"; exit 0; fi
+          curl -sS -o /dev/null -w "IndexNow HTTP %{http_code}\n" -X POST "https://api.indexnow.org/IndexNow" \
+            -H "Content-Type: application/json; charset=utf-8" \
+            -d "{\"host\":\"qualisight.ca\",\"key\":\"242173af72bfee6af584053b76b3b1b9\",\"keyLocation\":\"https://qualisight.ca/242173af72bfee6af584053b76b3b1b9.txt\",\"urlList\":$URLS}"
