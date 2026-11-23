@@ -3964,6 +3964,47 @@ button:focus:not(:focus-visible){outline:none}
 @media(max-width:420px){.avc-tip{font-size:0.7rem}}
 
 
+
+/* Daily quest, chest and charms */
+.dq-card{position:relative;margin:0 0 1rem;padding:0.9rem 1rem 0.85rem;border-radius:16px;background:var(--card,#141821);border:1px solid var(--border)}
+.dq-head{display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:var(--muted);font-weight:600;margin-bottom:0.55rem}
+.dq-dots{display:inline-flex;gap:4px}.dq-dots i{width:9px;height:9px;border-radius:50%;background:rgba(255,255,255,0.12);display:block}.dq-dots i.on{background:#4ade80}.dq-dots i.ep{box-shadow:0 0 0 1.5px #c084fc inset}.dq-dots i.ep.on{background:#c084fc}
+.dq-row{display:flex;align-items:center;gap:0.7rem}
+.dq-ic{flex:none;width:34px;height:34px;border-radius:10px;display:grid;place-items:center;font-weight:800;background:rgba(250,204,21,0.14);color:#facc15}.dq-ic.done{background:rgba(74,222,128,0.16);color:#4ade80}
+.dq-txt{flex:1;min-width:0}.dq-txt b{display:block;font-size:0.95rem;color:var(--text)}.dq-txt small{display:block;font-size:0.8rem;color:var(--muted);line-height:1.4}
+.dq-go{flex:none;min-height:40px;min-width:56px;border-radius:10px;border:1px solid rgba(74,222,128,0.5);background:rgba(74,222,128,0.1);color:#4ade80;font:inherit;font-weight:700;cursor:pointer}
+.dq-open{display:flex;align-items:center;justify-content:center;gap:0.5rem;width:100%;min-height:48px;margin-top:0.7rem;border-radius:12px;border:0;background:linear-gradient(90deg,#4ade80,#facc15);color:#08130c;font:inherit;font-weight:800;cursor:pointer;animation:dqWiggle 2.4s ease-in-out infinite}
+@keyframes dqWiggle{0%,86%,100%{transform:none}89%{transform:rotate(-1.5deg) scale(1.02)}93%{transform:rotate(1.5deg) scale(1.02)}}
+.dq-right{display:inline-flex;align-items:center;gap:0.7rem}
+.dq-bookbtn{border:0;padding:0;background:none;color:var(--muted);font:inherit;font-size:0.78rem;font-weight:600;cursor:pointer;min-height:28px;text-decoration:underline;text-underline-offset:2px}
+.dq-snow{margin-top:0.8rem;padding-top:0.7rem;border-top:1px solid var(--border)}.dq-snow small{display:block;font-size:0.78rem;color:var(--muted);margin-top:0.4rem;line-height:1.4}
+.dq-snowh{display:flex;justify-content:space-between;font-size:0.86rem}.dq-snowh span{color:#93c5fd;font-weight:700}
+.dq-snow.soon b{display:block;font-size:0.86rem}
+.dq-cal{display:grid;grid-template-columns:repeat(16,1fr);gap:3px;margin-top:0.45rem}
+.dq-cal i{display:block;aspect-ratio:1;border-radius:4px;background:rgba(147,197,253,0.08);border:1px solid rgba(147,197,253,0.12)}
+.dq-cal i.lit{background:#93c5fd;border-color:#93c5fd}.dq-cal i.now{outline:2px solid #fff;outline-offset:0}.dq-cal i.goal{border-color:#c084fc}
+.dq-ov{position:fixed;inset:0;z-index:670;background:rgba(5,7,11,0.82);display:none;align-items:center;justify-content:center;padding:16px}.dq-ov.open{display:flex}
+.dq-sheet{position:relative;width:min(400px,100%);max-height:calc(100dvh - 32px);overflow:auto;background:radial-gradient(100% 70% at 50% 0%,rgba(250,204,21,0.14),transparent 60%),#0f131c;border:1px solid var(--border);border-radius:22px;padding:1.4rem 1.2rem 1.2rem;text-align:center}
+.dq-chest{font-size:5rem;line-height:1;display:none}
+.dq-sheet.opening .dq-chest{display:block;animation:dqShake .9s ease-in-out}.dq-sheet.opening .dq-reveal{display:none}
+@keyframes dqShake{0%{transform:scale(.8)}20%{transform:scale(1) rotate(-8deg)}40%{transform:rotate(8deg)}60%{transform:rotate(-10deg) scale(1.08)}80%{transform:rotate(10deg) scale(1.12)}100%{transform:scale(1.25);opacity:0}}
+.dq-reveal{animation:dqPop .5s cubic-bezier(.2,1.4,.4,1)}@keyframes dqPop{from{transform:scale(.6);opacity:0}to{transform:none;opacity:1}}
+.dq-big{font-size:5.2rem;line-height:1.1;width:128px;height:128px;margin:0 auto;display:grid;place-items:center;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,0.1),transparent 70%)}
+.dq-big.dq-rare{background:radial-gradient(circle,rgba(96,165,250,0.35),transparent 70%)}.dq-big.dq-epic{background:radial-gradient(circle,rgba(192,132,252,0.45),transparent 70%)}.dq-big.dq-event{background:radial-gradient(circle,rgba(147,197,253,0.45),transparent 70%)}
+.dq-rar{font-size:0.78rem;font-weight:800;letter-spacing:0.04em;margin-top:0.4rem;color:#9aa4b8}.dq-rar.dq-rare{color:#60a5fa}.dq-rar.dq-epic{color:#c084fc}.dq-rar.dq-event{color:#93c5fd}
+.dq-name{font-size:1.5rem;font-weight:800;color:#fff;margin-top:0.1rem}
+.dq-p{color:#c4ccdb;font-size:0.92rem;margin:0.5rem 0 0}.dq-p b{color:#facc15}.dq-dim{color:var(--muted);font-size:0.84rem}
+.dq-acts{display:grid;gap:0.5rem;margin-top:1rem}
+.dq-btn{min-height:46px;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,0.05);color:var(--text);font:inherit;font-weight:700;cursor:pointer}.dq-btn.primary{background:#4ade80;border-color:#4ade80;color:#06140b}
+.dq-bookh{display:flex;justify-content:space-between;align-items:flex-start;text-align:left;margin-bottom:0.9rem}.dq-bookh b{display:block;font-size:1.15rem;color:#fff}.dq-bookh small{display:block;color:var(--muted);font-size:0.82rem}
+.dq-x{width:40px;height:40px;border:0;background:none;color:#fff;font-size:1.5rem;cursor:pointer;margin:-0.4rem -0.4rem 0 0}
+.dq-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:0.5rem}
+.dq-slot{border:1px dashed rgba(255,255,255,0.14);border-radius:14px;padding:0.6rem 0.3rem;min-height:104px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.15rem}
+.dq-slot .dq-e{font-size:2rem;line-height:1.2;color:#3b4556;font-weight:800}.dq-slot b{font-size:0.75rem;color:#6b7588}.dq-slot small{font-size:0.66rem;color:#5b6577;line-height:1.25}
+.dq-slot.got{border-style:solid;border-color:rgba(255,255,255,0.12);background:rgba(255,255,255,0.03)}.dq-slot.got b{color:#e8edf8}.dq-slot.got small{color:#9aa4b8}
+.dq-slot.got.dq-rare{border-color:rgba(96,165,250,0.5)}.dq-slot.got.dq-epic{border-color:rgba(192,132,252,0.6);background:rgba(192,132,252,0.06)}.dq-slot.got.dq-event{border-color:rgba(147,197,253,0.6)}
+@media(prefers-reduced-motion:reduce){.dq-open{animation:none}.dq-reveal{animation:none}}
+
 /* Money Wrapped */
 .wr-entry{display:flex;align-items:center;gap:0.9rem;width:100%;margin:0 0 1rem;padding:0.9rem 1rem;border-radius:16px;border:1px solid rgba(74,222,128,0.4);background:linear-gradient(120deg,rgba(74,222,128,0.16),rgba(250,204,21,0.08) 60%,rgba(74,222,128,0.04));color:var(--text);font:inherit;text-align:left;cursor:pointer;min-height:64px}
 .wr-entry:hover{border-color:rgba(74,222,128,0.7)}
@@ -5272,6 +5313,7 @@ window.QS_HERO_SPLIT=null;
   <!-- Net worth + Money Score -->
   <div id="ob-checklist"></div>
   <div class="db-hero" id="db-hero"></div>
+  <div id="dq-card"></div>
   <div id="wr-entry"></div>
 
   <!-- Next best moves -->
@@ -7281,6 +7323,7 @@ function showPage(id){
   document.getElementById('page-'+id).classList.add('active');
   document.querySelectorAll('.nav-tab').forEach(t=>t.classList.toggle('active', t.dataset.page===id));
   document.querySelectorAll('.mob-tab').forEach(t=>t.classList.toggle('active', t.dataset.page===id));
+  try{ dqSeen(id); }catch(e){}
   renderAll();
 }
 
@@ -7993,6 +8036,7 @@ function bgUpdate(S){
   const g=state.bgame||(state.bgame={xp:0, month:S.mk, qdone:[], ach:{}, seenExp:S.expCount, seenNS:S.nsThisMonth});
   _bg.game=g;
   const events=[]; let changed=first;
+  if(state.dqXpPending>0){ g.xp+=state.dqXpPending; state.dqXpPending=0; changed=true; }
   if(g.month!==S.mk){ g.month=S.mk; g.qdone=[]; g.seenExp=0; g.seenNS=0; changed=true; }
   if(S.expCount>g.seenExp){ const n=S.expCount-g.seenExp; const add=Math.min(n,10)*10; g.xp+=add; events.push({xp:add, kind:'exp'}); }
   if(S.expCount!==g.seenExp){ g.seenExp=S.expCount; changed=true; }
@@ -16165,6 +16209,7 @@ function renderDashboardPlus(){
   const hero=document.getElementById('db-hero'); if(!hero) return;
   const fresh=dbFresh(), pg=document.getElementById('page-dashboard'); if(pg) pg.classList.toggle('db-fresh',fresh);
   try{ wrEntryRender(fresh); }catch(e){ console.warn('wrapped entry',e); }
+  try{ dqRender(fresh); }catch(e){ console.warn('daily quest',e); }
   if(fresh){
     const nm=(typeof currentUser!=='undefined'&&currentUser&&currentUser.name)?String(currentUser.name).split(' ')[0]:'';
     const oc=document.getElementById('ob-checklist'); if(oc) oc.innerHTML='';
@@ -17423,6 +17468,131 @@ function lppStart(){
   if(still || !('IntersectionObserver' in window)) return;
   new IntersectionObserver(en=>{ en.forEach(e=>{ if(e.isIntersecting){ if(v.preload!=='auto'){ v.preload='auto'; } const p=v.play(); if(p&&p.catch) p.catch(()=>{}); } else v.pause(); }); },{threshold:0.35}).observe(v);
 })();
+
+
+// ══════════════════════════════════════════
+// DAILY QUEST AND CHEST: one small task a day, checked against what you really did.
+// Finishing it opens a chest with XP and a collectible charm. Charms are just for fun: no money involved.
+// ══════════════════════════════════════════
+const DQ_CHARMS=[
+  {id:'coin',  e:'🪙', n:'Copper Coin',     r:'common'}, {id:'piggy', e:'🐷', n:'Piggy Bank',  r:'common'},
+  {id:'maple', e:'🍁', n:'Maple Leaf',      r:'common'}, {id:'acorn', e:'🌰', n:'Acorn',       r:'common'},
+  {id:'boat',  e:'⛵', n:'Paper Boat',      r:'common'}, {id:'jar',   e:'🫙', n:'Glass Jar',   r:'common'},
+  {id:'clover',e:'🍀', n:'Lucky Clover',    r:'rare'},   {id:'compass',e:'🧭',n:'Compass',     r:'rare'},
+  {id:'rainbow',e:'🌈',n:'Rainbow',         r:'rare'},   {id:'beaver',e:'🦫', n:'Busy Beaver', r:'rare'},
+  {id:'bull',  e:'🐂', n:'Golden Bull',     r:'epic'},   {id:'gem',   e:'💎', n:'Diamond Jar', r:'epic'},
+  {id:'snow',  e:'❄️', n:'Snowflake',       r:'event', how:'Log 15 days in December'},
+  {id:'aurora',e:'🌌', n:'Northern Lights', r:'event', how:'Log 25 days in December'}
+];
+function dqState(){ if(!state.daily||typeof state.daily!=='object') state.daily={seen:{},od:'',cs:0,charms:{},ev:{},log:[]}; const D=state.daily; D.seen=D.seen||{}; D.charms=D.charms||{}; D.ev=D.ev||{}; D.log=D.log||[]; return D; }
+function dqSeen(page){ const D=dqState(); D.seen[page]=todayStr(); }
+function dqRand(salt){ return (bgSeed(todayStr()+'|'+((currentUser&&currentUser.id)||'demo')+'|'+salt)%100000)/100000; }
+function dqHasDebt(){ return (state.debts||[]).some(d=>(+d.balance||0)>0.01); }
+function dqPaidToday(){ const t=todayStr(); return (state.debts||[]).some(d=>(d.transactions||[]).some(x=>x&&x.type==='payment'&&x.date===t)); }
+function dqPool(){
+  const t=todayStr(), D=dqState(), P=[
+    {id:'log', w:3, name:'Log today', desc:'Log something you spent today, or mark it a no-spend day.', go:'log', done:()=>loggedToday()},
+    {id:'jars', w:1, name:'Check your jars', desc:'Open the budget and see how full your coin jars are.', go:'monthly', done:()=>D.seen.monthly===t},
+  ];
+  if(dqHasDebt()){ P.push({id:'storm', w:1, name:'Check the storm', desc:'Open your debt storm and see your debt-free month.', go:'debt', done:()=>D.seen.debt===t});
+                   P.push({id:'pay', w:1, name:'Strike the storm', desc:'Log a payment on any debt today. Even a small one counts.', go:'debt', done:()=>dqPaidToday()}); }
+  if((state.accounts||[]).length) P.push({id:'grove', w:1, name:'Water the grove', desc:'Visit your money grove and see how your trees are doing.', go:'investments', done:()=>D.seen.investments===t});
+  if(!loggedToday()) P.push({id:'quiet', w:1, name:'A quiet day', desc:'Try to spend nothing today, then mark it a no-spend day.', go:'quiet', done:()=>(state.noSpendDays||[]).includes(t)});
+  return P;
+}
+function dqToday(){
+  const D=dqState(), t=todayStr();
+  if(D.qd===t && D.q){ const q=dqPool().find(x=>x.id===D.q); if(q) return q; }
+  const P=dqPool(), tot=P.reduce((s,x)=>s+x.w,0); let r=dqRand('quest')*tot, pick=P[0];
+  for(const x of P){ if((r-=x.w)<0){ pick=x; break; } }
+  D.qd=t; D.q=pick.id; return pick;
+}
+function dqGo(where){
+  try{ QA.log('dq_go',{q:where}); }catch(e){}
+  if(where==='log'||where==='quiet'){ showPage('monthly'); setTimeout(()=>{ const el=where==='quiet'?(document.querySelector('#page-monthly .streak-nospend')||document.getElementById('ql-in')):document.getElementById('ql-in'); try{ el.scrollIntoView({behavior:'smooth',block:'center'}); if(where==='log') el.focus({preventScroll:true}); }catch(e){} },350); return; }
+  showPage(where); window.scrollTo({top:0,behavior:'smooth'});
+}
+// chest streak: days in a row a chest was opened
+function dqStreakNow(){ const D=dqState(); if(!D.od) return 0; const gap=dayDiff(D.od,todayStr()); return gap<=1?D.cs||0:0; }
+function dqRoll(){
+  const D=dqState(), day=(dqStreakNow()+(D.od===todayStr()?0:1));
+  const r=dqRand('rarity'); let rar=r<0.06?'epic':r<0.32?'rare':'common';
+  if(day%7===0) rar='epic'; else if(day%3===0 && rar==='common') rar='rare';
+  const pool=DQ_CHARMS.filter(c=>c.r===rar), owned=pool.filter(c=>!D.charms[c.id]);
+  const from=(owned.length && dqRand('new')<0.7)?owned:pool;
+  const c=from[Math.floor(dqRand('charm')*from.length)%from.length];
+  let xp=25+Math.round(dqRand('xp')*30); if(day%7===0) xp*=2;
+  return {c, xp, day, rar};
+}
+function dqGrant(c){ const D=dqState(); D.charms[c.id]=(D.charms[c.id]||0)+1; }
+function dqAddXp(n){ if(state.bgame) state.bgame.xp=(state.bgame.xp||0)+n; else state.dqXpPending=(state.dqXpPending||0)+n; }
+function dqOpen(){
+  const D=dqState(), t=todayStr(), q=dqToday(); if(D.od===t || !q.done()) return;
+  const R=dqRoll(); D.cs=R.day; D.od=t; dqGrant(R.c); dqAddXp(R.xp); D.log=[{d:t,c:R.c.id,xp:R.xp}].concat(D.log).slice(0,30);
+  try{ save(); }catch(e){}
+  try{ QA.log('dq_open',{q:q.id, rar:R.rar, day:R.day}); }catch(e){}
+  dqReveal(R); dqRender();
+}
+function dqModal(){ let el=document.getElementById('dq-ov'); if(el) return el;
+  el=document.createElement('div'); el.id='dq-ov'; el.className='dq-ov'; el.setAttribute('role','dialog'); el.setAttribute('aria-modal','true');
+  el.innerHTML='<div class="dq-sheet" id="dq-sheet"></div>'; el.addEventListener('click',e=>{ if(e.target===el) dqClose(); });
+  document.addEventListener('keydown',e=>{ if(e.key==='Escape' && el.classList.contains('open')) dqClose(); });
+  document.body.appendChild(el); return el; }
+function dqClose(){ document.getElementById('dq-ov')?.classList.remove('open'); }
+function dqReveal(R){
+  const el=dqModal(), sh=document.getElementById('dq-sheet');
+  const lab={common:'Common',rare:'Rare',epic:'Epic',event:'Event'}[R.c.r];
+  sh.innerHTML=`<div class="dq-chest" aria-hidden="true">🎁</div>
+    <div class="dq-reveal"><div class="dq-big dq-${R.c.r}">${R.c.e}</div><div class="dq-rar dq-${R.c.r}">${lab} charm</div><div class="dq-name">${R.c.n}</div>
+    <p class="dq-p">Plus <b>+${R.xp} XP</b> for your budget game${R.day%7===0?'. Day 7 of your chest streak doubles it':''}.</p>
+    <p class="dq-p dq-dim">${dqStreakText(R.day)}</p>
+    <div class="dq-acts"><button type="button" class="dq-btn primary" onclick="dqClose()">Nice</button><button type="button" class="dq-btn" onclick="dqBook()">See my charms</button></div></div>`;
+  sh.className='dq-sheet opening'; el.classList.add('open');
+  const still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  setTimeout(()=>{ sh.className='dq-sheet opened'; },still?0:900);
+}
+function dqStreakText(day){ const to7=7-(day%7||7); return day%7===0?'A full week of chests. Your next epic comes in 7 days.':`Chest streak: ${day} day${day===1?'':'s'}. ${to7?`${to7} more for a guaranteed epic charm.`:''}`; }
+function dqBook(){
+  const el=dqModal(), sh=document.getElementById('dq-sheet'), D=dqState(), got=DQ_CHARMS.filter(c=>D.charms[c.id]).length;
+  try{ QA.log('dq_book',{got}); }catch(e){}
+  sh.className='dq-sheet opened';
+  sh.innerHTML=`<div class="dq-bookh"><div><b>Your charms</b><small>${got} of ${DQ_CHARMS.length} found. Finish a daily quest to open a chest.</small></div><button type="button" class="dq-x" onclick="dqClose()" aria-label="Close">×</button></div>
+    <div class="dq-grid">${DQ_CHARMS.map(c=>{ const n=D.charms[c.id]||0; return `<div class="dq-slot ${n?'got dq-'+c.r:''}" title="${n?c.n:'Not found yet'}"><span class="dq-e">${n?c.e:'?'}</span><b>${n?c.n:c.r==='event'?'Event':'???'}</b><small>${n?(n>1?'x'+n:{common:'Common',rare:'Rare',epic:'Epic',event:'Event'}[c.r]):c.how||{common:'Common',rare:'Rare',epic:'Epic'}[c.r]}</small></div>`; }).join('')}</div>`;
+  el.classList.add('open');
+}
+// December event: light a square for each day you log
+function dqSnow(){
+  const now=new Date(), y=now.getFullYear(), m=now.getMonth();
+  const live=m===11, soon=m===10&&now.getDate()>=20; if(!live&&!soon) return null;
+  const pre=`${y}-12-`, days=new Set();
+  (state.expenses||[]).forEach(e=>{ if(e&&e.d&&String(e.d).startsWith(pre)) days.add(e.d); });
+  (state.noSpendDays||[]).forEach(d=>{ if(String(d).startsWith(pre)) days.add(d); });
+  if(state.lastActivityDate&&String(state.lastActivityDate).startsWith(pre)) days.add(state.lastActivityDate);
+  return {live, n:days.size, days, y, today:live?now.getDate():0};
+}
+function dqSnowAwards(S){
+  if(!S||!S.live) return; const D=dqState();
+  [[15,'s15','snow'],[25,'s25','aurora']].forEach(([need,k,id])=>{ if(S.n>=need && !D.ev[k+S.y]){ D.ev[k+S.y]=1; const c=DQ_CHARMS.find(x=>x.id===id); dqGrant(c); dqAddXp(100); try{ save(); QA.log('snow_award',{c:id}); }catch(e){} setTimeout(()=>dqReveal({c, xp:100, day:dqStreakNow()||1, rar:'event'}),400); } });
+}
+function dqRender(fresh){
+  const el=document.getElementById('dq-card'); if(!el) return;
+  if(fresh===true || (fresh===undefined && typeof dbFresh==='function' && dbFresh())){ el.innerHTML=''; return; }
+  const D=dqState(), q=dqToday(), t=todayStr(), opened=D.od===t, done=q.done(), cs=dqStreakNow(), got=DQ_CHARMS.filter(c=>D.charms[c.id]).length;
+  if(done && !D['done'+t]){ D['done'+t]=1; try{ QA.log('dq_done',{q:q.id}); }catch(e){} }
+  Object.keys(D).forEach(k=>{ if(/^done\d{4}-/.test(k) && k!=='done'+t) delete D[k]; });
+  const dots=Array.from({length:7},(_,i)=>{ const day=(cs%7===0&&cs&&opened?7:cs%7); return `<i class="${i<day?'on':''}${i===6?' ep':''}"></i>`; }).join('');
+  let body;
+  if(opened){ const last=D.log[0], c=last&&DQ_CHARMS.find(x=>x.id===last.c);
+    body=`<div class="dq-row"><span class="dq-ic done">✓</span><div class="dq-txt"><b>Today's chest is open</b><small>${c?`You found ${c.e} ${c.n} and +${last.xp} XP. `:''}A new quest is waiting tomorrow.</small></div></div>`; }
+  else if(done) body=`<div class="dq-row"><span class="dq-ic done">✓</span><div class="dq-txt"><b>${q.name}: done</b><small>${q.desc}</small></div></div><button type="button" class="dq-open" onclick="dqOpen()"><span aria-hidden="true">🎁</span> Open today's chest</button>`;
+  else body=`<div class="dq-row"><span class="dq-ic">!</span><div class="dq-txt"><b>${q.name}</b><small>${q.desc}</small></div><button type="button" class="dq-go" onclick="dqGo('${q.go}')">Go</button></div>`;
+  const S=dqSnow(); let snow='';
+  if(S){ if(S.live){ const dim=31; snow=`<div class="dq-snow"><div class="dq-snowh"><b>❄️ December Snow Streak</b><span>${S.n}/25 days</span></div>
+      <div class="dq-cal">${Array.from({length:dim},(_,i)=>{ const d=`${S.y}-12-${String(i+1).padStart(2,'0')}`; return `<i class="${S.days.has(d)?'lit':''}${i+1===S.today?' now':''}${i+1===15||i+1===25?' goal':''}" title="December ${i+1}"></i>`; }).join('')}</div>
+      <small>Log any 15 days for the ${'❄️'} Snowflake charm, 25 for ${'🌌'} Northern Lights. ${S.n>=25?'You got both!':S.n>=15?'Snowflake earned. Keep going.':''}</small></div>`; dqSnowAwards(S); }
+    else snow=`<div class="dq-snow soon"><b>❄️ December Snow Streak starts December 1</b><small>Log 15 days in December for a rare Snowflake charm, 25 for Northern Lights.</small></div>`; }
+  el.innerHTML=`<div class="dq-card"><div class="dq-head"><span>Today's quest</span><span class="dq-right"><span class="dq-dots" title="Chest streak: ${cs} day${cs===1?'':'s'}" aria-label="Chest streak: ${cs} day${cs===1?'':'s'}">${dots}</span><button type="button" class="dq-bookbtn" onclick="dqBook()">Charms ${got}/${DQ_CHARMS.length}</button></span></div>${body}${snow}</div>`;
+}
 
 // ══════════════════════════════════════════
 // MONEY WRAPPED: a year in review you tap through, and a share card with no dollar amounts
