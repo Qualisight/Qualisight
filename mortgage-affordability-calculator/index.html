@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mortgage Affordability Calculator Canada: Stress Test | Qualisight</title>
+<meta name="description" content="Free Canadian mortgage affordability calculator with the stress test. See the most a lender could approve, your GDS and TDS, and whether a home you like passes. No sign-up.">
+<link rel="canonical" href="https://qualisight.ca/mortgage-affordability-calculator/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="How much house can you afford in Canada?">
+<meta property="og:description" content="The stress test, GDS and TDS worked out for you. Free, no sign-up.">
+<meta property="og:url" content="https://qualisight.ca/mortgage-affordability-calculator/">
+<meta property="og:image" content="https://qualisight.ca/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0d0f14">
+<link rel="icon" href="/icon-192.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://qualisight.ca/mortgage-affordability-calculator/","url":"https://qualisight.ca/mortgage-affordability-calculator/","name":"Mortgage Affordability Calculator Canada: Stress Test | Qualisight","description":"Free Canadian mortgage affordability calculator with the stress test. See the most a lender could approve, your GDS and TDS, and whether a home you like passes. No sign-up.","inLanguage":"en-CA","dateModified":"2026-11-23","isPartOf":{"@type":"WebSite","@id":"https://qualisight.ca/#site","url":"https://qualisight.ca/","name":"Qualisight"},"author":{"@type":"Person","@id":"https://qualisight.ca/about/#founder","name":"Lucas","url":"https://qualisight.ca/about/"},"publisher":{"@type":"Organization","@id":"https://qualisight.ca/#org","name":"Qualisight","url":"https://qualisight.ca/","logo":"https://qualisight.ca/icon-512.png"},"citation":["https://www.osfi-bsif.gc.ca/en/supervision/financial-institutions/banks/minimum-qualifying-rate-uninsured-mortgages","https://www.cmhc-schl.gc.ca/professionals/project-funding-and-mortgage-financing/mortgage-loan-insurance/mortgage-loan-insurance-homeownership-programs/cmhc-mortgage-loan-insurance-cost","https://www.canada.ca/en/financial-consumer-agency/services/mortgages/calculate-mortgage-affordability.html"]},{"@type":"WebApplication","name":"Mortgage Affordability Calculator Canada","url":"https://qualisight.ca/mortgage-affordability-calculator/","applicationCategory":"FinanceApplication","operatingSystem":"Any","browserRequirements":"Requires JavaScript","isAccessibleForFree":true,"offers":{"@type":"Offer","price":"0","priceCurrency":"CAD"},"publisher":{"@id":"https://qualisight.ca/#org"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Qualisight","item":"https://qualisight.ca/"},{"@type":"ListItem","position":2,"name":"Mortgage affordability calculator","item":"https://qualisight.ca/mortgage-affordability-calculator/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
+{"@type":"Question","name":"What is the mortgage stress test?","acceptedAnswer":{"@type":"Answer","text":"Lenders check that you could still make your payments at a higher rate. For uninsured mortgages at federally regulated lenders, OSFI sets that rate as the higher of 5.25% or your rate plus 2%. Insured mortgages use the same rule."}},
+{"@type":"Question","name":"What are GDS and TDS?","acceptedAnswer":{"@type":"Answer","text":"GDS is your housing costs (mortgage at the stress test rate, property tax, heat and half of condo fees) as a share of your gross monthly income. TDS adds every other debt payment. For insured mortgages the limits are 39% and 44%."}},
+{"@type":"Question","name":"How much house can I afford on $100,000 a year?","acceptedAnswer":{"@type":"Answer","text":"It depends on your debts, down payment and rate. Type 100000 into the calculator with your own numbers. Debts matter a lot: every $100 a month of other payments lowers the limit by thousands of dollars."}},
+{"@type":"Question","name":"Can I get a 30-year mortgage?","acceptedAnswer":{"@type":"Answer","text":"With 20% or more down, yes. With less than 20% down, 30 years is allowed for first-time buyers and for new builds since December 15, 2024. Otherwise insured mortgages are capped at 25 years."}},
+{"@type":"Question","name":"Does the bank have to approve the maximum?","acceptedAnswer":{"@type":"Answer","text":"No. This is the ceiling under the ratio rules. Lenders also look at your credit, job history and the property, and many people choose to borrow less."}}]}</script>
+<style>
+:root{--bg:#0b0d12;--surface:#141821;--border:rgba(255,255,255,0.09);--text:#e8edf8;--muted:#97a2b8;--green:#4ade80;--red:#f87171;--amber:#fbbf24}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--green)}
+.wrap{max-width:860px;margin:0 auto;padding:0 1.1rem}
+header{display:flex;justify-content:space-between;align-items:center;padding:1rem 0}
+.logo{font-weight:800;font-size:1.15rem;color:var(--green);text-decoration:none;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 1.2rem;border-radius:12px;background:var(--green);color:#0b0d12;font-weight:700;text-decoration:none;border:0;font:inherit;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);min-height:40px;font-weight:600}
+h1{font-size:2rem;line-height:1.15;letter-spacing:-0.03em;margin:1.2rem 0 0.5rem}
+h2{font-size:1.35rem;letter-spacing:-0.02em;margin:2.4rem 0 0.6rem}
+h3{font-size:1.05rem;margin:1.4rem 0 0.3rem}
+p{margin:0.5rem 0;color:#c4ccdb}.lead{color:var(--muted);font-size:1.05rem;max-width:620px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:1.1rem;margin-top:1.2rem}
+table{width:100%;border-collapse:collapse}
+th{font-size:0.75rem;color:var(--muted);font-weight:600;text-align:left;padding:0 0.3rem 0.4rem}
+td{padding:0.25rem 0.3rem}
+input[type=text],input[type=number]{width:100%;background:#0e121a;border:1px solid var(--border);border-radius:10px;color:var(--text);font:inherit;padding:0.6rem 0.65rem;min-height:44px}
+input:focus{outline:2px solid var(--green);outline-offset:1px}
+input[type=number]{-moz-appearance:textfield;appearance:textfield}input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.x{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;width:40px;height:44px;cursor:pointer;font-size:1.1rem}
+.row{display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center;margin-top:0.9rem}
+.extra{flex:1;min-width:230px}
+.extra label{display:flex;justify-content:space-between;font-size:0.9rem;color:var(--muted)}
+.extra b{color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green);height:30px}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-weight:600;padding:0.5rem 1rem;border-radius:999px;cursor:pointer;min-height:40px}
+.seg button[aria-pressed=true]{background:var(--green);color:#0b0d12}
+.big{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.7rem;margin-top:1rem}
+.big div{border:1px solid var(--border);border-radius:14px;padding:0.8rem}
+.big span{display:block;font-size:0.75rem;color:var(--muted)}
+.big b{display:block;font-size:1.35rem;font-variant-numeric:tabular-nums;margin-top:0.1rem}
+.big em{display:block;font-style:normal;font-size:0.78rem;color:var(--green)}
+.warn{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);color:#f3d48a;border-radius:12px;padding:0.7rem 0.85rem;margin-top:0.9rem;font-size:0.92rem}
+.cmp{font-size:0.92rem;color:var(--muted);margin-top:0.8rem}.cmp b{color:var(--text)}
+svg{display:block;width:100%;height:auto;margin-top:0.9rem}
+.acts{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem}.acts .btn{font-size:0.92rem}
+textarea.code{width:100%;min-height:92px;background:#0e121a;border:1px solid var(--border);border-radius:10px;color:#c4ccdb;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:0.7rem;resize:vertical}
+.by{display:none;margin-top:0.8rem;font-size:0.85rem;color:var(--muted)}
+body.embed header,body.embed h1,body.embed .lead,body.embed .cta,body.embed .article,body.embed footer{display:none}body.embed .card{margin-top:0.6rem}body.embed .by{display:block}body.embed .wrap{padding:0 0.5rem}body.embed .noembed{display:none}
+ol.order{margin:0.6rem 0 0;padding-left:1.2rem;color:#c4ccdb}
+.cta{background:linear-gradient(135deg,rgba(74,222,128,0.14),rgba(74,222,128,0.03));border:1px solid rgba(74,222,128,0.4);border-radius:18px;padding:1.2rem;margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:0.9rem;align-items:center;justify-content:space-between}
+.cta p{margin:0;max-width:480px;color:var(--text)}.cta small{display:block;color:var(--muted)}
+details{border-top:1px solid var(--border);padding:0.7rem 0}summary{cursor:pointer;font-weight:600;min-height:32px}
+footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);color:var(--muted);font-size:0.85rem}
+@media(max-width:640px){h1{font-size:1.6rem}.big{grid-template-columns:1fr}}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.8rem}
+.f label{display:block;font-size:0.88rem;color:var(--muted);margin-bottom:0.25rem}.f small{display:block;font-size:0.78rem;color:var(--muted);margin-top:0.2rem}
+.chk{display:flex;gap:0.55rem;align-items:center;margin-top:0.9rem;min-height:44px;color:#c4ccdb;cursor:pointer}.chk input{width:22px;height:22px;accent-color:var(--green);flex:none}
+.yrs{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.4rem}
+.yrs button{min-width:64px;min-height:44px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text);font:inherit;font-weight:600;cursor:pointer}
+.yrs button[aria-pressed=true]{background:rgba(248,113,113,0.14);border-color:rgba(248,113,113,0.5);color:#fca5a5;text-decoration:line-through}
+.hero{margin-top:1.1rem;border:1px solid rgba(74,222,128,0.4);background:linear-gradient(135deg,rgba(74,222,128,0.12),rgba(74,222,128,0.02));border-radius:16px;padding:1rem}
+.hero span{display:block;color:var(--muted);font-size:0.9rem}.hero>b{display:block;font-size:2.4rem;letter-spacing:-0.03em;font-variant-numeric:tabular-nums;color:var(--green);line-height:1.15}
+.hero p{margin:0.35rem 0 0;font-size:0.92rem}.hero p b{color:var(--text)}
+.hero.neg{border-color:rgba(248,113,113,0.5);background:rgba(248,113,113,0.07)}.hero.neg>b{color:var(--red)}
+.ytab{margin-top:1rem;font-size:0.9rem;font-variant-numeric:tabular-nums}.ytab td,.ytab th{padding:0.4rem;border-bottom:1px solid var(--border)}.ytab td:not(:first-child),.ytab th:not(:first-child){text-align:right}
+.ytab tr.off td{color:var(--muted);text-decoration:line-through}
+.src{font-size:0.8rem;color:var(--muted);margin-top:0.8rem}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.hero>b{font-size:2rem}}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.8rem}
+.chips{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.4rem}.chips button{min-height:40px;padding:0 0.7rem;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--text);font:inherit;font-size:0.88rem;font-weight:600;cursor:pointer}
+.ytab td:last-child,.ytab th:last-child{text-align:right}
+@media(max-width:760px){.grid3{grid-template-columns:1fr}}
+.seg{display:flex;gap:0.4rem;margin-top:0.35rem}.seg button{flex:1;min-height:44px;border-radius:10px;border:1px solid var(--border);background:transparent;color:inherit;font:inherit;cursor:pointer}.seg button[aria-pressed=true]{background:var(--green);color:#06140b;border-color:var(--green);font-weight:700}
+.chk{display:flex;gap:0.5rem;align-items:center;margin-top:0.9rem;min-height:44px}.chk input{width:20px;height:20px}
+.ratio{margin:0.7rem 0}.ratio .rl{display:flex;justify-content:space-between;font-size:0.9rem}.ratio .rl em{color:var(--muted);font-style:normal}.ratio .rb{height:10px;border-radius:6px;background:rgba(255,255,255,0.08);overflow:hidden;margin-top:0.3rem}.ratio .rb i{display:block;height:100%;background:var(--green)}.ratio .rb i.hot{background:#fbbf24}
+.pass{color:var(--green);font-weight:700}.fail{color:#fbbf24;font-weight:700}
+details.more{margin-top:0.8rem}details.more summary{cursor:pointer;min-height:44px;display:flex;align-items:center}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><a class="logo" href="/">Qualisight</a><a class="btn ghost" href="/?utm_source=organic&utm_campaign=home_afford">Open the app</a></header>
+
+<h1>Mortgage affordability calculator with the stress test</h1>
+<p class="lead">Enter your income, debts and down payment. See the most a Canadian lender could approve, the stress test rate, and your GDS and TDS. Check whether a home you like passes. Free, no sign-up. Your numbers stay in your browser.</p>
+
+<section class="card" aria-label="Calculator">
+  <div id="out" aria-live="polite"></div>
+  <div class="grid3" style="margin-top:1.2rem">
+    <div class="f"><label for="income">Household income before tax, a year ($)</label><input type="number" id="income" inputmode="numeric" min="0" step="1000" value="95000">
+      <div class="chips" id="ichips"><button type="button" data-v="70000">$70k</button><button type="button" data-v="95000">$95k</button><button type="button" data-v="130000">$130k</button><button type="button" data-v="180000">$180k</button></div></div>
+    <div class="f"><label for="debts">Other debt payments, a month ($)</label><input type="number" id="debts" inputmode="numeric" min="0" step="25" value="300"><small>Car, student loan, card minimums.</small></div>
+    <div class="f"><label for="down">Down payment you have ($)</label><input type="number" id="down" inputmode="numeric" min="0" step="1000" value="60000"></div>
+    <div class="f"><label for="rate">Mortgage rate you expect (%)</label><input type="number" id="rate" inputmode="decimal" min="0" step="0.05" value="4.5"><small>The stress test adds 2%, or uses 5.25%.</small></div>
+    <div class="f"><label>Amortization</label><div class="seg" id="amort"><button type="button" data-v="25" aria-pressed="false">25 years</button><button type="button" data-v="30" aria-pressed="true">30 years</button></div>
+      <label class="chk"><input type="checkbox" id="first" checked> First-time buyer or new build</label></div>
+    <div class="f"><label for="check">A home you like (optional, $)</label><input type="number" id="check" inputmode="numeric" min="0" step="5000" placeholder="e.g. 550000"><small>We will tell you if it passes.</small></div>
+  </div>
+  <details class="more"><summary>Property tax, heating and condo fees</summary><div class="grid3">
+    <div class="f"><label for="tax">Property tax, % of price a year</label><input type="number" id="tax" inputmode="decimal" min="0" step="0.05" value="1"></div>
+    <div class="f"><label for="heat">Heating, a month ($)</label><input type="number" id="heat" inputmode="numeric" min="0" step="10" value="120"></div>
+    <div class="f"><label for="condo">Condo fees, a month ($)</label><input type="number" id="condo" inputmode="numeric" min="0" step="25" value="0"><small>Lenders count half.</small></div>
+  </div></details>
+  <p class="src">Stress test rate from OSFI, ratio limits and insurance premiums from CMHC, checked November 23, 2026. OSFI reviews the rate every December. Estimates only, not financial advice. Your lender confirms the real numbers.</p>
+  <div class="by">Mortgage affordability calculator by <a href="https://qualisight.ca/mortgage-affordability-calculator/" target="_blank" rel="noopener">Qualisight</a>. Estimates only, not financial advice.</div>
+</section>
+
+<div class="cta"><p><b>Know your number? Now see every cost and every rebate.</b><small>Qualisight's free Housing guide adds closing costs, land transfer tax, and the first-time buyer programs you can get, step by step to the keys. The guide comes with a 14-day free trial, then $12 a month. Budgeting and debt payoff are free forever. No bank login.</small></p>
+  <a class="btn" target="_top" href="/?utm_source=organic&utm_campaign=home_afford">Try it free</a></div>
+
+<div class="article">
+<h2>How lenders work out what you can afford</h2>
+<p>A Canadian lender checks two ratios, using a payment worked out at the stress test rate, not your real rate:</p>
+<table class="ytab" aria-label="Debt service limits"><thead><tr><th>Ratio</th><th>What it counts</th><th>Limit (insured)</th></tr></thead><tbody>
+<tr><td>GDS</td><td>Mortgage payment, property tax, heat, half of condo fees</td><td>39% of gross income</td></tr>
+<tr><td>TDS</td><td>All of the above plus every other debt payment</td><td>44% of gross income</td></tr>
+</tbody></table>
+<p>The most you can borrow is where the first of these limits is reached, or where your down payment stops meeting the minimum, whichever comes first. The calculator tells you which one is holding you back.</p>
+
+<h2>The stress test rate</h2>
+<p>You must qualify at the <b>higher of 5.25% or your rate plus 2%</b>. At a 4.5% rate you are tested at 6.5%. At 3% you are tested at 5.25%. Your real payment is at your real rate; the test only decides how much you can borrow. Switching lenders at renewal without borrowing more no longer needs the test.</p>
+
+<h3>A worked example</h3>
+<p>A first-time buyer with $95,000 household income, $300 a month of other debt payments, and $60,000 down, at a 4.5% rate over 30 years. The stress test rate is 6.5% (4.5% plus 2). A lender could approve about <b>$459,000</b>. The mortgage would be $412,167 including insurance, and the real payment about <b>$2,078 a month</b>. Income is the limit here: housing costs reach 39.0% of income, while all debts are at 42.7%. A more comfortable target with room to spare is about $384,000. Those are the numbers the calculator starts with. Swap in your own.</p>
+
+<h2>Down payment and insurance rules</h2>
+<p>The minimum down payment is 5% of the first $500,000 and 10% of the rest, up to $1.5 million. At $1.5 million or more it is 20% and mortgage insurance is not available. With less than 20% down, a one-time insurance premium of 2.8% to 4% is added to the mortgage, plus 0.2% for a 30-year amortization. See the <a href="/down-payment-calculator/">down payment calculator</a> for when you will have yours, and the <a href="/ontario-land-transfer-tax-calculator/">Ontario land transfer tax calculator</a> for the cash you need at closing.</p>
+
+<h2>Common questions</h2>
+<details><summary>What is the mortgage stress test?</summary><p>Lenders check that you could still make your payments at a higher rate. For uninsured mortgages at federally regulated lenders, OSFI sets that rate as the higher of 5.25% or your rate plus 2%. Insured mortgages use the same rule.</p></details>
+<details><summary>What are GDS and TDS?</summary><p>GDS is your housing costs (mortgage at the stress test rate, property tax, heat and half of condo fees) as a share of your gross monthly income. TDS adds every other debt payment. For insured mortgages the limits are 39% and 44%.</p></details>
+<details><summary>How much house can I afford on $100,000 a year?</summary><p>It depends on your debts, down payment and rate. Type 100000 into the calculator with your own numbers. Debts matter a lot: every $100 a month of other payments lowers the limit by thousands of dollars.</p></details>
+<details><summary>Can I get a 30-year mortgage?</summary><p>With 20% or more down, yes. With less than 20% down, 30 years is allowed for first-time buyers and for new builds since December 15, 2024. Otherwise insured mortgages are capped at 25 years.</p></details>
+<details><summary>Does the bank have to approve the maximum?</summary><p>No. This is the ceiling under the ratio rules. Lenders also look at your credit, job history and the property, and many people choose to borrow less.</p></details>
+
+<h2>What this calculator assumes</h2>
+<p>It uses the stress test rate, CMHC's 39% GDS and 44% TDS limits, CMHC's standard premiums, and payments with interest compounded twice a year as Canadian mortgages are. Property tax defaults to 1% of the price and heat to $120 a month; change them for your city. Lenders can be stricter, and uninsured lenders can use different limits. Sources: <a href="https://www.osfi-bsif.gc.ca/en/supervision/financial-institutions/banks/minimum-qualifying-rate-uninsured-mortgages">Minimum qualifying rate</a> (OSFI), <a href="https://www.cmhc-schl.gc.ca/consumers/home-buying/calculators/mortgage-affordability-calculator">Mortgage affordability</a> (CMHC), and <a href="https://www.canada.ca/en/financial-consumer-agency/services/mortgages/calculate-mortgage-affordability.html">Calculate how much you can afford</a> (Financial Consumer Agency of Canada). This page is information, not financial advice.</p>
+
+<h2>Put this calculator on your site</h2>
+<p>Run a first-time buyer workshop, a newcomer program, or a student finance office? Add this calculator to your own page for free. It has no ads and collects nothing your visitors type.</p>
+<textarea class="code" id="embedCode" readonly aria-label="Embed code">&lt;iframe src="https://qualisight.ca/mortgage-affordability-calculator/?embed=1" title="Mortgage affordability calculator" style="width:100%;max-width:860px;height:1100px;border:0" loading="lazy"&gt;&lt;/iframe&gt;</textarea>
+<div class="row"><button class="btn ghost" type="button" id="copyEmbed">Copy the code</button><span id="copied" style="color:var(--green);font-size:0.9rem" aria-live="polite"></span></div>
+</div>
+
+<footer>More free tools: <a href="/down-payment-calculator/">down payment calculator</a>, <a href="/debt-payoff-calculator/">debt payoff calculator</a>, <a href="/budget-calculator/">budget calculator</a>, <a href="/emergency-fund-calculator/">emergency fund calculator</a>, <a href="/tfsa-contribution-room-calculator/">TFSA room calculator</a>, <a href="/tfsa-limit-2027/">TFSA limit 2027</a>, <a href="/rrsp-limit-2027/">RRSP limit 2027</a>, <a href="/fhsa-limit-2027/">FHSA limit 2027</a>, <a href="/credit-card-payoff-calculator/">credit card payoff calculator</a>, <a href="/ontario-land-transfer-tax-calculator/">Ontario land transfer tax calculator</a>, <a href="/money-limits-2027/">2027 money limits</a>, <a href="/canadian-bank-earnings/">bank earnings dates</a>, <a href="/tsx-heatmap/">TSX 60 heatmap</a>, <a href="/sp500-heatmap/">S&amp;P 500 heatmap</a>.<br>Built by Lucas, a solo founder in Ontario. Rules last checked November 2026. <a href="/about/">How these tools work and where the rules come from</a>. <a href="/">Qualisight</a> is a free Canadian budgeting and debt app.</footer>
+</div>
+<script>
+(function(){
+  var EMBED=/[?&]embed=1/.test(location.search); if(EMBED) document.body.className+=' embed';
+  // Anonymous page counts only. Nothing typed into the calculator is ever sent.
+  var track=(function(){
+    var ok=true, vid, sid, sent=0;
+    try{ if(localStorage.getItem('qs_notrack')==='1') ok=false; vid=localStorage.getItem('qs_vid'); if(!vid){ vid=Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4); localStorage.setItem('qs_vid',vid); }
+      sid=sessionStorage.getItem('qs_tab'); if(!sid){ sid=Math.random().toString(36).slice(2,10); sessionStorage.setItem('qs_tab',sid); } }catch(e){ vid=vid||'anon'; sid=sid||'anon'; }
+    if(/HeadlessChrome|bot|crawl|spider/i.test(navigator.userAgent||'')) ok=false;
+    return function(name,props){ if(!ok||sent>20) return; sent++; props=props||{}; props.embed=EMBED;
+      try{ fetch('https://bsjyqecneeptlfrsyesf.supabase.co/rest/v1/site_events',{method:'POST',keepalive:true,headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM','Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify([{vid:vid,sid:sid,name:name,props:props}])}).catch(function(){}); }catch(e){} };
+  })();
+  var CAP=1500000, edited=false, amort=30;
+  function $(id){ return document.getElementById(id); }
+  function money(n){ return '$'+Math.round(n).toLocaleString('en-CA'); }
+  function num(id){ var v=parseFloat($(id).value); return isFinite(v)&&v>0?v:0; }
+  function minDown(p){ if(p>=CAP) return p*0.20; if(p<=500000) return p*0.05; return 25000+(p-500000)*0.10; }
+  function prem(p,d){ var x=d/p*100; if(x>=20||p>=CAP) return 0; if(x>=15) return 0.028; if(x>=10) return 0.031; return 0.04; }
+  function pay(L,rate,yrs){ var r=Math.pow(1+rate/200,1/6)-1, n=yrs*12; return r===0?L/n:L*r*Math.pow(1+r,n)/(Math.pow(1+r,n)-1); }
+  // Same math as the Housing guide in the Qualisight app.
+  function at(G,P){
+    var down=Math.min(G.down,P), minD=minDown(P), insured=down<P*0.2;
+    var am=insured&&!G.first?25:G.amort, loan=Math.max(0,P-down), pr=insured?prem(P,down)+(am>25?0.002:0):0, L=loan*(1+pr);
+    var q=Math.max(G.rate+2,5.25);
+    var payQ=pay(L,q,am), real=pay(L,G.rate,am), inc=G.income/12;
+    var housing=payQ+P*G.tax/1200+G.heat+0.5*G.condo, gds=inc>0?housing/inc*100:999, tds=inc>0?(housing+G.debts)/inc*100:999;
+    return {P:P,down:down,minD:minD,insured:insured,L:L,pr:pr,am:am,q:q,payQ:payQ,pay:real,gds:gds,tds:tds,okDown:down>=minD-0.5&&!(insured&&P>=CAP)};
+  }
+  function max(G,g,t){ var best=null, why='';
+    for(var P=20000;P<=4000000;P+=1000){ var a=at(G,P), ok=a.okDown&&a.gds<=g&&a.tds<=t; if(ok){ best=a; continue; } if(best){ why=!a.okDown?'down':a.gds>g?'gds':'tds'; break; } }
+    return {a:best,why:why}; }
+  function G(){ return {income:num('income'),debts:num('debts'),down:num('down'),rate:parseFloat($('rate').value)||0,amort:amort,first:$('first').checked,tax:parseFloat($('tax').value)||0,heat:num('heat'),condo:num('condo')}; }
+  function bar(v,m,l){ return '<div class="ratio"><div class="rl"><span>'+l+'</span><b>'+v.toFixed(1)+'%</b><em>limit '+m+'%</em></div><div class="rb"><i style="width:'+Math.min(100,v/m*100).toFixed(1)+'%" class="'+(v>m*0.95?'hot':'')+'"></i></div></div>'; }
+  window.qsAfford={at:at,max:max};
+  function render(){
+    var g=G();
+    if(g.income<10000){ $('out').innerHTML='<div class="warn">Type your household income before tax, for example 95000.</div>'; return; }
+    var M=max(g,39,44), C=max(g,32,40);
+    if(g.down<1000){ $('out').innerHTML='<div class="warn">Add the down payment you have. The minimum is 5% of the price, so a $400,000 home needs $20,000.</div>'; return; }
+    if(!M.a){ $('out').innerHTML='<div class="warn">With these numbers, a lender would not approve a mortgage yet. The usual fixes: pay down other debts, add to your down payment, or add a co-borrower\'s income.</div>'; return; }
+    var a=M.a, why={down:'your down payment',gds:'your income (housing costs up to 39% of it)',tds:'your income and other debts (all debt payments up to 44% of it)'}[M.why]||'the numbers you entered';
+    var h='<div class="hero"><span>A lender could approve up to about</span><b>'+money(Math.floor(a.P/1000)*1000)+'</b><p>Held back by <b>'+why+'</b>. Mortgage of '+money(a.L)+(a.insured?' including insurance':'')+', about <b>'+money(a.pay)+' a month</b> at '+g.rate+'% over '+a.am+' years. You are tested at <b>'+a.q.toFixed(2)+'%</b>.</p></div>';
+    h+=bar(a.gds,39,'Housing costs (GDS)')+bar(a.tds,44,'All debts (TDS)');
+    if(C.a) h+='<p class="cmp">A more comfortable target, with housing near 32% of income and all debts near 40%: <b>'+money(Math.floor(C.a.P/1000)*1000)+'</b>. Lenders allow more, but you do not have to borrow it all.</p>';
+    var more=max(Object.assign({},g,{down:g.down+10000}),39,44), less=max(Object.assign({},g,{debts:g.debts+100}),39,44);
+    if(more.a) h+='<p class="cmp">Add <b>$10,000</b> to your down payment and the limit becomes about <b>'+money(Math.floor(more.a.P/1000)*1000)+'</b>.</p>';
+    if(less.a) h+='<p class="cmp">Each extra <b>$100 a month</b> of other debt payments lowers it to about <b>'+money(Math.floor(less.a.P/1000)*1000)+'</b>.</p>';
+    var cp=num('check');
+    if(cp>=50000){ var c=at(g,cp), ok=c.okDown&&c.gds<=39&&c.tds<=44;
+      var r=!c.okDown?(c.insured&&cp>=CAP?'At '+money(CAP)+' or more you need 20% down ('+money(cp*0.2)+').':'You need at least '+money(c.minD)+' down.'):c.gds>39?'Housing costs would be '+c.gds.toFixed(1)+'% of income, over 39%.':c.tds>44?'All debts would be '+c.tds.toFixed(1)+'% of income, over 44%.':'GDS '+c.gds.toFixed(1)+'% and TDS '+c.tds.toFixed(1)+'%, both under the limits.';
+      h+='<p class="cmp">A '+money(cp)+' home: <span class="'+(ok?'pass':'fail')+'">'+(ok?'passes':'does not pass')+'</span>. '+r+(c.okDown?' Payment about '+money(c.pay)+' a month.':'')+'</p>'; }
+    if(a.insured&&!g.first&&g.amort>25) h+='<p class="cmp">With less than 20% down, 30 years is only for first-time buyers and new builds, so this uses 25 years.</p>';
+    $('out').innerHTML=h;
+  }
+  var t; function changed(){ if(!edited){ edited=true; track('afford_edit'); } clearTimeout(t); t=setTimeout(render,80); }
+  ['income','debts','down','rate','check','tax','heat','condo'].forEach(function(id){ $(id).addEventListener('input',changed); });
+  $('first').addEventListener('change',changed);
+  $('ichips').addEventListener('click',function(e){ var b=e.target.closest('button[data-v]'); if(!b) return; $('income').value=b.getAttribute('data-v'); changed(); });
+  $('amort').addEventListener('click',function(e){ var b=e.target.closest('button[data-v]'); if(!b) return; amort=+b.getAttribute('data-v'); var bs=$('amort').querySelectorAll('button'); for(var i=0;i<bs.length;i++) bs[i].setAttribute('aria-pressed',bs[i]===b?'true':'false'); changed(); });
+  var links=document.querySelectorAll('a[href*="utm_campaign=home_afford"]');
+  for(var i=0;i<links.length;i++) links[i].addEventListener('click',function(){ track('afford_cta',{edited:edited}); });
+  var ce=document.getElementById('copyEmbed'); if(ce) ce.onclick=function(){ var ta=document.getElementById('embedCode'); ta.select(); var done=function(){ document.getElementById('copied').textContent='Copied.'; track('afford_embed_copy'); };
+    if(navigator.clipboard&&navigator.clipboard.writeText) navigator.clipboard.writeText(ta.value).then(done,function(){ try{ document.execCommand('copy'); done(); }catch(e){} }); else { try{ document.execCommand('copy'); done(); }catch(e){} } };
+  var src=''; try{ src=(new URLSearchParams(location.search).get('utm_source')||'').slice(0,20); }catch(e){}
+  render(); track('afford_view',{ref:(document.referrer||'').split('/')[2]||'', src:src});
+})();
+</script>
+<script>/* Where this visitor came from: saved on the first visit only (same as the app does), and an ad's tags are carried to the app so a sign-up is credited to the ad. Stays in this browser. */
+(function(){try{
+  var p=new URLSearchParams(location.search), s=(p.get('utm_source')||'').slice(0,60), c=(p.get('utm_campaign')||'').replace(/[^a-z0-9_-]/gi,'').slice(0,80), m=(p.get('utm_medium')||'').slice(0,60);
+  var links=document.querySelectorAll('a[href^="/?utm_source="]'), def='';
+  if(links.length){ def=new URLSearchParams(links[0].getAttribute('href').slice(2)).get('utm_campaign')||''; }
+  var ref=''; try{ var r=document.referrer?new URL(document.referrer).hostname:''; ref=r&&r!==location.hostname?r:''; }catch(e){}
+  if(!localStorage.getItem('qs_source')) localStorage.setItem('qs_source',JSON.stringify({source:(s||ref||'direct').slice(0,60),medium:(m||(!s&&ref?'organic':'')).slice(0,60),campaign:(c||def).slice(0,80),landedAt:new Date().toISOString()}));
+  if(s||c){ for(var i=0;i<links.length;i++){ var a=links[i], q=new URLSearchParams(a.getAttribute('href').slice(2)); if(s) q.set('utm_source',s); if(c) q.set('utm_campaign',c); if(m) q.set('utm_medium',m); a.setAttribute('href','/?'+q.toString()); } }
+}catch(e){}})();</script>
+</body>
+</html>

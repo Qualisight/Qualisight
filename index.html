@@ -5165,6 +5165,7 @@ window.QS_HERO_SPLIT=null;
         <a class="lp-footer-link" href="/tsx-heatmap/" style="text-decoration:none">TSX 60 heatmap</a>
         <a class="lp-footer-link" href="/sp500-heatmap/" style="text-decoration:none">S&amp;P 500 heatmap</a>
         <a class="lp-footer-link" href="/down-payment-calculator/" style="text-decoration:none">Down payment calculator</a>
+        <a class="lp-footer-link" href="/mortgage-affordability-calculator/" style="text-decoration:none">Mortgage affordability calculator</a>
         <a class="lp-footer-link" href="/ontario-land-transfer-tax-calculator/" style="text-decoration:none">Land transfer tax calculator</a>
         <button class="lp-footer-link" onclick="showSignIn()">Sign in</button>
         <button class="lp-footer-link" onclick="showTerms()">Terms</button>
@@ -17616,8 +17617,8 @@ function hgLTT(p,toronto){
 // One price, every number a lender looks at
 function hgAt(G,P){
   const down=Math.min(G.down,P), minD=minDownPayment(P), insured=down<P*0.2;
-  const loan=Math.max(0,P-down), prem=insured?cmhcPremium(P,down)+(G.amort>25?0.002:0):0, L=loan*(1+prem);
-  const amort=insured&&!G.first&&!G.newBuild?25:G.amort, q=qualifyingRate(G.rate);
+  const amort=insured&&!G.first&&!G.newBuild?25:G.amort, loan=Math.max(0,P-down), prem=insured?cmhcPremium(P,down)+(amort>25?0.002:0):0, L=loan*(1+prem);
+  const q=qualifyingRate(G.rate);
   const payQ=monthlyMortgage(L,q,amort), pay=monthlyMortgage(L,G.rate,amort), inc=G.income/12;
   const housing=payQ+P*G.taxPct/1200+G.heat+0.5*G.condo, gds=inc>0?housing/inc*100:999, tds=inc>0?(housing+G.debts)/inc*100:999;
   return {P,down,minD,insured,loan,prem,L,amort,q,payQ,pay,gds,tds,okDown:down>=minD-0.5&&!(insured&&P>=INSURED_PRICE_CAP)};
