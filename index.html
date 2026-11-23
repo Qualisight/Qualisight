@@ -3965,6 +3965,33 @@ button:focus:not(:focus-visible){outline:none}
 
 
 
+
+/* This week */
+.sw-card{margin:0 0 1rem;padding:1rem 1.05rem;border-radius:18px;background:linear-gradient(160deg,rgba(74,222,128,0.10),rgba(74,222,128,0.02) 55%),var(--card,#141821);border:1px solid rgba(74,222,128,0.28)}
+.sw-card.over{background:linear-gradient(160deg,rgba(248,113,113,0.10),transparent 55%),var(--card,#141821);border-color:rgba(248,113,113,0.35)}
+.sw-k{font-size:0.8rem;color:var(--muted);font-weight:600}
+.sw-q{font-size:1.2rem;font-weight:800;color:var(--text);margin-top:0.15rem}
+.sw-big{font-family:var(--font-display,inherit);font-size:2.6rem;font-weight:800;letter-spacing:-0.04em;line-height:1.05;color:#4ade80;font-variant-numeric:tabular-nums;margin-top:0.15rem}.sw-big.neg{color:#f87171}
+.sw-p{color:#aab4c6;font-size:0.9rem;line-height:1.45;margin:0.3rem 0 0}.sw-p b{color:var(--text)}
+.sw-bar{height:8px;border-radius:8px;background:rgba(74,222,128,0.18);margin-top:0.8rem;overflow:hidden}.sw-bar i{display:block;height:100%;background:#cbd5e1;border-radius:8px}
+.sw-sub{display:flex;justify-content:space-between;align-items:center;font-size:0.84rem;color:var(--muted);margin-top:0.45rem}.sw-sub b{color:var(--text)}
+.sw-link{border:0;background:none;color:#4ade80;font:inherit;font-weight:600;cursor:pointer;min-height:32px}
+.sw-where{margin-top:0.75rem;padding-top:0.7rem;border-top:1px solid var(--border)}.sw-wh{font-size:0.8rem;color:var(--muted);font-weight:600;margin-bottom:0.35rem}
+.sw-row{display:grid;grid-template-columns:5.5rem 1fr 4.2rem;gap:0.5rem;align-items:center;font-size:0.86rem;padding:0.15rem 0}.sw-row span{color:var(--text);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.sw-row em{font-style:normal;text-align:right;color:var(--text);font-variant-numeric:tabular-nums}
+.sw-row i{height:7px;border-radius:7px;background:rgba(255,255,255,0.06);display:block}.sw-row i b{display:block;height:100%;border-radius:7px;background:#60a5fa}
+.sw-acts{display:flex;gap:0.5rem;margin-top:0.85rem}
+.sw-bring{flex:1;min-height:46px;border-radius:12px;border:0;background:#4ade80;color:#06140b;font:inherit;font-weight:800;cursor:pointer}
+.sw-log{min-height:46px;padding:0 1rem;border-radius:12px;border:1px solid var(--border);background:rgba(255,255,255,0.04);color:var(--text);font:inherit;font-weight:700;cursor:pointer}
+.sw-setup{display:flex;gap:0.5rem;margin-top:0.7rem}.sw-setup input{flex:1;min-width:0;min-height:46px;border-radius:12px;border:1px solid var(--border);background:#0e121a;color:var(--text);font:inherit;padding:0 0.75rem}
+.sw-setup button{min-height:46px;padding:0 1rem;border-radius:12px;border:0;background:#4ade80;color:#06140b;font:inherit;font-weight:800;cursor:pointer;white-space:nowrap}
+.sw-err{color:#fca5a5;font-size:0.82rem;margin-top:0.35rem;min-height:1em}
+.imp-box.bring .bring-body{padding:0 1.1rem 0.4rem;display:grid;gap:0.6rem}
+.bring-opt{border:1px solid var(--border);border-radius:14px;padding:0.8rem;display:grid;gap:0.45rem}.bring-opt b{color:var(--text)}.bring-opt small{color:var(--muted);font-size:0.82rem;line-height:1.4}
+.bring-opt textarea{width:100%;border-radius:10px;border:1px solid var(--border);background:#0e121a;color:var(--text);font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:0.6rem;resize:vertical}
+.bring-opt .go,.bring-opt .x{min-height:44px;border-radius:10px;font:inherit;font-weight:700;cursor:pointer}
+.bring-opt .go{border:0;background:#4ade80;color:#06140b}.bring-opt .x{border:1px solid var(--border);background:none;color:var(--text)}
+.bring-or{text-align:center;color:var(--muted);font-size:0.8rem}
+
 /* Daily quest, chest and charms */
 .dq-card{position:relative;margin:0 0 1rem;padding:0.9rem 1rem 0.85rem;border-radius:16px;background:var(--card,#141821);border:1px solid var(--border)}
 .dq-head{display:flex;justify-content:space-between;align-items:center;font-size:0.8rem;color:var(--muted);font-weight:600;margin-bottom:0.55rem}
@@ -5312,6 +5339,7 @@ window.QS_HERO_SPLIT=null;
 <div id="page-dashboard" class="page active">
   <!-- Net worth + Money Score -->
   <div id="ob-checklist"></div>
+  <div id="sw-card"></div>
   <div class="db-hero" id="db-hero"></div>
   <div id="dq-card"></div>
   <div id="wr-entry"></div>
@@ -5388,7 +5416,7 @@ window.QS_HERO_SPLIT=null;
     <div class="ql-lab" id="ql-lab" hidden>Log again in one tap</div>
     <div class="ql-chips" id="ql-chips"></div>
     <div class="ql-tools">
-      <button type="button" class="ql-link" onclick="impOpen()">Import from your bank (CSV file)</button>
+      <button type="button" class="ql-link" onclick="bringOpen('budget')">Bring in from your bank: paste or CSV file</button>
       <input type="file" id="imp-file" accept=".csv,text/csv" hidden onchange="impFile(this)">
       <details class="ql-more ql-more-wrap" id="ql-more"><summary>More options: card, debt payment, monthly bill</summary>
     <div class="bm-log-row">
@@ -9134,7 +9162,7 @@ function bmUseLastMonth(){ const L=bmLastMonth()||{}; try{ QA.log('bm_goal_lastm
 // ══ Import from your bank: a CSV file, read on this device ══
 function impOpen(){ try{ QA.log('imp_open',{}); }catch(e){} document.getElementById('imp-file')?.click(); }
 function impSplit(text){
-  const first=(text.split(/\r?\n/)[0]||''), d=(first.split(';').length>first.split(',').length)?';':',';
+  const first=(text.split(/\r?\n/)[0]||''), d=first.includes('\t')?'\t':(first.split(';').length>first.split(',').length)?';':',';
   const rows=[]; let row=[], cur='', q=false;
   for(let i=0;i<text.length;i++){ const c=text[i];
     if(q){ if(c==='"'){ if(text[i+1]==='"'){ cur+='"'; i++; } else q=false; } else cur+=c; }
@@ -9192,17 +9220,20 @@ function impFile(input){
   const f=input.files&&input.files[0]; input.value=''; if(!f) return;
   if(f.size>3e6){ showToast('That file is too big. Download one month at a time.'); return; }
   const rd=new FileReader();
-  rd.onload=()=>{ let R; try{ R=impRead(String(rd.result||'')); }catch(e){ R={err:'Could not read that file.'}; }
-    if(R.err){ try{ QA.log('imp_fail',{}); }catch(e){} showToast(`<strong>${R.err}</strong> Your bank's website usually has a "Download transactions" button that makes a CSV file.`); return; }
+  rd.onload=()=>impLoad(String(rd.result||''),'file');
+  rd.readAsText(f);
+}
+function impLoad(text,src){
+  { let R; try{ R=impRead(text); if(R.err && src==='paste') R=impReadLines(text); }catch(e){ R={err:'Could not read that.'}; }
+    if(R.err){ try{ QA.log('imp_fail',{src}); }catch(e){} showToast(src==='paste'?`<strong>Could not find purchases in that text.</strong> Copy the list of transactions with their dates and amounts, then paste again.`:`<strong>${R.err}</strong> Your bank's website usually has a "Download transactions" button that makes a CSV file.`); return; }
     const mk=bmToday().slice(0,7), now=R.rows.filter(x=>x.d.slice(0,7)===mk), older=R.rows.length-now.length;
     if(!now.length){ showToast(`<strong>Nothing from this month in that file.</strong> It has ${R.rows.length} older transaction${R.rows.length===1?'':'s'}. The budget is for this month, so download this month's.`); return; }
     const seen=(state.expenses||[]);
     _imp={older, rows:now.sort((a,b)=>a.d<b.d?-1:1).map(x=>{ const dup=seen.some(e=>e.d===x.d && Math.abs(e.actual-x.amt)<0.01); const skip=/payment.*thank|thank you|transfer|tfr|e-?transfer|interac|deposit|refund/i.test(x.raw);
       return {...x, cat:qlGuess(x.name), on:!dup && !skip, note:dup?'Already logged':skip?'Looks like a transfer or payment':''}; })};
-    try{ QA.log('imp_read',{n:_imp.rows.length}); }catch(e){}
+    try{ QA.log('imp_read',{n:_imp.rows.length, src}); }catch(e){}
     impShow();
-  };
-  rd.readAsText(f);
+  }
 }
 function impShow(){
   document.getElementById('imp-ov')?.remove();
@@ -16209,6 +16240,7 @@ function renderDashboardPlus(){
   const hero=document.getElementById('db-hero'); if(!hero) return;
   const fresh=dbFresh(), pg=document.getElementById('page-dashboard'); if(pg) pg.classList.toggle('db-fresh',fresh);
   try{ wrEntryRender(fresh); }catch(e){ console.warn('wrapped entry',e); }
+  try{ swRender(fresh); }catch(e){ console.warn('this week',e); }
   try{ dqRender(fresh); }catch(e){ console.warn('daily quest',e); }
   if(fresh){
     const nm=(typeof currentUser!=='undefined'&&currentUser&&currentUser.name)?String(currentUser.name).split(' ')[0]:'';
@@ -17469,6 +17501,106 @@ function lppStart(){
   new IntersectionObserver(en=>{ en.forEach(e=>{ if(e.isIntersecting){ if(v.preload!=='auto'){ v.preload='auto'; } const p=v.play(); if(p&&p.catch) p.catch(()=>{}); } else v.pause(); }); },{threshold:0.35}).observe(v);
 })();
 
+
+
+// ══════════════════════════════════════════
+// BRING IN FROM YOUR BANK: paste what you copied from online banking, or upload the CSV file.
+// Read on this device, reviewed before anything is saved. No bank login.
+// ══════════════════════════════════════════
+const IMP_MON_RE=/^(jan|feb|mar|apr|may|jun|jul|aug|sep|oct|nov|dec)[a-z]*\.?\s+(\d{1,2})(?:,?\s+(\d{4}))?\b/i;
+function impLineDate(l){
+  const m=l.match(IMP_MON_RE); if(m){ const now=new Date(); let y=m[3]?+m[3]:now.getFullYear(); const mo=IMP_MON[m[1].slice(0,3).toLowerCase()];
+    if(!m[3] && mo>now.getMonth()+1) y--; return {iso:y+'-'+String(mo).padStart(2,'0')+'-'+String(+m[2]).padStart(2,'0'), rest:l.slice(m[0].length)}; }
+  const r=/^\d/.test(l)?impDateRaw(l):null; if(r){ return {iso:r.y+'-'+String(r.a).padStart(2,'0')+'-'+String(r.b).padStart(2,'0'), rest:l.replace(/^\S+\s*/,'')}; }
+  if(/^today\b/i.test(l)) return {iso:bmToday(), rest:l.replace(/^today\b[,\s]*/i,'')};
+  if(/^yesterday\b/i.test(l)) return {iso:bmYesterday(), rest:l.replace(/^yesterday\b[,\s]*/i,'')};
+  return null;
+}
+// Text copied from a bank page or app: dates, descriptions and amounts on one line or spread over a few
+function impReadLines(text){
+  const AMT=/(-|−|–)?\s*\$\s?(\d{1,3}(?:,\d{3})*|\d+)\.(\d{2})\b|(-|−)?\b(\d{1,3}(?:,\d{3})*|\d+)\.(\d{2})\b(?!\s*%)/g;
+  const lines=String(text).split(/\r?\n/).map(x=>x.replace(/\s+/g,' ').trim()).filter(Boolean);
+  let date=null, desc=[]; const out=[];
+  lines.forEach(l=>{
+    const dl=impLineDate(l); let rest=l;
+    if(dl){ date=dl.iso; rest=dl.rest.trim(); if(!rest){ desc=[]; return; } }
+    const ms=[...rest.matchAll(AMT)];
+    if(!ms.length){ if(/[a-z]{3}/i.test(rest) && !/balance|available|pending|transactions?$/i.test(rest)) desc.push(rest); return; }
+    const m=ms[0], v=parseFloat((m[2]||m[5]).replace(/,/g,'')+'.'+(m[3]||m[6]));
+    let name=rest.slice(0,m.index).trim(); if(!/[a-z]{2}/i.test(name)) name=desc.join(' ');
+    desc=[];
+    if(!date || !(v>0) || !/[a-z]{2}/i.test(name)) return;
+    out.push({d:date, name:impClean(name), amt:Math.round(v*100)/100, raw:name});
+  });
+  return out.length?{rows:out}:{err:'none'};
+}
+function bringOpen(from){
+  try{ QA.log('bring_open',{from:from||''}); }catch(e){}
+  document.getElementById('bring-ov')?.remove();
+  const ov=document.createElement('div'); ov.id='bring-ov'; ov.className='imp-ov';
+  ov.innerHTML=`<div class="imp-box bring" role="dialog" aria-modal="true" aria-labelledby="bring-t">
+    <div class="imp-head"><h3 id="bring-t">Bring in this month's spending</h3><p>No typing and no bank login. Everything is read on this device, and you check it before anything is saved.</p></div>
+    <div class="bring-body">
+      <div class="bring-opt"><b>Paste from online banking</b><small>On your bank's website, select your list of transactions, copy it, and paste it here.</small>
+        <textarea id="bring-txt" rows="6" placeholder="Nov 20  TIM HORTONS #1234  4.50&#10;Nov 19  LOBLAWS  86.12" aria-label="Pasted transactions"></textarea>
+        <button type="button" class="go" onclick="bringPaste()">Read what I pasted</button></div>
+      <div class="bring-or">or</div>
+      <div class="bring-opt"><b>Upload your bank's CSV file</b><small>Most banks have a "Download transactions" button. Pick CSV.</small>
+        <button type="button" class="x" onclick="document.getElementById('bring-ov').remove(); impOpen()">Choose a file</button></div>
+    </div>
+    <div class="imp-foot"><button type="button" class="x" onclick="document.getElementById('bring-ov').remove()">Cancel</button></div></div>`;
+  ov.addEventListener('click',e=>{ if(e.target===ov) ov.remove(); });
+  document.body.appendChild(ov); setTimeout(()=>{ try{ document.getElementById('bring-txt').focus(); }catch(e){} },50);
+}
+function bringPaste(){
+  const t=(document.getElementById('bring-txt')||{}).value||''; if(t.trim().length<8){ showToast('Paste your list of transactions first.'); return; }
+  document.getElementById('bring-ov')?.remove(); impLoad(t,'paste');
+}
+
+// ══════════════════════════════════════════
+// THIS WEEK: what you can still spend through Sunday and stay on plan, and where this week's money went
+// ══════════════════════════════════════════
+function swIso(d){ return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
+function swData(){
+  const now=new Date(), y=now.getFullYear(), m=now.getMonth(), dim=new Date(y,m+1,0).getDate(), dom=now.getDate(), left=dim-dom+1, ym=swIso(now).slice(0,7);
+  const dow=(now.getDay()+6)%7, ws=new Date(y,m,dom-dow), wsIso=swIso(ws), today=swIso(now);
+  const wkLeft=Math.min(7-dow,left), every=e=>e && !BM_FIXED.test(e.cat||'');
+  let goal=0; (state.budgets||[]).forEach(b=>{ if(b.goal>0 && !BM_FIXED.test(b.cat)) goal+=b.goal; });
+  const ex=(state.expenses||[]).filter(every), monthSpent=ex.filter(e=>!e.d || e.d.slice(0,7)===ym).reduce((t,e)=>t+(+e.actual||0),0);
+  const wk=ex.filter(e=>e.d && e.d>=wsIso && e.d<=today), wkSpent=wk.reduce((t,e)=>t+(+e.actual||0),0);
+  const byCat={}; wk.forEach(e=>{ byCat[e.cat]=(byCat[e.cat]||0)+(+e.actual||0); });
+  const top=Object.entries(byCat).sort((a,b)=>b[1]-a[1]).slice(0,4);
+  const remain=goal-monthSpent, safe=remain>0?remain*wkLeft/left:0;
+  return {goal, remain, safe, wkLeft, wkSpent, top, perDay:wkLeft?safe/wkLeft:0, dated:ex.some(e=>e.d), income:(state.income||[]).reduce((t,x)=>t+(+x.actual||0),0)};
+}
+function swRender(fresh){
+  const el=document.getElementById('sw-card'); if(!el) return;
+  if(fresh===true){ el.innerHTML=''; return; }
+  const W=swData(), endTxt=W.wkLeft<=1?'today':'through Sunday';
+  const bring=`<button type="button" class="sw-bring" onclick="bringOpen('week')">Bring in from my bank</button>`;
+  if(!(W.goal>0)){
+    el.innerHTML=`<div class="sw-card"><div class="sw-k">This week</div><div class="sw-q">How much can you spend this week?</div>
+      <p class="sw-p">Type what you take home in a month. We split it into a simple plan you can change any time.</p>
+      <div class="sw-setup"><input id="sw-pay" type="number" inputmode="decimal" min="0" placeholder="Take-home a month, e.g. 3200" aria-label="Take-home pay a month"><button type="button" onclick="swSetup()">Show my week</button></div>
+      <div class="sw-err" id="sw-err" aria-live="polite"></div></div>`; return;
+  }
+  const over=W.remain<=0, max=Math.max(W.safe+W.wkSpent,1);
+  const bars=W.top.length?`<div class="sw-where"><div class="sw-wh">Where it went this week</div>${W.top.map(([c,v])=>`<div class="sw-row"><span>${escHtml(bgShort(c))}</span><i><b style="width:${Math.max(4,v/Math.max(...W.top.map(t=>t[1]))*100).toFixed(0)}%"></b></i><em>${fmtW(v)}</em></div>`).join('')}</div>`
+    :`<p class="sw-p">${W.dated?'Nothing logged yet this week.':'Bring in your bank list to see where this week went.'}</p>`;
+  el.innerHTML=`<div class="sw-card${over?' over':''}"><div class="sw-k">This week</div>
+    ${over?`<div class="sw-big neg">${fmtW(-W.remain)} over</div><p class="sw-p">Everyday spending is past this month's plan. Keep the rest of the week quiet, or move money between jars on the Budget page.</p>`
+      :`<div class="sw-big">${fmtW(W.safe)}</div><p class="sw-p">safe to spend ${endTxt}${W.wkLeft>1?`, about <b>${fmtW(W.perDay)} a day</b>`:''}. That keeps your everyday jars on track. Bills and rent are planned for separately.</p>`}
+    <div class="sw-bar" aria-hidden="true"><i style="width:${Math.min(100,W.wkSpent/max*100).toFixed(1)}%"></i></div>
+    <div class="sw-sub"><span>Spent this week <b>${fmtW(W.wkSpent)}</b></span><button type="button" class="sw-link" onclick="showPage('monthly')">Budget</button></div>
+    ${bars}<div class="sw-acts">${bring}<button type="button" class="sw-log" onclick="dqGo('log')">Log one</button></div></div>`;
+}
+function swSetup(){
+  const v=parseFloat(String((document.getElementById('sw-pay')||{}).value||'').replace(/[, $]/g,''))||0, err=document.getElementById('sw-err');
+  if(!(v>0) || v>1000000){ if(err) err.textContent='Type roughly what you take home each month, for example 3,200.'; return; }
+  try{ obFillJars(v); recordActivity(); }catch(e){ console.warn(e); }
+  try{ QA.log('sw_setup',{}); }catch(e){}
+  try{ save(); }catch(e){} renderAll();
+}
 
 // ══════════════════════════════════════════
 // DAILY QUEST AND CHEST: one small task a day, checked against what you really did.
