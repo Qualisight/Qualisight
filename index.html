@@ -3963,6 +3963,54 @@ button:focus:not(:focus-visible){outline:none}
 .av-ohlc b{color:var(--text);font-weight:600}
 @media(max-width:420px){.avc-tip{font-size:0.7rem}}
 
+
+/* Money Wrapped */
+.wr-entry{display:flex;align-items:center;gap:0.9rem;width:100%;margin:0 0 1rem;padding:0.9rem 1rem;border-radius:16px;border:1px solid rgba(74,222,128,0.4);background:linear-gradient(120deg,rgba(74,222,128,0.16),rgba(250,204,21,0.08) 60%,rgba(74,222,128,0.04));color:var(--text);font:inherit;text-align:left;cursor:pointer;min-height:64px}
+.wr-entry:hover{border-color:rgba(74,222,128,0.7)}
+.wr-entry-y{font-family:var(--font-display,inherit);font-weight:800;font-size:1.5rem;color:#4ade80;letter-spacing:-0.03em}
+.wr-entry-t{flex:1;display:block}.wr-entry-t b{display:block;font-size:0.98rem}.wr-entry-t small{display:block;color:var(--muted);font-size:0.8rem;line-height:1.4;margin-top:0.1rem}
+.wr-entry-go{color:#4ade80;font-size:0.9rem}
+body.wr-lock{overflow:hidden}
+.wr-ov{position:fixed;inset:0;z-index:650;background:rgba(5,7,11,0.86);display:none;align-items:center;justify-content:center;padding:12px}
+.wr-ov.open{display:flex}
+.wr-card{position:relative;width:min(420px,100%);height:min(760px,calc(100dvh - 24px));border-radius:26px;overflow:hidden;background:radial-gradient(120% 80% at 90% 0%,rgba(74,222,128,0.22),transparent 60%),radial-gradient(90% 60% at 0% 100%,rgba(250,204,21,0.12),transparent 60%),#0b0f17;border:1px solid rgba(255,255,255,0.08);box-shadow:0 40px 90px -30px rgba(0,0,0,0.9)}
+.wr-card[data-k=debt]{background:radial-gradient(120% 80% at 90% 0%,rgba(96,165,250,0.22),transparent 60%),radial-gradient(90% 60% at 0% 100%,rgba(74,222,128,0.14),transparent 60%),#0b0f17}
+.wr-card[data-k=grove]{background:radial-gradient(120% 80% at 90% 0%,rgba(74,222,128,0.3),transparent 60%),#0a1410}
+.wr-card[data-k=type]{background:radial-gradient(120% 90% at 50% 0%,rgba(250,204,21,0.2),transparent 60%),radial-gradient(90% 60% at 0% 100%,rgba(74,222,128,0.18),transparent 60%),#0b0f17}
+.wr-bars{position:absolute;top:12px;left:14px;right:56px;display:flex;gap:5px;z-index:3}
+.wr-bars i{flex:1;height:4px;border-radius:4px;background:rgba(255,255,255,0.18);overflow:hidden;display:block}
+.wr-bars i b{display:block;height:100%;width:0;background:#fff}
+.wr-bars i.done b{width:100%}
+.wr-bars i.on b{animation:wrFill 6.5s linear forwards}
+.wr-card[data-k=share] .wr-bars i.on b{animation:none;width:100%}
+@keyframes wrFill{to{width:100%}}
+.wr-x{position:absolute;top:4px;right:8px;z-index:4;width:44px;height:44px;border:0;background:none;color:#fff;font-size:1.7rem;cursor:pointer}
+.wr-body{position:absolute;inset:0;padding:5.2rem 1.6rem 2rem;display:flex;flex-direction:column;justify-content:center;z-index:2;pointer-events:none}
+.wr-body button,.wr-body a{pointer-events:auto}
+.wr-body.in>*{animation:wrUp .55s cubic-bezier(.2,.8,.2,1) both}
+.wr-body.in>*:nth-child(2){animation-delay:.08s}.wr-body.in>*:nth-child(3){animation-delay:.16s}.wr-body.in>*:nth-child(4){animation-delay:.24s}
+@keyframes wrUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+.wr-kicker{color:#9aa4b8;font-weight:600;font-size:0.95rem;margin-bottom:0.4rem}
+.wr-big{font-family:var(--font-display,inherit);font-weight:800;font-size:clamp(4.5rem,24vw,7rem);line-height:0.95;letter-spacing:-0.05em;color:#4ade80;font-variant-numeric:tabular-nums}
+.wr-year{color:#fff}
+.wr-mid{font-size:1.35rem;font-weight:700;color:#fff;margin-top:0.35rem;line-height:1.3}
+.wr-type{font-family:var(--font-display,inherit);font-weight:800;font-size:clamp(2.6rem,12vw,3.4rem);line-height:1;letter-spacing:-0.04em;color:#facc15}
+.wr-p{color:#c4ccdb;font-size:1.02rem;line-height:1.55;margin-top:0.9rem}.wr-p b{color:#fff}
+.wr-acts{display:grid;gap:0.55rem;margin-top:1.4rem}
+.wr-btn{min-height:48px;border-radius:14px;border:1px solid rgba(255,255,255,0.14);background:rgba(255,255,255,0.06);color:#fff;font:inherit;font-weight:700;cursor:pointer}
+.wr-btn.primary{background:#4ade80;color:#06140b;border-color:#4ade80}
+.wr-btn.ghost{background:none;border-color:transparent;color:#9aa4b8}
+.wr-nav{position:absolute;inset:0;display:flex;z-index:1}
+.wr-nav button{flex:1;border:0;background:none;cursor:pointer}
+.wr-nav .wr-prev{flex:0 0 34%}
+@media(prefers-reduced-motion:reduce){.wr-body.in>*{animation:none}.wr-bars i.on b{animation:none;width:100%}}
+.gs-btn.gs-chal{flex-basis:100%;border-color:rgba(74,222,128,0.5);color:#4ade80}
+/* Beat my date, on the landing number box */
+#landing-page .lpm-chal{margin:0.6rem 0 0.2rem;padding:0.6rem 0.75rem;border-radius:12px;background:rgba(250,204,21,0.08);border:1px solid rgba(250,204,21,0.3);color:#f3e2a0;font-size:0.92rem;line-height:1.45}
+#landing-page .lpm-chal.win{background:rgba(74,222,128,0.1);border-color:rgba(74,222,128,0.45);color:#d6f5e0}
+#landing-page .lpm-chal b{color:#fff}
+#landing-page .lpm-chal button{margin-top:0.4rem;display:inline-flex;min-height:40px;align-items:center;padding:0 0.8rem;border-radius:10px;border:1px solid rgba(74,222,128,0.6);background:none;color:#4ade80;font:inherit;font-weight:700;cursor:pointer}
+
 /* Landing v4 hero: promise, the storm playing, one button, a scroll hint. Fits a 375 x 667 phone. */
 #landing-page .lp-hero--v4 .lp-play{order:0;margin:0.1rem 0 1rem}
 #landing-page .lp-hero--v4 #lpp-range,#landing-page .lp-hero--v4 .lpp-row{display:none}
@@ -5224,6 +5272,7 @@ window.QS_HERO_SPLIT=null;
   <!-- Net worth + Money Score -->
   <div id="ob-checklist"></div>
   <div class="db-hero" id="db-hero"></div>
+  <div id="wr-entry"></div>
 
   <!-- Next best moves -->
   <div id="db-moves"></div>
@@ -10343,7 +10392,8 @@ async function pitShareImage(){
 function pitShareCaption(){
   const D=_pit.D||pitData();
   if(D.bal<=0) return `My debt storm is over. Every debt paid off. Track yours at qualisight.ca`;
-  return `My debt storm is down to "${dsLevel(D.chaos)}". ${_pit.outPct??0}% paid off${D.plan.canFinish?`, calm by ${monthsToDateLabel(D.plan.months)}`:''}. Track yours at qualisight.ca`;
+  const cu=chalUrl();
+  return `My debt storm is down to "${dsLevel(D.chaos)}". ${_pit.outPct??0}% paid off${D.plan.canFinish?`, calm by ${monthsToDateLabel(D.plan.months)}`:''}. ${cu?`Can you beat my date? ${cu.replace('https://','')}`:'Track yours at qualisight.ca'}`;
 }
 async function pitShare(){
   groveShareEnsureModal();
@@ -10352,6 +10402,7 @@ async function pitShare(){
   document.getElementById('gs-title').textContent='Share your debt storm';
   document.getElementById('gs-sub').textContent='Your percent, storm level and date only. No dollar amounts or debt names.';
   document.getElementById('gs-cap').textContent=pitShareCaption();
+  chalButton(true);
   document.getElementById('gs-loading').textContent='Drawing your storm…';
   img.removeAttribute('src'); img.alt='Your debt storm share image'; document.getElementById('gs-loading').hidden=false;
   ov.classList.add('open');
@@ -13638,6 +13689,7 @@ async function groveShareImage(variant){
 
 function groveShareCaption(variant){
   if(variant==='pit') return pitShareCaption();
+  if(variant==='wrapped') return wrCaption();
   const S=groveShareStats();
   if(variant==='mecha') return `I just found the 1 in 1,000 mecha bull in my money grove  Grow yours at qualisight.ca`;
   const best=S.plots.map(p=>({p,l:p.kind==='house'?-1:groveLevel(S.tot[p.id].contrib)})).sort((a,b)=>b.l-a.l)[0];
@@ -13659,6 +13711,7 @@ function groveShareEnsureModal(){
       <button type="button" class="gs-btn primary" id="gs-share" onclick="groveShareNative()">Share</button>
       <button type="button" class="gs-btn" onclick="groveShareDownload()">Save image</button>
       <button type="button" class="gs-btn" onclick="groveShareCopy()" id="gs-copy">Copy caption</button>
+      <button type="button" class="gs-btn gs-chal" onclick="chalCopy(this)" id="gs-chal" hidden>Challenge a friend</button>
     </div></div>`;
   el.addEventListener('click',e=>{ if(e.target===el) groveShareClose(); });
   document.body.appendChild(el);
@@ -13671,6 +13724,7 @@ async function groveShare(variant){
   document.getElementById('gs-title').textContent = variant==='mecha' ? 'You found the mecha bull' : 'Share your grove';
   document.getElementById('gs-sub').textContent = variant==='mecha' ? 'About 1 in 1,000 crypto bull markets. Worth bragging about.' : 'Levels, streak and badges only. No dollar amounts.';
   document.getElementById('gs-cap').textContent = groveShareCaption(variant);
+  chalButton(false);
   document.getElementById('gs-loading').textContent='Drawing your grove…'; img.alt='Your money grove share image';
   img.removeAttribute('src'); document.getElementById('gs-loading').hidden=false;
   ov.classList.add('open');
@@ -13686,12 +13740,12 @@ async function groveShare(variant){
 function groveShareClose(){ document.getElementById('gs-overlay')?.classList.remove('open'); }
 async function groveShareNative(){
   if(!_grove.shareBlob) return;
-  const file=new File([_grove.shareBlob],_grove.shareVariant==='pit'?'my-debt-climb.png':'my-money-grove.png',{type:'image/png'});
+  const file=new File([_grove.shareBlob],shareFileName(),{type:'image/png'});
   try{ await navigator.share({files:[file], text:groveShareCaption(_grove.shareVariant)}); }catch(e){ /* closed the share sheet */ }
 }
 function groveShareDownload(){
   if(!_grove.shareUrl) return;
-  const a=document.createElement('a'); a.href=_grove.shareUrl; a.download=_grove.shareVariant==='mecha'?'mecha-bull.png':_grove.shareVariant==='pit'?'my-debt-climb.png':'my-money-grove.png';
+  const a=document.createElement('a'); a.href=_grove.shareUrl; a.download=shareFileName();
   document.body.appendChild(a); a.click(); a.remove();
 }
 async function groveShareCopy(){
@@ -16110,6 +16164,7 @@ function dbStartHtml(name){
 function renderDashboardPlus(){
   const hero=document.getElementById('db-hero'); if(!hero) return;
   const fresh=dbFresh(), pg=document.getElementById('page-dashboard'); if(pg) pg.classList.toggle('db-fresh',fresh);
+  try{ wrEntryRender(fresh); }catch(e){ console.warn('wrapped entry',e); }
   if(fresh){
     const nm=(typeof currentUser!=='undefined'&&currentUser&&currentUser.name)?String(currentUser.name).split(' ')[0]:'';
     const oc=document.getElementById('ob-checklist'); if(oc) oc.innerHTML='';
@@ -16310,12 +16365,12 @@ captureSignupSource();
     } else {
       // No session: show the landing page, auth opens when they click a CTA.
       // Ad links can open the demo straight away: ?demo=1 (dashboard) or ?demo=grove (the money grove)
-      let dq=null; try{ dq=new URLSearchParams(location.search).get('demo'); }catch(e){}
+      let dq=null; try{ dq=new URLSearchParams(location.search).get('demo'); if(!dq && new URLSearchParams(location.search).get('wrapped')==='1') dq='wrapped'; }catch(e){}
       if(dq){
-        try{ const u=new URL(location.href); u.searchParams.delete('demo'); history.replaceState(null,'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams:'')+u.hash); }catch(e){}
+        try{ const u=new URL(location.href); u.searchParams.delete('demo'); u.searchParams.delete('wrapped'); history.replaceState(null,'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams:'')+u.hash); }catch(e){}
         let tries=0; const open=()=>{ // the demo code loads in a later script, so wait for it
           if(typeof lpTryDemo!=='function' || typeof startDemo!=='function'){ if(++tries<60) return setTimeout(open,50); document.getElementById('landing-page').classList.remove('hidden'); return; }
-          lpTryDemo(); if(dq==='grove') setTimeout(()=>{ showPage('investments'); const g=document.getElementById('grove'); window.scrollTo({top: g ? Math.max(0, g.getBoundingClientRect().top+window.scrollY-72) : 0, behavior:'instant'}); },450); };
+          lpTryDemo(); if(dq==='wrapped') setTimeout(()=>{ try{ wrOpen('link'); }catch(e){} },700); if(dq==='grove') setTimeout(()=>{ showPage('investments'); const g=document.getElementById('grove'); window.scrollTo({top: g ? Math.max(0, g.getBoundingClientRect().top+window.scrollY-72) : 0, behavior:'instant'}); },450); };
         open();
       } else {
         document.getElementById('landing-page').classList.remove('hidden');
@@ -17368,6 +17423,190 @@ function lppStart(){
   if(still || !('IntersectionObserver' in window)) return;
   new IntersectionObserver(en=>{ en.forEach(e=>{ if(e.isIntersecting){ if(v.preload!=='auto'){ v.preload='auto'; } const p=v.play(); if(p&&p.catch) p.catch(()=>{}); } else v.pause(); }); },{threshold:0.35}).observe(v);
 })();
+
+// ══════════════════════════════════════════
+// MONEY WRAPPED: a year in review you tap through, and a share card with no dollar amounts
+// ══════════════════════════════════════════
+const _wr={i:0, slides:[], timer:null, data:null, from:''};
+function wrYear(){ const d=new Date(); return d.getMonth()>=10 ? d.getFullYear() : d.getFullYear()-1; }
+// Shown from November 15 to January 31
+function wrSeason(){ const d=new Date(), m=d.getMonth(); return (m===10 && d.getDate()>=15) || m===11 || m===0; }
+function wrData(){
+  const Y=String(wrYear()), debts=state.debts||[];
+  const orig=debts.reduce((s,d)=>s+Math.max(+d.origBalance||0,+d.balance||0),0), bal=debts.reduce((s,d)=>s+(+d.balance||0),0);
+  const pct=orig>0?Math.max(0,Math.min(100,Math.round((1-bal/orig)*100))):null;
+  const cleared=debts.filter(d=>(+d.origBalance||0)>0 && (+d.balance||0)<=0.01).length;
+  let payments=0; debts.forEach(d=>(d.transactions||[]).forEach(t=>{ if(t && t.type==='payment' && String(t.date||'').startsWith(Y)) payments++; }));
+  let freeM=null; try{ if(bal>0.01){ const P=pitSim(0); if(P && P.canFinish) freeM=P.months; } }catch(e){}
+  const streak=Math.max(+state.longestStreak||0, (typeof currentStreak==='function'?currentStreak():0)||0);
+  let level=null, badges=0, golds=0; const totalBadges=(typeof BG_ACH!=='undefined'?BG_ACH.length:0);
+  try{ const g=(typeof _bg!=='undefined'&&_bg.game)||state.bgame;
+    if(g){ level=bgLevel(g.xp||0); badges=Object.keys(g.ach||{}).length; golds=(g.trophies||[]).filter(t=>t.tier==='gold').length; }
+    if(bgIsDemo()){ const S=bgMonthStats(); level=bgLevel(2400); const a=bgAchCheck(S,level); badges=Object.keys(a).filter(k=>a[k]).length; golds=Math.max(golds,2); }
+  }catch(e){}
+  let trees=0, groveMonths=0; try{ const T=groveTotals(); trees=GROVE_PLOTS.filter(p=>T[p.id]&&T[p.id].has).length; if(state.grove && trees) groveMonths=groveStreak()||0; }catch(e){}
+  const jars=(state.budgets||[]).filter(b=>b.goal>0).length;
+  return {Y, pct, cleared, payments, freeM, hasDebt:orig>0, streak, level, badges, totalBadges, golds, trees, groveMonths, jars};
+}
+const WR_TYPES={
+  storm:{name:'The Storm Chaser', line:'You went straight at your debt, and the clouds are breaking.'},
+  steady:{name:'The Steady One', line:'You showed up day after day. That is the whole secret.'},
+  grove:{name:'The Grove Grower', line:'You planted early and kept watering. Future you says thanks.'},
+  jars:{name:'The Jar Keeper', line:'You gave your money a plan and kept your jars in line.'},
+  fresh:{name:'The Fresh Start', line:'You started. Most people never do. Next year is yours.'}
+};
+function wrType(D){
+  const sc={storm:(D.pct||0)/40+(D.payments>=3?0.3:0)+D.cleared*0.4, steady:D.streak/21, grove:D.trees/3+(D.groveMonths>=3?0.3:0), jars:D.badges/7+D.jars/12};
+  const best=Object.entries(sc).sort((a,b)=>b[1]-a[1])[0];
+  return best && best[1]>=0.35 ? best[0] : 'fresh';
+}
+function wrSlides(D){
+  const t=WR_TYPES[wrType(D)], S=[];
+  S.push({k:'intro', h:`<div class="wr-kicker">Your money, wrapped</div><div class="wr-big wr-year">${D.Y}</div><p class="wr-p">A look back at your year. Tap to go on.</p>`});
+  if(D.hasDebt){
+    const free=D.freeM!=null?`On track to be debt-free by <b>${obMonthOut(D.freeM)}</b>.`:(D.pct>=100?'Every debt is gone.':'');
+    S.push({k:'debt', h:`<div class="wr-kicker">The debt storm</div><div class="wr-big"><span data-count="${D.pct||0}">0</span>%</div><div class="wr-mid">of your debt paid off</div><p class="wr-p">${D.payments?`${D.payments} payment${D.payments===1?'':'s'} logged in ${D.Y}. `:''}${D.cleared?`${D.cleared} debt${D.cleared===1?'':'s'} cleared for good. `:''}${free}</p>`});
+  }
+  if(D.streak<2 && D.level){
+    S.push({k:'habit', h:`<div class="wr-kicker">Showing up</div><div class="wr-big"><span data-count="${D.badges}">0</span></div><div class="wr-mid">badge${D.badges===1?'':'s'} earned</div><p class="wr-p">Budget game level <b>${D.level}</b>. Log a few days in a row next year to start a streak.</p>`});
+  } else if(D.streak>=2){
+    S.push({k:'habit', h:`<div class="wr-kicker">Showing up</div><div class="wr-big"><span data-count="${D.streak}">0</span></div><div class="wr-mid">day best streak</div><p class="wr-p">${D.level?`Budget game level <b>${D.level}</b>. `:''}${D.totalBadges?`<b>${D.badges}</b> of ${D.totalBadges} badges earned.`:''}${D.golds?` ${D.golds} gold month${D.golds===1?'':'s'}.`:''}</p>`});
+  }
+  if(D.trees>0){
+    S.push({k:'grove', h:`<div class="wr-kicker">Your money grove</div><div class="wr-big"><span data-count="${D.trees}">0</span></div><div class="wr-mid">tree${D.trees===1?'':'s'} growing</div><p class="wr-p">${D.groveMonths>1?`${D.groveMonths} months in a row of adding money.`:'Every dollar you add makes it grow.'}</p>`});
+  }
+  S.push({k:'type', h:`<div class="wr-kicker">Your money type</div><div class="wr-type">${t.name}</div><p class="wr-p">${t.line}</p>`});
+  const cu=chalUrl();
+  S.push({k:'share', h:`<div class="wr-kicker">Share your year</div><div class="wr-mid">The card shows percents, streaks and levels. Never dollar amounts.</div>
+    <div class="wr-acts"><button type="button" class="wr-btn primary" onclick="event.stopPropagation();wrShare()">Share my ${D.Y}</button>
+    ${cu?`<button type="button" class="wr-btn" onclick="event.stopPropagation();chalCopy(this)">Challenge a friend to beat my date</button>`:''}
+    <button type="button" class="wr-btn ghost" onclick="event.stopPropagation();wrClose()">Back to my money</button></div>`});
+  return S;
+}
+function wrEnsure(){
+  if(document.getElementById('wr-ov')) return;
+  const el=document.createElement('div'); el.id='wr-ov'; el.className='wr-ov'; el.setAttribute('role','dialog'); el.setAttribute('aria-modal','true'); el.setAttribute('aria-label','Your year in money');
+  el.innerHTML=`<div class="wr-card" id="wr-card"><div class="wr-bars" id="wr-bars"></div>
+    <button type="button" class="wr-x" onclick="event.stopPropagation();wrClose()" aria-label="Close">×</button>
+    <div class="wr-body" id="wr-body" aria-live="polite"></div>
+    <div class="wr-nav"><button type="button" class="wr-prev" onclick="event.stopPropagation();wrGo(-1)" aria-label="Back"></button><button type="button" class="wr-next" onclick="event.stopPropagation();wrGo(1)" aria-label="Next"></button></div></div>`;
+  el.addEventListener('click',e=>{ if(e.target===el) wrClose(); });
+  document.addEventListener('keydown',e=>{ if(!el.classList.contains('open')) return; if(e.key==='Escape') wrClose(); if(e.key==='ArrowRight') wrGo(1); if(e.key==='ArrowLeft') wrGo(-1); });
+  document.body.appendChild(el);
+}
+function wrOpen(from){
+  wrEnsure(); _wr.data=wrData(); _wr.slides=wrSlides(_wr.data); _wr.i=0; _wr.from=from||'';
+  document.getElementById('wr-bars').innerHTML=_wr.slides.map(()=>'<i><b></b></i>').join('');
+  document.getElementById('wr-ov').classList.add('open'); document.body.classList.add('wr-lock');
+  try{ QA.log('wrapped_open',{from:_wr.from, demo:!!(currentUser&&currentUser.isDemo), type:wrType(_wr.data)}); }catch(e){}
+  wrShow();
+}
+function wrShow(){
+  const sl=_wr.slides[_wr.i], body=document.getElementById('wr-body'), card=document.getElementById('wr-card'); if(!sl) return;
+  card.dataset.k=sl.k; body.innerHTML=sl.h; body.classList.remove('in'); void body.offsetWidth; body.classList.add('in');
+  document.querySelectorAll('#wr-bars i').forEach((b,j)=>{ b.className=j<_wr.i?'done':j===_wr.i?'on':''; });
+  const still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+  body.querySelectorAll('[data-count]').forEach(el=>{ const to=+el.dataset.count||0; if(still||to<2){ el.textContent=to; return; } const t0=performance.now(), dur=900;
+    const step=n=>{ const f=Math.min(1,(n-t0)/dur), e=1-Math.pow(1-f,3); el.textContent=Math.round(to*e); if(f<1) requestAnimationFrame(step); }; requestAnimationFrame(step); });
+  clearTimeout(_wr.timer); if(!still && sl.k!=='share') _wr.timer=setTimeout(()=>wrGo(1),6500);
+  if(sl.k==='share'){ try{ QA.log('wrapped_end',{type:wrType(_wr.data)}); }catch(e){} }
+}
+function wrGo(d){ const n=_wr.i+d; if(n<0) return; if(n>=_wr.slides.length) return; _wr.i=n; wrShow(); }
+function wrClose(){ clearTimeout(_wr.timer); document.getElementById('wr-ov')?.classList.remove('open'); document.body.classList.remove('wr-lock'); }
+function wrCaption(){ const D=_wr.data||wrData(), t=WR_TYPES[wrType(D)], bits=[];
+  if(D.hasDebt && D.pct) bits.push(`${D.pct}% of my debt paid off`); if(D.streak>1) bits.push(`${/^(8|11|18)$|^8\d$/.test(String(D.streak))?'an':'a'} ${D.streak}-day streak`); if(D.trees) bits.push(`${D.trees} tree${D.trees===1?'':'s'} in my money grove`);
+  return `My ${D.Y} in money: I'm ${t.name}${bits.length?`. ${bits.join(', ')}`:''}. Get your Money Wrapped at qualisight.ca/wrapped`; }
+async function wrShareImage(){
+  try{ await document.fonts.ready; }catch(e){}
+  const D=_wr.data||wrData(), t=WR_TYPES[wrType(D)], W=1080, H=1350, pad=72;
+  const cv=document.createElement('canvas'); cv.width=W; cv.height=H; const x=cv.getContext('2d');
+  const disp="'Bricolage Grotesque', Geist, sans-serif", body="Geist, Inter, sans-serif";
+  const g=x.createLinearGradient(0,0,W,H); g.addColorStop(0,'#0b0f17'); g.addColorStop(1,'#0f2a1b'); x.fillStyle=g; x.fillRect(0,0,W,H);
+  [[W*0.85,170,330,'rgba(74,222,128,0.16)'],[110,H-260,280,'rgba(250,204,21,0.10)']].forEach(([cx,cy,r,c])=>{ const rg=x.createRadialGradient(cx,cy,0,cx,cy,r); rg.addColorStop(0,c); rg.addColorStop(1,'rgba(0,0,0,0)'); x.fillStyle=rg; x.fillRect(0,0,W,H); });
+  x.fillStyle='#4ade80'; dsRR(x,pad,pad,54,54,14); x.fill(); x.fillStyle='#06140b'; x.font=`800 34px ${disp}`; x.textAlign='center'; x.textBaseline='middle'; x.fillText('Q',pad+27,pad+29);
+  x.textAlign='left'; x.fillStyle='#e8edf8'; x.font=`700 30px ${disp}`; x.fillText('Qualisight',pad+72,pad+28); x.textBaseline='alphabetic';
+  x.fillStyle='#9aa4b8'; x.font=`600 38px ${body}`; x.fillText(`My ${D.Y} in money`,pad,250);
+  x.fillStyle='#4ade80'; let fs=104; x.font=`800 ${fs}px ${disp}`; while(x.measureText(t.name).width>W-pad*2 && fs>60){ fs-=4; x.font=`800 ${fs}px ${disp}`; } x.fillText(t.name,pad-4,360);
+  x.fillStyle='#c4ccdb'; x.font=`500 34px ${body}`; wrWrap(x,t.line,pad,420,W-pad*2,46);
+  const rows=[]; if(D.hasDebt) rows.push([`${D.pct||0}%`,'of my debt paid off']); if(D.streak>=2) rows.push([`${D.streak}`,`day best streak`]);
+  if(D.level) rows.push([`Lv ${D.level}`,`budget game, ${D.badges} badge${D.badges===1?'':'s'}`]); if(D.trees) rows.push([`${D.trees}`,`tree${D.trees===1?'':'s'} in my money grove`]);
+  if(D.freeM!=null && rows.length<4) rows.push(['Calm',`by ${obMonthOut(D.freeM)}`]);
+  let y=560; rows.slice(0,4).forEach(([a,b])=>{ x.fillStyle='rgba(255,255,255,0.05)'; dsRR(x,pad,y,W-pad*2,150,26); x.fill(); x.strokeStyle='rgba(255,255,255,0.09)'; x.lineWidth=2; x.stroke();
+    x.fillStyle='#ffffff'; x.font=`800 76px ${disp}`; x.fillText(a,pad+36,y+102); const aw=x.measureText(a).width; x.fillStyle='#aab4c6'; x.font=`500 34px ${body}`; x.fillText(b,pad+36+aw+28,y+96); y+=172; });
+  x.fillStyle='#ffffff'; x.font=`800 38px ${disp}`; x.fillText('Get yours at qualisight.ca/wrapped',pad,H-70);
+  return cv;
+}
+function wrWrap(x,txt,X,Y,maxW,lh){ const words=txt.split(' '); let line='', y=Y; words.forEach(w=>{ const t=line?line+' '+w:w; if(x.measureText(t).width>maxW && line){ x.fillText(line,X,y); line=w; y+=lh; } else line=t; }); if(line) x.fillText(line,X,y); }
+async function wrShare(){
+  groveShareEnsureModal(); clearTimeout(_wr.timer);
+  const ov=document.getElementById('gs-overlay'), img=document.getElementById('gs-img');
+  _grove.shareVariant='wrapped';
+  document.getElementById('gs-title').textContent=`Share your ${(_wr.data||wrData()).Y}`;
+  document.getElementById('gs-sub').textContent='Percents, streaks and levels only. No dollar amounts or debt names.';
+  document.getElementById('gs-cap').textContent=wrCaption(); chalButton(true);
+  document.getElementById('gs-loading').textContent='Wrapping your year…'; img.removeAttribute('src'); img.alt='Your year in money share image'; document.getElementById('gs-loading').hidden=false;
+  ov.classList.add('open');
+  const cv=await wrShareImage(); _grove.shareBlob=await new Promise(r=>cv.toBlob(r,'image/png'));
+  if(_grove.shareUrl) URL.revokeObjectURL(_grove.shareUrl); _grove.shareUrl=URL.createObjectURL(_grove.shareBlob); img.src=_grove.shareUrl;
+  document.getElementById('gs-loading').hidden=true;
+  const file=new File([_grove.shareBlob],shareFileName(),{type:'image/png'}); document.getElementById('gs-share').hidden=!(navigator.canShare&&navigator.canShare({files:[file]}));
+  try{ QA.log('wrapped_share',{type:wrType(_wr.data||wrData())}); }catch(e){}
+}
+function shareFileName(){ const v=_grove.shareVariant; return v==='mecha'?'mecha-bull.png':v==='pit'?'my-debt-storm.png':v==='wrapped'?`my-${wrYear()}-in-money.png`:'my-money-grove.png'; }
+function wrEntryRender(fresh){
+  const el=document.getElementById('wr-entry'); if(!el) return;
+  if(fresh || !wrSeason()){ el.innerHTML=''; return; }
+  const Y=wrYear();
+  el.innerHTML=`<button type="button" class="wr-entry" onclick="wrOpen('dashboard')"><span class="wr-entry-y">${Y}</span><span class="wr-entry-t"><b>Your ${Y} in money is ready</b><small>Tap through your year and find your money type. Share cards never show dollar amounts.</small></span><span class="wr-entry-go" aria-hidden="true">▶</span></button>`;
+  try{ if(!_wr.auto && new URLSearchParams(location.search).get('wrapped')==='1'){ _wr.auto=true; setTimeout(()=>wrOpen('link'),500); } }catch(e){}
+}
+
+// ══════════════════════════════════════════
+// BEAT MY DATE: a link that challenges a friend to beat your debt-free month
+// ══════════════════════════════════════════
+function chalUrl(){
+  try{ const bal=(state.debts||[]).reduce((s,d)=>s+(+d.balance||0),0); if(bal<=0.01) return null; const P=pitSim(0); if(!P||!P.canFinish||!(P.months>0)) return null;
+    const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()+P.months); return `https://qualisight.ca/?beat=${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`; }catch(e){ return null; }
+}
+function chalButton(on){ const b=document.getElementById('gs-chal'); if(b) b.hidden=!(on && chalUrl()); }
+async function chalCopy(btn, url, label){
+  url=url||chalUrl(); if(!url) return; const m=url.match(/beat=(\d{4})-(\d{2})/);
+  label=label||(m?new Date(+m[1],+m[2]-1,1).toLocaleDateString('en-CA',{month:'long',year:'numeric'}):'');
+  const txt=`I'll be debt-free by ${label}. Can you beat my date? Try yours free, no sign-up: ${url}`;
+  try{ QA.log('challenge_send',{from:_grove.shareVariant||'', back:!!btn&&btn.dataset.back==='1'}); }catch(e){}
+  try{ if(navigator.share && /Mobi|Android|iPhone/i.test(navigator.userAgent)){ await navigator.share({text:txt}); return; } }catch(e){ return; }
+  try{ await navigator.clipboard.writeText(txt); if(btn){ const o=btn.textContent; btn.textContent='Link copied'; setTimeout(()=>{ btn.textContent=o; },1800); } else showToast('Challenge link copied. Send it to a friend.'); }catch(e){ showToast('Copy this: '+escHtml(url)); }
+}
+// Landing: someone opened a friend's link
+function lpChallengeInit(){
+  let b=null; try{ b=new URLSearchParams(location.search).get('beat'); }catch(e){} if(!b || !/^\d{4}-\d{2}$/.test(b)) return;
+  const [y,m]=b.split('-').map(Number), now=new Date(), months=(y-now.getFullYear())*12+(m-1-now.getMonth());
+  if(!(m>=1&&m<=12) || months<1 || months>600) return;
+  const label=new Date(y,m-1,1).toLocaleDateString('en-CA',{month:'long',year:'numeric'});
+  window._qsBeat={months, label};
+  const h=document.getElementById('lp-h1'), sub=document.getElementById('lp-sub'), btn=document.getElementById('lp-hero-primary');
+  if(h) h.innerHTML=`Your friend will be debt-free by <span class="grad">${escHtml(label)}.</span> Can you beat it?`;
+  if(sub) sub.textContent='Type what you owe and see your own month in 10 seconds. Free, no sign-up, and nothing you type leaves your device.';
+  if(btn){ btn.textContent='See my date'; btn.dataset.base='See my date'; btn.onclick=e=>{ e.preventDefault(); try{ QA.log('hero_primary_tap',{v:'beat', act:'mine'}); }catch(_){} const w=document.getElementById('lp-mine-wrap'); try{ w.scrollIntoView({behavior:'smooth',block:'center'}); }catch(_){} setTimeout(()=>{ try{ document.getElementById('lpm-owe').focus({preventScroll:true}); }catch(_){} },550); }; }
+  const lead=document.querySelector('.lp-mine-lead'); if(lead) lead.textContent=`Beat ${label}. Type what you owe.`;
+  try{ QA.log('challenge_land',{months}); }catch(e){}
+}
+function lpChalLine(out, months, debts, capped){
+  const B=window._qsBeat; if(!B) return;
+  if(!_lpm.chal){ _lpm.chal=true; try{ QA.log('challenge_play',{}); }catch(e){} }
+  let h;
+  if(capped) h=`<div class="lpm-chal">Your friend is ahead for now. Try a bigger monthly payment and watch your date move.</div>`;
+  else if(months<=B.months){ const diff=B.months-months;
+    if(!_lpm.won){ _lpm.won=true; try{ QA.log('challenge_win',{by:diff}); }catch(e){} }
+    const d=new Date(); d.setDate(1); d.setMonth(d.getMonth()+months); const url=`https://qualisight.ca/?beat=${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}`;
+    h=`<div class="lpm-chal win"><b>${diff?`You beat your friend by ${diff} month${diff===1?'':'s'}!`:'A tie with your friend!'}</b> <button type="button" data-back="1" onclick="chalCopy(this,'${url}','${obMonthOut(months)}')">Challenge them back</button></div>`; }
+  else { let need=null; for(let x=10;x<=3000;x+=10){ if(lpPath(x,debts).length-1<=B.months){ need=x; break; } }
+    const gap=months-B.months, gapT=gap>=24?`about ${Math.round(gap/12)} years`:`${gap} month${gap===1?'':'s'}`;
+    h=`<div class="lpm-chal">Your friend is ${gapT} ahead. ${need?`Add <b>${obMoney(need)} a month</b> and you beat them.`:'A bigger payment is the only way to catch them.'}</div>`; }
+  out.insertAdjacentHTML('beforeend',h);
+}
+if(document.readyState==='loading') document.addEventListener('DOMContentLoaded',()=>setTimeout(lpChallengeInit,30)); else setTimeout(lpChallengeInit,30);
+
 // Hero buttons. The main button says what it does: 'Try it free' opens the demo; any 'Save' label
 // (set by a plan from a tool page or a number the visitor typed) opens sign-up instead.
 function heroSaveMode(b){ return !!b && /^save/i.test((b.textContent||'').trim()); }
@@ -17420,6 +17659,7 @@ function lpMineUpdate(){
   out.innerHTML = capped ? `<strong>More than 20 years</strong>At ${obMoney(pay)} a month this takes a very long time. Try a bigger payment and watch the date move.`
     : `<strong class="lpm-date">Debt-free by <b>${obMonthOut(months)}</b></strong>${months-m50>0?`Add $50 a month and it becomes <b>${obMonthOut(m50)}</b>, ${months-m50} month${months-m50===1?'':'s'} sooner.`:'You are on a fast plan already.'}<small>Estimate at about ${T[2]}% interest${payIn>0?'':`, paying ${obMoney(pay)} a month`}. Change it any time.</small>`;
   try{ localStorage.setItem('qs_calc_plan', JSON.stringify({debts:[{n:T[1], b:owe, r:T[2], m:pay}], extra:0, method:'snow', at:Date.now(), src:'hero'})); }catch(e){}
+  try{ if(window._qsBeat) lpChalLine(out, months, debts, capped); }catch(e){ console.warn('challenge',e); }
   if(!capped){ out.insertAdjacentHTML('beforeend',`<button type="button" class="lpm-save" onclick="lpMineSave()">Save my ${obMonthOut(months)} plan free</button><span class="lpm-safe">No card. No bank login.</span>`);
     _lpm.when=obMonthOut(months); document.querySelector('.lp-hero')?.classList.add('mine-on'); if(!out.classList.contains('has')){ out.classList.add('has'); out.classList.remove('pop'); void out.offsetWidth; out.classList.add('pop'); } }
   else document.querySelector('.lp-hero')?.classList.remove('mine-on');
