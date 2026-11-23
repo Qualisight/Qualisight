@@ -4024,6 +4024,14 @@ button:focus:not(:focus-visible){outline:none}
 @media(max-width:520px){.hg-grid{grid-template-columns:1fr 1fr}.hg-hero>b{font-size:2.1rem}}
 
 /* This week */
+.mc-card{margin:0 0 1rem;padding:1rem 1.05rem;border-radius:18px;background:linear-gradient(160deg,rgba(96,165,250,0.12),rgba(96,165,250,0.02) 60%),var(--card,#141821);border:1px solid rgba(96,165,250,0.35)}
+.mc-card .mc-k{font-size:0.72rem;letter-spacing:0.02em;color:#93c5fd;font-weight:700}.mc-card .mc-q{font-family:var(--font-display,inherit);font-weight:800;font-size:1.15rem;margin:0.2rem 0 0.3rem}.mc-card .mc-p{color:var(--muted);font-size:0.9rem;margin:0 0 0.8rem;line-height:1.45}
+.mc-acts{display:flex;gap:0.5rem;flex-wrap:wrap}.mc-acts button{min-height:44px;padding:0 1rem;border-radius:12px;font:inherit;font-weight:700;cursor:pointer}.mc-go{border:0;background:var(--green);color:#06140b}.mc-x{background:transparent;border:1px solid var(--border);color:var(--text)}
+.mc-body{padding:0.4rem 1.2rem 1rem;overflow:auto}.mc-row{display:grid;grid-template-columns:1fr 150px;gap:0.3rem 0.8rem;align-items:center;padding:0.7rem 0;border-bottom:1px solid var(--border)}
+.mc-row label{font-weight:600}.mc-row small{grid-column:1/-1;color:var(--muted);font-size:0.8rem}.mc-in{display:flex;align-items:center;gap:0.3rem;border:1px solid var(--border);border-radius:10px;padding:0 0.6rem;background:var(--bg,#0b0d12)}
+.mc-in input{width:100%;min-height:44px;border:0;background:transparent;color:inherit;font:inherit;font-size:1rem;text-align:right}.mc-in input:focus{outline:none}.mc-in:focus-within{border-color:var(--green)}
+.mc-res{text-align:center;padding:1.2rem 0 0.4rem}.mc-res span{color:var(--muted);font-size:0.9rem}.mc-res b{display:block;font-family:var(--font-display,inherit);font-size:2rem;color:var(--green);margin:0.2rem 0}.mc-res p{margin:0.3rem 0;line-height:1.45}
+.mc-opt{margin:1rem 0 0.3rem;padding:0.9rem;border-radius:14px;border:1px solid rgba(96,165,250,0.35);background:rgba(96,165,250,0.06)}.mc-opt p{margin:0 0 0.7rem;color:var(--muted);font-size:0.88rem;line-height:1.45}.mc-err{color:#fbbf24;font-size:0.88rem;min-height:1.2em;margin-top:0.5rem}
 .sw-card{margin:0 0 1rem;padding:1rem 1.05rem;border-radius:18px;background:linear-gradient(160deg,rgba(74,222,128,0.10),rgba(74,222,128,0.02) 55%),var(--card,#141821);border:1px solid rgba(74,222,128,0.28)}
 .sw-card.over{background:linear-gradient(160deg,rgba(248,113,113,0.10),transparent 55%),var(--card,#141821);border-color:rgba(248,113,113,0.35)}
 .sw-k{font-size:0.8rem;color:var(--muted);font-weight:600}
@@ -5300,6 +5308,9 @@ window.QS_HERO_SPLIT=null;
       <button onclick="settingsCancelSub()" style="display:flex;align-items:center;gap:0.6rem;width:100%;background:transparent;border:none;color:var(--text);font-family:var(--font-body);font-size:0.82rem;padding:0.7rem 1rem;cursor:pointer;text-align:left;transition:background 0.12s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
          Cancel Subscription
       </button>
+      <button onclick="toggleSettingsMenu();mcSettings()" style="display:flex;align-items:center;gap:0.6rem;width:100%;background:transparent;border:none;color:var(--text);font-family:var(--font-body);font-size:0.82rem;padding:0.7rem 1rem;cursor:pointer;text-align:left">
+         Monthly email check-in
+      </button>
       <button onclick="settingsExportData('json')" style="display:flex;align-items:center;gap:0.6rem;width:100%;background:transparent;border:none;color:var(--text);font-family:var(--font-body);font-size:0.82rem;padding:0.7rem 1rem;cursor:pointer;text-align:left;transition:background 0.12s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
          Download my data
       </button>
@@ -5397,6 +5408,7 @@ window.QS_HERO_SPLIT=null;
 <div id="page-dashboard" class="page active">
   <!-- Net worth + Money Score -->
   <div id="ob-checklist"></div>
+  <div id="mc-card"></div>
   <div id="sw-card"></div>
   <div class="db-hero" id="db-hero"></div>
   <div id="dq-card"></div>
@@ -6271,7 +6283,7 @@ function save(){
         data:       state,
         updated_at: new Date().toISOString()
       }, { onConflict: 'user_id' });
-    if(error) console.error('save error', error);
+    if(error) console.error('save error', error); else { try{ mcPush(); }catch(e){} }
   })();
 }
 
@@ -16306,6 +16318,7 @@ function renderDashboardPlus(){
   const hero=document.getElementById('db-hero'); if(!hero) return;
   const fresh=dbFresh(), pg=document.getElementById('page-dashboard'); if(pg) pg.classList.toggle('db-fresh',fresh);
   try{ wrEntryRender(fresh); }catch(e){ console.warn('wrapped entry',e); }
+  try{ mcRender(fresh); }catch(e){ console.warn('check-in',e); }
   try{ swRender(fresh); }catch(e){ console.warn('this week',e); }
   try{ dqRender(fresh); }catch(e){ console.warn('daily quest',e); }
   if(fresh){
@@ -17844,6 +17857,152 @@ function swRender(fresh){
     <div class="sw-sub"><span>Spent this week <b>${fmtW(W.wkSpent)}</b></span><button type="button" class="sw-link" onclick="showPage('monthly')">Budget</button></div>
     ${bars}<div class="sw-acts">${bring}<button type="button" class="sw-log" onclick="dqGo('log')">Log one</button></div></div>`;
 }
+// ══════════════════════════════════════════
+// MONTHLY CHECK-IN: once a month, update balances in one screen and see the date move.
+// People can opt in to one email on the 1st. The email only ever holds their debt-free month, never dollar amounts.
+// ══════════════════════════════════════════
+const MC_CONSENT='Email me a short check-in on the 1st of each month with my debt-free date and a link to update it. I can stop any time.';
+function mcMonth(d){ d=d||new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0'); }
+function mcS(){ if(!state.mc||typeof state.mc!=='object') state.mc={}; return state.mc; }
+function mcReal(){ return typeof currentUser!=='undefined' && currentUser && !currentUser.isDemo && currentUser.id; }
+function mcLiveDebts(){ return (state.debts||[]).map((d,i)=>({d,i})).filter(x=>(x.d.balance||0)>0.01); }
+function mcHasPlan(){ return mcLiveDebts().length>0 || !!(state.homeFund&&state.homeFund.price>0); }
+function mcAbs(m){ if(!isFinite(m)) return null; const d=new Date(); d.setMonth(d.getMonth()+m); return d.getFullYear()*12+d.getMonth(); }
+function mcDebt(){ if(!mcLiveDebts().length) return null; try{ const P=pitSim(0); return P.canFinish?{m:P.months,t:monthsToDateLabel(P.months),a:mcAbs(P.months)}:{m:Infinity,t:null,a:null}; }catch(e){ return null; } }
+function mcHome(){ const h=state.homeFund; if(!h||!(h.price>0)) return null; const gap=minDownPayment(h.price)-(h.saved||0);
+  if(gap<=0) return {m:0,t:'reached',a:mcAbs(0)}; if(!(h.monthly>0)) return null; const m=Math.ceil(gap/h.monthly); return {m,t:monthsToDateLabel(m),a:mcAbs(m)}; }
+function mcDue(){ const S=mcS(), now=mcMonth(); return mcHasPlan() && S.since && S.since<now && S.last!==now && S.later!==now; }
+function mcRender(fresh){
+  const el=document.getElementById('mc-card'); if(!el) return;
+  if(fresh===true || (typeof currentUser!=='undefined' && currentUser && currentUser.isDemo)){ el.innerHTML=''; return; }
+  const S=mcS(), now=mcMonth();
+  if(mcHasPlan() && !S.since) S.since=now;
+  mcParam(); mcRefresh();
+  if(mcDue()){
+    const mn=new Date().toLocaleDateString('en-CA',{month:'long'});
+    el.innerHTML=`<div class="mc-card"><div class="mc-k">New month check-in</div><div class="mc-q">30 seconds: update your balances</div>
+      <p class="mc-p">See where your debt-free date lands for ${mn}. No typing every purchase, just what you owe now.</p>
+      <div class="mc-acts"><button type="button" class="mc-go" onclick="mcOpen('card')">Start my check-in</button><button type="button" class="mc-x" onclick="mcLater()">Not now</button></div></div>`; return;
+  }
+  const hasData=mcHasPlan() || (state.expenses||[]).length>0;
+  if(mcReal() && hasData && !S.email && !S.noRemind){
+    el.innerHTML=`<div class="mc-card"><div class="mc-k">Stay on track</div><div class="mc-q">Want a reminder on the 1st?</div>
+      <p class="mc-p">One short email a month with your debt-free date and a link to update it. No dollar amounts in the email. Stop any time.</p>
+      <div class="mc-acts"><button type="button" class="mc-go" onclick="mcEmail(true,'card')">Yes, email me</button><button type="button" class="mc-x" onclick="mcNoRemind()">No thanks</button></div>
+      <div class="mc-err" id="mc-card-err" aria-live="polite"></div></div>`; return;
+  }
+  el.innerHTML='';
+}
+function mcLater(){ mcS().later=mcMonth(); try{ QA.log('mc_later',{}); }catch(e){} try{ save(); }catch(e){} mcRender(); }
+function mcNoRemind(){ mcS().noRemind=true; try{ QA.log('mc_email',{on:false,from:'card'}); }catch(e){} try{ save(); }catch(e){} mcRender(); }
+let _mcParamDone=false;
+function mcParam(){ if(_mcParamDone) return; _mcParamDone=true;
+  try{ const q=new URLSearchParams(location.search); if(q.get('checkin')!=='1') return; q.delete('checkin'); history.replaceState(null,'',location.pathname+(q.toString()?'?'+q:'')+location.hash);
+    if(mcHasPlan()) setTimeout(()=>mcOpen('email'),300); }catch(e){} }
+let _mc=null;
+function mcOpen(from){
+  try{ QA.log('mc_open',{from:from||''}); }catch(e){}
+  document.getElementById('mc-ov')?.remove();
+  const ds=mcLiveDebts(), h=state.homeFund&&state.homeFund.price>0?state.homeFund:null;
+  _mc={before:mcDebt(), beforeHome:mcHome(), from:from||''};
+  const n2=v=>(Math.round((+v||0)*100)/100);
+  const rows=ds.map(({d,i})=>`<div class="mc-row"><label for="mc-d${i}">${escHtml(d.name||'Debt')}</label><div class="mc-in"><span aria-hidden="true">$</span><input id="mc-d${i}" type="number" inputmode="decimal" min="0" step="0.01" value="${n2(d.balance)}"></div><small>Owed now. Check your app or statement. Type 0 if it is paid off.</small></div>`).join('')
+    + (h?`<div class="mc-row"><label for="mc-home">Saved for your home</label><div class="mc-in"><span aria-hidden="true">$</span><input id="mc-home" type="number" inputmode="decimal" min="0" step="1" value="${n2(h.saved)}"></div><small>Everything set aside for the down payment, FHSA included.</small></div>`:'');
+  const ov=document.createElement('div'); ov.id='mc-ov'; ov.className='imp-ov';
+  ov.innerHTML=`<div class="imp-box" role="dialog" aria-modal="true" aria-labelledby="mc-t">
+    <div class="imp-head"><h3 id="mc-t">Your monthly check-in</h3><p>Change any number that moved since last time. Leave the rest.</p></div>
+    <div class="mc-body" id="mc-body">${rows}<div class="mc-err" id="mc-err" aria-live="polite"></div></div>
+    <div class="imp-foot" id="mc-foot"><button type="button" class="x" onclick="mcClose()">Cancel</button><button type="button" class="go" onclick="mcSave()">Save and see my date</button></div></div>`;
+  ov.addEventListener('click',e=>{ if(e.target===ov) mcClose(); });
+  document.body.appendChild(ov);
+  setTimeout(()=>{ const f=ov.querySelector('input'); if(f) f.focus(); },50);
+}
+function mcClose(){ document.getElementById('mc-ov')?.remove(); _mc=null; }
+function mcSave(){
+  if(!_mc) return;
+  const err=document.getElementById('mc-err'), today=new Date().toISOString().slice(0,10), vals=[];
+  for(const {d,i} of mcLiveDebts()){
+    const inp=document.getElementById('mc-d'+i); if(!inp) continue;
+    const raw=String(inp.value).replace(/[, $]/g,''), v=raw===''?NaN:parseFloat(raw);
+    if(!isFinite(v)||v<0||v>10000000){ if(err) err.textContent=`Check the number for ${d.name||'that debt'}. Use 0 if it is paid off.`; inp.focus(); return; }
+    vals.push({d,v:Math.round(v*100)/100});
+  }
+  let hv=null; const hi=document.getElementById('mc-home');
+  if(hi){ const v=parseFloat(String(hi.value).replace(/[, $]/g,'')); if(!isFinite(v)||v<0||v>10000000){ if(err) err.textContent='Check the home savings number.'; hi.focus(); return; } hv=Math.round(v*100)/100; }
+  let changed=0, cleared=0;
+  vals.forEach(({d,v})=>{ const old=Math.round((d.balance||0)*100)/100, delta=Math.round((old-v)*100)/100; if(Math.abs(delta)<0.005) return; changed++;
+    d.balance=v; if(v<=0.01){ d.balance=0; cleared++; }
+    if(!d.transactions) d.transactions=[];
+    d.transactions.unshift({type:delta>0?'payment':'charge', amount:Math.abs(delta), date:today, note:'Monthly check-in', balance:d.balance});
+    if(d.transactions.length>20) d.transactions=d.transactions.slice(0,20); });
+  if(hv!==null && state.homeFund && Math.abs(hv-(state.homeFund.saved||0))>=0.005){ state.homeFund.saved=hv; changed++; }
+  const S=mcS(), after=mcDebt(), afterHome=mcHome(), b=_mc.before;
+  let sooner=0; if(b&&b.a!=null&&after&&after.a!=null) sooner=b.a-after.a;
+  const hadDebt=!!b, nowClear=hadDebt&&!after;
+  S.last=mcMonth(); S.sooner=nowClear?0:sooner; S.cleared=nowClear; if(!S.since) S.since=S.last;
+  S.hist=(S.hist||[]).filter(x=>x.m!==S.last).concat([{m:S.last, a:after?after.a:null}]).slice(-24);
+  try{ recordActivity(); }catch(e){}
+  try{ QA.log('mc_done',{from:_mc.from, changed, sooner, cleared:nowClear}); }catch(e){}
+  try{ save(); }catch(e){}
+  try{ renderAll(); }catch(e){}
+  let big, line;
+  if(nowClear){ big='Debt-free'; line='Every debt is at $0. That is a huge milestone.'; }
+  else if(after&&after.t){ big=after.t; line=sooner>0?`${sooner} month${sooner===1?'':'s'} sooner than before. Keep it going.`:sooner<0?`${-sooner} month${sooner===-1?'':'s'} later than before. One extra payment can pull it back.`:'Same date as before. Steady is good.'; }
+  else if(after){ big='Not yet'; line='At the minimum payments the balance is not going down. Raise a payment on the Debt page to get a date.'; }
+  else { big=afterHome&&afterHome.t?afterHome.t:'Saved'; line=afterHome&&afterHome.t?'is when you could have the minimum down payment.':'Your numbers are up to date.'; }
+  const homeLine=after&&afterHome&&afterHome.t?`<p>Down payment: <b>${escHtml(afterHome.t==='reached'?'you have it':afterHome.t)}</b></p>`:'';
+  const opt=mcReal()&&!S.email?`<div class="mc-opt"><p>Want this reminder on the 1st of each month? One short email with your date and a link back. No dollar amounts. Stop any time.</p>
+    <div class="mc-acts"><button type="button" class="mc-go" onclick="mcEmail(true,'checkin')">Yes, email me</button></div><div class="mc-err" id="mc-opt-err" aria-live="polite"></div></div>`:'';
+  const body=document.getElementById('mc-body'), foot=document.getElementById('mc-foot');
+  if(body) body.innerHTML=`<div class="mc-res"><span>${nowClear?'You are':(after?'Debt-free by':'Down payment by')}</span><b>${escHtml(big)}</b><p>${escHtml(line)}</p>${homeLine}</div>${opt}`;
+  if(foot) foot.innerHTML=`<button type="button" class="go" onclick="mcClose()">Done</button>`;
+  _mc=null;
+}
+function mcSummary(){
+  const d=mcDebt(), h=mcHome(), S=mcS();
+  return {first:String((currentUser&&currentUser.name)||'').split(' ')[0].slice(0,30), date:d&&d.t?d.t:null, sooner:S.sooner||0, cleared:!!S.cleared&&!d, homeDate:h&&h.t&&h.t!=='reached'?h.t:null};
+}
+let _mcPushAt=0;
+function mcPush(force){
+  if(!mcReal() || !mcS().email || typeof sb==='undefined') return;
+  if(!force && Date.now()-_mcPushAt<600000) return; _mcPushAt=Date.now();
+  sb.from('checkin_subs').update({summary:mcSummary(), summary_at:new Date().toISOString()}).eq('user_id',currentUser.id).then(()=>{},()=>{});
+}
+async function mcEmail(on, from){
+  const errId=from==='card'?'mc-card-err':from==='checkin'?'mc-opt-err':'mc-set-err', err=document.getElementById(errId);
+  if(!mcReal()){ showToast('Create a free account to get the monthly email.'); return; }
+  try{
+    const row=on?{user_id:currentUser.id, opted_in_at:new Date().toISOString(), consent_text:MC_CONSENT, unsubscribed_at:null, summary:mcSummary(), summary_at:new Date().toISOString()}
+              :{user_id:currentUser.id, unsubscribed_at:new Date().toISOString()};
+    const {error}=await sb.from('checkin_subs').upsert(row,{onConflict:'user_id'});
+    if(error) throw error;
+  }catch(e){ console.warn('check-in email',e); if(err) err.textContent='That did not save. Check your connection and try again.'; return; }
+  const S=mcS(); S.email=!!on; if(on) S.noRemind=false;
+  try{ QA.log('mc_email',{on:!!on, from:from||''}); }catch(e){}
+  try{ save(); }catch(e){}
+  if(from==='checkin'){ const o=document.querySelector('#mc-body .mc-opt'); if(o) o.innerHTML='<p style="margin:0">Done. Look for it on the 1st. You can stop it any time in Settings.</p>'; }
+  else if(from==='settings'){ mcSettings(); }
+  else showToast(on?'Done. Look for your check-in on the 1st.':'Monthly emails are off.');
+  mcRender();
+}
+let _mcRefreshed=false;
+function mcRefresh(){ if(_mcRefreshed || !mcReal() || typeof sb==='undefined') return; _mcRefreshed=true;
+  sb.from('checkin_subs').select('opted_in_at,unsubscribed_at').eq('user_id',currentUser.id).maybeSingle().then(({data})=>{
+    const on=!!(data&&data.opted_in_at&&!data.unsubscribed_at), S=mcS();
+    if(S.email!==on){ S.email=on; try{ save(); }catch(e){} mcRender(); }
+  },()=>{}); }
+function mcSettings(){
+  if(!mcReal()){ showToast('Create a free account to get the monthly email.'); return; }
+  document.getElementById('mc-ov')?.remove();
+  const on=!!mcS().email, ov=document.createElement('div'); ov.id='mc-ov'; ov.className='imp-ov';
+  ov.innerHTML=`<div class="imp-box" role="dialog" aria-modal="true" aria-labelledby="mc-st"><div class="imp-head"><h3 id="mc-st">Monthly email check-in</h3>
+    <p>${on?'On. On the 1st of each month you get one short email with your debt-free date and a link to update it. It never includes dollar amounts.':'Off. Turn it on to get one short email on the 1st of each month with your debt-free date and a link to update it. It never includes dollar amounts.'}</p></div>
+    <div class="mc-body"><div class="mc-err" id="mc-set-err" aria-live="polite"></div></div>
+    <div class="imp-foot"><button type="button" class="x" onclick="mcClose()">Close</button><button type="button" class="go" onclick="mcEmail(${!on},'settings')">${on?'Turn it off':'Turn it on'}</button></div></div>`;
+  ov.addEventListener('click',e=>{ if(e.target===ov) mcClose(); });
+  document.body.appendChild(ov);
+}
+
 function swSetup(){
   const v=parseFloat(String((document.getElementById('sw-pay')||{}).value||'').replace(/[, $]/g,''))||0, err=document.getElementById('sw-err');
   if(!(v>0) || v>1000000){ if(err) err.textContent='Type roughly what you take home each month, for example 3,200.'; return; }
