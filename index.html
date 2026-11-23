@@ -3963,6 +3963,53 @@ button:focus:not(:focus-visible){outline:none}
 .av-ohlc b{color:var(--text);font-weight:600}
 @media(max-width:420px){.avc-tip{font-size:0.7rem}}
 
+/* Landing v4 hero: promise, the storm playing, one button, a scroll hint. Fits a 375 x 667 phone. */
+#landing-page .lp-hero--v4 .lp-play{order:0;margin:0.1rem 0 1rem}
+#landing-page .lp-hero--v4 #lpp-range,#landing-page .lp-hero--v4 .lpp-row{display:none}
+#landing-page .lp-hero--v4 .lp-play-top{padding:0.55rem 0.9rem;font-size:0.84rem}
+#landing-page .lp-hero--v4 .lp-play-stage{height:150px}
+#landing-page .lp-hero--v4 .lp-play-ctl{padding:0.6rem 0.9rem 0.8rem}
+#landing-page .lp-hero--v4 .lpp-read{display:grid;grid-template-columns:1.5fr 1fr 1fr;gap:0.5rem;align-items:end;margin:0 0 0.6rem}
+#landing-page .lp-hero--v4 .lpp-read .lpp-date b{font-size:1.35rem;color:#4ade80;line-height:1.1}
+#landing-page .lp-hero--v4 .lpp-read b{font-size:0.95rem}
+#landing-page .lp-hero--v4 .lpp-chips{display:block}
+#landing-page .lp-hero--v4 .lpp-chips .lpp-one{width:100%;min-height:44px;font-size:0.92rem;border-color:rgba(74,222,128,0.55);color:#4ade80;background:rgba(74,222,128,0.08)}
+#landing-page .lp-hero--v4 .lpp-chips .lpp-one.on{background:#4ade80;color:#0b0d12}
+#landing-page .lp-hero--v4 .lp-hero-actions{margin-bottom:0.6rem}
+#landing-page .lp-hero--v4 .lp-hero-note{margin:0 0 0.4rem}
+#landing-page .lp-scroll-hint{display:inline-flex;align-items:center;gap:0.35rem;background:none;border:0;color:#9aa6bd;font:inherit;font-size:0.9rem;min-height:44px;padding:0;cursor:pointer;margin:0.2rem 0 1.4rem}
+#landing-page .lp-scroll-hint svg{animation:lpNudge 1.8s ease-in-out infinite}
+#landing-page .lp-scroll-hint:hover{color:#4ade80}
+@keyframes lpNudge{0%,100%{transform:translateY(0)}50%{transform:translateY(4px)}}
+@media(prefers-reduced-motion:reduce){#landing-page .lp-scroll-hint svg{animation:none}}
+#landing-page .lp-mine-wrap{width:100%;max-width:520px;scroll-margin-top:80px}
+#landing-page .lp-mine-lead{margin:0 0 0.5rem;color:var(--ink);font-weight:600;font-size:0.98rem;text-align:left}
+#landing-page .lp-hero--v4 .lp-alt{margin:0.2rem 0 0}
+#landing-page .lp-hero--v4.mine-on .lp-alt{display:none}
+#landing-page .lp-hero.lp-hero--v4.mine-on .lp-hero-actions .lp-btn-primary{display:inline-flex}
+#landing-page .lp-hero--grove .lp-mine-wrap{display:none}
+#landing-page .lp-hero.lp-hero--v4.lp-hero--grove .lp-hero-note{display:block}
+@media(max-width:999px){
+  #landing-page .lp-hero.lp-hero--v4{padding-top:1rem}
+  #landing-page .lp-hero--v4 .lp-badge{display:none}
+  #landing-page .lp-hero.lp-hero--v4 h1{font-size:clamp(2.1rem,9.6vw,3.2rem);margin-bottom:0.5rem}
+  #landing-page .lp-hero--v4 .lp-hero-sub{font-size:0.95rem;line-height:1.42;margin-bottom:0.8rem}
+  #landing-page .lp-hero.lp-hero--v4 .lp-play{order:0;margin:0 0 0.8rem}
+  #landing-page .lp-hero--v4 .lp-play-top{padding:0.4rem 0.85rem}
+  #landing-page .lp-hero--v4 .lp-play-stage{height:118px}
+  #landing-page .lp-hero--v4 .lp-play-ctl{padding:0.5rem 0.85rem 0.7rem}
+  #landing-page .lp-hero--v4 .lpp-read{margin-bottom:0.45rem}
+  #landing-page .lp-hero--v4 .lp-hero-note{display:none}
+  #landing-page .lp-scroll-hint{margin:0.1rem 0 1rem}
+  #landing-page .lp-hero--v4 .lp-hero-actions{gap:0.15rem}
+  #landing-page .lp-hero--v4 .lp-hero-actions .lp-btn-secondary{min-height:40px}
+}
+@media(min-width:1000px){
+  #landing-page .lp-hero.lp-hero--v4 .lp-play{grid-column:2;grid-row:1 / span 7;margin:0;align-self:center}
+  #landing-page .lp-hero--v4 .lp-play-stage{height:280px}
+  #landing-page .lp-hero--v4 .lp-mine-wrap{grid-column:1 / span 2;max-width:640px;margin-top:2.2rem}
+}
+
 /* Landing v3: one clear path. Number box, their storm, one button. */
 @media(max-width:999px){
   #landing-page .lp-hero:not(.lp-hero--grove) .lp-play{order:0;margin:0.2rem 0 1.2rem}
@@ -4460,10 +4507,53 @@ button:focus:not(:focus-visible){outline:none}
     <div class="lp-hero-glow"></div>
     <div class="lp-hero-grid"></div>
     <span class="lp-badge"><span class="lp-badge-dot"></span>Free budget and debt app for Canadians</span>
+    <!-- HERO: the headline, subheadline and button text come from QS_HERO below, so versions can be swapped or A/B tested -->
     <h1 id="lp-h1">See the month you'll be <span class="grad"><span class="nw">debt-free.</span></span></h1>
-    <p class="lp-hero-sub" id="lp-sub">Type what you owe. Watch your storm clear and see the exact month you are free. Takes 10 seconds.</p>
+    <p class="lp-hero-sub" id="lp-sub">Free for Canadians. See your date, then watch it move when you pay a little more. No bank login.</p>
 
-    <!-- Their own number, before any sign-up -->
+    <!-- Live demo: the real debt storm plays on its own in the first screen -->
+    <div class="lp-play" id="lp-play">
+      <div class="lp-play-top"><b id="lpp-title">Sample plan: $25,500 owed</b><span class="lp-play-live"><i></i>Live</span></div>
+      <div class="lp-play-stage"><canvas id="lpp-cv" aria-label="Animated debt storm clearing as the sample debts are paid off"></canvas></div>
+      <div class="lp-play-ctl">
+        <div class="lpp-row"><span id="lpp-lbl">Fast-forward</span><b id="lpp-val">Today</b></div>
+        <input type="range" id="lpp-range" min="0" max="60" step="1" value="0" aria-label="Fast-forward">
+        <div class="lpp-read" id="lpp-read"></div>
+        <div class="lpp-chips" id="lpp-chips"></div>
+      </div>
+    </div>
+
+    <div class="lp-hero-actions">
+      <button class="lp-btn-primary" id="lp-hero-primary" onclick="heroPrimary(this)">Try it free, no sign-up</button>
+      <button class="lp-btn-secondary" id="lp-hero-secondary" onclick="heroSecondary()">Create a free account</button>
+    </div>
+    <p class="lp-hero-note">Budget and debt tools are free forever. No card, no bank login.</p>
+    <button type="button" class="lp-scroll-hint" id="lp-scroll-hint" onclick="heroScrollHint()">See how it works<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 9l6 6 6-6"/></svg></button>
+<script>
+/* Hero versions. Add or edit one here; nothing else on the page needs to change.
+   Pick one with ?hero=b in the link (it sticks for that visitor), or set QS_HERO_SPLIT to an array like ['a','b'] to split new visitors at random. */
+window.QS_HERO={
+  a:{h:"See the month you'll be <span class=\"grad\"><span class=\"nw\">debt-free.</span></span>", s:"Free for Canadians. See your date, then watch it move when you pay a little more. No bank login.", visual:'storm', chip:'Pay $50 more a month', primary:'Try it free, no sign-up', secondary:'Create a free account'},
+  b:{h:"What would $50 more a month do to <span class=\"grad\"><span class=\"nw\">your debt?</span></span>", s:"Free Canadian debt planner. Tap +$50 and see how much sooner you would be debt-free. No bank login, no card.", visual:'storm', chip:'Tap: +$50 a month', primary:'Try it free, no sign-up', secondary:'Create a free account'},
+  c:{h:"Know where your money goes and when your debt is <span class=\"grad\"><span class=\"nw\">gone.</span></span>", s:"Free budgeting and debt payoff, built on Canadian rules. No bank login, no card.", visual:'storm', chip:'Pay $50 more a month', primary:'Try it free, no sign-up', secondary:'Create a free account'}
+};
+window.QS_HERO_DEFAULT='a';
+window.QS_HERO_SPLIT=null;
+(function(){
+  var H=window.QS_HERO, v=null;
+  try{ var q=(new URLSearchParams(location.search).get('hero')||'').toLowerCase(); if(H[q]){ v=q; localStorage.setItem('qs_hero',q); } }catch(e){}
+  if(!v){ try{ var st=localStorage.getItem('qs_hero'); if(H[st]) v=st; }catch(e){} }
+  if(!v && Array.isArray(window.QS_HERO_SPLIT) && window.QS_HERO_SPLIT.length){ v=window.QS_HERO_SPLIT[Math.floor(Math.random()*window.QS_HERO_SPLIT.length)]; if(!H[v]) v=null; else { try{ localStorage.setItem('qs_hero',v); }catch(e){} } }
+  if(!v) v=window.QS_HERO_DEFAULT;
+  var c=H[v]; window.QS_HV=v;
+  var h=document.getElementById('lp-h1'), sb=document.getElementById('lp-sub'), pb=document.getElementById('lp-hero-primary'), sc=document.getElementById('lp-hero-secondary');
+  if(h) h.innerHTML=c.h; if(sb) sb.textContent=c.s; if(pb){ pb.textContent=c.primary; pb.dataset.base=c.primary; } if(sc) sc.textContent=c.secondary;
+  var hero=document.querySelector('.lp-hero'); if(hero){ hero.classList.add('lp-hero--v4'); hero.dataset.hv=v; }
+})();
+</script>
+
+    <div class="lp-mine-wrap" id="lp-mine-wrap">
+      <p class="lp-mine-lead">Try your own number. It stays on your device.</p>
     <div class="lp-mine" id="lp-mine">
       <div class="lp-mine-row">
         <label class="lp-mine-f"><span>I owe</span><div class="lp-mine-in"><em>$</em><input id="lpm-owe" type="text" inputmode="decimal" placeholder="5,000" autocomplete="off" aria-label="How much you owe"></div></label>
@@ -4474,23 +4564,8 @@ button:focus:not(:focus-visible){outline:none}
     </div>
     <p class="lp-alt">No debt? Try the free <a href="/budget-calculator/">budget calculator</a> or check your <a href="/tfsa-limit-2027/">TFSA room for 2027</a>.</p>
 
-    <!-- Live demo: the visitor plays with the real thing in the first screen -->
-    <div class="lp-play" id="lp-play">
-      <div class="lp-play-top"><b id="lpp-title">Your debt storm</b><span class="lp-play-live"><i></i>Live. Drag the slider.</span></div>
-      <div class="lp-play-stage"><canvas id="lpp-cv" aria-label="Interactive demo"></canvas></div>
-      <div class="lp-play-ctl">
-        <div class="lpp-row"><span id="lpp-lbl">Fast-forward</span><b id="lpp-val">Today</b></div>
-        <input type="range" id="lpp-range" min="0" max="60" step="1" value="0" aria-label="Fast-forward">
-        <div class="lpp-chips" id="lpp-chips"></div>
-        <div class="lpp-read" id="lpp-read"></div>
-      </div>
+      <p class="lp-alt">No debt? Try the free <a href="/budget-calculator/">budget calculator</a> or the <a href="/emergency-fund-calculator/">emergency fund calculator</a>.</p>
     </div>
-
-    <div class="lp-hero-actions">
-      <button class="lp-btn-primary" onclick="lpShowSignup()">Start free, no card</button>
-      <button class="lp-btn-secondary" onclick="lpTryDemo()">Try the demo</button>
-    </div>
-    <p class="lp-hero-note">Budget and debt tools are free forever. Sign-up takes about a minute.</p>
 
     <!-- PRODUCT PREVIEW -->
     <div class="lp-preview-wrap">
@@ -17233,10 +17308,10 @@ function lppUpdate(){
   const left=bals.reduce((s,b)=>s+b,0), months=P.length-1, sooner=(_lpp.base.length-1)-months;
   const set=(id,h)=>{ const e=document.getElementById(id); if(e) e.innerHTML=h; };
   set('lpp-val', m===0 ? 'Today' : pitShortDate(m));
-  set('lpp-read', `<div><span>Left to pay</span><b>${left<=0.5?'$0':lpFmt(left)}</b></div>
-    <div><span>Storm</span><b>${left<=0.5?'Calm':dsLevel(_lpp.D?_lpp.D.chaos:1)}</b></div>
-    <div><span>Debt-free</span><b>${pitShortDate(months)}</b>${sooner>0?`<em>${sooner} months sooner</em>`:''}</div>`);
-  document.querySelectorAll('#lpp-chips button').forEach(b=>b.classList.toggle('on', +b.dataset.x===_lpp.extra));
+  set('lpp-read', `<div class="lpp-date"><span>Debt-free by</span><b>${pitShortDate(months)}</b>${sooner>0?`<em>${sooner} month${sooner===1?'':'s'} sooner</em>`:''}</div>
+    <div><span>Left to pay</span><b>${left<=0.5?'$0':lpFmt(left)}</b></div>
+    <div><span>Storm</span><b>${left<=0.5?'Calm':dsLevel(_lpp.D?_lpp.D.chaos:1)}</b></div>`);
+  document.querySelectorAll('#lpp-chips button').forEach(b=>{ const on=+b.dataset.x===_lpp.extra; b.classList.toggle('on', on); b.setAttribute('aria-pressed', on); });
 }
 function lppTouch(){
   if(_lpp.touched) return; _lpp.touched=true; _lpp.auto=false;
@@ -17269,8 +17344,11 @@ function lppStart(){
   _lpp.base=lpPath(0); _lpp.path=_lpp.base;
   const range=document.getElementById('lpp-range'); range.max=_lpp.base.length-1;
   const chips=document.getElementById('lpp-chips');
-  chips.innerHTML='<span>Pay extra each month:</span>'+[0,200,500].map(x=>`<button type="button" data-x="${x}">${x?'+'+lpFmt(x):'Just minimums'}</button>`).join('');
-  chips.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; lppTouch(); _lpp.extra=+b.dataset.x; _lpp.path=lpPath(_lpp.extra,_lpp.debts); _lpp.prevBals=null; lppUpdate(); if(pitReduce) lppStart(); });
+  const chipTxt=(window.QS_HERO&&window.QS_HERO[window.QS_HV]&&window.QS_HERO[window.QS_HV].chip)||'Pay $50 more a month';
+  chips.innerHTML=`<button type="button" class="lpp-one" data-x="50" aria-pressed="false">${chipTxt}</button>`;
+  chips.addEventListener('click',e=>{ const b=e.target.closest('button'); if(!b) return; lppTouch(); const x=+b.dataset.x; _lpp.extra=(_lpp.extra===x?0:x);
+    try{ QA.log('hero_extra_tap',{v:window.QS_HV||'',on:_lpp.extra>0}); QA.reach('tapped'); }catch(err){}
+    _lpp.path=lpPath(_lpp.extra,_lpp.debts); _lpp.m=0; _lpp.tick=0; _lpp.auto=!pitReduce; _lpp.prevBals=null; lppUpdate(); if(pitReduce) lppStart(); });
   range.addEventListener('input',()=>{ lppTouch(); _lpp.m=+range.value; lppUpdate(); if(pitReduce) lppStart(); });
   if(pitReduce) _lpp.auto=false;
   lppSize(); lppUpdate();
@@ -17286,6 +17364,30 @@ function lppStart(){
   const still=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
   if(still || !('IntersectionObserver' in window)) return;
   new IntersectionObserver(en=>{ en.forEach(e=>{ if(e.isIntersecting){ if(v.preload!=='auto'){ v.preload='auto'; } const p=v.play(); if(p&&p.catch) p.catch(()=>{}); } else v.pause(); }); },{threshold:0.35}).observe(v);
+})();
+// Hero buttons. The main button says what it does: 'Try it free' opens the demo; any 'Save' label
+// (set by a plan from a tool page or a number the visitor typed) opens sign-up instead.
+function heroSaveMode(b){ return !!b && /^save/i.test((b.textContent||'').trim()); }
+function heroPrimary(b){
+  const save=heroSaveMode(b);
+  try{ QA.log('hero_primary_tap',{v:window.QS_HV||'', act:save?'signup':'demo'}); }catch(e){}
+  if(save) lpShowSignup(); else lpTryDemo();
+}
+function heroSecondary(){
+  const save=heroSaveMode(document.getElementById('lp-hero-primary'));
+  try{ QA.log('hero_secondary_tap',{v:window.QS_HV||'', act:save?'demo':'signup'}); }catch(e){}
+  if(save) lpTryDemo(); else lpShowSignup();
+}
+function heroScrollHint(){
+  try{ QA.log('hero_scroll_hint',{v:window.QS_HV||''}); }catch(e){}
+  const m=document.getElementById('lp-mine-wrap'), t=(m&&m.offsetHeight)?m:document.getElementById('lp-tour');
+  try{ t.scrollIntoView({behavior:'smooth',block:'start'}); }catch(e){}
+}
+// keep the second button sensible when the main one turns into a Save button
+(function(){
+  const p=document.getElementById('lp-hero-primary'), sc=document.getElementById('lp-hero-secondary'); if(!p||!sc||!('MutationObserver' in window)) return;
+  const sync=()=>{ const base=(window.QS_HERO&&window.QS_HERO[window.QS_HV]||{}).secondary||'Create a free account'; const t=heroSaveMode(p)?'Try the demo first':base; if(sc.textContent!==t) sc.textContent=t; };
+  new MutationObserver(sync).observe(p,{childList:true,characterData:true,subtree:true}); sync();
 })();
 // Any "see my date" button below the fold brings the visitor back to the number box at the top
 function lpToMine(where){
@@ -17306,7 +17408,7 @@ function lpMineUpdate(){
   const apply=(debts)=>{ _lpp.debts=debts; _lpp.extra=0; _lpp.base=lpPath(0,debts); _lpp.path=_lpp.base; _lpp.m=0; _lpp.prevBals=null; _lpp.tick=0;
     if(range){ range.max=_lpp.base.length-1; range.value=0; } if(!pitReduce) _lpp.auto=true; try{ lppUpdate(); if(pitReduce) lppStart(); }catch(e){} };
   const unstash=()=>{ try{ const p=JSON.parse(localStorage.getItem('qs_calc_plan')||'null'); if(p&&p.src==='hero') localStorage.removeItem('qs_calc_plan'); }catch(e){} };
-  if(!(owe>0)){ out.innerHTML='Type a number and your debt-free month appears here.'; out.classList.remove('has'); document.querySelector('.lp-hero')?.classList.remove('mine-on'); if(_lpp.debts){ apply(null); if(title) title.textContent='Your debt storm'; } unstash(); if(btn&&btn.dataset.mine){ btn.textContent='Start free, no card'; delete btn.dataset.mine; } return; }
+  if(!(owe>0)){ out.innerHTML='Type a number and your debt-free month appears here.'; out.classList.remove('has'); document.querySelector('.lp-hero')?.classList.remove('mine-on'); if(_lpp.debts){ apply(null); if(title) title.textContent='Sample plan: $25,500 owed'; } unstash(); if(btn&&btn.dataset.mine){ btn.textContent=btn.dataset.base||'Try it free, no sign-up'; delete btn.dataset.mine; } return; }
   const interest=owe*T[2]/1200, pay=payIn>0?payIn:Math.max(25,Math.round(owe*0.03));
   if(pay<=interest+1){ out.innerHTML=`At about ${T[2]}% interest, ${obMoney(owe)} grows by ${obMoney(interest)} a month. Type a payment above that and the plan can finish.`; out.classList.remove('has'); document.querySelector('.lp-hero')?.classList.remove('mine-on'); unstash(); return; }
   const debts=[{name:T[1], type:T[0]==='car_loan'?'auto':T[0], balance:owe, origBalance:owe, min:pay, rate:T[2], transactions:[]}];
@@ -17775,7 +17877,7 @@ const QA = (function(){
 
   // ── Landing page: shown, how far they scroll ──
   let lpLogged=false;
-  const checkLanding=()=>{ const lp=$('landing-page'); if(!lp||lpLogged) return; if(!lp.classList.contains('hidden') && getComputedStyle(lp).display!=='none'){ lpLogged=true; QA.log('lp_view',{dev:mobile()?'mobile':'desktop'}); watchSections(); } };
+  const checkLanding=()=>{ const lp=$('landing-page'); if(!lp||lpLogged) return; if(!lp.classList.contains('hidden') && getComputedStyle(lp).display!=='none'){ lpLogged=true; QA.log('lp_view',{dev:mobile()?'mobile':'desktop', hv:window.QS_HV||''}); watchSections(); } };
   [0,300,1000,2500].forEach(ms=>setTimeout(checkLanding,ms));
   function watchSections(){
     if(!('IntersectionObserver' in window)) return;
