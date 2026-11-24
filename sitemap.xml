@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://qualisight.ca/</loc><lastmod>2026-11-23</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
+  <url><loc>https://qualisight.ca/</loc><lastmod>2026-11-24</lastmod><changefreq>weekly</changefreq><priority>1.0</priority></url>
   <url><loc>https://qualisight.ca/debt-payoff-calculator/</loc><lastmod>2026-11-22</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://qualisight.ca/tfsa-contribution-room-calculator/</loc><lastmod>2026-11-22</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
   <url><loc>https://qualisight.ca/down-payment-calculator/</loc><lastmod>2026-11-23</lastmod><changefreq>monthly</changefreq><priority>0.8</priority></url>
@@ -17,4 +17,7 @@
   <url><loc>https://qualisight.ca/ontario-land-transfer-tax-calculator/</loc><lastmod>2026-11-22</lastmod></url>
   <url><loc>https://qualisight.ca/credit-card-payoff-calculator/</loc><lastmod>2026-11-22</lastmod></url>
   <url><loc>https://qualisight.ca/money-limits-2027/</loc><lastmod>2026-11-22</lastmod></url>
+  <url><loc>https://qualisight.ca/how-we-check/</loc><lastmod>2026-11-24</lastmod></url>
+  <url><loc>https://qualisight.ca/privacy/</loc><lastmod>2026-11-24</lastmod></url>
+  <url><loc>https://qualisight.ca/terms/</loc><lastmod>2026-11-24</lastmod></url>
 </urlset>

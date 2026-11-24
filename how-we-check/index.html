@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>How Qualisight Checks Its Calculators | Qualisight</title>
+<meta name="description" content="Every Qualisight calculator is tested against official Canadian examples from the FCAC, CRA, CMHC, OSFI and Ontario. See each test, the official answer and our result.">
+<link rel="canonical" href="https://qualisight.ca/how-we-check/">
+<meta property="og:title" content="How Qualisight Checks Its Calculators">
+<meta property="og:description" content="Every Qualisight calculator is tested against official Canadian examples from the FCAC, CRA, CMHC, OSFI and Ontario. See each test, the official answer and our result.">
+<meta property="og:url" content="https://qualisight.ca/how-we-check/">
+<meta property="og:image" content="https://qualisight.ca/og-image.png">
+<meta name="theme-color" content="#0d0f14">
+<link rel="icon" href="/icon-192.png">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://qualisight.ca/how-we-check/","url":"https://qualisight.ca/how-we-check/","name":"How Qualisight Checks Its Calculators","description":"Every Qualisight calculator is tested against official Canadian examples from the FCAC, CRA, CMHC, OSFI and Ontario. See each test, the official answer and our result.","inLanguage":"en-CA","dateModified":"2026-11-24","isPartOf":{"@id":"https://qualisight.ca/#site"},"author":{"@type":"Person","@id":"https://qualisight.ca/about/#founder","name":"Lucas","url":"https://qualisight.ca/about/"},"publisher":{"@type":"Organization","@id":"https://qualisight.ca/#org","name":"Qualisight","url":"https://qualisight.ca/"}}</script>
+<style>
+:root{--bg:#0b0d12;--surface:#141821;--border:rgba(255,255,255,0.09);--text:#e8edf8;--muted:#97a2b8;--green:#4ade80;--red:#f87171;--amber:#fbbf24}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--green)}
+.wrap{max-width:860px;margin:0 auto;padding:0 1.1rem}
+header{display:flex;justify-content:space-between;align-items:center;padding:1rem 0}
+.logo{font-weight:800;font-size:1.15rem;color:var(--green);text-decoration:none;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 1.2rem;border-radius:12px;background:var(--green);color:#0b0d12;font-weight:700;text-decoration:none;border:0;font:inherit;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);min-height:40px;font-weight:600}
+h1{font-size:2rem;line-height:1.15;letter-spacing:-0.03em;margin:1.2rem 0 0.5rem}
+h2{font-size:1.35rem;letter-spacing:-0.02em;margin:2.4rem 0 0.6rem}
+h3{font-size:1.05rem;margin:1.4rem 0 0.3rem}
+p{margin:0.5rem 0;color:#c4ccdb}.lead{color:var(--muted);font-size:1.05rem;max-width:620px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:1.1rem;margin-top:1.2rem}
+table{width:100%;border-collapse:collapse}
+th{font-size:0.75rem;color:var(--muted);font-weight:600;text-align:left;padding:0 0.3rem 0.4rem}
+td{padding:0.25rem 0.3rem}
+input[type=text],input[type=number]{width:100%;background:#0e121a;border:1px solid var(--border);border-radius:10px;color:var(--text);font:inherit;padding:0.6rem 0.65rem;min-height:44px}
+input:focus{outline:2px solid var(--green);outline-offset:1px}
+input[type=number]{-moz-appearance:textfield;appearance:textfield}input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.x{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;width:40px;height:44px;cursor:pointer;font-size:1.1rem}
+.row{display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center;margin-top:0.9rem}
+.extra{flex:1;min-width:230px}
+.extra label{display:flex;justify-content:space-between;font-size:0.9rem;color:var(--muted)}
+.extra b{color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green);height:30px}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-weight:600;padding:0.5rem 1rem;border-radius:999px;cursor:pointer;min-height:40px}
+.seg button[aria-pressed=true]{background:var(--green);color:#0b0d12}
+.big{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.7rem;margin-top:1rem}
+.big div{border:1px solid var(--border);border-radius:14px;padding:0.8rem}
+.big span{display:block;font-size:0.75rem;color:var(--muted)}
+.big b{display:block;font-size:1.35rem;font-variant-numeric:tabular-nums;margin-top:0.1rem}
+.big em{display:block;font-style:normal;font-size:0.78rem;color:var(--green)}
+.warn{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);color:#f3d48a;border-radius:12px;padding:0.7rem 0.85rem;margin-top:0.9rem;font-size:0.92rem}
+.cmp{font-size:0.92rem;color:var(--muted);margin-top:0.8rem}.cmp b{color:var(--text)}
+svg{display:block;width:100%;height:auto;margin-top:0.9rem}
+.acts{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem}.acts .btn{font-size:0.92rem}
+textarea.code{width:100%;min-height:92px;background:#0e121a;border:1px solid var(--border);border-radius:10px;color:#c4ccdb;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:0.7rem;resize:vertical}
+.by{display:none;margin-top:0.8rem;font-size:0.85rem;color:var(--muted)}
+body.embed header,body.embed h1,body.embed .lead,body.embed .cta,body.embed .article,body.embed footer{display:none}body.embed .card{margin-top:0.6rem}body.embed .by{display:block}body.embed .wrap{padding:0 0.5rem}body.embed .noembed{display:none}
+ol.order{margin:0.6rem 0 0;padding-left:1.2rem;color:#c4ccdb}
+.cta{background:linear-gradient(135deg,rgba(74,222,128,0.14),rgba(74,222,128,0.03));border:1px solid rgba(74,222,128,0.4);border-radius:18px;padding:1.2rem;margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:0.9rem;align-items:center;justify-content:space-between}
+.cta p{margin:0;max-width:480px;color:var(--text)}.cta small{display:block;color:var(--muted)}
+details{border-top:1px solid var(--border);padding:0.7rem 0}summary{cursor:pointer;font-weight:600;min-height:32px}
+footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);color:var(--muted);font-size:0.85rem}
+@media(max-width:640px){h1{font-size:1.6rem}.big{grid-template-columns:1fr}}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.8rem}
+.f label{display:block;font-size:0.88rem;color:var(--muted);margin-bottom:0.25rem}.f small{display:block;font-size:0.78rem;color:var(--muted);margin-top:0.2rem}
+.chk{display:flex;gap:0.55rem;align-items:center;margin-top:0.9rem;min-height:44px;color:#c4ccdb;cursor:pointer}.chk input{width:22px;height:22px;accent-color:var(--green);flex:none}
+.yrs{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.4rem}
+.yrs button{min-width:64px;min-height:44px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text);font:inherit;font-weight:600;cursor:pointer}
+.yrs button[aria-pressed=true]{background:rgba(248,113,113,0.14);border-color:rgba(248,113,113,0.5);color:#fca5a5;text-decoration:line-through}
+.hero{margin-top:1.1rem;border:1px solid rgba(74,222,128,0.4);background:linear-gradient(135deg,rgba(74,222,128,0.12),rgba(74,222,128,0.02));border-radius:16px;padding:1rem}
+.hero span{display:block;color:var(--muted);font-size:0.9rem}.hero>b{display:block;font-size:2.4rem;letter-spacing:-0.03em;font-variant-numeric:tabular-nums;color:var(--green);line-height:1.15}
+.hero p{margin:0.35rem 0 0;font-size:0.92rem}.hero p b{color:var(--text)}
+.hero.neg{border-color:rgba(248,113,113,0.5);background:rgba(248,113,113,0.07)}.hero.neg>b{color:var(--red)}
+.ytab{margin-top:1rem;font-size:0.9rem;font-variant-numeric:tabular-nums}.ytab td,.ytab th{padding:0.4rem;border-bottom:1px solid var(--border)}.ytab td:not(:first-child),.ytab th:not(:first-child){text-align:right}
+.ytab tr.off td{color:var(--muted);text-decoration:line-through}
+.src{font-size:0.8rem;color:var(--muted);margin-top:0.8rem}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.hero>b{font-size:2rem}}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.8rem}
+.chips{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.4rem}.chips button{min-height:40px;padding:0 0.7rem;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--text);font:inherit;font-size:0.88rem;font-weight:600;cursor:pointer}
+.ytab td:last-child,.ytab th:last-child{text-align:right}
+@media(max-width:760px){.grid3{grid-template-columns:1fr}}
+.seg{display:flex;gap:0.4rem;margin-top:0.35rem}.seg button{flex:1;min-height:44px;border-radius:10px;border:1px solid var(--border);background:transparent;color:inherit;font:inherit;cursor:pointer}.seg button[aria-pressed=true]{background:var(--green);color:#06140b;border-color:var(--green);font-weight:700}
+.chk{display:flex;gap:0.5rem;align-items:center;margin-top:0.9rem;min-height:44px}.chk input{width:20px;height:20px}
+.ratio{margin:0.7rem 0}.ratio .rl{display:flex;justify-content:space-between;font-size:0.9rem}.ratio .rl em{color:var(--muted);font-style:normal}.ratio .rb{height:10px;border-radius:6px;background:rgba(255,255,255,0.08);overflow:hidden;margin-top:0.3rem}.ratio .rb i{display:block;height:100%;background:var(--green)}.ratio .rb i.hot{background:#fbbf24}
+.pass{color:var(--green);font-weight:700}.fail{color:#fbbf24;font-weight:700}
+details.more{margin-top:0.8rem}details.more summary{cursor:pointer;min-height:44px;display:flex;align-items:center}
+.tests{width:100%;border-collapse:collapse;font-size:0.92rem;margin:1rem 0}.tests th,.tests td{text-align:left;padding:0.65rem 0.5rem;border-bottom:1px solid var(--border);vertical-align:top}.tests th{color:var(--muted);font-weight:600;font-size:0.85rem}.tests .ok{color:var(--green);font-weight:700}.tests .sm{font-size:0.8rem;color:var(--muted)}.tw{overflow-x:auto}@media(max-width:640px){.tests thead{display:none}.tests tr{display:block;border-bottom:1px solid var(--border);padding:0.6rem 0}.tests td{display:block;border:0;padding:0.15rem 0}.tests td:nth-child(1){font-weight:700}}</style>
+</head>
+<body>
+<div class="wrap">
+<header><a class="logo" href="/">Qualisight</a><a class="btn ghost" href="/">Open the app</a></header>
+<h1>How we check our calculators</h1>
+<p class="lead">Money tools are only useful if the math is right. Every Qualisight calculator is tested against an official Canadian example, and the test is run again whenever a rule changes. Here is each test, the official answer, and what our calculator gives.</p>
+<p class="src">Last run: November 24, 2026. All 9 tests match.</p>
+
+<div class="tw"><table class="tests" aria-label="Calculator tests">
+<thead><tr><th>Calculator</th><th>Test</th><th>Official answer</th><th>Qualisight</th><th>Result</th></tr></thead>
+<tbody>
+<tr><td><a href="/credit-card-payoff-calculator/">Credit card payoff</a></td><td>$1,000 at 18%, paying only a 3% or $10 minimum</td><td>10 years and $798.89 in interest<br><a class="sm" href="https://itools-ioutils.fcac-acfc.gc.ca/CCPC-CPCC/CCPCCalc-CPCCCalc-eng.aspx?lang=eng">Financial Consumer Agency of Canada example</a></td><td><b>10 years, about $799</b></td><td class="ok">Match</td></tr>
+<tr><td><a href="/credit-card-payoff-calculator/">Credit card payoff</a></td><td>The same card at $100 a month</td><td>11 months and $91.62 in interest<br><a class="sm" href="https://itools-ioutils.fcac-acfc.gc.ca/CCPC-CPCC/CCPCCalc-CPCCCalc-eng.aspx?lang=eng">Financial Consumer Agency of Canada example</a></td><td><b>11 months, about $92</b></td><td class="ok">Match</td></tr>
+<tr><td><a href="/tfsa-contribution-room-calculator/">TFSA room</a></td><td>Eligible since 2009, never contributed, in 2026</td><td>$109,000<br><a class="sm" href="https://www.canada.ca/en/revenue-agency/services/tax/registered-plans-administrators/pspa/mp-rrsp-dpsp-tfsa-limits-ympe.html">Sum of the CRA's yearly TFSA limits, 2009 to 2026</a></td><td><b>$109,000</b></td><td class="ok">Match</td></tr>
+<tr><td><a href="/ontario-land-transfer-tax-calculator/">Ontario land transfer tax</a></td><td>A $500,000 home</td><td>$6,475<br><a class="sm" href="https://www.ontario.ca/document/land-transfer-tax/calculating-land-transfer-tax">Ontario Ministry of Finance rates</a></td><td><b>$6,475</b></td><td class="ok">Match</td></tr>
+<tr><td><a href="/ontario-land-transfer-tax-calculator/">Ontario land transfer tax</a></td><td>The same home, first-time buyer</td><td>$2,475 after the $4,000 refund<br><a class="sm" href="https://www.ontario.ca/document/land-transfer-tax/land-transfer-tax-refunds-first-time-homebuyers">Ontario Ministry of Finance refund rules</a></td><td><b>$2,475</b></td><td class="ok">Match</td></tr>
+<tr><td><a href="/down-payment-calculator/">Minimum down payment</a></td><td>A $1,200,000 home</td><td>$95,000 (5% of the first $500,000, 10% of the rest)<br><a class="sm" href="https://www.canada.ca/en/financial-consumer-agency/services/mortgages/down-payment.html">Government of Canada down payment rules</a></td><td><b>$95,000</b></td><td class="ok">Match</td></tr>
+<tr><td><a href="/mortgage-affordability-calculator/">Mortgage payment</a></td><td>$500,000 at 5% over 25 years, interest compounded twice a year</td><td>$2,908.02 a month<br><span class="sm">Standard Canadian fixed-rate mortgage formula, checked by hand</span></td><td><b>$2,908.02</b></td><td class="ok">Match</td></tr>
+<tr><td><a href="/mortgage-affordability-calculator/">Stress test rate</a></td><td>A 5% mortgage rate, then a 3% rate</td><td>7% (rate plus 2), then 5.25% (the floor)<br><a class="sm" href="https://www.osfi-bsif.gc.ca/en/supervision/financial-institutions/banks/minimum-qualifying-rate-uninsured-mortgages">OSFI minimum qualifying rate</a></td><td><b>7%, then 5.25%</b></td><td class="ok">Match</td></tr>
+<tr><td><a href="/down-payment-calculator/">Mortgage insurance</a></td><td>5% down on a $500,000 home</td><td>4.00% of the mortgage added on<br><a class="sm" href="https://www.cmhc-schl.gc.ca/observer/2025/cmhc-mortgage-loan-insurance-explained">CMHC premium table</a></td><td><b>4.00%, a $494,000 mortgage</b></td><td class="ok">Match</td></tr>
+</tbody></table></div>
+
+<div class="article">
+<h2>Where the rules come from</h2>
+<p>Every rule is taken from the body that sets it, and each tool page links to its source and shows the date it was last checked: the Canada Revenue Agency for TFSA, RRSP and FHSA limits, CMHC and the Government of Canada for down payments and mortgage insurance, OSFI for the stress test, the Financial Consumer Agency of Canada for credit card math, and the Ontario Ministry of Finance and the City of Toronto for land transfer tax. Nothing is written from memory.</p>
+
+<h2>When we check again</h2>
+<p>Every January, when new yearly limits apply. Every December, when OSFI reviews the stress test rate. And any time a federal or Ontario budget changes a rule. When a rule changes, the calculator, its worked example and this page are updated together.</p>
+
+<h2>What the calculators are not</h2>
+<p>They are estimates for planning. Your lender, your card issuer and the CRA have the final word: a bank can be stricter than the minimum rules, and your CRA account shows your exact TFSA room. Qualisight gives information, not financial advice, and never recommends specific investments.</p>
+
+<h2>About the AI coach</h2>
+<p>The AI coach in the app answers general questions about Canadian money rules using the numbers you entered. It can be wrong. For anything that affects your taxes or a big decision, check the answer with the CRA or a licensed professional. It is not a licensed financial advisor.</p>
+
+<h2>Your data</h2>
+<p>The free calculators collect nothing you type into them. The app needs no bank login: you type or paste your numbers, they are encrypted, never sold, and you can delete everything any time. Read the full <a href="/privacy/">privacy policy</a> and <a href="/terms/">terms</a>.</p>
+
+<h2>Found a mistake?</h2>
+<p>Email <a href="mailto:hello@qualisight.ca">hello@qualisight.ca</a> with the page and the numbers you used. Fixes go out fast, and this page is updated.</p>
+</div>
+
+<footer>More free tools: <a href="/down-payment-calculator/">down payment calculator</a>, <a href="/debt-payoff-calculator/">debt payoff calculator</a>, <a href="/budget-calculator/">budget calculator</a>, <a href="/emergency-fund-calculator/">emergency fund calculator</a>, <a href="/tfsa-contribution-room-calculator/">TFSA room calculator</a>, <a href="/tfsa-limit-2027/">TFSA limit 2027</a>, <a href="/rrsp-limit-2027/">RRSP limit 2027</a>, <a href="/fhsa-limit-2027/">FHSA limit 2027</a>, <a href="/credit-card-payoff-calculator/">credit card payoff calculator</a>, <a href="/ontario-land-transfer-tax-calculator/">Ontario land transfer tax calculator</a>, <a href="/money-limits-2027/">2027 money limits</a>, <a href="/canadian-bank-earnings/">bank earnings dates</a>, <a href="/tsx-heatmap/">TSX 60 heatmap</a>, <a href="/sp500-heatmap/">S&amp;P 500 heatmap</a>.<br>Built by Lucas, a solo founder in Ontario. Rules last checked November 2026. <a href="/about/">How these tools work and where the rules come from</a>. <a href="/how-we-check/">How we check our math</a>. <a href="/privacy/">Privacy</a>. <a href="/terms/">Terms</a>. <a href="/">Qualisight</a> is a free Canadian budgeting and debt app.</footer>
+</div>
+</body>
+</html>

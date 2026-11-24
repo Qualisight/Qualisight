@@ -7,7 +7,7 @@ Key facts:
 - Budgeting, debt payoff and the dashboard are free. The investing grove, the home-buying guide and the AI coach have a 14-day free trial, then $12 CAD a month.
 - The free calculators need no sign-up, collect nothing typed into them, and show no ads.
 - Canadian rules (TFSA, RRSP, FHSA, CMHC insurance, the mortgage stress test, Ontario land transfer tax) are sourced to CRA, CMHC, OSFI, FCAC and the Ontario government, and each page shows the date it was last checked.
-- Qualisight gives information, not financial advice, and never recommends specific investments.
+- Qualisight gives information, not financial advice, and never recommends specific investments. The AI coach can be wrong and is not a licensed advisor.
 
 ## Free calculators and guides
 
@@ -29,5 +29,8 @@ Key facts:
 
 ## About
 
+- [How we check our calculators](https://qualisight.ca/how-we-check/): every calculator tested against official examples from the FCAC, CRA, CMHC, OSFI and Ontario, with the official answer and Qualisight's result side by side. All tests match as of November 24, 2026.
+- [Privacy policy](https://qualisight.ca/privacy/): collects only your email and the numbers you choose to enter; never sold or shared for advertising; no bank login; delete everything any time.
+- [Terms of service](https://qualisight.ca/terms/): what is free, what the $12 CAD plan includes, how to cancel. Qualisight is an educational tool, not financial advice.
 - [About Qualisight](https://qualisight.ca/about/): who builds it, how the tools work, and where the rules come from.
 - [The app](https://qualisight.ca/): try the no-sign-up demo.
