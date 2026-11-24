@@ -167,5 +167,37 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
   if('IntersectionObserver' in window){ var io=new IntersectionObserver(function(es){ es.forEach(function(e){ seen[e.target===res?'res':'cta']=e.intersectionRatio>=0.5; }); upd(); },{threshold:[0,0.5,1]}); io.observe(res); io.observe(main.closest('.cta')); }
   new MutationObserver(read).observe(res,{childList:true,subtree:true,characterData:true}); read();
 }catch(e){}})();</script>
+<!-- qs-page-kit: anonymous page counts and the "was this helpful" box. Nothing typed into a calculator is ever sent. -->
+<script>(function(){
+  var K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM', U='https://bsjyqecneeptlfrsyesf.supabase.co/rest/v1/', VIEW=false, P=location.pathname;
+  if(/[?&]embed=1/.test(location.search)) return;
+  var ok=true, vid='anon', sid='anon', n=0;
+  try{ if(localStorage.getItem('qs_notrack')==='1') ok=false; vid=localStorage.getItem('qs_vid'); if(!vid){ vid=Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4); localStorage.setItem('qs_vid',vid); }
+    sid=sessionStorage.getItem('qs_tab')||'anon'; }catch(e){}
+  if(/HeadlessChrome|bot|crawl|spider/i.test(navigator.userAgent||'')) ok=false;
+  function post(t,row){ if(!ok||n>12) return; n++; try{ fetch(U+t,{method:'POST',keepalive:true,headers:{'apikey':K,'Authorization':'Bearer '+K,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(row)}).catch(function(){}); }catch(e){} }
+  function ev(name,props){ props=props||{}; props.p=P; post('site_events',{vid:vid,sid:sid,name:name,props:props}); }
+  var q={}; try{ q=Object.fromEntries(new URLSearchParams(location.search)); }catch(e){}
+  var ref=''; try{ var r=document.referrer?new URL(document.referrer).hostname:''; ref=r&&r!==location.hostname?r:''; }catch(e){}
+  if(VIEW) ev('pg_view',{src:(q.utm_source||'').slice(0,40),ref:ref.slice(0,60)});
+  // read: reached 60% of the page or stayed 45 seconds
+  var read=false, t0=Date.now();
+  function rd(){ if(read) return; var h=document.documentElement, f=(h.scrollTop+innerHeight)/Math.max(1,h.scrollHeight);
+    if(f>0.6||Date.now()-t0>45000){ read=true; ev('pg_read',{s:Math.round((Date.now()-t0)/1000)}); } }
+  addEventListener('scroll',rd,{passive:true}); setTimeout(rd,45500);
+  // was this helpful
+  var foot=document.querySelector('footer'); if(!foot) return;
+  var box=document.createElement('div'); box.className='qs-help';
+  box.innerHTML='<style>.qs-help{margin:2rem 0 1rem;padding:1rem;border:1px solid var(--border,#2a3140);border-radius:14px}.qs-help p{margin:0 0 .6rem;font-weight:600}.qs-help .r{display:flex;gap:.5rem;flex-wrap:wrap}.qs-help button{min-height:44px;padding:0 1.1rem;border-radius:12px;border:1px solid var(--border,#2a3140);background:transparent;color:inherit;font:inherit;font-weight:600;cursor:pointer}.qs-help button.g{background:var(--green,#4ade80);color:#06140b;border-color:var(--green,#4ade80)}.qs-help textarea{width:100%;min-height:84px;margin:.2rem 0 .6rem;padding:.6rem;border-radius:10px;border:1px solid var(--border,#2a3140);background:transparent;color:inherit;font:inherit}.qs-help small{display:block;color:var(--muted,#94a3b8);margin-bottom:.6rem}</style>'+
+    '<p id="qs-hq">Was this page helpful?</p><div class="r" id="qs-hr"><button type="button" data-v="1">Yes</button><button type="button" data-v="0">No</button></div>';
+  foot.parentNode.insertBefore(box,foot);
+  box.querySelector('#qs-hr').addEventListener('click',function(e){ var b=e.target.closest('button[data-v]'); if(!b) return; var v=+b.getAttribute('data-v');
+    ev('helpful',{v:v});
+    box.innerHTML=box.querySelector('style').outerHTML+'<p>'+(v?'Thanks! What would make it even better?':'Sorry about that. What were you looking for?')+'</p><small>Optional. Please do not include personal details like account numbers.</small><textarea id="qs-ht" maxlength="1000" aria-label="Your feedback"></textarea><div class="r"><button type="button" class="g" id="qs-hs">Send</button></div>';
+    box.querySelector('#qs-hs').addEventListener('click',function(){ var m=(box.querySelector('#qs-ht').value||'').trim().slice(0,1000);
+      if(m) post('site_feedback',{vid:vid,page:P.slice(0,80),kind:'page',score:v,msg:m});
+      box.innerHTML=box.querySelector('style').outerHTML+'<p>Thanks, that helps.</p>'; });
+  });
+})();</script>
 </body>
 </html>

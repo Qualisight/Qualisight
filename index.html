@@ -395,6 +395,7 @@ header{
 .qi-head-btn{display:inline-flex;align-items:center;gap:0.35rem;width:auto!important;padding:0 0.65rem;border-radius:999px!important;color:var(--accent)!important;border:1px solid var(--border2)!important}
 .qi-head-btn span{font-size:0.8rem;font-weight:600}
 @media(max-width:520px){.qi-head-btn{width:28px!important;padding:0}.qi-head-btn span{display:none}}
+.qi-fb{padding:0.6rem 0.8rem;border:1px solid rgba(255,255,255,0.08);border-radius:10px;margin:0.4rem 0}.qi-fb p{margin:0.25rem 0 0;line-height:1.45}
 .qi-overlay{position:fixed;inset:0;z-index:9999;background:rgba(5,7,10,0.8);display:none;overflow-y:auto;padding:2rem 1rem}
 .qi-overlay.open{display:block}
 .qi-sheet{max-width:980px;margin:0 auto;background:var(--card);border:1px solid var(--border);border-radius:20px;padding:1.4rem 1.5rem 2rem}
@@ -4029,6 +4030,10 @@ button:focus:not(:focus-visible){outline:none}
 .gf-tl{margin:0 0 0.6rem}.gf-tl .tl-go{min-height:46px;padding:0 1.1rem;border-radius:12px;border:0;background:var(--green);color:#06140b;font:inherit;font-weight:800;cursor:pointer}.gf-tl small{display:block;color:var(--muted);font-size:0.8rem;margin-top:0.35rem;line-height:1.4}
 .gf-tl .tl-now{display:flex;gap:1rem;flex-wrap:wrap;align-items:baseline}.gf-tl .tl-yr{font-family:var(--font-display,inherit);font-weight:800;font-size:1.6rem;color:#4ade80;min-width:4.2ch}.gf-tl .tl-now span{font-size:0.92rem}.gf-tl .tl-now b{font-size:1.05rem}
 .gf-tl .tl-sum{font-size:0.95rem;line-height:1.45;margin:0 0 0.5rem}.gf-tl .tl-acts{display:flex;gap:0.45rem;flex-wrap:wrap}.gf-tl .tl-acts button{min-height:44px;padding:0 0.9rem;border-radius:12px;font:inherit;font-weight:700;cursor:pointer;background:transparent;border:1px solid var(--border);color:var(--text)}.gf-tl .tl-acts button.on{background:var(--green);color:#06140b;border-color:var(--green)}
+.ask-chips{display:flex;flex-wrap:wrap;gap:0.45rem;margin:0.2rem 0 0.6rem}.ask-chips button,.ask-scale button{min-height:44px;padding:0 0.9rem;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--text);font:inherit;font-weight:600;cursor:pointer}
+.ask-chips button:hover,.ask-scale button:hover{border-color:var(--green)}.ask-scale{display:grid;grid-template-columns:repeat(5,1fr);gap:0.4rem;margin:0.5rem 0 0.25rem}.ask-scale button{padding:0;font-size:1.05rem}
+.ask-ends{display:flex;justify-content:space-between;color:var(--muted);font-size:0.78rem;margin-bottom:0.4rem}.ask-skip{background:none;border:0;color:var(--muted);font:inherit;font-size:0.85rem;min-height:44px;cursor:pointer;padding:0;text-decoration:underline}
+.ask-ta{width:100%;min-height:90px;padding:0.65rem;border-radius:12px;border:1px solid var(--border);background:var(--bg,#0b0d12);color:var(--text);font:inherit;margin:0 0 0.7rem;box-sizing:border-box}
 .mc-card{margin:0 0 1rem;padding:1rem 1.05rem;border-radius:18px;background:linear-gradient(160deg,rgba(96,165,250,0.12),rgba(96,165,250,0.02) 60%),var(--card,#141821);border:1px solid rgba(96,165,250,0.35)}
 .mc-card .mc-k{font-size:0.72rem;letter-spacing:0.02em;color:#93c5fd;font-weight:700}.mc-card .mc-q{font-family:var(--font-display,inherit);font-weight:800;font-size:1.15rem;margin:0.2rem 0 0.3rem}.mc-card .mc-p{color:var(--muted);font-size:0.9rem;margin:0 0 0.8rem;line-height:1.45}
 .mc-acts{display:flex;gap:0.5rem;flex-wrap:wrap}.mc-acts button{min-height:44px;padding:0 1rem;border-radius:12px;font:inherit;font-weight:700;cursor:pointer}.mc-go{border:0;background:var(--green);color:#06140b}.mc-x{background:transparent;border:1px solid var(--border);color:var(--text)}
@@ -4977,6 +4982,9 @@ window.QS_HERO_SPLIT=null;
       <button onclick="settingsCancelSub()" style="display:flex;align-items:center;gap:0.6rem;width:100%;background:transparent;border:none;color:var(--text);font-family:var(--font-body);font-size:0.82rem;padding:0.7rem 1rem;cursor:pointer;text-align:left;transition:background 0.12s" onmouseover="this.style.background='rgba(255,255,255,0.05)'" onmouseout="this.style.background='transparent'">
          Cancel Subscription
       </button>
+      <button onclick="toggleSettingsMenu();askFeedback()" style="display:flex;align-items:center;gap:0.6rem;width:100%;background:transparent;border:none;color:var(--text);font-family:var(--font-body);font-size:0.82rem;padding:0.7rem 1rem;cursor:pointer;text-align:left">
+         Send feedback
+      </button>
       <button onclick="toggleSettingsMenu();mcSettings()" style="display:flex;align-items:center;gap:0.6rem;width:100%;background:transparent;border:none;color:var(--text);font-family:var(--font-body);font-size:0.82rem;padding:0.7rem 1rem;cursor:pointer;text-align:left">
          Monthly email check-in
       </button>
@@ -5078,6 +5086,7 @@ window.QS_HERO_SPLIT=null;
   <!-- Net worth + Money Score -->
   <div id="ob-checklist"></div>
   <div id="mc-card"></div>
+  <div id="ask-card"></div>
   <div id="sw-card"></div>
   <div class="db-hero" id="db-hero"></div>
   <div id="dq-card"></div>
@@ -16002,6 +16011,7 @@ function renderDashboardPlus(){
   const fresh=dbFresh(), pg=document.getElementById('page-dashboard'); if(pg) pg.classList.toggle('db-fresh',fresh);
   try{ wrEntryRender(fresh); }catch(e){ console.warn('wrapped entry',e); }
   try{ mcRender(fresh); }catch(e){ console.warn('check-in',e); }
+  try{ askRender(fresh); }catch(e){ console.warn('ask',e); }
   try{ swRender(fresh); }catch(e){ console.warn('this week',e); }
   try{ dqRender(fresh); }catch(e){ console.warn('daily quest',e); }
   if(fresh){
@@ -17756,6 +17766,72 @@ function mcSettings(){
   document.body.appendChild(ov);
 }
 
+// ══════════════════════════════════════════
+// ASK: one-tap questions that tell us what the numbers cannot. Each one shows once, never on top of the check-in card.
+// ══════════════════════════════════════════
+const ASK_HEARD=[['google','Google search'],['ai','ChatGPT or another AI'],['instagram','Instagram'],['tiktok','TikTok'],['facebook','Facebook'],['friend','A friend'],['campus','Campus or a poster'],['other','Somewhere else']];
+function askS(){ if(!state.ask||typeof state.ask!=='object') state.ask={}; return state.ask; }
+function askRender(fresh){
+  const el=document.getElementById('ask-card'); if(!el) return;
+  if(fresh===true || !mcReal()){ el.innerHTML=''; return; }
+  const A=askS(), today=new Date().toISOString().slice(0,10);
+  if(!Array.isArray(A.days)) A.days=[]; if(!A.days.includes(today)){ A.days.push(today); A.days=A.days.slice(-30); }
+  if((document.getElementById('mc-card')||{}).innerHTML){ el.innerHTML=''; return; }
+  const hasData=mcHasPlan() || (state.expenses||[]).length>0;
+  if(hasData && !A.heard){
+    el.innerHTML=`<div class="mc-card"><div class="mc-k">Quick question</div><div class="mc-q">How did you hear about Qualisight?</div>
+      <p class="mc-p">One tap. It helps a one-person app know where to show up.</p>
+      <div class="ask-chips">${ASK_HEARD.map(([k,l])=>`<button type="button" onclick="askHeard('${k}')">${l}</button>`).join('')}</div>
+      <button type="button" class="ask-skip" onclick="askHeard('skip')">Skip</button></div>`; return;
+  }
+  const due=A.days.length>=3 && (!A.pulseAt || Date.now()-A.pulseAt>90*864e5);
+  if(due){
+    el.innerHTML=`<div class="mc-card"><div class="mc-k">Be honest</div><div class="mc-q">How useful is Qualisight so far?</div>
+      <div class="ask-scale" role="group" aria-label="1 is not useful, 5 is very useful">${[1,2,3,4,5].map(n=>`<button type="button" onclick="askPulse(${n})" aria-label="${n} out of 5">${n}</button>`).join('')}</div>
+      <div class="ask-ends"><span>Not useful</span><span>Very useful</span></div>
+      <button type="button" class="ask-skip" onclick="askPulse(0)">Not now</button></div>`; return;
+  }
+  el.innerHTML='';
+}
+function askHeard(k){
+  const A=askS(); A.heard=k;
+  try{ QA.log('heard',{how:k}); }catch(e){}
+  try{ save(); }catch(e){}
+  const el=document.getElementById('ask-card');
+  if(el && k!=='skip'){ el.innerHTML='<div class="mc-card"><div class="mc-q" style="margin:0">Thanks, that helps a lot.</div></div>'; setTimeout(()=>askRender(),1800); } else askRender();
+}
+function askPulse(n){
+  const A=askS(); A.pulseAt=Date.now();
+  try{ QA.log('pulse',{s:n}); }catch(e){}
+  try{ save(); }catch(e){}
+  const el=document.getElementById('ask-card'); if(!el) return;
+  if(!n){ askRender(); return; }
+  el.innerHTML=`<div class="mc-card"><div class="mc-q">${n>=4?'Glad it helps! What would make it a 5?':'Thanks for being straight. What would make it more useful?'}</div>
+    <p class="mc-p">Optional. Please leave out personal details like account numbers.</p>
+    <textarea id="ask-msg" class="ask-ta" maxlength="1000" aria-label="What would make it more useful"></textarea>
+    <div class="mc-acts"><button type="button" class="mc-go" onclick="askSend('app',${n},'ask-msg','ask-card')">Send</button><button type="button" class="mc-x" onclick="askRender()">Done</button></div></div>`;
+}
+async function askSend(kind, score, taId, boxId){
+  const ta=document.getElementById(taId), msg=((ta&&ta.value)||'').trim().slice(0,1000);
+  if(msg){ try{ const {error}=await sb.from('site_feedback').insert({vid:(QA&&QA.vid)||null, page:'app', kind, score:score||null, msg}); if(error) throw error; }
+    catch(e){ console.warn('feedback',e); showToast('That did not send. Try again in a moment.'); return; } }
+  try{ QA.log('feedback',{kind, len:msg.length}); }catch(e){}
+  const box=document.getElementById(boxId);
+  if(boxId==='mc-ov'){ mcClose(); showToast(msg?'Sent. Thank you!':'Closed.'); return; }
+  if(box) box.innerHTML='<div class="mc-card"><div class="mc-q" style="margin:0">Thank you. Every message gets read.</div></div>';
+  setTimeout(()=>askRender(),2200);
+}
+function askFeedback(){
+  document.getElementById('mc-ov')?.remove();
+  const ov=document.createElement('div'); ov.id='mc-ov'; ov.className='imp-ov';
+  ov.innerHTML=`<div class="imp-box" role="dialog" aria-modal="true" aria-labelledby="fb-t"><div class="imp-head"><h3 id="fb-t">Send feedback</h3>
+    <p>A bug, an idea, something confusing, anything. Lucas reads every one. Please leave out personal details like account numbers.</p></div>
+    <div class="mc-body"><textarea id="fb-msg" class="ask-ta" maxlength="1000" aria-label="Your feedback"></textarea></div>
+    <div class="imp-foot"><button type="button" class="x" onclick="mcClose()">Cancel</button><button type="button" class="go" onclick="askSend('general',null,'fb-msg','mc-ov')">Send</button></div></div>`;
+  ov.addEventListener('click',e=>{ if(e.target===ov) mcClose(); });
+  document.body.appendChild(ov); setTimeout(()=>document.getElementById('fb-msg')?.focus(),50);
+}
+
 function swSetup(){
   const v=parseFloat(String((document.getElementById('sw-pay')||{}).value||'').replace(/[, $]/g,''))||0, err=document.getElementById('sw-err');
   if(!(v>0) || v>1000000){ if(err) err.textContent='Type roughly what you take home each month, for example 3,200.'; return; }
@@ -18795,6 +18871,93 @@ function qiAnalyse(rows){
   return { list, L, steps, worst, sources, devices, bounceSecs, stopAt, ctaAt, errors, signupErrors, pages, F, total:rows.length };
 }
 
+// ── Insights, the wider view: every page, every source (AI included), what people use, and what they told us ──
+const QI_PAGES={calc:['Debt payoff calculator','/debt-payoff-calculator/'],card:['Credit card payoff','/credit-card-payoff-calculator/'],tfsa:['TFSA room calculator','/tfsa-contribution-room-calculator/'],
+  home:['Down payment calculator','/down-payment-calculator/'],afford:['Mortgage affordability','/mortgage-affordability-calculator/'],ltt:['Land transfer tax','/ontario-land-transfer-tax-calculator/'],
+  bud:['Budget calculator','/budget-calculator/'],ef:['Emergency fund','/emergency-fund-calculator/'],limits:['2027 money limits','/money-limits-2027/'],tfsa27:['TFSA limit 2027','/tfsa-limit-2027/'],
+  rrsp27:['RRSP limit 2027','/rrsp-limit-2027/'],fhsa27:['FHSA limit 2027','/fhsa-limit-2027/'],bank:['Bank earnings dates','/canadian-bank-earnings/'],hm:['Market heatmaps','/tsx-heatmap/']};
+const QI_STATIC={'/about/':'About','/how-we-check/':'How we check','/privacy/':'Privacy policy','/terms/':'Terms'};
+const QI_FEATURES=[['bm_quickstart','Started a budget'],['bm_log','Logged spending'],['imp_done','Imported a bank paste'],['debt_try','Tried an extra debt payment'],['mc_done','Did a monthly check-in'],
+  ['mc_email','Turned on the monthly email',p=>p.on],['sw_setup','Set up This week'],['dq_done','Finished a daily quest'],['iv_planted','Added an investment'],['grove_tl','Fast-forwarded the grove'],
+  ['hg_tab','Used the home guide'],['ai_ask','Asked the AI coach'],['wrapped_open','Opened Money Wrapped'],['challenge_send','Sent a challenge'],['cal_add','Added a calendar check-in'],
+  ['paywall','Saw the paywall'],['checkout','Started checkout']];
+const QI_HEARD={google:'Google search',ai:'ChatGPT or another AI',instagram:'Instagram',tiktok:'TikTok',facebook:'Facebook',friend:'A friend',campus:'Campus or a poster',other:'Somewhere else'};
+function qiChannel(s){ s=String(s||'').toLowerCase();
+  if(!s||s==='direct') return 'Direct or unknown';
+  if(/chatgpt|openai|perplexity|claude\.ai|copilot|gemini|you\.com|phind|meta\.ai|grok/.test(s)) return 'AI assistants';
+  if(/google/.test(s)) return 'Google';
+  if(/bing|duckduckgo|yahoo|ecosia|brave|qwant/.test(s)) return 'Bing and other search';
+  if(/facebook|^fb|instagram|^ig$|tiktok|reddit|youtube|t\.co$|twitter|x\.com|linkedin|threads|pinterest/.test(s)) return 'Social';
+  if(/flyer|business_card|offline|qr/.test(s)) return 'Flyers and cards';
+  if(/outreach|email|mail/.test(s)) return 'Email and outreach';
+  if(/short_?link/.test(s)) return 'Short links';
+  if(/organic/.test(s)) return 'Search (tagged links)';
+  if(/stripe/.test(s)) return 'Back from checkout';
+  return 'Other: '+s.slice(0,30);
+}
+async function qiFetchFb(days){
+  const since=new Date(Date.now()-days*864e5).toISOString();
+  const {data,error}=await sb.from('site_feedback').select('created_at,page,kind,score,msg').gte('created_at',since).order('created_at',{ascending:false}).limit(200);
+  if(error) throw error; return data||[];
+}
+function qiWide(rows, fb, A){
+  const acct=new Set(A.list.filter(v=>v.signedUp || v.ev.some(e=>e.name==='signin')).map(v=>v.vid));
+  // first touch per visitor, across the app and every public page
+  const first=new Map(), pageOf=n=>{ const m=n.match(/^([a-z0-9]+)_view$/); return m&&QI_PAGES[m[1]]?QI_PAGES[m[1]][0]:null; };
+  rows.forEach(r=>{ if(first.has(r.vid)) return; const p=r.props||{};
+    if(r.name==='visit') first.set(r.vid,{src:p.src,land:'Homepage'});
+    else if(r.name==='pg_view') first.set(r.vid,{src:p.src||p.ref,land:QI_STATIC[p.p]||p.p});
+    else if(/_view$/.test(r.name) && r.name!=='lp_view' && pageOf(r.name)) first.set(r.vid,{src:p.src||p.ref,land:pageOf(r.name)});
+  });
+  const ch=new Map(); first.forEach((f,vid)=>{ const k=qiChannel(f.src); const g=ch.get(k)||{k,vis:0,acc:0,land:{}}; g.vis++; if(acct.has(vid)) g.acc++; g.land[f.land]=(g.land[f.land]||0)+1; ch.set(k,g); });
+  const channels=[...ch.values()].sort((a,b)=>b.vis-a.vis).map(g=>({...g,top:Object.entries(g.land).sort((a,b)=>b[1]-a[1])[0][0]}));
+  // public pages
+  const ppl=(f)=>new Set(rows.filter(f).map(r=>r.vid)).size;
+  const helpful=(path)=>{ const h=rows.filter(r=>r.name==='helpful'&&(r.props||{}).p===path||(path==='/tsx-heatmap/'&&r.name==='helpful'&&(r.props||{}).p==='/sp500-heatmap/'));
+    return {y:h.filter(r=>(r.props||{}).v===1).length, n:h.filter(r=>(r.props||{}).v===0).length}; };
+  const readOn=(path)=>ppl(r=>r.name==='pg_read'&&((r.props||{}).p===path||(path==='/tsx-heatmap/'&&(r.props||{}).p==='/sp500-heatmap/')));
+  const pages=Object.entries(QI_PAGES).map(([k,[label,path]])=>({label, vis:ppl(r=>r.name===k+'_view'), used:ppl(r=>r.name.startsWith(k+'_')&&!/_view$|_cta$/.test(r.name)),
+      cta:ppl(r=>r.name===k+'_cta'), read:readOn(path), h:helpful(path)}))
+    .concat(Object.entries(QI_STATIC).map(([path,label])=>({label, vis:ppl(r=>r.name==='pg_view'&&(r.props||{}).p===path), used:null, cta:null, read:readOn(path), h:helpful(path)})))
+    .filter(p=>p.vis||p.read).sort((a,b)=>b.vis-a.vis);
+  // inside the app
+  const features=QI_FEATURES.map(([n,label,f])=>{ const vs=new Set(rows.filter(r=>r.name===n&&(!f||f(r.props||{}))).map(r=>r.vid)); return {label, ppl:vs.size, acc:[...vs].filter(v=>acct.has(v)).length}; }).filter(x=>x.ppl);
+  // what people told us
+  const heardBy=new Map(); rows.filter(r=>r.name==='heard').forEach(r=>heardBy.set(r.vid,(r.props||{}).how));
+  const heard={}; heardBy.forEach(h=>{ if(h&&h!=='skip') heard[h]=(heard[h]||0)+1; });
+  const pulses=rows.filter(r=>r.name==='pulse'&&(r.props||{}).s>0).map(r=>r.props.s);
+  const pulseAvg=pulses.length?pulses.reduce((a,b)=>a+b,0)/pulses.length:null;
+  const hy=rows.filter(r=>r.name==='helpful'&&(r.props||{}).v===1).length, hn=rows.filter(r=>r.name==='helpful'&&(r.props||{}).v===0).length;
+  return {channels, pages, features, heard, pulses, pulseAvg, hy, hn, fb:fb||[], all:first.size, ai:(ch.get('AI assistants')||{vis:0}).vis};
+}
+function qiWideHtml(W){
+  const P=x=>Math.round(x*100)+'%', t=(rows,cols)=>`<table class="qi-t"><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr>${rows.join('')}</table>`;
+  const none=s=>`<div class="qi-empty small">${s}</div>`;
+  const chan=W.channels.length?t(W.channels.map(c=>`<tr><td>${escHtml(c.k)}</td><td>${c.vis}</td><td>${c.acc}</td><td>${escHtml(c.top)}</td></tr>`),['Came from','Visitors','Accounts','Landed on most']):none('No visits yet.');
+  const pages=W.pages.length?t(W.pages.map(p=>`<tr><td>${escHtml(p.label)}</td><td>${p.vis}</td><td>${p.used==null?'':p.used}</td><td>${p.read}</td><td>${p.cta==null?'':p.cta}</td><td>${p.h.y||p.h.n?`${p.h.y} yes, ${p.h.n} no`:''}</td></tr>`),['Page','Visitors','Used it','Read it','To the app','Helpful?'])
+    :none('No visits to the free pages in this range.');
+  const feat=W.features.length?t(W.features.map(f=>`<tr><td>${escHtml(f.label)}</td><td>${f.ppl}</td><td>${f.acc}</td></tr>`),['Feature','People','With an account']):none('Nobody has used these yet in this range.');
+  const heard=Object.keys(W.heard).length?t(Object.entries(W.heard).sort((a,b)=>b[1]-a[1]).map(([k,c])=>`<tr><td>${escHtml(QI_HEARD[k]||k)}</td><td>${c}</td></tr>`),['How they heard','People']):none('No answers yet. Signed-in users see this question once.');
+  const pulse=W.pulses.length?`<div class="qi-kpis"><div><span>Usefulness, 1 to 5</span><b>${W.pulseAvg.toFixed(1)}</b></div><div><span>Answers</span><b>${W.pulses.length}</b></div><div><span>Gave 4 or 5</span><b>${P(W.pulses.filter(s=>s>=4).length/W.pulses.length)}</b></div></div>`:none('No ratings yet. People are asked on their third day using the app.');
+  const fb=W.fb.filter(f=>f.msg).slice(0,15);
+  const msgs=fb.length?fb.map(f=>`<div class="qi-fb"><div class="qi-sm">${new Date(f.created_at).toLocaleDateString('en-CA',{month:'short',day:'numeric'})} · ${escHtml(f.kind==='page'?(QI_STATIC[f.page]||(Object.values(QI_PAGES).find(x=>x[1]===f.page)||[f.page])[0]):f.kind==='app'?'In the app':'Feedback button')}${f.score!=null?` · ${f.kind==='page'?(f.score?'found it helpful':'not helpful'):`rated ${f.score}/5`}`:''}</div><p>${escHtml(f.msg)}</p></div>`).join(''):none('No written feedback yet.');
+  return `<div class="qi-h">Where people come from (every page)</div><div class="qi-sm">First page each visitor saw, grouped by source. AI assistants means ChatGPT, Perplexity, Copilot, Gemini and similar.</div>${chan}
+    <div class="qi-h">Free pages</div><div class="qi-sm">Used it: typed a number or used the tool. Read it: scrolled most of the page or stayed 45 seconds.</div>${pages}
+    <div class="qi-h">Inside the app</div>${feat}
+    <div class="qi-h">What people told you</div><div class="qi-grid"><div>${heard}</div><div>${pulse}${W.hy||W.hn?`<div class="qi-sm" style="margin-top:0.6rem">Free pages rated helpful: ${W.hy} yes, ${W.hn} no.</div>`:''}</div></div>
+    <div class="qi-sm" style="margin-top:0.8rem">Written feedback</div>${msgs}`;
+}
+function qiWideReport(W){
+  let t=`\nAll visitors (any page): ${W.all}. From AI assistants: ${W.ai}.\n\nWhere people came from:\n`;
+  W.channels.forEach(c=>t+=`- ${c.k}: ${c.vis} visitors, ${c.acc} accounts, landed most on ${c.top}\n`);
+  t+=`\nFree pages (visitors / used / read / to app / helpful):\n`; W.pages.forEach(p=>t+=`- ${p.label}: ${p.vis} / ${p.used??'-'} / ${p.read} / ${p.cta??'-'} / ${p.h.y} yes ${p.h.n} no\n`);
+  t+=`\nApp features (people, with account):\n`; W.features.forEach(f=>t+=`- ${f.label}: ${f.ppl}, ${f.acc}\n`);
+  t+=`\nHow they heard:\n`; Object.entries(W.heard).forEach(([k,c])=>t+=`- ${QI_HEARD[k]||k}: ${c}\n`);
+  if(W.pulses.length) t+=`\nUsefulness: ${W.pulseAvg.toFixed(1)}/5 from ${W.pulses.length} answers\n`;
+  const fb=W.fb.filter(f=>f.msg); if(fb.length){ t+=`\nWritten feedback:\n`; fb.slice(0,15).forEach(f=>t+=`- (${f.kind}${f.score!=null?', '+f.score:''}) ${f.msg.replace(/\s+/g,' ').slice(0,300)}\n`); }
+  return t;
+}
+
 function qiEnsure(){
   if($q('qi-overlay')) return;
   const el=document.createElement('div'); el.id='qi-overlay'; el.className='qi-overlay';
@@ -18812,9 +18975,9 @@ function qiClose(){ $q('qi-overlay')?.classList.remove('open'); }
 async function qiLoad(days){
   QI.days=days; document.querySelectorAll('#qi-range button').forEach(b=>b.classList.toggle('on', +b.dataset.d===days));
   const body=$q('qi-body'); body.innerHTML='<div class="qi-empty">Loading…</div>';
-  try{ QI.rows=await qiFetch(days); }catch(e){ body.innerHTML=`<div class="qi-empty">Couldn't load events: ${escHtml(e.message||String(e))}. Make sure you ran analytics_setup.sql in Supabase and you're signed in with the owner account.</div>`; return; }
-  if(!QI.rows.length){ body.innerHTML='<div class="qi-empty">No visits recorded yet in this range. Tracking starts once the update is live, so check back after some traffic comes in.</div>'; QI.A=null; return; }
-  const A=QI.A=qiAnalyse(QI.rows);
+  try{ QI.rows=await qiFetch(days); QI.fb=await qiFetchFb(days).catch(()=>[]); }catch(e){ body.innerHTML=`<div class="qi-empty">Couldn't load events: ${escHtml(e.message||String(e))}. Make sure you ran analytics_setup.sql in Supabase and you're signed in with the owner account.</div>`; return; }
+  if(!QI.rows.length && !(QI.fb||[]).length){ body.innerHTML='<div class="qi-empty">No visits recorded yet in this range. Tracking starts once the update is live, so check back after some traffic comes in.</div>'; QI.A=null; return; }
+  const A=QI.A=qiAnalyse(QI.rows); const W=QI.W=qiWide(QI.rows,QI.fb,A);
   const P=x=>Math.round(x*100)+'%';
   const top=A.steps[0].count;
   const small = top<30 ? `<div class="qi-note">Only ${top} visitor${top===1?'':'s'} so far, so treat these numbers as early hints. They get reliable after about 100.</div>` : '';
@@ -18834,9 +18997,10 @@ async function qiLoad(days){
   const ctas=Object.entries(A.ctaAt).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k,c])=>`<tr><td>${escHtml(k)}</td><td>${c}</td></tr>`);
   const errs=A.errors.slice(0,5).map(e=>`<tr><td>${escHtml(e.m)}</td><td>${e.people}</td></tr>`);
   body.innerHTML=`${small}
-    <div class="qi-kpis"><div><span>Visitors</span><b>${top}</b></div><div><span>New accounts</span><b>${A.steps[4].count}</b></div><div><span>Visitor to account</span><b>${top?P(A.steps[4].count/top):'0%'}</b></div><div><span>Typical bounce</span><b>${A.bounceSecs!=null?A.bounceSecs+'s':'n/a'}</b></div></div>
+    <div class="qi-kpis"><div><span>All visitors</span><b>${W.all}</b></div><div><span>From AI tools</span><b>${W.ai}</b></div><div><span>Homepage visitors</span><b>${top}</b></div><div><span>New accounts</span><b>${A.steps[4].count}</b></div><div><span>Visitor to account</span><b>${top?P(A.steps[4].count/top):'0%'}</b></div><div><span>Typical bounce</span><b>${A.bounceSecs!=null?A.bounceSecs+'s':'n/a'}</b></div></div>
     <div class="qi-h">What's driving people away</div>${fixes}
     <div class="qi-h">The funnel</div><div class="qi-funnel">${funnel}</div>
+    ${qiWideHtml(W)}
     <div class="qi-grid"><div><div class="qi-h">Where people stopped scrolling</div><div class="qi-sm">People who left without tapping anything, by the furthest section they reached.</div>${stop}</div>
       <div><div class="qi-h">Buttons tapped</div>${ctas.length?table(ctas,['Button · where','Taps']):'<div class="qi-empty small">None yet.</div>'}</div></div>
     <div class="qi-grid"><div><div class="qi-h">Traffic sources</div>${src}</div><div><div class="qi-h">Phone vs computer</div>${dev}</div></div>
@@ -18855,6 +19019,7 @@ function qiReport(){
   t+=`\nApp pages opened:\n`; Object.entries(A.pages).sort((a,b)=>b[1]-a[1]).slice(0,12).forEach(([k,c])=>t+=`- ${k}: ${c}\n`);
   if(A.errors.length){ t+=`\nErrors:\n`; A.errors.slice(0,8).forEach(e=>t+=`- ${e.m} (${e.people} people)\n`); }
   if(A.signupErrors.length){ t+=`\nSign-up form messages:\n`; A.signupErrors.slice(0,5).forEach(([m,c])=>t+=`- ${m} (${c})\n`); }
+  if(QI.W) t+=qiWideReport(QI.W);
   t+=`\nProblems found:\n`; A.F.forEach((f,i)=>t+=`${i+1}. ${f.title}. ${f.why}\n`);
   return t;
 }
