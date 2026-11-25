@@ -145,7 +145,7 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
 <details><summary>What is the minimum down payment in Canada?</summary><p>5% of the first $500,000, plus 10% of any part above $500,000, for homes under $1.5 million. At $1.5 million or more it is 20%.</p></details>
 <details><summary>How much is the minimum on a $600,000 home?</summary><p>$35,000. That is $25,000 on the first $500,000 plus $10,000 on the other $100,000.</p></details>
 <details><summary>Is it worth waiting until I have 20%?</summary><p>Waiting saves the insurance premium, but home prices and rents can change while you wait. Neither choice is always right. The calculator shows both dates so you can see the trade.</p></details>
-<details><summary>How does an FHSA help?</summary><p>A First Home Savings Account lets you put in up to $8,000 a year, up to $40,000 in total. What you put in can lower your income tax, and money taken out for a qualifying first home is not taxed. Up to $8,000 of unused room carries forward to the next year once the account is open.</p></details>
+<details><summary>How does an FHSA help?</summary><p>See the <a href="/fhsa-limit-2027/">FHSA limit for 2027</a> for this year's numbers. A First Home Savings Account lets you put in up to $8,000 a year, up to $40,000 in total. What you put in can lower your income tax, and money taken out for a qualifying first home is not taxed. Up to $8,000 of unused room carries forward to the next year once the account is open.</p></details>
 <details><summary>Can the down payment be a gift?</summary><p>Often yes, from a close family member, with a signed gift letter. Lenders have their own rules, so ask yours early.</p></details>
 
 <h2>What this calculator assumes</h2>
@@ -261,11 +261,11 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
   var q={}; try{ q=Object.fromEntries(new URLSearchParams(location.search)); }catch(e){}
   var ref=''; try{ var r=document.referrer?new URL(document.referrer).hostname:''; ref=r&&r!==location.hostname?r:''; }catch(e){}
   if(VIEW) ev('pg_view',{src:(q.utm_source||'').slice(0,40),ref:ref.slice(0,60)});
-  // read: reached 60% of the page or stayed 45 seconds
+  // read: at least 10 seconds on the page and 60% scrolled, or 45 seconds
   var read=false, t0=Date.now();
   function rd(){ if(read) return; var h=document.documentElement, f=(h.scrollTop+innerHeight)/Math.max(1,h.scrollHeight);
-    if(f>0.6||Date.now()-t0>45000){ read=true; ev('pg_read',{s:Math.round((Date.now()-t0)/1000)}); } }
-  addEventListener('scroll',rd,{passive:true}); setTimeout(rd,45500);
+    var el=Date.now()-t0; if((f>0.6&&el>10000)||el>45000){ read=true; ev('pg_read',{s:Math.round(el/1000)}); } }
+  addEventListener('scroll',rd,{passive:true}); setTimeout(rd,10500); setTimeout(rd,45500);
   // was this helpful
   var foot=document.querySelector('footer'); if(!foot) return;
   var box=document.createElement('div'); box.className='qs-help';

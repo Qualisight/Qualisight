@@ -286,11 +286,11 @@ details.more{margin-top:0.8rem}details.more summary{cursor:pointer;min-height:44
   var q={}; try{ q=Object.fromEntries(new URLSearchParams(location.search)); }catch(e){}
   var ref=''; try{ var r=document.referrer?new URL(document.referrer).hostname:''; ref=r&&r!==location.hostname?r:''; }catch(e){}
   if(VIEW) ev('pg_view',{src:(q.utm_source||'').slice(0,40),ref:ref.slice(0,60)});
-  // read: reached 60% of the page or stayed 45 seconds
+  // read: at least 10 seconds on the page and 60% scrolled, or 45 seconds
   var read=false, t0=Date.now();
   function rd(){ if(read) return; var h=document.documentElement, f=(h.scrollTop+innerHeight)/Math.max(1,h.scrollHeight);
-    if(f>0.6||Date.now()-t0>45000){ read=true; ev('pg_read',{s:Math.round((Date.now()-t0)/1000)}); } }
-  addEventListener('scroll',rd,{passive:true}); setTimeout(rd,45500);
+    var el=Date.now()-t0; if((f>0.6&&el>10000)||el>45000){ read=true; ev('pg_read',{s:Math.round(el/1000)}); } }
+  addEventListener('scroll',rd,{passive:true}); setTimeout(rd,10500); setTimeout(rd,45500);
   return; // no feedback box on legal pages
   var foot=document.querySelector('footer'); if(!foot) return;
   var box=document.createElement('div'); box.className='qs-help';

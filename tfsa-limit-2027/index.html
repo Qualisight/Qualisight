@@ -97,6 +97,8 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
 <p class="note">Source: <a href="https://www.canada.ca/en/revenue-agency/services/tax/registered-plans-administrators/pspa/mp-rrsp-dpsp-tfsa-limits-ympe.html" target="_blank" rel="noopener">Canada Revenue Agency, TFSA dollar limits</a>.</p>
 
 <p>Every 2027 limit and deadline on one page: <a href="/money-limits-2027/">Canada money limits 2027</a>.</p>
+<p>Saving for a first home too? An FHSA adds $8,000 of room a year on top of your TFSA and RRSP. See the <a href="/fhsa-limit-2027/">FHSA limit for 2027</a>.</p>
+
 <h2>Common questions</h2>
 <details><summary>What is the TFSA limit for 2027?</summary><p>The Canada Revenue Agency has not announced it yet. Its limits table, last updated October 28, 2026, lists $7,000 for 2026 and no figure for 2027. Many Canadian finance writers expect $7,500 because of how the limit follows inflation, but treat that as an estimate until the CRA confirms it.</p></details>
 <details><summary>When will the 2027 TFSA limit be announced?</summary><p>The CRA usually confirms the next year&#x27;s limit in late November or early December. This page will be updated the day it is published.</p></details>
@@ -164,11 +166,11 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
   var q={}; try{ q=Object.fromEntries(new URLSearchParams(location.search)); }catch(e){}
   var ref=''; try{ var r=document.referrer?new URL(document.referrer).hostname:''; ref=r&&r!==location.hostname?r:''; }catch(e){}
   if(VIEW) ev('pg_view',{src:(q.utm_source||'').slice(0,40),ref:ref.slice(0,60)});
-  // read: reached 60% of the page or stayed 45 seconds
+  // read: at least 10 seconds on the page and 60% scrolled, or 45 seconds
   var read=false, t0=Date.now();
   function rd(){ if(read) return; var h=document.documentElement, f=(h.scrollTop+innerHeight)/Math.max(1,h.scrollHeight);
-    if(f>0.6||Date.now()-t0>45000){ read=true; ev('pg_read',{s:Math.round((Date.now()-t0)/1000)}); } }
-  addEventListener('scroll',rd,{passive:true}); setTimeout(rd,45500);
+    var el=Date.now()-t0; if((f>0.6&&el>10000)||el>45000){ read=true; ev('pg_read',{s:Math.round(el/1000)}); } }
+  addEventListener('scroll',rd,{passive:true}); setTimeout(rd,10500); setTimeout(rd,45500);
   // was this helpful
   var foot=document.querySelector('footer'); if(!foot) return;
   var box=document.createElement('div'); box.className='qs-help';

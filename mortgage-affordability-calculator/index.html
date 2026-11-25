@@ -151,6 +151,8 @@ details.more{margin-top:0.8rem}details.more summary{cursor:pointer;min-height:44
 <details><summary>Can I get a 30-year mortgage?</summary><p>With 20% or more down, yes. With less than 20% down, 30 years is allowed for first-time buyers and for new builds since December 15, 2024. Otherwise insured mortgages are capped at 25 years.</p></details>
 <details><summary>Does the bank have to approve the maximum?</summary><p>No. This is the ceiling under the ratio rules. Lenders also look at your credit, job history and the property, and many people choose to borrow less.</p></details>
 
+<p>Still saving for the down payment? An FHSA gives you $8,000 of tax-deductible room a year. See the <a href="/fhsa-limit-2027/">FHSA limit for 2027</a> and the <a href="/down-payment-calculator/">down payment calculator</a>.</p>
+
 <h2>What this calculator assumes</h2>
 <p>It uses the stress test rate, CMHC's 39% GDS and 44% TDS limits, CMHC's standard premiums, and payments with interest compounded twice a year as Canadian mortgages are. Property tax defaults to 1% of the price and heat to $120 a month; change them for your city. Lenders can be stricter, and uninsured lenders can use different limits. Sources: <a href="https://www.osfi-bsif.gc.ca/en/supervision/financial-institutions/banks/minimum-qualifying-rate-uninsured-mortgages">Minimum qualifying rate</a> (OSFI), <a href="https://www.cmhc-schl.gc.ca/consumers/home-buying/calculators/mortgage-affordability-calculator">Mortgage affordability</a> (CMHC), and <a href="https://www.canada.ca/en/financial-consumer-agency/services/mortgages/calculate-mortgage-affordability.html">Calculate how much you can afford</a> (Financial Consumer Agency of Canada). This page is information, not financial advice.</p>
 
@@ -251,11 +253,11 @@ details.more{margin-top:0.8rem}details.more summary{cursor:pointer;min-height:44
   var q={}; try{ q=Object.fromEntries(new URLSearchParams(location.search)); }catch(e){}
   var ref=''; try{ var r=document.referrer?new URL(document.referrer).hostname:''; ref=r&&r!==location.hostname?r:''; }catch(e){}
   if(VIEW) ev('pg_view',{src:(q.utm_source||'').slice(0,40),ref:ref.slice(0,60)});
-  // read: reached 60% of the page or stayed 45 seconds
+  // read: at least 10 seconds on the page and 60% scrolled, or 45 seconds
   var read=false, t0=Date.now();
   function rd(){ if(read) return; var h=document.documentElement, f=(h.scrollTop+innerHeight)/Math.max(1,h.scrollHeight);
-    if(f>0.6||Date.now()-t0>45000){ read=true; ev('pg_read',{s:Math.round((Date.now()-t0)/1000)}); } }
-  addEventListener('scroll',rd,{passive:true}); setTimeout(rd,45500);
+    var el=Date.now()-t0; if((f>0.6&&el>10000)||el>45000){ read=true; ev('pg_read',{s:Math.round(el/1000)}); } }
+  addEventListener('scroll',rd,{passive:true}); setTimeout(rd,10500); setTimeout(rd,45500);
   // was this helpful
   var foot=document.querySelector('footer'); if(!foot) return;
   var box=document.createElement('div'); box.className='qs-help';

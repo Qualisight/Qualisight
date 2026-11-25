@@ -18942,7 +18942,7 @@ function qiWideHtml(W){
   const fb=W.fb.filter(f=>f.msg).slice(0,15);
   const msgs=fb.length?fb.map(f=>`<div class="qi-fb"><div class="qi-sm">${new Date(f.created_at).toLocaleDateString('en-CA',{month:'short',day:'numeric'})} · ${escHtml(f.kind==='page'?(QI_STATIC[f.page]||(Object.values(QI_PAGES).find(x=>x[1]===f.page)||[f.page])[0]):f.kind==='app'?'In the app':'Feedback button')}${f.score!=null?` · ${f.kind==='page'?(f.score?'found it helpful':'not helpful'):`rated ${f.score}/5`}`:''}</div><p>${escHtml(f.msg)}</p></div>`).join(''):none('No written feedback yet.');
   return `<div class="qi-h">Where people come from (every page)</div><div class="qi-sm">First page each visitor saw, grouped by source. AI assistants means ChatGPT, Perplexity, Copilot, Gemini and similar.</div>${chan}
-    <div class="qi-h">Free pages</div><div class="qi-sm">Used it: typed a number or used the tool. Read it: scrolled most of the page or stayed 45 seconds.</div>${pages}
+    <div class="qi-h">Free pages</div><div class="qi-sm">Used it: typed a number or used the tool. Read it: at least 10 seconds and most of the page scrolled, or 45 seconds.</div>${pages}
     <div class="qi-h">Inside the app</div>${feat}
     <div class="qi-h">What people told you</div><div class="qi-grid"><div>${heard}</div><div>${pulse}${W.hy||W.hn?`<div class="qi-sm" style="margin-top:0.6rem">Free pages rated helpful: ${W.hy} yes, ${W.hn} no.</div>`:''}</div></div>
     <div class="qi-sm" style="margin-top:0.8rem">Written feedback</div>${msgs}`;

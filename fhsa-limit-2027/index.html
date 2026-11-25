@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>FHSA Limit 2027: $8,000, Up to $16,000 With Carryforward | Qualisight</title>
-<meta name="description" content="The 2027 FHSA limit is $8,000 plus up to $8,000 carried forward. Work out your own 2027 FHSA room, and why opening one before December 31 matters.">
+<meta name="description" content="The FHSA limit for 2027 is $8,000 a year, up to $16,000 with carryforward, and $40,000 lifetime. FHSA limits by year since 2023, your 2027 room, and why December 31 matters.">
 <link rel="canonical" href="https://qualisight.ca/fhsa-limit-2027/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="FHSA limit 2027: your room">
@@ -88,6 +88,18 @@ select{width:100%;background:#0e121a;border:1px solid var(--border);border-radiu
 
 <div class="cta"><p><b>See the road to your first home.</b><small>Qualisight puts your FHSA, minimum down payment and the lender's stress test on one road, with the month you could buy. The road home is free for 14 days, then $12 a month. Budget and debt tools are free forever. No card, no bank login.</small></p>
   <a class="btn" href="/?utm_source=organic&amp;utm_campaign=fhsa_2027&amp;signup=1" id="cta">Start free</a></div>
+
+<h2>FHSA limits by year</h2>
+<p>The FHSA started on April 1, 2023. The yearly limit has been $8,000 every year since, and the most you can ever put in is $40,000 across all your FHSAs.</p>
+<table class="ytab" aria-label="FHSA limits by year"><thead><tr><th>Year</th><th>New room</th><th>Most you can put in</th></tr></thead><tbody>
+<tr><td>2023</td><td>$8,000</td><td>$8,000 (first year, nothing to carry forward)</td></tr>
+<tr><td>2024</td><td>$8,000</td><td>$16,000 with carryforward</td></tr>
+<tr><td>2025</td><td>$8,000</td><td>$16,000 with carryforward</td></tr>
+<tr><td>2026</td><td>$8,000</td><td>$16,000 with carryforward</td></tr>
+<tr><td>2027</td><td>$8,000 (no change announced)</td><td>$16,000 with carryforward</td></tr>
+<tr><td>Lifetime</td><td colspan="2">$40,000 across all your FHSAs</td></tr>
+</tbody></table>
+<p>Carryforward is capped at $8,000, so the most you can add in any one year is $16,000. Room only starts once you open your first FHSA.</p>
 
 <h2>How FHSA room works</h2>
 <p>You get $8,000 of room in the year you open your first FHSA. Each year after that you get another $8,000. Room you do not use carries into the next year, but only up to $8,000. The total you can ever put in is $40,000. <a href="https://www.canada.ca/en/revenue-agency/services/tax/individuals/educational-programs/saving-future.html" target="_blank" rel="noopener">The CRA explains it here.</a></p>
@@ -196,11 +208,11 @@ select{width:100%;background:#0e121a;border:1px solid var(--border);border-radiu
   var q={}; try{ q=Object.fromEntries(new URLSearchParams(location.search)); }catch(e){}
   var ref=''; try{ var r=document.referrer?new URL(document.referrer).hostname:''; ref=r&&r!==location.hostname?r:''; }catch(e){}
   if(VIEW) ev('pg_view',{src:(q.utm_source||'').slice(0,40),ref:ref.slice(0,60)});
-  // read: reached 60% of the page or stayed 45 seconds
+  // read: at least 10 seconds on the page and 60% scrolled, or 45 seconds
   var read=false, t0=Date.now();
   function rd(){ if(read) return; var h=document.documentElement, f=(h.scrollTop+innerHeight)/Math.max(1,h.scrollHeight);
-    if(f>0.6||Date.now()-t0>45000){ read=true; ev('pg_read',{s:Math.round((Date.now()-t0)/1000)}); } }
-  addEventListener('scroll',rd,{passive:true}); setTimeout(rd,45500);
+    var el=Date.now()-t0; if((f>0.6&&el>10000)||el>45000){ read=true; ev('pg_read',{s:Math.round(el/1000)}); } }
+  addEventListener('scroll',rd,{passive:true}); setTimeout(rd,10500); setTimeout(rd,45500);
   // was this helpful
   var foot=document.querySelector('footer'); if(!foot) return;
   var box=document.createElement('div'); box.className='qs-help';
