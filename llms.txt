@@ -27,6 +27,8 @@ Key facts:
 - [TFSA Limit 2027: Not Announced Yet, and Your Room on Jan 1](https://qualisight.ca/tfsa-limit-2027/): Is the 2027 TFSA limit $7,500? What the CRA has published so far, how the limit is set, and a calculator for your total TFSA room on January 1, 2027.
 - [TSX 60 Heatmap Today: Canadian Stock Market Map](https://qualisight.ca/tsx-heatmap/): Free TSX 60 heatmap. See today's Canadian stock market at a glance: every S&P/TSX 60 stock sized by index weight and coloured by today's move, by sector. 1 day, 1 week, 1 month.
 
+- [Year-end money deadlines 2026](https://qualisight.ca/year-end-money-deadlines-2026/): every December 31 deadline in Canada for 2026 (tax-loss selling on December 30, TFSA withdrawals, opening an FHSA, the RESP grant, donations) and the RRSP deadline of March 1, 2027, with sources.
+
 ## About
 
 - [How we check our calculators](https://qualisight.ca/how-we-check/): every calculator tested against official examples from the FCAC, CRA, CMHC, OSFI and Ontario, with the official answer and Qualisight's result side by side. All tests match as of November 24, 2026.
