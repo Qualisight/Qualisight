@@ -70,6 +70,10 @@ details{border-top:1px solid var(--border);padding:0.7rem 0}summary{cursor:point
 footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);color:var(--muted);font-size:0.85rem}
 @media(max-width:760px){.grid{grid-template-columns:1fr}h1{font-size:1.65rem}.week{grid-template-columns:1fr}th:nth-child(4),td:nth-child(4){display:none}}
 .bk-cal{min-height:40px;padding:0 0.8rem;border-radius:10px;border:1px solid var(--border);background:transparent;color:inherit;font:inherit;font-size:0.85rem;font-weight:600;cursor:pointer;margin:0 0.5rem 0.4rem 0}.bk-cal:hover{border-color:var(--green)}
+.rl{margin:1.2rem 0 1.4rem;padding:1rem 1.05rem;border-radius:16px;border:1px solid rgba(74,222,128,0.4);background:rgba(74,222,128,0.06)}.rl b{display:block;font-size:1.08rem;margin-bottom:0.25rem}.rl p{margin:0 0 0.7rem;color:var(--muted);font-size:0.92rem;line-height:1.45}
+.rl-row{display:flex;gap:0.5rem;flex-wrap:wrap}.rl-row input{flex:1 1 220px;min-height:46px;border-radius:12px;border:1px solid var(--border);background:var(--bg,#0b0d12);color:inherit;font:inherit;padding:0 0.8rem}.rl-row button{min-height:46px;padding:0 1.1rem;border:0;border-radius:12px;background:var(--green);color:#06140b;font:inherit;font-weight:800;cursor:pointer}
+.rl-ok{display:flex;gap:0.55rem;align-items:flex-start;margin:0.7rem 0 0.4rem;font-size:0.86rem;line-height:1.4;cursor:pointer}.rl-ok input{width:20px;height:20px;flex:0 0 auto;margin-top:1px}.rl small{display:block;color:var(--muted);font-size:0.78rem}.rl-msg{margin-top:0.45rem;font-size:0.9rem;font-weight:600;min-height:1.2em}.rl-msg.bad{color:#fbbf24}.rl-msg.good{color:var(--green)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.rel{font-size:0.95rem}
 </style>
 </head>
 <body>
@@ -84,6 +88,15 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
   <div><b>Thursday, December 3</b><span>RBC, TD, CIBC</span></div>
   <div><b>Friday, December 4</b><span>National Bank</span></div>
 </div>
+
+<form class="rl" id="rl" novalidate>
+  <b>Get the Big Six results in one email</b>
+  <p>After the last bank reports on December 4, you get one short recap: each bank's results next to the estimates. Facts only, no stock tips.</p>
+  <div class="rl-row"><label for="rl-em" class="sr">Email</label><input type="email" id="rl-em" autocomplete="email" placeholder="you@example.com" required><button type="submit">Send me the recap</button></div>
+  <label class="rl-ok"><input type="checkbox" id="rl-ck"> Email me the Big Six results recap and a reminder before the next bank earnings season. I can unsubscribe any time.</label>
+  <small>From Qualisight, built in Ontario. Your email is used for this list only and never shared. <a href="/privacy/">Privacy policy</a>.</small>
+  <div class="rl-msg" id="rl-msg" aria-live="polite"></div>
+</form>
 
 <div class="grid" id="banks">
 <article class="bk" id="bk-RY" data-t="RY">
@@ -131,6 +144,8 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
 
 <h2>All six dates in one table</h2>
 <table><thead><tr><th>Bank</th><th>Ticker</th><th>Date</th><th>Time</th></tr></thead><tbody><tr><td>Scotiabank</td><td>BNS</td><td>Wednesday, December 2</td><td>Before the market opens</td></tr><tr><td>BMO</td><td>BMO</td><td>Wednesday, December 2</td><td>Results at about 6:00 a.m. ET</td></tr><tr><td>RBC</td><td>RY</td><td>Thursday, December 3</td><td>Results at about 6:00 a.m. ET, call at 8:30 a.m. ET</td></tr><tr><td>TD</td><td>TD</td><td>Thursday, December 3</td><td>Results at about 6:30 a.m. ET, call at 9:30 a.m. ET</td></tr><tr><td>CIBC</td><td>CM</td><td>Thursday, December 3</td><td>Call at 7:30 a.m. ET</td></tr><tr><td>National Bank</td><td>NA</td><td>Friday, December 4</td><td>Materials at about 5:30 a.m. ET, call at 8:00 a.m. ET</td></tr></tbody></table>
+
+<p class="rel">Holding bank shares in a TFSA or RRSP? Check how much room you have: <a href="/tfsa-limit-2027/">TFSA limit 2027</a>, <a href="/rrsp-limit-2027/">RRSP limit 2027</a>, or all of them on <a href="/money-limits-2027/">2027 money limits</a>.</p>
 
 <h2>How to read a bank's results</h2>
 <p><b>Earnings per share (EPS)</b> is the profit for the quarter split across every share. Banks report two versions: <b>reported</b>, which counts everything, and <b>adjusted</b>, which leaves out one-time items like restructuring costs. Headlines usually compare the adjusted number with what analysts expected.</p>
@@ -218,6 +233,23 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
       'SUMMARY:'+c[0]+' Q4 2026 earnings','DESCRIPTION:'+c[2].replace(/,/g,'\\,')+'. Dates for all six banks: https://qualisight.ca/canadian-bank-earnings/','BEGIN:VALARM','TRIGGER:-PT12H','ACTION:DISPLAY','DESCRIPTION:'+c[0]+' reports tomorrow','END:VALARM','END:VEVENT','END:VCALENDAR'].join('\r\n');
     var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([ics],{type:'text/calendar'})); a.download=c[0].replace(/\s+/g,'-').toLowerCase()+'-earnings.ics'; document.body.appendChild(a); a.click(); a.remove();
     b.textContent='Added. Check your downloads'; try{ track('bank_ics',{t:b.getAttribute('data-t')}); }catch(_){} });
+
+  // Results recap list: opt-in only. The email goes to a private list that only Qualisight can read.
+  var RL=document.getElementById('rl');
+  if(RL) RL.addEventListener('submit',function(e){ e.preventDefault();
+    var em=(document.getElementById('rl-em').value||'').trim().toLowerCase(), ck=document.getElementById('rl-ck').checked, msg=document.getElementById('rl-msg');
+    msg.className='rl-msg bad';
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(em)){ msg.textContent='Check your email address.'; return; }
+    if(!ck){ msg.textContent='Tick the box so we know you want the email.'; return; }
+    var btn=RL.querySelector('button'); btn.disabled=true;
+    fetch('https://bsjyqecneeptlfrsyesf.supabase.co/rest/v1/email_list',{method:'POST',headers:{'apikey':'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM','Authorization':'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM','Content-Type':'application/json','Prefer':'return=minimal'},
+      body:JSON.stringify({email:em,list:'bank_earnings',consent_text:'Email me the Big Six results recap and a reminder before the next bank earnings season. I can unsubscribe any time.',source:(location.search.match(/utm_source=([^&]+)/)||[])[1]||'bank_page'})})
+    .then(function(r){ btn.disabled=false;
+      if(r.ok){ msg.className='rl-msg good'; msg.textContent='You are on the list. Look for the recap after December 4.'; RL.querySelector('.rl-row').style.display='none'; RL.querySelector('.rl-ok').style.display='none'; try{ track('bank_signup'); }catch(_){} }
+      else if(r.status===409){ msg.className='rl-msg good'; msg.textContent='You are already on the list.'; }
+      else msg.textContent='That did not go through. Try again in a moment.'; })
+    .catch(function(){ btn.disabled=false; msg.textContent='That did not go through. Check your connection and try again.'; });
+  });
 
   track('bank_view',{ref:(document.referrer||'').split('/')[2]||'', src:src});
 })();

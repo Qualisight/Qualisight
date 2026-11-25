@@ -18975,7 +18975,7 @@ function qiClose(){ $q('qi-overlay')?.classList.remove('open'); }
 async function qiLoad(days){
   QI.days=days; document.querySelectorAll('#qi-range button').forEach(b=>b.classList.toggle('on', +b.dataset.d===days));
   const body=$q('qi-body'); body.innerHTML='<div class="qi-empty">Loading…</div>';
-  try{ QI.rows=await qiFetch(days); QI.fb=await qiFetchFb(days).catch(()=>[]); }catch(e){ body.innerHTML=`<div class="qi-empty">Couldn't load events: ${escHtml(e.message||String(e))}. Make sure you ran analytics_setup.sql in Supabase and you're signed in with the owner account.</div>`; return; }
+  try{ QI.rows=await qiFetch(days); QI.fb=await qiFetchFb(days).catch(()=>[]); QI.list=await sb.from('email_list').select('list,created_at,unsubscribed_at').then(r=>r.data||[],()=>[]); }catch(e){ body.innerHTML=`<div class="qi-empty">Couldn't load events: ${escHtml(e.message||String(e))}. Make sure you ran analytics_setup.sql in Supabase and you're signed in with the owner account.</div>`; return; }
   if(!QI.rows.length && !(QI.fb||[]).length){ body.innerHTML='<div class="qi-empty">No visits recorded yet in this range. Tracking starts once the update is live, so check back after some traffic comes in.</div>'; QI.A=null; return; }
   const A=QI.A=qiAnalyse(QI.rows); const W=QI.W=qiWide(QI.rows,QI.fb,A);
   const P=x=>Math.round(x*100)+'%';
@@ -18997,7 +18997,7 @@ async function qiLoad(days){
   const ctas=Object.entries(A.ctaAt).sort((a,b)=>b[1]-a[1]).slice(0,8).map(([k,c])=>`<tr><td>${escHtml(k)}</td><td>${c}</td></tr>`);
   const errs=A.errors.slice(0,5).map(e=>`<tr><td>${escHtml(e.m)}</td><td>${e.people}</td></tr>`);
   body.innerHTML=`${small}
-    <div class="qi-kpis"><div><span>All visitors</span><b>${W.all}</b></div><div><span>From AI tools</span><b>${W.ai}</b></div><div><span>Homepage visitors</span><b>${top}</b></div><div><span>New accounts</span><b>${A.steps[4].count}</b></div><div><span>Visitor to account</span><b>${top?P(A.steps[4].count/top):'0%'}</b></div><div><span>Typical bounce</span><b>${A.bounceSecs!=null?A.bounceSecs+'s':'n/a'}</b></div></div>
+    <div class="qi-kpis"><div><span>All visitors</span><b>${W.all}</b></div><div><span>From AI tools</span><b>${W.ai}</b></div><div><span>Email list</span><b>${(QI.list||[]).filter(x=>!x.unsubscribed_at).length}</b></div><div><span>Homepage visitors</span><b>${top}</b></div><div><span>New accounts</span><b>${A.steps[4].count}</b></div><div><span>Visitor to account</span><b>${top?P(A.steps[4].count/top):'0%'}</b></div><div><span>Typical bounce</span><b>${A.bounceSecs!=null?A.bounceSecs+'s':'n/a'}</b></div></div>
     <div class="qi-h">What's driving people away</div>${fixes}
     <div class="qi-h">The funnel</div><div class="qi-funnel">${funnel}</div>
     ${qiWideHtml(W)}
@@ -19020,6 +19020,7 @@ function qiReport(){
   if(A.errors.length){ t+=`\nErrors:\n`; A.errors.slice(0,8).forEach(e=>t+=`- ${e.m} (${e.people} people)\n`); }
   if(A.signupErrors.length){ t+=`\nSign-up form messages:\n`; A.signupErrors.slice(0,5).forEach(([m,c])=>t+=`- ${m} (${c})\n`); }
   if(QI.W) t+=qiWideReport(QI.W);
+  if(QI.list) t+=`\nEmail list (bank earnings recap): ${QI.list.filter(x=>!x.unsubscribed_at).length} subscribed, ${QI.list.filter(x=>x.unsubscribed_at).length} unsubscribed\n`;
   t+=`\nProblems found:\n`; A.F.forEach((f,i)=>t+=`${i+1}. ${f.title}. ${f.why}\n`);
   return t;
 }
@@ -19033,7 +19034,7 @@ async function qiCopy(){ const b=$q('qi-copy'); try{ await navigator.clipboard.w
       <div>
         <div class="pp-logo">Qualisight</div>
         <div class="pp-title">Privacy Policy</div>
-        <div class="pp-updated">Last updated: November 24, 2026 &nbsp;·&nbsp; Effective date: November 24, 2026</div>
+        <div class="pp-updated">Last updated: November 25, 2026 &nbsp;·&nbsp; Effective date: November 25, 2026</div>
       </div>
       <button class="pp-close" onclick="closePrivacy()" aria-label="Close">✕</button>
     </div>
@@ -19081,6 +19082,7 @@ async function qiCopy(){ const b=$q('qi-copy'); try{ await navigator.clipboard.w
           <li>Process your subscription and trial through our payment processor;</li>
           <li>Respond to your support requests and communicate with you about your account;</li>
           <li>Send you the optional monthly check-in email, only if you turn it on. It shows your debt-free month, never dollar amounts, and you can stop it any time from the email or in Settings;</li>
+          <li>Send the emails you sign up for on our public pages, such as the bank earnings results recap. That email address is kept for that list only, never shared, and every email has a one-click unsubscribe;</li>
           <li>Maintain the security of the service and meet our legal obligations.</li>
         </ul>
         <p>Because your financial information is sensitive, we rely on your <strong>express consent</strong>, which you give by creating an account and choosing to enter your data. You may withdraw your consent at any time by closing your account, subject to any legal or contractual restrictions and reasonable notice. Withdrawing consent may mean we can no longer provide the service to you.</p>
