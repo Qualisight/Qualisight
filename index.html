@@ -637,6 +637,39 @@ header{
 @media(max-width:760px){.bg-body{grid-template-columns:1fr;gap:1.1rem}}
 @media(max-width:520px){.bg-stage{height:500px}.bg-lvl{min-width:210px}.bg-head{padding:0.9rem 1rem;flex-wrap:wrap}.bg-body{padding:1rem}.bg-badges{display:grid;grid-template-columns:repeat(4,1fr);justify-items:center}.bg-badge{width:38px;height:38px}}
 @media (prefers-reduced-motion: reduce){.bg-badge,.bg-xpbar i,.bg-q-bar i{transition:none}}
+.bg-sum{padding:0 1.2rem 0.85rem;display:flex;flex-wrap:wrap;align-items:center;gap:0.45rem 0.6rem}
+.bg-sum-t{flex:1 1 100%;font-size:0.9rem;line-height:1.4}.bg-sum-t b{font-weight:700}.bg-sum-t span{color:var(--muted);font-size:0.8rem;display:block;margin-top:0.1rem}
+.bg-chip{min-height:40px;border-radius:999px;border:1px solid var(--border2);background:var(--card2);color:var(--text);font:inherit;font-size:0.82rem;font-weight:600;padding:0 0.85rem;cursor:pointer;display:inline-flex;align-items:center;gap:0.4rem}
+.bg-chip i{width:8px;height:8px;border-radius:50%;display:inline-block;background:#fbbf24}.bg-chip.over i{background:#f87171}
+.bg-chip:focus-visible,.bg-card button:focus-visible{outline:2px solid #4ade80;outline-offset:2px}
+.bg-card{margin:0;border-top:1px solid var(--border2);padding:1rem 1.2rem 1.15rem;background:var(--card2)}
+.bg-card-top{display:flex;justify-content:space-between;align-items:center;gap:0.6rem}
+.bg-card-top h4{margin:0;font-size:1.02rem}
+.bg-pill{font-size:0.74rem;font-weight:700;padding:0.25rem 0.65rem;border-radius:999px;border:1px solid;white-space:nowrap}
+.bg-pill.good,.bg-pill.ok,.bg-pill.paid{color:#86efac;border-color:rgba(74,222,128,0.4);background:rgba(74,222,128,0.08)}
+.bg-pill.fast{color:#fde68a;border-color:rgba(251,191,36,0.45);background:rgba(251,191,36,0.08)}
+.bg-pill.over{color:#fca5a5;border-color:rgba(248,113,113,0.45);background:rgba(248,113,113,0.1)}
+.bg-pill.due{color:var(--muted);border-color:var(--border2)}
+.bg-card-big{margin:0.55rem 0 0.4rem;font-size:0.9rem;color:var(--muted)}.bg-card-big b{font:800 1.7rem/1.1 var(--font-display);color:var(--text);margin-right:0.35rem}
+.bg-card-bar{position:relative;height:10px;border-radius:6px;background:rgba(255,255,255,0.08);overflow:visible}
+.bg-card-bar>i{display:block;height:100%;border-radius:6px;background:#4ade80;max-width:100%}
+.bg-card-bar.fast>i{background:#fbbf24}.bg-card-bar.over>i{background:#f87171}
+.bg-card-bar>em{position:absolute;top:-4px;bottom:-4px;width:2px;background:#f1f5f9;border-radius:1px}
+.bg-card-key{display:flex;justify-content:space-between;font-size:0.74rem;color:var(--muted);margin-top:0.35rem}
+.bg-card-say{font-size:0.88rem;line-height:1.45;margin:0.7rem 0 0.8rem}
+.bg-card-flash{font-size:0.84rem;font-weight:700;color:#86efac;margin:-0.3rem 0 0.7rem}
+.bg-card-quick{display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.55rem}
+.bg-card-form{display:grid;grid-template-columns:7.5rem 1fr auto;gap:0.45rem}
+.bg-card-form input{min-height:44px;border-radius:10px;border:1px solid var(--border2);background:var(--card);color:var(--text);padding:0 0.7rem;font:inherit;font-size:1rem;min-width:0;box-sizing:border-box}
+.bg-card-go{min-height:44px;border:0;border-radius:10px;background:#22c55e;color:#06140b;font:inherit;font-weight:800;padding:0 1rem;cursor:pointer}
+.bg-card-er{color:#fca5a5;font-size:0.8rem;min-height:1em;margin-top:0.3rem}
+.bg-card-h{font-size:0.78rem;font-weight:700;color:var(--muted);margin:0.8rem 0 0.35rem}
+.bg-card-rec{display:flex;justify-content:space-between;gap:0.6rem;font-size:0.84rem;padding:0.35rem 0;border-bottom:1px solid var(--border)}
+.bg-card-rec span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.bg-card-rec small{color:var(--muted);white-space:nowrap;font-variant-numeric:tabular-nums}
+.bg-card-goal{display:flex;align-items:center;justify-content:space-between;gap:0.6rem;margin-top:0.85rem;font-size:0.86rem}
+.bg-card-goal div{display:flex;gap:0.4rem}
+.bg-card-goal button,.bg-card-x{min-height:40px;min-width:44px;border-radius:10px;border:1px solid var(--border2);background:var(--card);color:var(--text);font:inherit;font-weight:700;cursor:pointer;padding:0 0.7rem}
+@media(max-width:520px){.bg-sum{padding:0 1rem 0.8rem}.bg-card{padding:0.95rem 1rem 1.05rem}.bg-card-form{grid-template-columns:1fr 1fr}.bg-card-go{grid-column:1 / -1}}
 
 /* Debt storm */
 .ds{background:var(--card);border:1px solid var(--border2);border-radius:22px;overflow:hidden;margin-bottom:1rem}
@@ -7862,7 +7895,9 @@ function renderBudgetGame(){
         </div>
         <span class="bg-health" id="bg-health"></span>
       </div>
-      <div class="bg-stage" id="bg-stage" role="img" aria-label="Your coin jars" title="Tap a jar, the chest or yourself"><canvas></canvas></div>
+      <div class="bg-sum" id="bg-sum" aria-live="polite"></div>
+      <div class="bg-stage" id="bg-stage" role="img" aria-label="Your coin jars" title="Tap a jar to log spending or see the details"><canvas></canvas></div>
+      <div class="bg-card" id="bg-card" hidden></div>
       <details class="bg-more"><summary>Quests and badges</summary>
       <div class="bg-body">
         <div class="bg-col">
@@ -7920,6 +7955,7 @@ function bgText(S){
   set('bg-badges', BG_ACH.map(b=>`<button type="button" class="bg-badge ${got[b.id]?'got':''}" title="${b.name}: ${b.desc}" aria-label="${b.name}, ${got[b.id]?'earned':'locked'}: ${b.desc}" onclick="bgBadgeShow('${b.id}',this)"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${b.ic}</svg></button>`).join(''));
   const next=BG_ACH.find(b=>!got[b.id]);
   set('bg-bnext', next?`<span>Next:</span> <b>${next.name}</b>. ${next.desc}.`:'<b>Every badge earned.</b>');
+  try{ bgSumRender(S); bgCardRender(S); }catch(e){}
   const st=document.getElementById('bg-stage');
   if(st) st.setAttribute('aria-label', S.jars.length ? `Coin jars: ${S.jars.filter(j=>!j.over).length} of ${S.jars.length} categories under budget. ${S.healthTxt}.` : 'Empty jars. Set spending goals to fill them.');
 }
@@ -8025,8 +8061,8 @@ function bgDraw(dt){
         if(burst>0.9 && !still && Math.random()<0.6){ _bg.parts.push({coin:1,x:jx+jw/2,y:sy-jh-4*k,vx:(Math.random()-0.5)*90*k,vy:-(120+Math.random()*80)*k,life:1,s:4*k}); }
         // amount under the shelf
         ctx.font=`700 ${(small?9.5:10.5)*k}px ${BG_FONT}`; ctx.textAlign='center';
-        const lbl = j.over ? `${fmtW(j.spent-j.goal)} over` : `${fmtW(Math.max(0,j.left))} left`;
-        ctx.fillStyle=j.over?'#fca5a5':(j.frac<0.15?'#fde68a':'#bbf7d0'); ctx.fillText(lbl,jx+jw/2,sy+(small?20:24)*k);
+        const js=bgJarState(j,S);
+        ctx.fillStyle=js.color; ctx.fillText(js.short,jx+jw/2,sy+(small?20:24)*k);
       }
     }
   }
@@ -8283,7 +8319,7 @@ function bgClick(e){
   if(!bgReduce) (_bg.ripples=_bg.ripples||[]).push({x,y,life:0.45});
   if(!hit) return;
   const left=bgDaysLeft(); let txt='', ax=hit.ax, ay=hit.ay;
-  if(hit.kind==='jar'){ const j=S.jars.find(q=>q.cat===hit.cat); if(j){ _bg.sel={cat:j.cat, life:1.2}; bgPopOpen(j, hit, e.currentTarget); try{ QA.log('bg_tap',{kind:'jar'}); }catch(_){} return; } }
+  if(hit.kind==='jar'){ const j=S.jars.find(q=>q.cat===hit.cat); if(j){ _bg.sel={cat:j.cat, life:1.2}; bgCardOpen(j.idx,'jar'); return; } }
   if(hit.kind==='jar'){ const j=S.jars.find(q=>q.cat===hit.cat); if(!j) return;
     const last=(state.expenses||[]).filter(q=>q.cat===j.cat).slice(-1)[0];
     txt=`${j.cat}: ${fmtW(j.spent)} of ${fmtW(j.goal)}. `+(j.over?`${fmtW(j.spent-j.goal)} over.`:`${fmtC(j.left)} left${BM_FIXED.test(j.cat)?'.':`, about ${fmtC(j.left/left)} a day.`}`)+(last?` Last: ${last.name}, ${fmtW(last.actual)}.`:'');
@@ -8878,7 +8914,97 @@ function bmLog(cat,name,amt,src,day){
   if(state.expenses.length===1) try{ nudgeCheckin('First expense logged.'); }catch(_){}
   return e;
 }
-// ── tap a jar to spend from it ──
+// ── jar status, summary and jar card ──
+function bgJarState(j,S){
+  const fixed=BM_FIXED.test(j.cat), dl=bgDaysLeft(), even=j.goal*Math.min(1,S.day/S.dim);
+  if(j.over) return {k:'over', pill:'Over', short:`${fmtW(j.spent-j.goal)} over`, color:'#fca5a5', fixed, dl, even};
+  if(fixed){ if(j.spent>=j.goal-0.5) return {k:'paid', pill:'Paid', short:'Paid', color:'#bbf7d0', fixed, dl, even};
+    return {k:'due', pill:'Bill', short:`${fmtW(j.left)} left`, color:'#e2e8f0', fixed, dl, even}; }
+  if(j.spent<=even*0.9+0.5) return {k:'good', pill:'Ahead', short:`${fmtW(j.left)} left`, color:'#bbf7d0', fixed, dl, even};
+  if(j.spent<=even*1.05+0.5) return {k:'ok', pill:'On pace', short:`${fmtW(j.left)} left`, color:'#bbf7d0', fixed, dl, even};
+  return {k:'fast', pill:'Spending fast', short:`${fmtW(j.left)} left`, color:'#fde68a', fixed, dl, even};
+}
+function bgSumRender(S){
+  const el=document.getElementById('bg-sum'); if(!el) return;
+  if(!S.jars.length){ el.innerHTML=''; el.hidden=true; return; } el.hidden=false;
+  const st=S.jars.map(j=>({j,s:bgJarState(j,S)})), good=st.filter(x=>x.s.k!=='fast'&&x.s.k!=='over').length;
+  const care=st.filter(x=>x.s.k==='over'||x.s.k==='fast').sort((a,b)=>(b.s.k==='over')-(a.s.k==='over')).slice(0,3);
+  const head = good===st.length ? `<b>All ${st.length} jars are on track.</b>` : `<b>${good} of ${st.length} jars on track.</b>`;
+  const sub = care.length ? 'These need a look. Tap one, or tap any jar to log spending.' : 'Tap a jar to log spending or see what is left for each day.';
+  el.innerHTML=`<div class="bg-sum-t">${head}<span>${sub}</span></div>`+care.map(x=>`<button type="button" class="bg-chip ${x.s.k}" onclick="bgCardOpen(${x.j.idx},'sum')"><i aria-hidden="true"></i>${escHtml(bgShort(x.j.cat))}: ${x.s.k==='over'?escHtml(x.s.short):'slow down'}</button>`).join('');
+}
+function bgCardOpen(idx,src){
+  const b=(state.budgets||[])[idx]; if(!b) return;
+  _bg.card=b.cat; _bg.cardFlash=''; _bg.sel={cat:b.cat, life:1.2};
+  try{ QA.log('bg_card_open',{src:src||''}); }catch(_){}
+  bgCardRender(_bg.S||bgMonthStats());
+  const c=document.getElementById('bg-card');
+  if(c){ const r=c.getBoundingClientRect(); if(r.bottom>innerHeight-70) c.scrollIntoView({behavior:bgReduce?'auto':'smooth',block:'nearest'}); if(src==='sum'||src==='jar') setTimeout(()=>document.getElementById('bg-card-amt')?.focus({preventScroll:true}),src==='jar'?350:0); }
+}
+function bgCardClose(){ _bg.card=null; const c=document.getElementById('bg-card'); if(c){ c.hidden=true; c.innerHTML=''; } }
+function bgCardRender(S){
+  const c=document.getElementById('bg-card'); if(!c) return;
+  const j=_bg.card && S.jars.find(x=>x.cat===_bg.card);
+  if(!j){ c.hidden=true; c.innerHTML=''; return; }
+  const s=bgJarState(j,S), name=escHtml(j.cat), short=escHtml(bgShort(j.cat));
+  const pct=Math.min(100,j.spent/j.goal*100), mark=Math.min(100,S.day/S.dim*100);
+  let say='';
+  if(s.k==='over') say=`You are ${fmtC(j.spent-j.goal)} over in ${short}. It happens. Take it from a jar with room, or raise this goal if it was too low.`;
+  else if(s.k==='paid') say='Paid for this month. Nothing more to do here.';
+  else if(s.k==='due') say=`${fmtC(j.left)} left in this jar this month. Bills like this one are not judged on pace.`;
+  else if(s.k==='fast') say=`You are ${fmtC(j.spent-s.even)} past an even pace. Keep it to about <b>${fmtC(j.left/s.dl)} a day</b> for the last ${s.dl} day${s.dl>1?'s':''} to finish on goal.`;
+  else if(j.spent<0.5) say=`Nothing spent here yet this month. That is about <b>${fmtC(j.left/s.dl)} a day</b> for the last ${s.dl} day${s.dl>1?'s':''}.`;
+  else if(s.k==='good') say=`You are ${fmtC(s.even-j.spent)} under an even pace. You can spend about <b>${fmtC(j.left/s.dl)} a day</b> for the last ${s.dl} day${s.dl>1?'s':''}.`;
+  else say=`Right on pace. About <b>${fmtC(j.left/s.dl)} a day</b> for the last ${s.dl} day${s.dl>1?'s':''}.`;
+  const mine=(state.expenses||[]).filter(e=>e.cat===j.cat);
+  const seen=new Set(), quick=[];
+  for(let i=mine.length-1;i>=0&&quick.length<3;i--){ const e=mine[i], key=(e.name||'')+'|'+e.actual; if(seen.has(key)||!(e.actual>0)||e.actual>Math.min(150,j.goal*0.5)) continue; seen.add(key); quick.push({n:e.name||bgShort(j.cat), a:+e.actual}); }
+  const recent=mine.map((e,i)=>({e,i})).sort((x,y)=>((y.e.d||'')>(x.e.d||'')?1:(y.e.d||'')<(x.e.d||'')?-1:y.i-x.i)).slice(0,3).map(x=>x.e);
+  const dlab=d=>{ try{ return d?new Date(d+'T12:00').toLocaleDateString('en-CA',{month:'short',day:'numeric'}):''; }catch(_){ return ''; } };
+  const bc=s.k==='over'?'over':s.k==='fast'?'fast':'';
+  c.hidden=false;
+  c.innerHTML=`<div class="bg-card-top"><h4>${name}</h4><div style="display:flex;gap:0.45rem;align-items:center"><span class="bg-pill ${s.k}">${s.pill}</span><button type="button" class="bg-card-x" onclick="bgCardClose()" aria-label="Close ${name}">✕</button></div></div>
+    <div class="bg-card-big"><b>${s.k==='over'?fmtW(j.spent-j.goal)+' over':s.k==='paid'?fmtW(j.spent)+' paid':fmtW(j.left)+' left'}</b>${fmtW(j.spent)} of ${fmtW(j.goal)} used</div>
+    <div class="bg-card-bar ${bc}" role="img" aria-label="${Math.round(pct)}% of the goal used${s.fixed?'':', '+Math.round(mark)+'% of the month gone'}"><i style="width:${pct.toFixed(1)}%"></i>${s.fixed?'':`<em style="left:calc(${mark.toFixed(1)}% - 1px)"></em>`}</div>
+    ${s.fixed?'':`<div class="bg-card-key"><span>The white line is an even pace for today.</span></div>`}
+    <p class="bg-card-say">${say}</p>
+    ${_bg.cardFlash?`<p class="bg-card-flash" role="status">${_bg.cardFlash}</p>`:''}
+    ${quick.length?`<div class="bg-card-quick" aria-label="Log again in one tap">${quick.map((q,i)=>`<button type="button" class="bg-chip" data-q="${i}">${escHtml(q.n.length>18?q.n.slice(0,17)+'…':q.n)} ${fmtC(q.a)}</button>`).join('')}</div>`:''}
+    <div class="bg-card-form"><input id="bg-card-amt" type="number" inputmode="decimal" min="0" step="0.01" placeholder="Amount" aria-label="Amount spent from ${name}"><input id="bg-card-note" placeholder="What for? (optional)" aria-label="What it was for" autocomplete="off"><button type="button" class="bg-card-go" onclick="bgCardLog()">Log to ${short}</button></div>
+    <div class="bg-card-er" id="bg-card-er" role="alert"></div>
+    ${recent.length?`<div class="bg-card-h">Last in this jar</div>${recent.map(e=>`<div class="bg-card-rec"><span>${escHtml(e.name||j.cat)}</span><small>${dlab(e.d)}${e.d?', ':''}${fmtC(+e.actual||0)}</small></div>`).join('')}`:`<div class="bg-card-h">Nothing logged in this jar yet this month.</div>`}
+    <div class="bg-card-goal"><span>Monthly goal <b>${fmtW(j.goal)}</b></span><div><button type="button" onclick="bgCardGoal(-1)" aria-label="Lower the ${name} goal">−</button><button type="button" onclick="bgCardGoal(1)" aria-label="Raise the ${name} goal">+</button></div></div>`;
+  c.querySelectorAll('[data-q]').forEach(btn=>btn.addEventListener('click',()=>{ const q=quick[+btn.dataset.q]; if(q) bgCardDoLog(j.cat,q.n,q.a,'jar_chip'); }));
+  c.onkeydown=ev=>{ if(ev.key==='Enter' && (ev.target.id==='bg-card-amt'||ev.target.id==='bg-card-note')){ ev.preventDefault(); bgCardLog(); } if(ev.key==='Escape') bgCardClose(); };
+}
+function bgCardLog(){
+  const cat=_bg.card; if(!cat) return;
+  const a=parseFloat(document.getElementById('bg-card-amt')?.value)||0, note=(document.getElementById('bg-card-note')?.value||'').trim();
+  if(!(a>0)){ const er=document.getElementById('bg-card-er'); if(er) er.textContent='Enter how much you spent, like 12.50.'; document.getElementById('bg-card-amt')?.focus(); return; }
+  bgCardDoLog(cat, note?note.charAt(0).toUpperCase()+note.slice(1):bgShort(cat), a, 'jar');
+}
+function bgCardDoLog(cat,name,a,src){
+  const before=(bgMonthStats().jars||[]).find(x=>x.cat===cat), S0=_bg.S||bgMonthStats();
+  const k0=before?bgJarState(before,S0).k:'';
+  if(!bmLog(cat,name,a,src)) return;
+  const S=bgMonthStats(), j=S.jars.find(x=>x.cat===cat);
+  if(j){ const s=bgJarState(j,S);
+    _bg.cardFlash = s.k==='over' ? `Logged ${fmtC(a)}. This jar is now over. Tomorrow is a fresh day.`
+      : s.k==='paid' ? `Logged ${fmtC(a)}. Paid for the month.`
+      : (s.k==='fast' && k0!=='fast') ? `Logged ${fmtC(a)}. Now a little fast, so go easy here.`
+      : s.fixed ? `Logged ${fmtC(a)}.` : `Logged ${fmtC(a)}. ${fmtW(j.left)} left, about ${fmtC(j.left/s.dl)} a day.`;
+    bgCardRender(S); }
+  setTimeout(()=>document.getElementById('bg-card-amt')?.focus({preventScroll:true}),30);
+}
+function bgCardGoal(dir){
+  const b=(state.budgets||[]).find(x=>x.cat===_bg.card); if(!b) return;
+  const step=b.goal>=500?25:b.goal>=100?10:5;
+  b.goal=Math.max(step, Math.round((b.goal+dir*step)/step)*step);
+  _bg.cardFlash=`Goal set to ${fmtW(b.goal)} a month.`;
+  try{ QA.log('bg_goal_adj',{dir}); }catch(_){}
+  save(); renderMonthly(); try{ renderDashboard(); }catch(_){}
+}
+// ── tap a jar to spend from it (older popup, no longer opened) ──
 function bgPopOpen(j,hit,stage){
   bgPopClose();
   const left=bgDaysLeft(), pop=document.createElement('div'); pop.className='bg-pop'; pop.id='bg-pop'; pop.setAttribute('role','dialog'); pop.setAttribute('aria-label','Spend from '+j.cat);
