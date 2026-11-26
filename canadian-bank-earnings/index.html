@@ -74,6 +74,7 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
 .rl-row{display:flex;gap:0.5rem;flex-wrap:wrap}.rl-row input{flex:1 1 220px;min-height:46px;border-radius:12px;border:1px solid var(--border);background:var(--bg,#0b0d12);color:inherit;font:inherit;padding:0 0.8rem}.rl-row button{min-height:46px;padding:0 1.1rem;border:0;border-radius:12px;background:var(--green);color:#06140b;font:inherit;font-weight:800;cursor:pointer}
 .rl-ok{display:flex;gap:0.55rem;align-items:flex-start;margin:0.7rem 0 0.4rem;font-size:0.86rem;line-height:1.4;cursor:pointer}.rl-ok input{width:20px;height:20px;flex:0 0 auto;margin-top:1px}.rl small{display:block;color:var(--muted);font-size:0.78rem}.rl-msg{margin-top:0.45rem;font-size:0.9rem;font-weight:600;min-height:1.2em}.rl-msg.bad{color:#fbbf24}.rl-msg.good{color:var(--green)}
 .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}.rel{font-size:0.95rem}
+.soon{display:flex;flex-wrap:wrap;align-items:center;gap:0.6rem 1rem;margin:0.9rem 0 0.4rem}.soon p{margin:0;color:var(--muted);font-size:0.95rem}.bk-cal.all{min-height:44px;margin:0}
 </style>
 </head>
 <body>
@@ -88,6 +89,7 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
   <div><b>Thursday, December 3</b><span>RBC, TD, CIBC</span></div>
   <div><b>Friday, December 4</b><span>National Bank</span></div>
 </div>
+<div class="soon"><button type="button" class="bk-cal all" data-t="ALL">Add all six dates to my calendar</button><p>Each bank's results are added to this page on the day it reports. Come back December 2.</p></div>
 
 <form class="rl" id="rl" novalidate>
   <b>Get the Big Six results in one email</b>
@@ -226,7 +228,14 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
   // Add to calendar: an all-day reminder on the bank's results day. Built in the browser, nothing sent.
   var CAL={"RY": ["RBC", "Thursday, December 3, 2026", "Results at about 6:00 a.m. ET, call at 8:30 a.m. ET"], "TD": ["TD", "Thursday, December 3, 2026", "Results at about 6:30 a.m. ET, call at 9:30 a.m. ET"], "BNS": ["Scotiabank", "Wednesday, December 2, 2026", "Before the market opens"], "BMO": ["BMO", "Wednesday, December 2, 2026", "Results at about 6:00 a.m. ET"], "CM": ["CIBC", "Thursday, December 3, 2026", "Call at 7:30 a.m. ET"], "NA": ["National Bank", "Friday, December 4, 2026", "Materials at about 5:30 a.m. ET, call at 8:00 a.m. ET"]};
   var MON={January:1,February:2,March:3,April:4,May:5,June:6,July:7,August:8,September:9,October:10,November:11,December:12};
-  document.addEventListener('click',function(e){ var b=e.target.closest&&e.target.closest('.bk-cal'); if(!b) return;
+  function vev(t,c){ var m=c[1].match(/(\w+) (\d+)(?:, (\d{4}))?/); if(!m) return [];
+    var y=m[3]||'2026', d=y+String(MON[m[1]]).padStart(2,'0')+String(+m[2]).padStart(2,'0'), nx=new Date(+y,MON[m[1]]-1,+m[2]+1), d2=nx.getFullYear()+String(nx.getMonth()+1).padStart(2,'0')+String(nx.getDate()).padStart(2,'0');
+    return ['BEGIN:VEVENT','UID:'+t+'-q4-2026@qualisight.ca','DTSTAMP:20261125T000000Z','DTSTART;VALUE=DATE:'+d,'DTEND;VALUE=DATE:'+d2,'SUMMARY:'+c[0]+' Q4 2026 earnings','DESCRIPTION:'+c[2].replace(/,/g,'\\,')+'. Results for all six banks: https://qualisight.ca/canadian-bank-earnings/','BEGIN:VALARM','TRIGGER:-PT12H','ACTION:DISPLAY','DESCRIPTION:'+c[0]+' reports tomorrow','END:VALARM','END:VEVENT']; }
+  document.addEventListener('click',function(e){ var b=e.target.closest&&e.target.closest('.bk-cal.all'); if(!b) return;
+    var lines=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Qualisight//Bank earnings//EN']; Object.keys(CAL).forEach(function(t){ lines=lines.concat(vev(t,CAL[t])); }); lines.push('END:VCALENDAR');
+    var a=document.createElement('a'); a.href=URL.createObjectURL(new Blob([lines.join('\r\n')],{type:'text/calendar'})); a.download='big-six-bank-earnings-q4-2026.ics'; document.body.appendChild(a); a.click(); a.remove();
+    b.textContent='Added. Check your downloads'; try{ track('bank_ics',{t:'ALL'}); }catch(_){} });
+  document.addEventListener('click',function(e){ var b=e.target.closest&&e.target.closest('.bk-cal'); if(!b || b.classList.contains('all')) return;
     var c=CAL[b.getAttribute('data-t')]; if(!c) return; var m=c[1].match(/(\w+) (\d+)(?:, (\d{4}))?/); if(!m) return;
     var y=m[3]||'2026', d=y+String(MON[m[1]]).padStart(2,'0')+String(+m[2]).padStart(2,'0'), nx=new Date(+y,MON[m[1]]-1,+m[2]+1), d2=nx.getFullYear()+String(nx.getMonth()+1).padStart(2,'0')+String(nx.getDate()).padStart(2,'0');
     var ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Qualisight//Bank earnings//EN','BEGIN:VEVENT','UID:'+b.getAttribute('data-t')+'-q4-2026@qualisight.ca','DTSTAMP:20261125T000000Z','DTSTART;VALUE=DATE:'+d,'DTEND;VALUE=DATE:'+d2,
