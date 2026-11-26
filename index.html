@@ -4945,7 +4945,7 @@ window.QS_HERO_SPLIT=null;
       <div class="auth-logo">Qualisight</div>
       <div class="auth-tagline" style="margin-bottom:1.4rem">Choose a new password for your account.</div>
       <label class="auth-label">New password</label>
-      <input class="auth-input" id="rp-pass" type="password" placeholder="Min. 6 characters" autocomplete="new-password"
+      <input class="auth-input" id="rp-pass" type="password" placeholder="At least 8 characters" autocomplete="new-password"
         onkeydown="if(event.key==='Enter')document.getElementById('rp-pass2').focus()">
       <label class="auth-label">Confirm new password</label>
       <input class="auth-input" id="rp-pass2" type="password" placeholder="Re-enter new password" autocomplete="new-password"
@@ -4969,7 +4969,7 @@ window.QS_HERO_SPLIT=null;
         onkeydown="if(event.key==='Enter')document.getElementById('cr-pass').focus()">
       <label class="auth-label">Password</label>
       <div class="auth-pass-wrap">
-        <input class="auth-input" id="cr-pass" type="password" placeholder="At least 6 characters" autocomplete="new-password"
+        <input class="auth-input" id="cr-pass" type="password" placeholder="At least 8 characters" autocomplete="new-password"
           onkeydown="if(event.key==='Enter')validateAndShowTos()">
         <button type="button" class="auth-eye" aria-label="Show password" onclick="const i=document.getElementById('cr-pass');const show=i.type==='password';i.type=show?'text':'password';this.setAttribute('aria-label',show?'Hide password':'Show password');this.textContent=show?'Hide':'Show'">Show</button>
       </div>
@@ -6108,7 +6108,7 @@ async function submitResetPassword(){
   const pass2 = document.getElementById('rp-pass2').value;
   const err   = document.getElementById('rp-error');
   const btn   = document.querySelector('#auth-reset .auth-btn');
-  if(pass.length < 6){ err.textContent='Password must be at least 6 characters.'; return; }
+  if(pass.length < 8){ err.textContent='Password must be at least 8 characters.'; return; }
   if(pass !== pass2){ err.textContent='Passwords do not match.'; return; }
   btn.textContent='Saving...'; btn.disabled=true;
   const { error } = await sb.auth.updateUser({ password: pass });
@@ -6156,7 +6156,7 @@ function validateAndShowTos(){
   const err   = document.getElementById('cr-error');
   if(!name)                        { err.textContent='Enter your first name.'; return; }
   if(!email||!email.includes('@')) { err.textContent='Enter a valid email address.'; return; }
-  if(pass.length<6)                { err.textContent='Password must be at least 6 characters.'; return; }
+  if(pass.length<8)                { err.textContent='Password must be at least 8 characters.'; return; }
   err.textContent='';
   // The button itself is the agreement (the terms line sits right under it), so create the account now
   const btn=document.getElementById('cr-btn'); if(btn){ if(btn.disabled) return; btn.disabled=true; btn.textContent='Creating your account...'; }
