@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en-CA">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Download Bank Transactions as CSV: Canadian Banks | Qualisight</title>
+<meta name="description" content="Steps to download your transactions as a CSV file from RBC, TD, Scotiabank, BMO, CIBC, Tangerine, Simplii, Wealthsimple, Amex and Desjardins.">
+<link rel="canonical" href="https://qualisight.ca/download-bank-transactions-csv/">
+<meta property="og:title" content="Download Bank Transactions as CSV: Canadian Banks">
+<meta property="og:description" content="Steps to download your transactions as a CSV file from RBC, TD, Scotiabank, BMO, CIBC, Tangerine, Simplii, Wealthsimple, Amex and Desjardins.">
+<meta property="og:url" content="https://qualisight.ca/download-bank-transactions-csv/">
+<meta property="og:image" content="https://qualisight.ca/og-image.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#0d0f14">
+<link rel="icon" href="/icon-192.png">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "WebPage", "@id": "https://qualisight.ca/download-bank-transactions-csv/", "url": "https://qualisight.ca/download-bank-transactions-csv/", "name": "Download Bank Transactions as CSV: Canadian Banks", "description": "Steps to download your transactions as a CSV file from RBC, TD, Scotiabank, BMO, CIBC, Tangerine, Simplii, Wealthsimple, Amex and Desjardins.", "inLanguage": "en-CA", "dateModified": "2026-11-26", "author": {"@type": "Person", "name": "Lucas Jacobs"}}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "Qualisight", "item": "https://qualisight.ca/"}, {"@type": "ListItem", "position": 2, "name": "Download bank transactions as CSV", "item": "https://qualisight.ca/download-bank-transactions-csv/"}]}</script><script type="application/ld+json">{"@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [{"@type": "Question", "name": "Is it safe to download my transactions?", "acceptedAnswer": {"@type": "Answer", "text": "Yes, the file goes from your bank's website to your own computer. Treat it like a bank statement: keep it private and delete it when you are done."}}, {"@type": "Question", "name": "Does Qualisight upload my bank file?", "acceptedAnswer": {"@type": "Answer", "text": "No. Qualisight reads the file in your browser, shows you every purchase, and saves only the ones you tick. The file itself is not uploaded."}}, {"@type": "Question", "name": "Why not just connect my bank?", "acceptedAnswer": {"@type": "Answer", "text": "Qualisight never asks for your bank login, on purpose. A CSV file gives you the same transactions without handing over your password."}}, {"@type": "Question", "name": "I can't find a CSV option. What now?", "acceptedAnswer": {"@type": "Answer", "text": "Use a computer, not the app, since most banks only offer downloads on their website. If there is still no CSV, copy the list of transactions from your online banking page and paste it into Qualisight instead."}}, {"@type": "Question", "name": "How far back can I download?", "acceptedAnswer": {"@type": "Answer", "text": "It depends on the bank, often a few months. Qualisight's budget works one month at a time, so this month's transactions are all you need."}}]}</script>
+<style>
+:root{--bg:#0b0d12;--surface:#141821;--border:rgba(255,255,255,0.09);--text:#e8edf8;--muted:#97a2b8;--green:#4ade80;--red:#f87171;--amber:#fbbf24}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.6 ui-sans-serif,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+a{color:var(--green)}
+.wrap{max-width:860px;margin:0 auto;padding:0 1.1rem}
+header{display:flex;justify-content:space-between;align-items:center;padding:1rem 0}
+.logo{font-weight:800;font-size:1.15rem;color:var(--green);text-decoration:none;letter-spacing:-0.02em}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 1.2rem;border-radius:12px;background:var(--green);color:#0b0d12;font-weight:700;text-decoration:none;border:0;font:inherit;font-weight:700;cursor:pointer}
+.btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border);min-height:40px;font-weight:600}
+h1{font-size:2rem;line-height:1.15;letter-spacing:-0.03em;margin:1.2rem 0 0.5rem}
+h2{font-size:1.35rem;letter-spacing:-0.02em;margin:2.4rem 0 0.6rem}
+h3{font-size:1.05rem;margin:1.4rem 0 0.3rem}
+p{margin:0.5rem 0;color:#c4ccdb}.lead{color:var(--muted);font-size:1.05rem;max-width:620px}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:18px;padding:1.1rem;margin-top:1.2rem}
+table{width:100%;border-collapse:collapse}
+th{font-size:0.75rem;color:var(--muted);font-weight:600;text-align:left;padding:0 0.3rem 0.4rem}
+td{padding:0.25rem 0.3rem}
+input[type=text],input[type=number]{width:100%;background:#0e121a;border:1px solid var(--border);border-radius:10px;color:var(--text);font:inherit;padding:0.6rem 0.65rem;min-height:44px}
+input:focus{outline:2px solid var(--green);outline-offset:1px}
+input[type=number]{-moz-appearance:textfield;appearance:textfield}input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.x{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:10px;width:40px;height:44px;cursor:pointer;font-size:1.1rem}
+.row{display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center;margin-top:0.9rem}
+.extra{flex:1;min-width:230px}
+.extra label{display:flex;justify-content:space-between;font-size:0.9rem;color:var(--muted)}
+.extra b{color:var(--green)}
+input[type=range]{width:100%;accent-color:var(--green);height:30px}
+.seg{display:inline-flex;border:1px solid var(--border);border-radius:999px;padding:3px}
+.seg button{border:0;background:transparent;color:var(--muted);font:inherit;font-weight:600;padding:0.5rem 1rem;border-radius:999px;cursor:pointer;min-height:40px}
+.seg button[aria-pressed=true]{background:var(--green);color:#0b0d12}
+.big{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.7rem;margin-top:1rem}
+.big div{border:1px solid var(--border);border-radius:14px;padding:0.8rem}
+.big span{display:block;font-size:0.75rem;color:var(--muted)}
+.big b{display:block;font-size:1.35rem;font-variant-numeric:tabular-nums;margin-top:0.1rem}
+.big em{display:block;font-style:normal;font-size:0.78rem;color:var(--green)}
+.warn{background:rgba(251,191,36,0.08);border:1px solid rgba(251,191,36,0.3);color:#f3d48a;border-radius:12px;padding:0.7rem 0.85rem;margin-top:0.9rem;font-size:0.92rem}
+.cmp{font-size:0.92rem;color:var(--muted);margin-top:0.8rem}.cmp b{color:var(--text)}
+svg{display:block;width:100%;height:auto;margin-top:0.9rem}
+.acts{display:flex;flex-wrap:wrap;gap:0.5rem;margin-top:1rem}.acts .btn{font-size:0.92rem}
+textarea.code{width:100%;min-height:92px;background:#0e121a;border:1px solid var(--border);border-radius:10px;color:#c4ccdb;font:13px/1.5 ui-monospace,Menlo,Consolas,monospace;padding:0.7rem;resize:vertical}
+.by{display:none;margin-top:0.8rem;font-size:0.85rem;color:var(--muted)}
+body.embed header,body.embed h1,body.embed .lead,body.embed .cta,body.embed .article,body.embed footer{display:none}body.embed .card{margin-top:0.6rem}body.embed .by{display:block}body.embed .wrap{padding:0 0.5rem}body.embed .noembed{display:none}
+ol.order{margin:0.6rem 0 0;padding-left:1.2rem;color:#c4ccdb}
+.cta{background:linear-gradient(135deg,rgba(74,222,128,0.14),rgba(74,222,128,0.03));border:1px solid rgba(74,222,128,0.4);border-radius:18px;padding:1.2rem;margin-top:1.4rem;display:flex;flex-wrap:wrap;gap:0.9rem;align-items:center;justify-content:space-between}
+.cta p{margin:0;max-width:480px;color:var(--text)}.cta small{display:block;color:var(--muted)}
+details{border-top:1px solid var(--border);padding:0.7rem 0}summary{cursor:pointer;font-weight:600;min-height:32px}
+footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);color:var(--muted);font-size:0.85rem}
+@media(max-width:640px){h1{font-size:1.6rem}.big{grid-template-columns:1fr}}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0.8rem}
+.f label{display:block;font-size:0.88rem;color:var(--muted);margin-bottom:0.25rem}.f small{display:block;font-size:0.78rem;color:var(--muted);margin-top:0.2rem}
+.chk{display:flex;gap:0.55rem;align-items:center;margin-top:0.9rem;min-height:44px;color:#c4ccdb;cursor:pointer}.chk input{width:22px;height:22px;accent-color:var(--green);flex:none}
+.yrs{display:flex;flex-wrap:wrap;gap:0.4rem;margin-top:0.4rem}
+.yrs button{min-width:64px;min-height:44px;border-radius:10px;border:1px solid var(--border);background:transparent;color:var(--text);font:inherit;font-weight:600;cursor:pointer}
+.yrs button[aria-pressed=true]{background:rgba(248,113,113,0.14);border-color:rgba(248,113,113,0.5);color:#fca5a5;text-decoration:line-through}
+.hero{margin-top:1.1rem;border:1px solid rgba(74,222,128,0.4);background:linear-gradient(135deg,rgba(74,222,128,0.12),rgba(74,222,128,0.02));border-radius:16px;padding:1rem}
+.hero span{display:block;color:var(--muted);font-size:0.9rem}.hero>b{display:block;font-size:2.4rem;letter-spacing:-0.03em;font-variant-numeric:tabular-nums;color:var(--green);line-height:1.15}
+.hero p{margin:0.35rem 0 0;font-size:0.92rem}.hero p b{color:var(--text)}
+.hero.neg{border-color:rgba(248,113,113,0.5);background:rgba(248,113,113,0.07)}.hero.neg>b{color:var(--red)}
+.ytab{margin-top:1rem;font-size:0.9rem;font-variant-numeric:tabular-nums}.ytab td,.ytab th{padding:0.4rem;border-bottom:1px solid var(--border)}.ytab td:not(:first-child),.ytab th:not(:first-child){text-align:right}
+.ytab tr.off td{color:var(--muted);text-decoration:line-through}
+.src{font-size:0.8rem;color:var(--muted);margin-top:0.8rem}
+@media(max-width:640px){.grid{grid-template-columns:1fr}.hero>b{font-size:2rem}}
+.grid3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.8rem}
+.chips{display:flex;flex-wrap:wrap;gap:0.35rem;margin-top:0.4rem}.chips button{min-height:40px;padding:0 0.7rem;border-radius:999px;border:1px solid var(--border);background:transparent;color:var(--text);font:inherit;font-size:0.88rem;font-weight:600;cursor:pointer}
+.ytab td:last-child,.ytab th:last-child{text-align:right}
+@media(max-width:760px){.grid3{grid-template-columns:1fr}}
+.seg{display:flex;gap:0.4rem;margin-top:0.35rem}.seg button{flex:1;min-height:44px;border-radius:10px;border:1px solid var(--border);background:transparent;color:inherit;font:inherit;cursor:pointer}.seg button[aria-pressed=true]{background:var(--green);color:#06140b;border-color:var(--green);font-weight:700}
+.chk{display:flex;gap:0.5rem;align-items:center;margin-top:0.9rem;min-height:44px}.chk input{width:20px;height:20px}
+.ratio{margin:0.7rem 0}.ratio .rl{display:flex;justify-content:space-between;font-size:0.9rem}.ratio .rl em{color:var(--muted);font-style:normal}.ratio .rb{height:10px;border-radius:6px;background:rgba(255,255,255,0.08);overflow:hidden;margin-top:0.3rem}.ratio .rb i{display:block;height:100%;background:var(--green)}.ratio .rb i.hot{background:#fbbf24}
+.pass{color:var(--green);font-weight:700}.fail{color:#fbbf24;font-weight:700}
+details.more{margin-top:0.8rem}details.more summary{cursor:pointer;min-height:44px;display:flex;align-items:center}
+.tests{width:100%;border-collapse:collapse;font-size:0.92rem;margin:1rem 0}.tests th,.tests td{text-align:left;padding:0.65rem 0.5rem;border-bottom:1px solid var(--border);vertical-align:top}.tests th{color:var(--muted);font-weight:600;font-size:0.85rem}.tests .ok{color:var(--green);font-weight:700}.tests .sm{font-size:0.8rem;color:var(--muted)}.tw{overflow-x:auto}@media(max-width:640px){.tests thead{display:none}.tests tr{display:block;border-bottom:1px solid var(--border);padding:0.6rem 0}.tests td{display:block;border:0;padding:0.15rem 0}.tests td:nth-child(1){font-weight:700}}
+.jump{display:flex;flex-wrap:wrap;gap:0.4rem;margin:1rem 0}.jump a{border:1px solid var(--border);border-radius:999px;padding:0.35rem 0.8rem;text-decoration:none;font-size:0.9rem;min-height:36px;display:inline-flex;align-items:center}
+.bank{border-top:1px solid var(--border);padding-top:0.4rem;margin-top:1.2rem}.bank ol{padding-left:1.3rem;margin:0.4rem 0}.bank li{margin:0.3rem 0;color:#c4ccdb}
+.note{font-size:0.92rem;color:var(--muted)}.src{font-size:0.82rem;color:var(--muted)}
+.tips li{margin:0.3rem 0;color:#c4ccdb}.cta{display:flex;flex-wrap:wrap;gap:0.6rem;margin-top:0.9rem}
+details{border-top:1px solid var(--border);padding:0.2rem 0}details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;font-weight:600}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header><a class="logo" href="/">Qualisight</a><a class="btn ghost" href="/">Open the app</a></header>
+<h1>How to download your bank transactions as a CSV file</h1>
+<p class="lead">Most Canadian banks let you save your recent transactions as a spreadsheet file, called a CSV, from their website. Here are the steps for each bank, then how to turn that file into a budget without giving anyone your bank login.</p>
+<p class="src">Steps checked November 26, 2026 against each bank's own help page where one exists. Banks change their websites, so the button names may differ a little.</p>
+<div class="card"><h2 style="margin-top:0">Before you start</h2><ul class="tips">
+<li>Use a computer. Most banks only offer downloads on their website, not in the app.</li>
+<li>Pick one month, or this month so far.</li>
+<li>When asked for a format, choose CSV, "Spreadsheet" or "Excel CSV".</li>
+</ul></div>
+<h2>Steps for your bank</h2>
+<nav class="jump" aria-label="Jump to your bank"><a href="#rbc-royal-bank">RBC Royal Bank</a> <a href="#td-canada-trust">TD Canada Trust</a> <a href="#scotiabank">Scotiabank</a> <a href="#bmo">BMO</a> <a href="#cibc">CIBC</a> <a href="#tangerine">Tangerine</a> <a href="#simplii-financial">Simplii Financial</a> <a href="#wealthsimple">Wealthsimple</a> <a href="#american-express-canada">American Express Canada</a> <a href="#desjardins">Desjardins</a></nav>
+<section class="bank" id="rbc-royal-bank"><h3>RBC Royal Bank</h3><ol><li>Sign in to RBC Online Banking on a computer. User guides say the mobile app does not offer CSV downloads.</li><li>Open the account you want.</li><li>Select <b>Download</b> above the list of transactions.</li><li>Choose CSV and a date range, then download.</li></ol><p class="note">User guides say the CSV covers roughly the last 90 to 180 days. We could not find an RBC Canada help page with these steps, so they come from published user guides.</p><p class="src">No official help page found. Checked November 26, 2026.</p></section><section class="bank" id="td-canada-trust"><h3>TD Canada Trust</h3><ol><li>Sign in to EasyWeb on a computer and open the <b>Accounts</b> page.</li><li>Select the account. On the <b>Account Activity</b> page, pick the time period or one month.</li><li>At the bottom, choose <b>Spreadsheet (.CSV)</b> next to Download, then select <b>Download</b>. The file is usually called accountactivity.csv.</li></ol><p class="note">TD lists downloading account activity as an EasyWeb feature. The detailed steps come from user guides. If a credit card does not offer a CSV, use the paste option below.</p><p class="src">Source: <a href="https://www.td.com/ca/en/personal-banking/advice/day-to-day-banking/easyweb-online-banking-statements" rel="noopener" target="_blank">TD: EasyWeb online banking</a>. Checked November 26, 2026.</p></section><section class="bank" id="scotiabank"><h3>Scotiabank</h3><ol><li>Sign in to Scotiabank online banking on a computer. Scotiabank says the app cannot download transaction history yet.</li><li>Select your account.</li><li>Choose to download your transactions, pick CSV and the dates, then download.</li></ol><p class="src">Source: <a href="https://help.scotiabank.com/article/can-i-download-my-transaction-history-in-the-app?origin=neo" rel="noopener" target="_blank">Scotiabank Help Centre</a>. Checked November 26, 2026.</p></section><section class="bank" id="bmo"><h3>BMO</h3><ol><li>Sign in to BMO Online Banking and open the account.</li><li>Select <b>Download</b> above the transactions and pick a date range.</li><li>Choose the <b>CSV</b> (spreadsheet) format, then download.</li></ol><p class="note">BMO says you can download bank accounts and BMO Mastercard accounts, but not loans, mortgages or lines of credit. There is no charge.</p><p class="src">Source: <a href="https://bmo.com/olbb/help-centre/en/my-accounts/bank-account/account-details.html" rel="noopener" target="_blank">BMO Online Banking Help Centre</a>. Checked November 26, 2026.</p></section><section class="bank" id="cibc"><h3>CIBC</h3><ol><li>Sign in to CIBC Online Banking on a computer.</li><li>From the home page, under <b>More</b>, select <b>Download Transactions</b>.</li><li>Pick the account, the dates and the CSV format, then download.</li></ol><p class="src">Source: <a href="https://www.cibc.com/ca/how-to-bank/balances.html" rel="noopener" target="_blank">CIBC: how to check balances and download transactions</a>. Checked November 26, 2026.</p></section><section class="bank" id="tangerine"><h3>Tangerine</h3><ol><li>Sign in at tangerine.ca on a computer. Tangerine says this does not work in the mobile app.</li><li>Go to <b>Transactions</b>.</li><li>Select <b>Download Transactions</b>, choose the Excel CSV format, and follow the prompts.</li></ol><p class="src">Source: <a href="https://www.tangerine.ca/en/faq/how-do-i-download-transactions" rel="noopener" target="_blank">Tangerine: How do I download transactions?</a>. Checked November 26, 2026.</p></section><section class="bank" id="simplii-financial"><h3>Simplii Financial</h3><ol><li>Sign in to Simplii online banking on a computer.</li><li>Look for <b>Download Transactions</b>, pick the account, dates and CSV, then download.</li></ol><p class="note">Simplii is a division of CIBC. We could not find a Simplii help page with these steps, so treat them as a starting point and ask Simplii if the option is missing.</p><p class="src">No official help page found. Checked November 26, 2026.</p></section><section class="bank" id="wealthsimple"><h3>Wealthsimple</h3><ol><li>Sign in to Wealthsimple on the website and go to your documents.</li><li>Choose <b>Custom activity statement</b>, pick the time period, then select <b>Next</b>.</li><li>Pick your accounts and select <b>Download CSV</b>. Your chequing activity comes as its own file whose name starts with chequing-activities.</li></ol><p class="src">Source: <a href="https://help.wealthsimple.com/hc/en-ca/articles/35654428540571" rel="noopener" target="_blank">Wealthsimple Help Centre</a>. Checked November 26, 2026.</p></section><section class="bank" id="american-express-canada"><h3>American Express Canada</h3><ol><li>Sign in to your Amex Online Services account on a computer.</li><li>Open your statements and activity, and look for a download option. Choose CSV if it is offered.</li></ol><p class="note">Amex Canada says you can download statements from the last six months. Card holders report that a website redesign removed the recent transactions download, so you may only see PDF statements. If that happens, use the paste option below instead.</p><p class="src">Source: <a href="https://www.americanexpress.com/ca/en/online-banking.html" rel="noopener" target="_blank">American Express Canada: Online Services</a>. Checked November 26, 2026.</p></section><section class="bank" id="desjardins"><h3>Desjardins</h3><ol><li>Sign in to AccèsD in a web browser. Desjardins says this does not work in the mobile app.</li><li>On the AccèsD home page, select the <b>Search transactions</b> tab.</li><li>Select the link to download your transaction history, choose CSV, then download.</li></ol><p class="src">Source: <a href="https://www.desjardins.com/en/help/transactions/download-history.html" rel="noopener" target="_blank">Desjardins: How to download your transaction history</a>. Checked November 26, 2026.</p></section>
+<h2>Turn the file into a budget</h2>
+<p>In Qualisight, open <b>Budget</b>, select <b>Bring in from your bank</b>, then <b>Choose a file</b>. You see every purchase from this month with a category, untick anything that is not spending, and import. Duplicates and transfers are unticked for you.</p>
+<p>The file is read on your device and is not uploaded. Only the purchases you tick are saved. No file? Copy the transactions from your online banking page and paste them in instead.</p>
+<p class="note">The import is made for the usual layouts from these ten banks, tested with sample files built to match them. If yours comes in wrong, email hello@qualisight.ca with the column names only, not your transactions.</p>
+<div class="cta"><a class="btn" href="/?demo=import&amp;utm_source=organic&amp;utm_campaign=budget_csv_guide" data-ev="csv_try">Try it in the demo, no sign-up</a><a class="btn ghost" href="/?signup=1&amp;utm_source=organic&amp;utm_campaign=budget_csv_guide" data-ev="csv_cta">Start free, no card</a></div>
+<p class="note">Budgeting and debt payoff are free forever. No bank login, ever.</p>
+<h2>Common questions</h2>
+<details><summary>Is it safe to download my transactions?</summary><p>Yes, the file goes from your bank&#x27;s website to your own computer. Treat it like a bank statement: keep it private and delete it when you are done.</p></details><details><summary>Does Qualisight upload my bank file?</summary><p>No. Qualisight reads the file in your browser, shows you every purchase, and saves only the ones you tick. The file itself is not uploaded.</p></details><details><summary>Why not just connect my bank?</summary><p>Qualisight never asks for your bank login, on purpose. A CSV file gives you the same transactions without handing over your password.</p></details><details><summary>I can&#x27;t find a CSV option. What now?</summary><p>Use a computer, not the app, since most banks only offer downloads on their website. If there is still no CSV, copy the list of transactions from your online banking page and paste it into Qualisight instead.</p></details><details><summary>How far back can I download?</summary><p>It depends on the bank, often a few months. Qualisight&#x27;s budget works one month at a time, so this month&#x27;s transactions are all you need.</p></details>
+<footer>More free tools: <a href="/down-payment-calculator/">down payment calculator</a>, <a href="/debt-payoff-calculator/">debt payoff calculator</a>, <a href="/budget-calculator/">budget calculator</a>, <a href="/emergency-fund-calculator/">emergency fund calculator</a>, <a href="/tfsa-contribution-room-calculator/">TFSA room calculator</a>, <a href="/tfsa-limit-2027/">TFSA limit 2027</a>, <a href="/rrsp-limit-2027/">RRSP limit 2027</a>, <a href="/fhsa-limit-2027/">FHSA limit 2027</a>, <a href="/credit-card-payoff-calculator/">credit card payoff calculator</a>, <a href="/download-bank-transactions-csv/">download bank transactions as CSV</a>, <a href="/ontario-land-transfer-tax-calculator/">Ontario land transfer tax calculator</a>, <a href="/money-limits-2027/">2027 money limits</a>, <a href="/canadian-bank-earnings/">bank earnings dates</a>, <a href="/tsx-heatmap/">TSX 60 heatmap</a>, <a href="/sp500-heatmap/">S&amp;P 500 heatmap</a>.<br>Built by Lucas Jacobs, a solo founder in Ontario. Rules last checked November 2026. <a href="/about/">How these tools work and where the rules come from</a>. <a href="/how-we-check/">How we check our math</a>. <a href="/ai-money-coach/">The AI money coach</a>. <a href="/security/">Security</a>. <a href="/privacy/">Privacy</a>. <a href="/terms/">Terms</a>. <a href="/">Qualisight</a> is a free Canadian budgeting and debt app.</footer>
+</div>
+<!-- qs-page-kit: anonymous page counts and the "was this helpful" box. Nothing typed into a calculator is ever sent. -->
+<script>(function(){
+  var K='eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJzanlxZWNuZWVwdGxmcnN5ZXNmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY1MDAwOTgsImV4cCI6MjA5MjA3NjA5OH0.Vth0k_1aQvfTCP6H9UaDXJvGMqZlIAexB7WPh4CIKNM', U='https://bsjyqecneeptlfrsyesf.supabase.co/rest/v1/', VIEW=true, P=location.pathname;
+  if(/[?&]embed=1/.test(location.search)) return;
+  var ok=true, vid='anon', sid='anon', n=0;
+  try{ if(localStorage.getItem('qs_notrack')==='1') ok=false; vid=localStorage.getItem('qs_vid'); if(!vid){ vid=Math.random().toString(36).slice(2,10)+Date.now().toString(36).slice(-4); localStorage.setItem('qs_vid',vid); }
+    sid=sessionStorage.getItem('qs_tab')||'anon'; }catch(e){}
+  if(/HeadlessChrome|bot|crawl|spider/i.test(navigator.userAgent||'')) ok=false;
+  function post(t,row){ if(!ok||n>12) return; n++; try{ fetch(U+t,{method:'POST',keepalive:true,headers:{'apikey':K,'Authorization':'Bearer '+K,'Content-Type':'application/json','Prefer':'return=minimal'},body:JSON.stringify(row)}).catch(function(){}); }catch(e){} }
+  function ev(name,props){ props=props||{}; props.p=P; post('site_events',{vid:vid,sid:sid,name:name,props:props}); }
+  window.qsEv=ev;
+  var q={}; try{ q=Object.fromEntries(new URLSearchParams(location.search)); }catch(e){}
+  var ref=''; try{ var r=document.referrer?new URL(document.referrer).hostname:''; ref=r&&r!==location.hostname?r:''; }catch(e){}
+  if(VIEW) ev('pg_view',{src:(q.utm_source||'').slice(0,40),ref:ref.slice(0,60)});
+  // live: the page was open and visible for 5 seconds. Link previewers and most bots leave sooner.
+  var live=false, vis=0, lt=Date.now();
+  function lv(){ if(live) return; if(document.visibilityState==='visible'){ vis+=Date.now()-lt; } lt=Date.now(); if(vis>=5000){ live=true; ev('pg_live',{}); } else setTimeout(lv,1000); }
+  document.addEventListener('visibilitychange',function(){ lt=Date.now(); }); setTimeout(lv,1000);
+  // read: at least 10 seconds on the page and 60% scrolled, or 45 seconds
+  var read=false, t0=Date.now();
+  function rd(){ if(read) return; var h=document.documentElement, f=(h.scrollTop+innerHeight)/Math.max(1,h.scrollHeight);
+    var el=Date.now()-t0; if((f>0.6&&el>10000)||el>45000){ read=true; ev('pg_read',{s:Math.round(el/1000)}); } }
+  addEventListener('scroll',rd,{passive:true}); setTimeout(rd,10500); setTimeout(rd,45500);
+  // was this helpful
+  var foot=document.querySelector('footer'); if(!foot) return;
+  var box=document.createElement('div'); box.className='qs-help';
+  box.innerHTML='<style>.qs-help{margin:2rem 0 1rem;padding:1rem;border:1px solid var(--border,#2a3140);border-radius:14px}.qs-help p{margin:0 0 .6rem;font-weight:600}.qs-help .r{display:flex;gap:.5rem;flex-wrap:wrap}.qs-help button{min-height:44px;padding:0 1.1rem;border-radius:12px;border:1px solid var(--border,#2a3140);background:transparent;color:inherit;font:inherit;font-weight:600;cursor:pointer}.qs-help button.g{background:var(--green,#4ade80);color:#06140b;border-color:var(--green,#4ade80)}.qs-help textarea{width:100%;min-height:84px;margin:.2rem 0 .6rem;padding:.6rem;border-radius:10px;border:1px solid var(--border,#2a3140);background:transparent;color:inherit;font:inherit}.qs-help small{display:block;color:var(--muted,#94a3b8);margin-bottom:.6rem}</style>'+
+    '<p id="qs-hq">Was this page helpful?</p><div class="r" id="qs-hr"><button type="button" data-v="1">Yes</button><button type="button" data-v="0">No</button></div>';
+  foot.parentNode.insertBefore(box,foot);
+  box.querySelector('#qs-hr').addEventListener('click',function(e){ var b=e.target.closest('button[data-v]'); if(!b) return; var v=+b.getAttribute('data-v');
+    ev('helpful',{v:v});
+    box.innerHTML=box.querySelector('style').outerHTML+'<p>'+(v?'Thanks! What would make it even better?':'Sorry about that. What were you looking for?')+'</p><small>Optional. Please do not include personal details like account numbers.</small><textarea id="qs-ht" maxlength="1000" aria-label="Your feedback"></textarea><div class="r"><button type="button" class="g" id="qs-hs">Send</button></div>';
+    box.querySelector('#qs-hs').addEventListener('click',function(){ var m=(box.querySelector('#qs-ht').value||'').trim().slice(0,1000);
+      if(m) post('site_feedback',{vid:vid,page:P.slice(0,80),kind:'page',score:v,msg:m});
+      box.innerHTML=box.querySelector('style').outerHTML+'<p>Thanks, that helps.</p>'; });
+  });
+})();</script>
+<script>document.querySelectorAll('[data-ev]').forEach(function(a){a.addEventListener('click',function(){try{window.qsEv&&window.qsEv(a.dataset.ev,{});}catch(e){}});});</script>
+</body>
+</html>

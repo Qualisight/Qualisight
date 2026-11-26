@@ -4902,6 +4902,7 @@ window.QS_HERO_SPLIT=null;
         <a class="lp-footer-link" href="/ai-money-coach/" style="text-decoration:none">AI money coach</a>
         <a class="lp-footer-link" href="/ontario-land-transfer-tax-calculator/" style="text-decoration:none">Land transfer tax calculator</a>
         <button class="lp-footer-link" onclick="showSignIn()">Sign in</button>
+        <a class="lp-footer-link" href="/download-bank-transactions-csv/" style="text-decoration:none">Download your bank's CSV</a>
         <a class="lp-footer-link" href="/how-we-check/" style="text-decoration:none">How we check our math</a>
         <a class="lp-footer-link" href="/terms/" style="text-decoration:none" onclick="showTerms();return false;">Terms</a>
         <a class="lp-footer-link" href="/security/" style="text-decoration:none">Security</a>
@@ -9308,7 +9309,7 @@ function impFile(input){
 }
 function impLoad(text,src){
   { let R; try{ R=impRead(text); if(R.err && src==='paste') R=impReadLines(text); }catch(e){ R={err:'Could not read that.'}; }
-    if(R.err){ try{ QA.log('imp_fail',{src}); }catch(e){} showToast(src==='paste'?`<strong>Could not find purchases in that text.</strong> Copy the list of transactions with their dates and amounts, then paste again.`:`<strong>${R.err}</strong> Your bank's website usually has a "Download transactions" button that makes a CSV file.`); return; }
+    if(R.err){ try{ QA.log('imp_fail',{src}); }catch(e){} showToast(src==='paste'?`<strong>Could not find purchases in that text.</strong> Copy the list of transactions with their dates and amounts, then paste again.`:`<strong>${R.err}</strong> Your bank's website usually has a "Download transactions" button that makes a CSV file. <a href="/download-bank-transactions-csv/" target="_blank" rel="noopener">Steps for each bank</a>`); return; }
     const mk=bmToday().slice(0,7), now=R.rows.filter(x=>x.d.slice(0,7)===mk), older=R.rows.length-now.length;
     if(!now.length){ showToast(`<strong>Nothing from this month in that file.</strong> It has ${R.rows.length} older transaction${R.rows.length===1?'':'s'}. The budget is for this month, so download this month's.`); return; }
     const seen=(state.expenses||[]);
@@ -16563,13 +16564,13 @@ captureSignupSource();
       await handleSignedInUser(session.user);
     } else {
       // No session: show the landing page, auth opens when they click a CTA.
-      // Ad links can open the demo straight away: ?demo=1 (dashboard), ?demo=grove (the money grove) or ?demo=coach (the AI coach)
+      // Ad links can open the demo straight away: ?demo=1 (dashboard), ?demo=grove (the money grove), ?demo=coach (the AI coach) or ?demo=import (bank import)
       let dq=null; try{ dq=new URLSearchParams(location.search).get('demo'); if(!dq && new URLSearchParams(location.search).get('wrapped')==='1') dq='wrapped'; }catch(e){}
       if(dq){
         try{ const u=new URL(location.href); u.searchParams.delete('demo'); u.searchParams.delete('wrapped'); history.replaceState(null,'',u.pathname+(u.searchParams.toString()?'?'+u.searchParams:'')+u.hash); }catch(e){}
         let tries=0; const open=()=>{ // the demo code loads in a later script, so wait for it
           if(typeof lpTryDemo!=='function' || typeof startDemo!=='function'){ if(++tries<60) return setTimeout(open,50); document.getElementById('landing-page').classList.remove('hidden'); return; }
-          lpTryDemo(); if(dq==='wrapped') setTimeout(()=>{ try{ wrOpen('link'); }catch(e){} },700); if(dq==='coach') setTimeout(()=>{ try{ toggleAI('link'); }catch(e){} },900); if(dq==='grove') setTimeout(()=>{ showPage('investments'); const g=document.getElementById('grove'); window.scrollTo({top: g ? Math.max(0, g.getBoundingClientRect().top+window.scrollY-72) : 0, behavior:'instant'}); },450); };
+          lpTryDemo(); if(dq==='wrapped') setTimeout(()=>{ try{ wrOpen('link'); }catch(e){} },700); if(dq==='coach') setTimeout(()=>{ try{ toggleAI('link'); }catch(e){} },900); if(dq==='import'){ const go=n=>{ try{ showPage('monthly'); bringOpen('link'); }catch(e){ if(n<10) setTimeout(()=>go(n+1),300); } }; setTimeout(()=>go(0),900); } if(dq==='grove') setTimeout(()=>{ showPage('investments'); const g=document.getElementById('grove'); window.scrollTo({top: g ? Math.max(0, g.getBoundingClientRect().top+window.scrollY-72) : 0, behavior:'instant'}); },450); };
         open();
       } else {
         document.getElementById('landing-page').classList.remove('hidden');
@@ -17920,7 +17921,7 @@ function bringOpen(from){
         <textarea id="bring-txt" rows="6" placeholder="Nov 20  TIM HORTONS #1234  4.50&#10;Nov 19  LOBLAWS  86.12" aria-label="Pasted transactions"></textarea>
         <button type="button" class="go" onclick="bringPaste()">Read what I pasted</button></div>
       <div class="bring-or">or</div>
-      <div class="bring-opt"><b>Upload your bank's CSV file</b><small>Most banks have a "Download transactions" button. Pick CSV. Made for the usual layouts from RBC, TD, Scotiabank, BMO, CIBC, Tangerine, Simplii, Wealthsimple, Amex and Desjardins.</small>
+      <div class="bring-opt"><b>Upload your bank's CSV file</b><small>Most banks have a "Download transactions" button. Pick CSV. Made for the usual layouts from RBC, TD, Scotiabank, BMO, CIBC, Tangerine, Simplii, Wealthsimple, Amex and Desjardins. <a href="/download-bank-transactions-csv/" target="_blank" rel="noopener">Steps for your bank</a></small>
         <button type="button" class="x" onclick="document.getElementById('bring-ov').remove(); impOpen()">Choose a file</button></div>
     </div>
     <div class="imp-foot"><button type="button" class="x" onclick="document.getElementById('bring-ov').remove()">Cancel</button></div></div>`;
