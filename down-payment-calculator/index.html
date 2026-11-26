@@ -261,6 +261,10 @@ footer{margin:3rem 0 2rem;padding-top:1.2rem;border-top:1px solid var(--border);
   var q={}; try{ q=Object.fromEntries(new URLSearchParams(location.search)); }catch(e){}
   var ref=''; try{ var r=document.referrer?new URL(document.referrer).hostname:''; ref=r&&r!==location.hostname?r:''; }catch(e){}
   if(VIEW) ev('pg_view',{src:(q.utm_source||'').slice(0,40),ref:ref.slice(0,60)});
+  // live: the page was open and visible for 5 seconds. Link previewers and most bots leave sooner.
+  var live=false, vis=0, lt=Date.now();
+  function lv(){ if(live) return; if(document.visibilityState==='visible'){ vis+=Date.now()-lt; } lt=Date.now(); if(vis>=5000){ live=true; ev('pg_live',{}); } else setTimeout(lv,1000); }
+  document.addEventListener('visibilitychange',function(){ lt=Date.now(); }); setTimeout(lv,1000);
   // read: at least 10 seconds on the page and 60% scrolled, or 45 seconds
   var read=false, t0=Date.now();
   function rd(){ if(read) return; var h=document.documentElement, f=(h.scrollTop+innerHeight)/Math.max(1,h.scrollHeight);
