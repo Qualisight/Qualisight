@@ -637,10 +637,19 @@ header{
 @media(max-width:760px){.bg-body{grid-template-columns:1fr;gap:1.1rem}}
 @media(max-width:520px){.bg-stage{height:560px}.bg-lvl{min-width:210px}.bg-head{padding:0.9rem 1rem;flex-wrap:wrap}.bg-body{padding:1rem}.bg-badges{display:grid;grid-template-columns:repeat(4,1fr);justify-items:center}.bg-badge{width:38px;height:38px}}
 @media (prefers-reduced-motion: reduce){.bg-badge,.bg-xpbar i,.bg-q-bar i{transition:none}}
+.sw{margin-top:0.9rem;border:1px solid rgba(74,222,128,0.35);background:rgba(74,222,128,0.06);border-radius:14px;padding:0.85rem}
+.sw-done{font-size:0.9rem}.sw-h{font-size:0.9rem;line-height:1.45}.swp-row{display:flex;flex-wrap:wrap;gap:0.45rem;margin-top:0.6rem}
+.sw-in{display:inline-flex;align-items:center;gap:0.3rem;border:1px solid var(--border2);border-radius:10px;background:var(--card);padding:0 0.6rem;min-height:44px}
+.sw-in em{font-style:normal;color:var(--muted)}.sw-in input{border:0;background:transparent;color:var(--text);font:inherit;font-size:1rem;width:7rem;min-height:42px;outline:none}
+.sw-go{min-height:42px;border-radius:10px;border:0;background:#22c55e;color:#06140b;font:inherit;font-weight:800;padding:0 0.9rem;cursor:pointer}
+.sw-go:focus-visible,.sw-in:focus-within{outline:2px solid #4ade80;outline-offset:2px}
+.sw-note{font-size:0.78rem;color:var(--muted);margin-top:0.5rem}.sw-er{color:#fca5a5;font-size:0.8rem;min-height:1em;margin-top:0.25rem}
+.imp-box .sw{text-align:left;margin:0.9rem 20px 0}
+@media(max-width:520px){.sw-go{flex:1 1 100%;text-align:left;padding:0.55rem 0.9rem}.sw-in{flex:1 1 100%}.sw-in input{width:100%}}
 .bg-sum{padding:0 1.2rem 0.85rem;display:flex;flex-wrap:wrap;align-items:center;gap:0.45rem 0.6rem}
 .bg-sum-t{flex:1 1 100%;font-size:0.9rem;line-height:1.4}.bg-sum-t b{font-weight:700}.bg-sum-t span{color:var(--muted);font-size:0.8rem;display:block;margin-top:0.1rem}
 .bg-chip{min-height:40px;border-radius:999px;border:1px solid var(--border2);background:var(--card2);color:var(--text);font:inherit;font-size:0.82rem;font-weight:600;padding:0 0.85rem;cursor:pointer;display:inline-flex;align-items:center;gap:0.4rem}
-.bg-chip i{width:8px;height:8px;border-radius:50%;display:inline-block;background:#fbbf24}.bg-chip.over i{background:#f87171}
+.bg-chip i{width:8px;height:8px;border-radius:50%;display:inline-block;background:#fbbf24}.bg-chip.over i{background:#f87171}.bg-chip.chest i{background:linear-gradient(135deg,#fde68a,#d4a017)}
 .bg-chip:focus-visible,.bg-card button:focus-visible{outline:2px solid #4ade80;outline-offset:2px}
 .bg-card{margin:0;border-top:1px solid var(--border2);padding:1rem 1.2rem 1.15rem;background:var(--card2)}
 .bg-card-top{display:flex;justify-content:space-between;align-items:center;gap:0.6rem}
@@ -8395,6 +8404,7 @@ function bgClick(e){
     const last=(state.expenses||[]).filter(q=>q.cat===j.cat).slice(-1)[0];
     txt=`${j.cat}: ${fmtW(j.spent)} of ${fmtW(j.goal)}. `+(j.over?`${fmtW(j.spent-j.goal)} over.`:`${fmtC(j.left)} left${BM_FIXED.test(j.cat)?'.':`, about ${fmtC(j.left/left)} a day.`}`)+(last?` Last: ${last.name}, ${fmtW(last.actual)}.`:'');
     ax=hit.x+hit.w/2; ay=hit.y+4; _bg.sel={cat:j.cat, life:1.2}; if(hit.y<_bg.H*0.4) _bg.under=hit.y+hit.h; }
+  else if(hit.kind==='chest' && S.ti>0){ bgChestOpen(); return; }
   else if(hit.kind==='chest') txt = S.ti<=0 ? 'Add your income and whatever you do not spend lands in here.' : S.net>0 ? `Saved ${fmtW(S.net)} so far this month, ${Math.round(S.sr*100)}% of your income.` : `This month you have spent ${fmtW(-S.net)} more than you earned.`;
   else if(hit.kind==='cat') txt='Purr. The cat moved in when you reached level 5.';
   else { const tips=bgTips(S); _bg.tipI=((_bg.tipI??-1)+1)%Math.max(1,tips.length); txt=tips[_bg.tipI]||'Keep logging. Every coin counts.'; }
@@ -8852,6 +8862,73 @@ function snAddGoal(){ const nm=(document.getElementById('sn-gname').value||'').t
   if(!nm){ er.textContent='Name your goal, like Trip to Montreal.'; return; } if(!(t>0)){ er.textContent='Type how much you need, like 2000.'; return; }
   const S=snS(); S.goals.push({id:snId('g'),name:nm.slice(0,40),target:t,saved:0,by:/^\d{4}-\d{2}$/.test(by)?by:''}); try{ QA.log('sn_goal',{n:S.goals.length,dated:!!by}); }catch(e){} snSave(); }
 function snGoalAdd(id,amt){ const g=snS().goals.find(x=>x.id===id); if(!g) return; const was=g.saved<g.target; g.saved=Math.round((g.saved+amt)*100)/100; snSave(); if(was&&g.saved>=g.target){ try{ showToast(`Goal reached: ${g.name}`); }catch(e){} } }
+// ── Leftover sweep: put what you kept this month toward a savings goal or the emergency fund ──
+function swList(){ if(!Array.isArray(state.sweeps)) state.sweeps=[]; return state.sweeps; }
+function swDone(mk){ return Math.round(swList().filter(x=>x.mk===mk).reduce((t,x)=>t+(+x.amt||0),0)*100)/100; }
+function swTargets(){
+  const S=snS(), E=snEf(), out=[];
+  (S.goals||[]).forEach(g=>{ if(!(g.target>0 && g.saved>=g.target)) out.push({id:g.id, name:g.name}); });
+  if(!(E.base>0 && E.have>=E.target)) out.push({id:'ef', name:'Emergency fund'});
+  return out;
+}
+function swHtml(mk, kept, where){
+  if(!(kept>0)) return '';
+  const done=swDone(mk), avail=Math.max(0,Math.round((kept-done)*100)/100), T=swTargets();
+  if(avail<1) return `<div class="sw sw-done" id="sw-${where}"><b>${fmtW(done)} set aside</b> from ${where==='wrap'?'that':'this'} month. That money is working for you now.</div>`;
+  const head = done>0 ? `You have set aside <b>${fmtW(done)}</b> so far. <b>${fmtW(avail)}</b> more is still free. Did you move any of it to savings?` : `You kept <b>${fmtW(avail)}</b>. Did you move some of it to savings?`;
+  if(!T.length) return `<div class="sw" id="sw-${where}"><div class="sw-h">${head}</div><div class="sw-note">Every goal is full. Add a new savings goal in your Safety net on the Budget page.</div></div>`;
+  return `<div class="sw" id="sw-${where}"><div class="sw-h">${head}</div>
+    <div class="swp-row"><label class="sw-in"><em>$</em><input id="sw-amt-${where}" inputmode="decimal" value="${Math.floor(avail)}" aria-label="Amount you set aside"></label></div>
+    <div class="swp-row">${T.slice(0,4).map(t=>`<button type="button" class="sw-go" onclick="swDo('${mk}','${t.id}','${where}')">Add to ${escHtml(t.name)}</button>`).join('')}</div>
+    <div class="sw-note">Only add money you really moved, so your goals stay true.</div><div class="sw-er" id="sw-er-${where}" role="alert"></div></div>`;
+}
+let _swLast=null;
+function swDo(mk,to,where){
+  const kept = where==='wrap' ? (state.wrap&&state.wrap.net)||0 : (bgMonthStats().net||0);
+  const avail=Math.max(0,Math.round((kept-swDone(mk))*100)/100);
+  const a=snNum((document.getElementById('sw-amt-'+where)||{}).value), er=document.getElementById('sw-er-'+where);
+  if(!(a>0)){ if(er) er.textContent='Type how much you set aside, like 200.'; return; }
+  if(a>avail+0.5){ if(er) er.textContent=`That is more than you kept. The most is ${fmtW(avail)}.`; return; }
+  const S=snS(); let name='';
+  if(to==='ef'){ let acc=S.cash.find(x=>x.ef); if(!acc){ acc={id:snId('c'),name:'Emergency savings',bal:0,ef:true}; S.cash.push(acc); } acc.bal=Math.round(((+acc.bal||0)+a)*100)/100; name='your emergency fund'; to='ef:'+acc.id; }
+  else { const g=S.goals.find(x=>x.id===to); if(!g) return; const was=g.saved<g.target; g.saved=Math.round((g.saved+a)*100)/100; name=g.name; if(was&&g.saved>=g.target) setTimeout(()=>{ try{ showToast(`<strong>Goal reached:</strong> ${escHtml(g.name)}`); }catch(e){} },2600); }
+  const rec={mk, amt:a, to, d:bmToday()}; swList().push(rec); _swLast=rec;
+  try{ QA.log('sweep',{to:to.startsWith('ef')?'ef':'goal', where}); }catch(e){}
+  if(_bg){ for(let i=0;i<14 && !bgReduce;i++){ const hc=(_bg.hits||[]).find(h=>h.kind==='chest'); if(hc) _bg.parts.push({coin:1,x:hc.ax+(Math.random()-0.5)*30,y:hc.ay,vx:(Math.random()-0.5)*120,vy:-(140+Math.random()*90),life:1,s:4}); } }
+  save(); try{ snRender(); }catch(e){} try{ renderDashboard(); }catch(e){}
+  const box=document.getElementById('sw-'+where); if(box) box.outerHTML=swHtml(mk,kept,where);
+  try{ bgSumRender(bgMonthStats()); }catch(e){}
+  if(where==='chest'){ try{ bgCardRender(bgMonthStats()); }catch(e){} }
+  try{ showToast(`<strong>${fmt(a)} added</strong> to ${escHtml(name)}. <button type="button" onclick="swUndo()" style="margin-left:0.5rem;background:none;border:1px solid currentColor;color:inherit;border-radius:8px;padding:0.25rem 0.7rem;font:inherit;font-weight:700;cursor:pointer;min-height:32px">Undo</button>`); }catch(e){}
+}
+function swUndo(){
+  const r=_swLast; if(!r) return; _swLast=null;
+  const L=swList(), i=L.lastIndexOf(r); if(i<0) return; L.splice(i,1);
+  const S=snS();
+  if(r.to.startsWith('ef:')){ const acc=S.cash.find(x=>x.id===r.to.slice(3)); if(acc) acc.bal=Math.max(0,Math.round(((+acc.bal||0)-r.amt)*100)/100); }
+  else { const g=S.goals.find(x=>x.id===r.to); if(g) g.saved=Math.max(0,Math.round((g.saved-r.amt)*100)/100); }
+  save(); try{ snRender(); }catch(e){} try{ renderDashboard(); }catch(e){}
+  ['wrap','chest'].forEach(w=>{ const box=document.getElementById('sw-'+w); if(box) box.outerHTML=swHtml(r.mk, w==='wrap'?(state.wrap&&state.wrap.net)||0:bgMonthStats().net, w); });
+  try{ bgCardRender(bgMonthStats()); bgSumRender(bgMonthStats()); }catch(e){}
+  try{ showToast('<strong>Undone.</strong> Your goal is back where it was.'); }catch(e){}
+}
+function bgChestOpen(){
+  _bg.card='__chest'; _bg.cardFlash='';
+  try{ QA.log('bg_card_open',{src:'chest'}); }catch(_){}
+  bgCardRender(_bg.S||bgMonthStats());
+  const c=document.getElementById('bg-card'); if(c){ const r=c.getBoundingClientRect(); if(r.bottom>innerHeight-70) c.scrollIntoView({behavior:bgReduce?'auto':'smooth',block:'nearest'}); }
+}
+function bgChestRender(c,S){
+  const done=swDone(S.mk), pct=S.ti>0?Math.round(S.sr*100):0;
+  const body = !(S.ti>0) ? `<p class="bg-card-say">Add your income on the Budget page. Whatever you do not spend lands in this chest.</p>`
+    : S.net<=0 ? `<p class="bg-card-say">So far this month you have spent ${fmtW(-S.net)} more than you earned. There is still time to turn it around.</p>`
+    : `<p class="bg-card-say">This is your income minus what you spent so far this month. It only becomes savings once you move it out of your chequing account.</p>${swHtml(S.mk,S.net,'chest')}`;
+  c.hidden=false;
+  c.innerHTML=`<div class="bg-card-top"><h4>Treasure chest</h4><div style="display:flex;gap:0.45rem;align-items:center"><span class="bg-pill ${S.net>0?'good':'over'}">This month</span><button type="button" class="bg-card-x" onclick="bgCardClose()" aria-label="Close treasure chest">✕</button></div></div>
+    <div class="bg-card-big"><b>${S.net>=0?fmtW(S.net):'-'+fmtW(-S.net)}</b>${S.ti>0?`kept so far, ${pct}% of income`:''}</div>
+    ${body}
+    ${done>0 && !(S.net>0) ? `<div class="bg-card-h">${fmtW(done)} set aside this month.</div>`:''}`;
+}
 function snRemoveGoal(id){ const S=snS(), i=S.goals.findIndex(x=>x.id===id); if(i<0) return; const [gone]=S.goals.splice(i,1); snSave(); try{ showToast(`Removed ${gone.name}`); }catch(e){} }
 
 function bmBillsRender(){
@@ -9026,7 +9103,8 @@ function bgSumRender(S){
   const care=st.filter(x=>x.s.k==='over'||x.s.k==='fast').sort((a,b)=>(b.s.k==='over')-(a.s.k==='over')).slice(0,3);
   const head = good===st.length ? `<b>All ${st.length} jars are on track.</b>` : `<b>${good} of ${st.length} jars on track.</b>`;
   const sub = care.length ? 'These need a look. Tap one, or tap any jar to log spending.' : 'Tap a jar to log spending or see what is left for each day.';
-  el.innerHTML=`<div class="bg-sum-t">${head}<span>${sub}</span></div>`+care.map(x=>`<button type="button" class="bg-chip ${x.s.k}" onclick="bgCardOpen(${x.j.idx},'sum')"><i aria-hidden="true"></i>${escHtml(bgShort(x.j.cat))}: ${x.s.k==='over'?escHtml(x.s.short):'slow down'}</button>`).join('');
+  el.innerHTML=`<div class="bg-sum-t">${head}<span>${sub}</span></div>`+care.map(x=>`<button type="button" class="bg-chip ${x.s.k}" onclick="bgCardOpen(${x.j.idx},'sum')"><i aria-hidden="true"></i>${escHtml(bgShort(x.j.cat))}: ${x.s.k==='over'?escHtml(x.s.short):'slow down'}</button>`).join('')
+    + (S.ti>0 && S.net-swDone(S.mk)>=1 ? `<button type="button" class="bg-chip chest" onclick="bgChestOpen()"><i aria-hidden="true"></i>Chest: ${fmtW(S.net-swDone(S.mk))} free to set aside</button>` : '');
 }
 function bgKbdJars(){ const S=_bg.S; return S? S.jars.slice(0, (_bg.W||999)<560?9:10) : []; }
 function bgKbdSay(){ const js=bgKbdJars(), j=js[_bg.kbd]; const el=document.getElementById('bg-live'); if(!j||!el) return; const s=bgJarState(j,_bg.S); el.textContent=`${j.cat}, ${s.pill}, ${s.short}. Press Enter to open.`; }
@@ -9051,6 +9129,7 @@ function bgCardOpen(idx,src){
 function bgCardClose(){ _bg.card=null; if(bgReduce) setTimeout(()=>bgDraw(0),0); const c=document.getElementById('bg-card'); if(c){ c.hidden=true; c.innerHTML=''; } }
 function bgCardRender(S){
   const c=document.getElementById('bg-card'); if(!c) return;
+  if(_bg.card==='__chest'){ bgChestRender(c,S); return; }
   const j=_bg.card && S.jars.find(x=>x.cat===_bg.card);
   if(!j){ c.hidden=true; c.innerHTML=''; return; }
   const s=bgJarState(j,S), name=escHtml(j.cat), short=escHtml(bgShort(j.cat));
@@ -9342,6 +9421,7 @@ function bmWrapShow(){
       ${vs?`<div><span>Compared with before</span><b>${vs}</b></div>`:''}
       <div><span>Things logged</span><b>${w.n}</b></div>
     </div>
+    ${w.net>0 ? swHtml(w.mk, w.net, 'wrap') : ''}
     <div class="imp-foot"><button type="button" class="x" onclick="bmWrapClose(true)">Adjust my goals</button><button type="button" class="go" onclick="bmWrapClose()">Keep my goals for ${escHtml(w.next||'this month')}</button></div></div>`;
   document.body.appendChild(ov);
   try{ const c=document.getElementById('wrap-cv').getContext('2d'); c.scale(2,2); if(w.tier) bgCup(c,32,66,3.4,w.tier); else document.getElementById('wrap-cv').style.display='none'; }catch(e){}
