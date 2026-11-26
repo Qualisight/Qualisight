@@ -1330,7 +1330,7 @@ select option{background:var(--card2)}
 #rollover-toast.show{transform:translateX(-50%) translateY(0)}
 #rollover-toast .toast-icon{font-size:1.3rem;flex-shrink:0}
 #rollover-toast .toast-text{flex:1;line-height:1.5}
-#rollover-toast .toast-close{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:0.1rem;flex-shrink:0}
+#rollover-toast .toast-close{background:transparent;border:none;color:var(--muted);cursor:pointer;font-size:1rem;padding:0.1rem;flex-shrink:0;min-width:36px;min-height:36px;border-radius:8px}
 #rollover-toast .toast-close:hover{color:var(--text)}
 
 /* ── EARNINGS & NEWS PANEL ── */
@@ -2566,7 +2566,7 @@ body{font-family:var(--font-body);background:var(--paper);color:var(--ink);-webk
 button,input,select,textarea{font-family:inherit}
 
 /* ── Numbers: one face, tabular, no raised cents ── */
-.cents{font-size:0.7em;vertical-align:baseline;opacity:0.55;margin-left:0;font-weight:inherit;letter-spacing:0}
+.cents{font-size:0.7em;vertical-align:baseline;opacity:0.8;margin-left:0;font-weight:inherit;letter-spacing:0}
 .stat-tile .value,.bm-stat-val,.bm-yearstat-val,.bm-goal-input,.bm-cat-amounts,.bm-cat-status,.bm-txn-amt,.bm-inc-amt,
 .dt-hero-date,.dt-hero-stat-val,.dt-card-balance,.dt-scenario-time,.dt-pay-input,.dt-txn-amt,
 .iv-hero-value,.iv-hero-gain,.iv-mini-val,.iv-acct-mv-val,.iv-hold-mv-val,.iv-hold-mv-ret,.iv-acct-total-val,
@@ -2713,7 +2713,7 @@ select option{background:#fff;color:var(--ink)}
 .streak-flame.active{color:#fb923c;animation:none}
 .streak-count{font-family:var(--font-num);font-size:1rem;font-weight:700;letter-spacing:-0.01em;color:var(--ink)}
 .streak-sub{font-size:0.74rem;color:var(--muted)}
-.streak-best{border-left-color:var(--border);color:var(--faint);font-size:0.68rem}
+.streak-best{border-left-color:var(--border);color:var(--muted);font-size:0.68rem}
 .streak-best strong{color:var(--ink);font-size:0.95rem}
 .streak-nospend{background:var(--surface);border:1px solid var(--border);color:var(--ink);border-radius:999px;font-weight:600;font-size:0.76rem;padding:0.4rem 0.8rem}
 .streak-nospend:hover{background:var(--green);border-color:var(--green);color:#fff}
@@ -5203,15 +5203,15 @@ window.QS_HERO_SPLIT=null;
       <details class="ql-more ql-more-wrap" id="ql-more"><summary>More options: card, debt payment, monthly bill</summary>
     <div class="bm-log-row">
       <div class="bm-field">
-        <label>Category</label>
+        <label for="exp-cat">Category</label>
         <select id="exp-cat" class="bm-select" onchange="handleExpCatChange()"></select>
       </div>
       <div class="bm-field full">
-        <label>Description</label>
+        <label for="exp-name">Description</label>
         <input id="exp-name" class="bm-input" placeholder="e.g. Groceries at Loblaws" list="exp-names" autocomplete="off"><datalist id="exp-names"></datalist>
       </div>
       <div class="bm-field">
-        <label>Amount ($)</label>
+        <label for="exp-amt">Amount ($)</label>
         <input id="exp-amt" class="bm-input" type="number" inputmode="decimal" min="0" step="0.01" placeholder="0.00" onkeydown="if(event.key==='Enter'){event.preventDefault();addExpense();}">
       </div>
       <button class="bm-log-btn" onclick="addExpense()">Add</button>
@@ -5274,11 +5274,11 @@ window.QS_HERO_SPLIT=null;
         <div class="bm-subhead">Monthly income</div>
         <div class="bm-log-row" style="grid-template-columns:1.2fr 1fr auto">
           <div class="bm-field">
-            <label>Source</label>
+            <label for="inc-name">Source</label>
             <input id="inc-name" class="bm-input" placeholder="e.g. Paycheck">
           </div>
           <div class="bm-field">
-            <label>Amount ($)</label>
+            <label for="inc-amt">Amount ($)</label>
             <input id="inc-amt" class="bm-input" type="number" inputmode="decimal" min="0" placeholder="0.00" onkeydown="if(event.key==='Enter'){event.preventDefault();addIncome();}">
           </div>
           <button class="bm-log-btn" onclick="addIncome()">Add</button>
@@ -5308,7 +5308,7 @@ window.QS_HERO_SPLIT=null;
     <div class="bm-year-body">
       <div class="bm-year-inner">
         <div class="bm-year-controls">
-          <select id="yr-filter" onchange="renderYearly()" class="bm-select" style="max-width:130px"></select>
+          <select id="yr-filter" aria-label="Year to show" onchange="renderYearly()" class="bm-select" style="max-width:130px"></select>
           <button class="btn-ghost" onclick="addYearlyEntry()">+ Add manual row</button>
         </div>
         <div class="bm-yearstat-row" id="yearly-stats"></div>
@@ -5581,13 +5581,13 @@ window.QS_HERO_SPLIT=null;
       <div class="card">
         <div class="card-title">The rent you are looking at</div>
         <div class="form-group" style="margin-bottom:0.7rem">
-          <label>Monthly rent</label>
+          <label for="rent-amount">Monthly rent</label>
           <input id="rent-amount" type="number" placeholder="e.g. 2200" oninput="calcRent()"
             style="background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:0.85rem;padding:0.5rem 0.7rem;outline:none;width:100%;transition:border-color 0.15s"
             onfocus="this.style.borderColor='rgba(74,222,128,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.07)'">
         </div>
         <div class="form-group" style="margin-bottom:0.7rem">
-          <label>Down payment goal <span style="color:var(--muted);font-weight:400">(optional)</span></label>
+          <label for="rent-dp-goal">Down payment goal <span style="color:var(--muted);font-weight:400">(optional)</span></label>
           <input id="rent-dp-goal" type="number" placeholder="e.g. 80000" oninput="calcRent()"
             style="background:var(--card2);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:var(--font-body);font-size:0.85rem;padding:0.5rem 0.7rem;outline:none;width:100%;transition:border-color 0.15s"
             onfocus="this.style.borderColor='rgba(74,222,128,0.4)'" onblur="this.style.borderColor='rgba(255,255,255,0.07)'">
@@ -5761,6 +5761,7 @@ window.QS_HERO_SPLIT=null;
 
 <!-- Pinned to one checked version. The integrity hash makes the browser refuse the file if it is ever changed. -->
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.119.0/dist/umd/supabase.js" integrity="sha384-uteMfOloLDGt042uDz+xHGF3ym63/WQ6rFq7murQRG8Ih7QrXGEGNtWd8688sb4O" crossorigin="anonymous"></script>
+<script>/* if the CDN is blocked or down, load the identical copy from this site */ window.supabase||document.write('<script src="/vendor/supabase-2.119.0.js" integrity="sha384-uteMfOloLDGt042uDz+xHGF3ym63/WQ6rFq7murQRG8Ih7QrXGEGNtWd8688sb4O"><\/script>')</script>
 <script>
 // ══════════════════════════════════════════
 // STATE
@@ -10666,7 +10667,7 @@ function renderDebt(){
         // editable minimum
         const payEdit = `<div class="dt-payment-edit">
           <label>Monthly payment:</label>
-          <input class="dt-pay-input" type="number" value="${d.min||''}" placeholder="0.00" step="0.01" min="0"
+          <input class="dt-pay-input" type="number" aria-label="Monthly payment for ${escHtml(d.name||'this debt')}" value="${d.min||''}" placeholder="0.00" step="0.01" min="0"
             onblur="updateDebtMin(${i},this.value)" onkeydown="if(event.key==='Enter')this.blur()">
           <span style="font-size:0.72rem;color:var(--muted)">edit to update your plan</span>
         </div>`;
@@ -18189,7 +18190,7 @@ function dqRender(fresh){
       <div class="dq-cal">${Array.from({length:dim},(_,i)=>{ const d=`${S.y}-12-${String(i+1).padStart(2,'0')}`; return `<i class="${S.days.has(d)?'lit':''}${i+1===S.today?' now':''}${i+1===15||i+1===25?' goal':''}" title="December ${i+1}"></i>`; }).join('')}</div>
       <small>Log any 15 days for the ${'❄️'} Snowflake charm, 25 for ${'🌌'} Northern Lights. ${S.n>=25?'You got both!':S.n>=15?'Snowflake earned. Keep going.':''}</small></div>`; dqSnowAwards(S); }
     else snow=`<div class="dq-snow soon"><b>❄️ December Snow Streak starts December 1</b><small>Log 15 days in December for a rare Snowflake charm, 25 for Northern Lights.</small></div>`; }
-  el.innerHTML=`<div class="dq-card"><div class="dq-head"><span>Today's quest</span><span class="dq-right"><span class="dq-dots" title="Chest streak: ${cs} day${cs===1?'':'s'}" aria-label="Chest streak: ${cs} day${cs===1?'':'s'}">${dots}</span><button type="button" class="dq-bookbtn" onclick="dqBook()">Charms ${got}/${DQ_CHARMS.length}</button></span></div>${body}${snow}</div>`;
+  el.innerHTML=`<div class="dq-card"><div class="dq-head"><span>Today's quest</span><span class="dq-right"><span class="dq-dots" role="img" title="Chest streak: ${cs} day${cs===1?'':'s'}" aria-label="Chest streak: ${cs} day${cs===1?'':'s'}">${dots}</span><button type="button" class="dq-bookbtn" onclick="dqBook()">Charms ${got}/${DQ_CHARMS.length}</button></span></div>${body}${snow}</div>`;
 }
 
 // ══════════════════════════════════════════
@@ -18803,7 +18804,7 @@ function lpBind(el,fn){
 <div id="rollover-toast">
   <div class="toast-icon"></div>
   <div class="toast-text" id="rollover-toast-text"></div>
-  <button class="toast-close" onclick="dismissToast()">✕</button>
+  <button class="toast-close" onclick="dismissToast()" aria-label="Close message">✕</button>
 </div>
 
 <script>
