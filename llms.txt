@@ -31,6 +31,7 @@ Key facts:
 
 ## About
 
+- [Bank of Canada rate announcement dates](https://qualisight.ca/bank-of-canada-rate-announcement-dates/): next decision December 9, 2026 at 9:45 a.m. ET, all 2027 dates, the current 2.50% policy rate and 4.70% prime, with a calculator showing what a 0.25% move does to a line of credit or variable mortgage payment. Sourced to the Bank of Canada.
 - [Download bank transactions as CSV](https://qualisight.ca/download-bank-transactions-csv/): steps to download a CSV from RBC, TD, Scotiabank, BMO, CIBC, Tangerine, Simplii, Wealthsimple, Amex and Desjardins, sourced to each bank's help page where one exists, and how to import it into a budget without a bank login.
 - [Security](https://qualisight.ca/security/): who runs Qualisight (Lucas Jacobs, sole proprietor in Ontario, since April 2026), data stored in Canada (Supabase Canada Central, Montreal), encryption, what is never asked for (bank login, card numbers, SIN), which providers process data in the US, and what is not in place yet (no independent audit).
 - [AI money coach](https://qualisight.ca/ai-money-coach/): what the in-app AI coach answers, real example answers from the sample account, what it will not do (no stock picks, no guessed limits), the CRA and FCAC figures it quotes with the date checked, and what data is sent to Anthropic.
